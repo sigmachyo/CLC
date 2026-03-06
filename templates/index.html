@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Духовный Путь - Карта{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Шапка Duolingo -->
+<div class="duolingo-header">
+    <div class="duolingo-logo">
+        <i class="fas fa-dove"></i>
+        <span>Духовный Путь</span>
+    </div>
+    
+    <div class="duolingo-stats">
+        <div class="stat-pill">
+            <i class="fas fa-fire"></i>
+            <span>Дней: <strong>0</strong></span>
+        </div>
+        <div class="stat-pill">
+            <i class="fas fa-gem"></i>
+            <span>Опыт: <strong>{{ completed_levels|add:completed_levels }} XP</strong></span>
+        </div>
+        <div class="progress-pill">
+            <i class="fas fa-chart-line"></i>
+            <span>{{ progress_percentage }}%</span>
+        </div>
+    </div>
+</div>
+
+<!-- Боковая панель -->
+<div class="side-panel">
+    <div class="user-avatar">
+        <i class="fas fa-user-circle"></i>
+    </div>
+    
+    <h2 class="username">
+        {% if user.is_authenticated %}
+            {{ user.username }}
+        {% else %}
+            Путник
+        {% endif %}
+    </h2>
+    
+    <div class="streak-counter">
+        <i class="fas fa-fire streak-icon"></i>
+        <div>
+            <div class="streak-number">0</div>
+            <div class="streak-label">дней подряд</div>
+        </div>
+    </div>
+    
+    {% if not user.is_authenticated %}
+    <div class="auth-buttons">
+        <a href="{% url 'login' %}" class="btn-login">🚀 Войти</a>
+        <a href="{% url 'register' %}" class="btn-register">✨ Регистрация</a>
+    </div>
+    {% else %}
+    <div class="user-links">
+        <a href="{% url 'profile' %}" class="profile-link">
+            <i class="fas fa-user"></i> Профиль
+        </a>
+        <span class="separator">|</span>
+        <a href="{% url 'logout' %}" class="logout-link">
+            <i class="fas fa-sign-out-alt"></i> Выйти
+        </a>
+    </div>
+    {% endif %}
+    
+    <div class="progress-block">
+        <div class="progress-header">
+            <span class="progress-label">Прогресс</span>
+            <span class="progress-count">{{ completed_levels }}/{{ total_levels }}</span>
+        </div>
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" style="width: {{ progress_percentage }}%;"></div>
+        </div>
+    </div>
+</div>
+
+<!-- КАРТА С УРОВНЯМИ -->
+<div class="map-container">
+    <div class="map-wrapper">
+        <!-- Заголовок -->
+        <div class="map-header">
+            <h1>
+                <i class="fas fa-map map-icon"></i> 
+                Карта духовного пути
+            </h1>
+            <p class="map-subtitle">{{ total_levels }} уровней духовного роста</p>
+        </div>
+        
+        <!-- ГРИД С УРОВНЯМИ -->
+        <div class="levels-grid">
+            {% for building in city_buildings %}
+            <div class="level-card 
+                        {{ building.type }}
+                        {% if building.is_completed %}completed{% endif %}
+                        {% if not building.is_available %}locked{% endif %}"
+                 data-level-id="{{ building.id }}">
+                
+                <div class="xp-badge">
+                    <i class="fas fa-star"></i> +{{ building.xp|default:building.order|add:building.order }} XP
+                </div>
+                
+                <div class="level-number">{{ building.order }}</div>
+                
+                <div class="level-icon">
+                    {% if building.is_completed %}
+                    <i class="fas fa-check-circle"></i>
+                    {% elif not building.is_available %}
+                    <i class="fas fa-lock"></i>
+                    {% else %}
+                        {% if building.building_style == 'church' or building.type == 'worship' %}
+                        <i class="fas fa-church"></i>
+                        {% elif building.building_style == 'chapel' %}
+                        <i class="fas fa-place-of-worship"></i>
+                        {% elif building.building_style == 'monastery' %}
+                        <i class="fas fa-monastery"></i>
+                        {% elif building.building_style == 'temple' %}
+                        <i class="fas fa-temple"></i>
+                        {% elif building.building_style == 'library' or building.type == 'study' %}
+                        <i class="fas fa-book"></i>
+                        {% elif building.building_style == 'school' %}
+                        <i class="fas fa-school"></i>
+                        {% elif building.type == 'prayer' %}
+                        <i class="fas fa-pray"></i>
+                        {% elif building.type == 'service' %}
+                        <i class="fas fa-hands-helping"></i>
+                        {% elif building.type == 'leadership' %}
+                        <i class="fas fa-crown"></i>
+                        {% elif building.type == 'growth' %}
+                        <i class="fas fa-tree"></i>
+                        {% elif building.type == 'fellowship' %}
+                        <i class="fas fa-users"></i>
+                        {% else %}
+                        <i class="fas fa-cross"></i>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                
+                <div class="level-title">{{ building.title }}</div>
+                <div class="level-type">{{ building.type_display }}</div>
+                
+                <div class="level-status">
+                    {% if building.is_completed %}
+                    <span class="status-completed">
+                        <i class="fas fa-check-circle"></i> Пройдено
+                    </span>
+                    {% elif not building.is_available %}
+                    <span class="status-locked">
+                        <i class="fas fa-lock"></i> Заблокировано
+                    </span>
+                    {% else %}
+                    <span class="status-available">
+                        <i class="fas fa-play-circle"></i> Доступно
+                    </span>
+                    {% endif %}
+                </div>
+                
+                {% if building.description %}
+                <div class="level-description">
+                    {{ building.description|truncatechars:60 }}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Нижняя статистика -->
+        <div class="stats-footer">
+            <div class="stat-item">
+                <div class="stat-value">{{ total_levels }}</div>
+                <div class="stat-label">Всего уровней</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value completed-value">{{ completed_levels }}</div>
+                <div class="stat-label">Пройдено</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value remaining-value">{{ total_levels|add:"-completed_levels" }}</div>
+                <div class="stat-label">Осталось</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/index.js' %}"></script>
+{% endblock %}

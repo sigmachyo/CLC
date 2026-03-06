@@ -1,0 +1,1502 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+/* ============================================================
+   ЦХЖ КРАСНОЯРСК · MIDNIGHT GOLD
+   Палитра: глубокий синий, тёплое золото, мягкий крем
+   Современность · Духовность · Тепло
+   ============================================================ */
+
+:root {
+  /* ── Основные фоны ── */
+  --bg:        #f5f0e8;
+  --bg-warm:   #efe9df;
+  --bg-deep:   #e8e1d5;
+  --card:      #faf7f2;
+  --card2:     #ffffff;
+  --card-dark: #e8e1d5;
+
+  /* ── Акцент: глубокий синий ── */
+  --navy:      #1a1f36;
+  --navy-h:    #252b48;
+  --navy-l:    rgba(26,31,54,0.10);
+  --navy-ll:   rgba(26,31,54,0.05);
+
+  /* ── Акцент: тёплое золото ── */
+  --gold:      #c9a84c;
+  --gold-h:    #d4b65e;
+  --gold-d:    #b0922f;
+  --gold-l:    rgba(201,168,76,0.15);
+
+  /* ── Шалфей ── */
+  --sage:      #7a9e7e;
+  --sage-d:    #5f8363;
+
+  /* ── Текст ── */
+  --txt:       #1a1f36;
+  --txt-sub:   #3d4260;
+  --txt-mid:   #5c6080;
+  --txt-muted: #8b8fa8;
+
+  /* ── Рамки ── */
+  --b:         rgba(26,31,54,0.10);
+  --b-h:       rgba(26,31,54,0.20);
+  --b-l:       rgba(26,31,54,0.05);
+
+  --live-red:  #d94452;
+
+  /* ── Утилиты ── */
+  --t:         0.32s cubic-bezier(0.4,0,0.2,1);
+  --r:         18px;
+  --r-sm:      10px;
+  --shadow:    0 8px 32px rgba(26,31,54,0.10), 0 2px 8px rgba(26,31,54,0.06);
+  --shadow-lg: 0 16px 48px rgba(26,31,54,0.14);
+
+  --hdr: 72px;
+}
+
+/* ── RESET ── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html {
+  width:100%; height:100%;
+  overflow:hidden;
+}
+body {
+  width:100%; height:100%;
+  overflow:hidden;
+  margin:0; padding:0;
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--txt);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── SNAP ROOT ── */
+#snap-root {
+  width:100%;
+  height:100%;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+#snap-root::-webkit-scrollbar { display:none; }
+
+/* ── SNAP SECTION ── */
+.snap-sec {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  height: 100dvh;
+  min-height: 100dvh;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.sec-inner {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--b-h) transparent;
+}
+.sec-inner::-webkit-scrollbar { width:4px; }
+.sec-inner::-webkit-scrollbar-track { background:transparent; }
+.sec-inner::-webkit-scrollbar-thumb { background:var(--b-h); border-radius:2px; }
+
+/* ── CONTAINER ── */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 36px;
+  width: 100%;
+}
+
+/* ══════════════════════════════════════════════
+   ФИКСИРОВАННАЯ ШАПКА
+   ══════════════════════════════════════════════ */
+#site-header {
+  position: fixed;
+  top:0; left:0; right:0;
+  z-index: 800;
+  height: var(--hdr);
+  background: var(--navy);
+  border-bottom: 1px solid rgba(201,168,76,0.15);
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 24px rgba(26,31,54,0.30);
+}
+#site-header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hdr-logo {
+  display:flex; align-items:center; gap:14px;
+  text-decoration:none;
+  transition:opacity var(--t);
+}
+.hdr-logo:hover { opacity:.85; }
+
+.hdr-shield { width:46px; height:54px; flex-shrink:0; }
+.hdr-shield svg { width:100%; height:100%; display:block; }
+
+.hdr-texts { display:flex; flex-direction:column; gap:2px; }
+.hdr-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #f5f0e8;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+}
+.hdr-sub {
+  font-size: 0.72rem;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.hdr-right {
+  display:flex; align-items:center; gap:24px;
+}
+.hdr-time {
+  font-size: 0.85rem;
+  color: rgba(245,240,232,0.5);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+.hdr-phone {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.06em;
+}
+.hdr-divider {
+  width:1px; height:28px;
+  background: rgba(245,240,232,0.15);
+}
+
+/* ══════════════════════════════════════════════
+   ВЕРТИКАЛЬНАЯ НАВИГАЦИЯ
+   ══════════════════════════════════════════════ */
+#v-nav {
+  position: fixed;
+  right: 28px; top:50%;
+  transform: translateY(-50%);
+  z-index: 900;
+  display: flex; flex-direction:column;
+  align-items:center; gap:4px;
+  padding: 16px 10px;
+  background: var(--navy);
+  border-radius: 30px;
+  border: 1px solid rgba(201,168,76,0.12);
+  box-shadow: var(--shadow-lg);
+}
+
+.vn-item {
+  position: relative;
+  width: 44px; height: 44px;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer;
+  border-radius: 50%;
+  color: rgba(245,240,232,0.45);
+  transition: color var(--t), background var(--t);
+  -webkit-tap-highlight-color: transparent;
+}
+.vn-item svg {
+  width:20px; height:20px;
+  display:block; fill:currentColor;
+  pointer-events:none;
+}
+.vn-item:hover { color: #f5f0e8; background: rgba(245,240,232,0.08); }
+.vn-item.active { color: var(--gold); }
+.vn-item.active::before {
+  content:'';
+  position:absolute; left:-10px; top:50%;
+  transform:translateY(-50%);
+  width:3px; height:24px;
+  background: var(--gold);
+  border-radius:2px;
+}
+
+.vn-tip {
+  position:absolute; right:calc(100% + 14px); top:50%;
+  transform:translateY(-50%);
+  background: var(--navy);
+  color: var(--gold);
+  border:1px solid rgba(201,168,76,0.2);
+  padding:6px 14px; border-radius:var(--r-sm);
+  font-size:0.78rem; white-space:nowrap;
+  letter-spacing:0.04em;
+  opacity:0; pointer-events:none;
+  transition:opacity 0.2s;
+}
+.vn-item:hover .vn-tip { opacity:1; }
+
+/* ══════════════════════════════════════════════
+   КНОПКА НАВЕРХ
+   ══════════════════════════════════════════════ */
+#scrollTop {
+  position:fixed; bottom:32px; right:32px;
+  width:50px; height:50px;
+  background:var(--navy); border:2px solid rgba(201,168,76,0.25);
+  border-radius:50%; color:var(--gold);
+  cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  opacity:0; visibility:hidden; transition:all 0.35s; z-index:700;
+}
+#scrollTop.show { opacity:1; visibility:visible; }
+#scrollTop:hover { background:var(--navy-h); }
+#scrollTop svg { width:18px; height:18px; fill:currentColor; display:block; }
+
+/* ══════════════════════════════════════════════
+   ЗАГОЛОВОК СЕКЦИИ (общий)
+   ══════════════════════════════════════════════ */
+.sec-label {
+  display:flex; align-items:center; gap:14px;
+  margin-bottom:28px;
+}
+.sec-label svg { width:26px; height:26px; fill:var(--gold); display:block; flex-shrink:0; }
+.sec-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--txt);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ══════════════════════════════════════════════
+   СЕКЦИЯ 0 — ГЛАВНАЯ / КАРУСЕЛЬ
+   ══════════════════════════════════════════════ */
+#sec-hero {
+  background: var(--bg);
+  padding-top: var(--hdr);
+}
+
+/* ── Инфополоса ── */
+.hero-info {
+  flex-shrink: 0;
+  display:flex; flex-wrap:wrap; gap:10px;
+  justify-content:space-between; align-items:center;
+  padding: 13px 36px;
+  background: var(--bg-warm);
+  border-bottom: 1px solid var(--b);
+  font-size: 0.88rem;
+}
+.hero-info-item {
+  display:flex; align-items:center; gap:8px;
+  color: var(--txt-sub);
+}
+.hero-info-item svg { width:16px; height:16px; fill:var(--gold-d); display:block; flex-shrink:0; }
+.hero-tg {
+  display:flex; align-items:center; gap:8px;
+  color:var(--navy); border:1px solid var(--b-h);
+  padding:7px 16px; border-radius:22px;
+  font-size:0.86rem;
+  transition:background var(--t);
+  text-decoration:none;
+}
+.hero-tg svg { width:15px; height:15px; fill:#2CA5E0; display:block; }
+.hero-tg:hover { background:var(--navy-ll); }
+
+/* ── Карусель ── */
+.car-cont {
+  flex:1; position:relative; overflow:hidden;
+  user-select:none; min-height:0;
+}
+.car-wrap { width:100%; height:100%; position:relative; touch-action:pan-y; }
+.car-slide {
+  position:absolute; inset:0;
+  opacity:0; transition:opacity 0.85s ease;
+  padding: 52px clamp(24px, 5vw, 80px);
+  display:flex; align-items:center; justify-content:space-between;
+  pointer-events:none;
+}
+.car-slide.active { opacity:1; pointer-events:auto; }
+
+/* Фоны слайдов */
+.car-slide:nth-child(1) { background: linear-gradient(135deg, #e8e1d5 0%, var(--bg) 70%); }
+.car-slide:nth-child(2) { background: radial-gradient(ellipse at 70% 50%, rgba(26,31,54,0.04) 0%, var(--bg) 65%); }
+.car-slide:nth-child(3) { background: radial-gradient(ellipse at 30% 50%, rgba(122,158,126,0.06) 0%, var(--bg) 65%); }
+
+.slide-tag {
+  display:inline-block;
+  font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase;
+  color:var(--navy); border:1px solid var(--b-h);
+  padding:5px 14px; border-radius:22px; margin-bottom:22px;
+  background:var(--navy-ll);
+}
+.slide-title {
+  font-size: clamp(3.2rem, 6.5vw, 6rem);
+  font-weight:700; line-height:0.92;
+  color:var(--navy); text-transform:uppercase; margin-bottom:28px;
+}
+.slide-subtitle {
+  font-size:1.05rem; color:var(--txt-sub);
+  margin-bottom:10px; letter-spacing:0.03em;
+}
+.slide-org {
+  font-size:0.88rem; color:var(--txt-muted);
+  line-height:1.8; max-width:400px;
+}
+.slide-foot {
+  margin-top:24px; font-size:0.78rem;
+  color:var(--txt-muted); letter-spacing:0.04em;
+}
+.slide-r {
+  flex-shrink:0; background:var(--navy); border:none;
+  padding:clamp(36px, 5vw, 72px) clamp(32px, 4vw, 62px);
+  border-radius:var(--r); box-shadow:var(--shadow-lg);
+}
+.slide-r-title {
+  font-size:clamp(2.2rem,4vw,3.5rem);
+  font-weight:700; color:var(--gold);
+  text-transform:uppercase; letter-spacing:0.05em; line-height:1.1;
+}
+
+/* Центрированные слайды */
+.slide-center { width:100%; text-align:center; }
+.slide-badge {
+  display:inline-block; background:var(--navy); color:var(--gold);
+  font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase;
+  padding:6px 20px; border-radius:22px; margin-bottom:24px;
+}
+.slide-cs-title {
+  font-size:clamp(2.8rem,6vw,4.5rem);
+  font-weight:700; color:var(--txt);
+  text-transform:uppercase; margin-bottom:20px; line-height:1.05;
+}
+.slide-cs-info {
+  font-size:clamp(1.4rem,3vw,2rem);
+  color:var(--gold-d); font-weight:700; margin-bottom:12px;
+}
+.slide-cs-det { font-size:1rem; color:var(--txt-sub); }
+.slide-icon-box {
+  width:72px; height:72px; background:var(--navy); border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  margin:28px auto 0; box-shadow:var(--shadow);
+}
+.slide-icon-box svg { width:28px; height:28px; fill:var(--gold); display:block; }
+
+/* ── Стрелки карусели ── */
+.car-arrow {
+  position:absolute; top:50%; transform:translateY(-50%);
+  width:56px; height:56px;
+  background:var(--navy); border:none;
+  border-radius:50%; color:var(--gold);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; z-index:10;
+  opacity:0; pointer-events:none;
+  transition: opacity 0.3s ease, background var(--t), transform var(--t);
+  box-shadow: var(--shadow);
+}
+.car-arrow svg { width:20px; height:20px; fill:currentColor; display:block; }
+.car-cont:hover .car-arrow { opacity:1; pointer-events:auto; }
+.car-arrow:hover { background:var(--navy-h); transform:translateY(-50%) scale(1.08); }
+.car-arrow.prev { left:22px; }
+.car-arrow.next { right:22px; }
+
+/* ── Точки карусели ── */
+.car-footer {
+  flex-shrink:0;
+  display:flex; justify-content:center; gap:12px;
+  padding:14px 0 12px;
+  background:var(--bg-warm); border-top:1px solid var(--b);
+}
+.car-dot {
+  height:7px; border-radius:4px;
+  background:var(--b-h); cursor:pointer;
+  transition:all 0.35s; width:7px;
+}
+.car-dot:hover { background:var(--gold-d); }
+.car-dot.active { background:var(--gold); width:26px; border-radius:4px; }
+
+/* ══════════════════════════════════════════════
+   СЕКЦИЯ 1 — ТАЙМЕР / LIVE / PRESOON
+   ══════════════════════════════════════════════ */
+#sec-timer {
+  background: var(--bg);
+  padding-top: var(--hdr);
+  align-items:center; justify-content:center;
+}
+#sec-timer .sec-inner {
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  padding:56px 36px;
+  text-align:center;
+}
+
+.timer-wrap { width:100%; max-width:780px; }
+
+.timer-eyebrow {
+  font-size:0.78rem; letter-spacing:0.18em; text-transform:uppercase;
+  color:var(--gold-d); font-weight:700; margin-bottom:12px;
+}
+.timer-heading {
+  font-size:clamp(1.8rem,3.5vw,2.6rem);
+  font-weight:700; color:var(--txt);
+  text-transform:uppercase; letter-spacing:0.04em;
+  margin-bottom:52px;
+}
+
+.countdown {
+  display:flex; justify-content:center; align-items:center;
+  gap:20px; flex-wrap:wrap; margin-bottom:36px;
+}
+
+.cd-item {
+  width: 150px;
+  flex-shrink: 0;
+  padding: 28px 20px;
+  background: var(--card2);
+  border: 1px solid var(--b);
+  border-radius: var(--r);
+  box-shadow: var(--shadow);
+  text-align: center;
+  transition: border-color var(--t), box-shadow var(--t);
+}
+.cd-item:hover { border-color:var(--b-h); box-shadow:var(--shadow-lg); }
+
+.cd-val {
+  display: block;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  font-size: clamp(3.5rem, 6vw, 5rem);
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.cd-lbl {
+  font-size: 0.72rem; letter-spacing:0.1em; text-transform:uppercase;
+  color: var(--txt-muted);
+}
+.cd-sep {
+  font-size: clamp(2.5rem,4.5vw,3.8rem);
+  color: var(--gold); font-weight:300; line-height:1;
+  margin-bottom:22px; flex-shrink:0;
+}
+.timer-note {
+  font-size:0.9rem; color:var(--txt-muted); letter-spacing:0.04em;
+}
+
+/* ── Presoon ── */
+.presoon-wrap { width:100%; max-width:640px; }
+.presoon-badge {
+  display:inline-block;
+  background:var(--navy); color:var(--gold);
+  font-size:0.72rem; letter-spacing:0.12em; text-transform:uppercase;
+  padding:6px 20px; border-radius:22px; margin-bottom:20px;
+  animation:pulse-navy 2s infinite;
+}
+@keyframes pulse-navy {
+  0%,100% { box-shadow:0 0 0 0 rgba(26,31,54,0.4); }
+  50%      { box-shadow:0 0 0 10px rgba(26,31,54,0); }
+}
+.presoon-title {
+  font-size:clamp(1.8rem,4vw,2.4rem);
+  font-weight:700; color:var(--txt); margin-bottom:10px;
+}
+.presoon-sub {
+  font-size:1rem; color:var(--txt-sub); margin-bottom:30px;
+}
+.presoon-count {
+  font-size:clamp(3rem,8vw,5rem);
+  font-weight:700; color:var(--navy); letter-spacing:0.06em;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings:"tnum";
+}
+
+/* ── Live ── */
+.live-badge {
+  display:inline-flex; align-items:center; gap:8px;
+  background:var(--live-red); color:white;
+  padding:6px 16px; border-radius:20px;
+  font-size:0.78rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
+  animation:pulse-red 2.2s infinite;
+}
+.live-dot { width:7px; height:7px; background:white; border-radius:50%; animation:blink 1.4s infinite; }
+@keyframes pulse-red { 0%,100%{box-shadow:0 0 0 0 rgba(217,68,82,0.45)} 50%{box-shadow:0 0 0 9px rgba(217,68,82,0)} }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+/* ══════════════════════════════════════════════
+   СЕКЦИИ 2 / 3 / 4 — общие стили
+   ══════════════════════════════════════════════ */
+#sec-video,
+#sec-podcast,
+#sec-news {
+  background: var(--bg);
+  padding-top: var(--hdr);
+}
+#sec-video   .sec-inner { padding:40px 36px; }
+#sec-podcast .sec-inner { padding:40px 36px; }
+#sec-news    .sec-inner { padding:40px 36px; }
+
+/* ── Карточка ── */
+.card {
+  background: var(--card2);
+  border: 1px solid var(--b);
+  border-radius: var(--r);
+  padding: 32px;
+  box-shadow: var(--shadow);
+  transition: border-color var(--t);
+}
+.card:hover { border-color:var(--b-h); }
+
+/* ── Видеоплеер ── */
+.vid-player {
+  position:relative; width:100%; padding-bottom:56.25%;
+  border-radius:10px; overflow:hidden;
+  background:var(--navy); margin-bottom:22px;
+}
+.vid-player iframe { position:absolute; inset:0; width:100%; height:100%; border:none; }
+.vid-fallback {
+  position:absolute; inset:0;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  gap:14px; color:rgba(201,168,76,0.7);
+  text-align:center; padding:20px;
+  font-size:1rem;
+}
+.vid-fallback svg { width:40px; height:40px; fill:var(--gold); display:block; opacity:.6; }
+
+.vid-meta {
+  display:flex; justify-content:space-between;
+  align-items:center; flex-wrap:wrap; gap:14px;
+}
+.vid-date { font-size:0.92rem; color:var(--txt-sub); }
+
+.yt-btn {
+  display:inline-flex; align-items:center; gap:9px;
+  background:var(--navy); color:var(--gold);
+  padding:11px 24px; border-radius:var(--r-sm);
+  text-decoration:none; font-size:0.92rem; font-weight:700;
+  letter-spacing:0.04em;
+  transition:background var(--t), transform var(--t);
+  box-shadow:var(--shadow);
+}
+.yt-btn:hover { background:var(--navy-h); transform:translateY(-2px); }
+.yt-btn svg { width:16px; height:16px; fill:currentColor; display:block; }
+
+/* ── Подкаст ── */
+.pod-hdr-row {
+  display:flex; justify-content:space-between; align-items:center;
+  flex-wrap:wrap; gap:12px; margin-bottom:28px;
+}
+.ep-count-badge {
+  font-size:0.85rem; color:var(--gold-d);
+  border:1px solid var(--b-h);
+  padding:6px 16px; border-radius:18px;
+  letter-spacing:0.04em;
+  background:var(--gold-l);
+}
+
+.pod-meta {
+  display:flex; gap:32px; flex-wrap:wrap;
+  padding-bottom:22px; border-bottom:1px solid var(--b); margin-bottom:22px;
+}
+.meta-lbl {
+  font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase;
+  color:var(--txt-muted); margin-bottom:5px;
+}
+.meta-val { font-size:1.4rem; font-weight:700; color:var(--navy); }
+
+.curr-ep {
+  display:flex; align-items:center; gap:22px;
+  background:var(--bg-warm); border:1px solid var(--b);
+  border-radius:10px; padding:24px; margin-bottom:18px;
+  transition:border-color var(--t), transform var(--t), box-shadow var(--t);
+}
+.curr-ep:hover { border-color:var(--b-h); transform:translateY(-2px); box-shadow:var(--shadow-lg); }
+
+.play-btn {
+  width:64px; height:64px; flex-shrink:0;
+  border-radius:50%; background:var(--navy);
+  border:none; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:background var(--t), transform var(--t);
+  box-shadow:var(--shadow);
+}
+.play-btn svg { width:22px; height:22px; fill:var(--gold); display:block; margin-left:3px; }
+.play-btn:hover { background:var(--navy-h); transform:scale(1.07); }
+
+.ep-title { font-size:1.1rem; font-weight:700; color:var(--txt); margin-bottom:6px; line-height:1.4; }
+.ep-speaker { font-size:0.9rem; color:var(--txt-sub); margin-bottom:5px; }
+.ep-dur { font-size:0.82rem; color:var(--sage-d); font-weight:600; }
+
+.ep-list { margin-bottom:18px; }
+.ep-row {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:15px 0; border-bottom:1px solid var(--b);
+  cursor:pointer; outline:none;
+  transition:padding-left var(--t), background var(--t);
+  border-radius:4px;
+}
+.ep-row:last-child { border-bottom:none; }
+.ep-row:hover { padding-left:10px; background:var(--navy-ll); }
+.ep-row:hover .ep-row-title { color:var(--navy); }
+.ep-row:focus-visible { outline:2px solid var(--gold); border-radius:4px; }
+.ep-row-title { font-size:0.95rem; color:var(--txt-sub); flex:1; padding-right:16px; transition:color var(--t); }
+.ep-row-dur { font-size:0.85rem; color:var(--txt-muted); font-variant-numeric:tabular-nums; font-feature-settings:"tnum"; flex-shrink:0; }
+
+.pod-foot {
+  display:flex; justify-content:space-between; align-items:center;
+  flex-wrap:wrap; gap:12px;
+  padding-top:18px; border-top:1px solid var(--b);
+  font-size:0.85rem; color:var(--txt-muted);
+}
+.pod-foot-item { display:flex; align-items:center; gap:7px; }
+.pod-foot-item svg { width:14px; height:14px; fill:var(--sage); display:block; }
+
+.all-ep {
+  display:inline-flex; align-items:center; gap:7px;
+  color:var(--navy); font-size:0.92rem;
+  text-decoration:none; border-bottom:1px solid var(--b-h);
+  padding-bottom:3px; margin-top:16px;
+  transition:color var(--t), border-color var(--t);
+}
+.all-ep:hover { border-color:var(--navy); }
+.all-ep svg { width:14px; height:14px; fill:currentColor; display:block; }
+
+/* ── Новости ── */
+.news-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:28px; }
+.news-group { display:flex; gap:16px; }
+.news-date {
+  font-size:0.92rem; font-weight:700;
+  color:var(--gold-d); flex-shrink:0; width:90px; padding-top:3px;
+}
+.news-item {
+  font-size:0.92rem; color:var(--txt-sub);
+  margin-bottom:12px; padding:10px 13px;
+  border-radius:var(--r-sm); border-left:2px solid var(--b);
+  line-height:1.7;
+  transition:background var(--t), border-color var(--t), color var(--t), transform var(--t);
+}
+.news-item:hover { background:var(--navy-ll); border-left-color:var(--navy); color:var(--txt); transform:translateX(4px); }
+
+/* ══════════════════════════════════════════════
+   ПОДВАЛ
+   ══════════════════════════════════════════════ */
+#sec-footer {
+  background: var(--navy);
+  height: auto; min-height: auto;
+  scroll-snap-align: end;
+  display:flex;
+  align-items:center; justify-content:center;
+}
+.foot-inner { padding:56px 36px 48px; text-align:center; }
+.foot-logo { font-size:1.25rem; font-weight:700; color:#f5f0e8; margin-bottom:18px; letter-spacing:0.04em; }
+.foot-contacts { font-size:0.92rem; color:rgba(245,240,232,0.65); margin-bottom:14px; line-height:2.2; }
+.foot-copy { font-size:0.85rem; color:var(--gold); margin-bottom:10px; }
+.foot-legal { font-size:0.65rem; color:rgba(245,240,232,0.35); max-width:820px; margin:0 auto; line-height:1.7; letter-spacing:0.02em; }
+
+/* ══════════════════════════════════════════════
+   МОБИЛЬНАЯ НИЖНЯЯ НАВИГАЦИЯ
+   ══════════════════════════════════════════════ */
+#mob-nav {
+  display:none;
+  position:fixed; bottom:0; left:0; right:0;
+  z-index:850;
+  background: rgba(26,31,54,0.97);
+  border-top:1px solid rgba(201,168,76,0.15);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  padding:8px 0 calc(8px + env(safe-area-inset-bottom,0px));
+}
+.mob-nav-row { display:flex; justify-content:space-around; align-items:center; }
+.mn-item {
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+  cursor:pointer; color:rgba(245,240,232,0.4);
+  padding:5px 10px; border-radius:10px; flex:1; max-width:76px;
+  transition:color var(--t); -webkit-tap-highlight-color:transparent;
+}
+.mn-item svg { width:22px; height:22px; fill:currentColor; display:block; }
+.mn-item.active { color:var(--gold); }
+.mn-item.active .mn-icon { background:rgba(201,168,76,0.12); border-radius:10px; }
+.mn-icon { width:44px; height:36px; display:flex; align-items:center; justify-content:center; transition:background var(--t); }
+.mn-label { font-size:0.6rem; letter-spacing:0.05em; text-transform:uppercase; line-height:1; }
+
+/* ══════════════════════════════════════════════
+   АДАПТИВ
+   ══════════════════════════════════════════════ */
+@media (max-width:900px) {
+  :root { --hdr:60px; }
+  #v-nav { display:none; }
+  #mob-nav { display:block; }
+  #snap-root { padding-bottom:58px; }
+
+  .car-slide { padding:28px 20px; flex-direction:column; align-items:flex-start; }
+  .slide-title { font-size:2.6rem; }
+  .slide-r { padding:32px 28px; width:100%; text-align:center; margin-top:16px; }
+  .hero-info { padding:10px 16px; flex-direction:column; align-items:flex-start; gap:8px; }
+
+  .countdown { gap:10px; }
+  .cd-item { width:100px; padding:18px 10px; }
+  .cd-val { font-size:2.8rem; }
+  .cd-sep { font-size:2.2rem; }
+  .timer-heading { font-size:1.5rem; margin-bottom:30px; }
+  #sec-timer .sec-inner { padding:40px 20px; }
+
+  #sec-video .sec-inner,
+  #sec-podcast .sec-inner,
+  #sec-news .sec-inner { padding:22px 16px; }
+  .card { padding:20px; }
+
+  .curr-ep { flex-direction:column; text-align:center; }
+  .news-grid { grid-template-columns:1fr; }
+  .news-group { flex-direction:column; gap:4px; }
+  .news-date { width:auto; }
+
+  .hdr-phone { font-size:1.1rem; }
+  .hdr-name { font-size:1rem; }
+  #scrollTop { bottom:70px; right:14px; }
+}
+
+@media (max-width:480px) {
+  .container { padding:0 14px; }
+  .slide-title { font-size:2.1rem; }
+  .slide-cs-title { font-size:2rem; }
+  .sec-title { font-size:1.5rem; }
+  .hdr-sub { display:none; }
+  .cd-item { width:80px; padding:14px 8px; }
+  .cd-val { font-size:2.3rem; }
+  .cd-sep { font-size:1.8rem; }
+}
+
+::selection { background:rgba(201,168,76,0.25); color:var(--txt); }
+:focus-visible { outline:2px solid var(--gold); outline-offset:3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
+  #snap-root { scroll-behavior:auto; scroll-snap-type:none; }
+}
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<!-- ══════════════════════════════════════════════
+     ШАПКА
+     ══════════════════════════════════════════════ -->
+<header id="site-header" role="banner">
+  <div class="container">
+    <a href="/" class="hdr-logo" aria-label="ЦХЖ Красноярск — главная">
+      <svg class="hdr-shield" viewBox="0 0 46 54" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M23 1L45 11V32C45 42 35 49 23 53C11 49 1 42 1 32V11Z"
+              fill="rgba(245,240,232,0.08)" stroke="rgba(201,168,76,0.4)" stroke-width="1.2"/>
+        <path d="M23 6L41 14.5V31C41 39 32 45 23 48.5C14 45 5 39 5 31V14.5Z"
+              fill="none" stroke="rgba(201,168,76,0.15)" stroke-width="0.8"/>
+        <text x="23" y="32" text-anchor="middle" font-family="Georgia,serif"
+              font-size="13" font-weight="700" fill="#c9a84c" letter-spacing="-0.5">ЦХЖ</text>
+      </svg>
+      <div class="hdr-texts">
+        <span class="hdr-name">ЦЕРКОВЬ ХРИСТИАНСКОЙ ЖИЗНИ</span>
+        <span class="hdr-sub">Красноярск · kclc.ru</span>
+      </div>
+    </a>
+    <div class="hdr-right">
+      <div class="hdr-time" id="current-time" aria-live="polite" aria-label="Текущее время"></div>
+      <div class="hdr-divider" aria-hidden="true"></div>
+      <div class="hdr-phone" aria-label="Телефон">28-111-00</div>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════════
+     ВЕРТИКАЛЬНАЯ НАВИГАЦИЯ
+     ══════════════════════════════════════════════ -->
+<nav id="v-nav" aria-label="Навигация по разделам">
+
+  <div class="vn-item active" data-idx="0" role="button" tabindex="0" aria-label="Главная" aria-current="true">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+    </svg>
+    <span class="vn-tip" aria-hidden="true">Главная</span>
+  </div>
+
+  <div class="vn-item" data-idx="1" role="button" tabindex="0" aria-label="Таймер">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"/>
+      <path d="M13 7h-2v5.414l3.293 3.293 1.414-1.414L13 11.586z"/>
+    </svg>
+    <span class="vn-tip" aria-hidden="true">Таймер</span>
+  </div>
+
+  <div class="vn-item" data-idx="2" role="button" tabindex="0" aria-label="Видео">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/>
+    </svg>
+    <span class="vn-tip" aria-hidden="true">Видео</span>
+  </div>
+
+  <div class="vn-item" data-idx="3" role="button" tabindex="0" aria-label="Подкаст">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.93V20H9v2h6v-2h-2v-2.07A7 7 0 0 0 19 11h-2z"/>
+    </svg>
+    <span class="vn-tip" aria-hidden="true">Подкаст</span>
+  </div>
+
+  <div class="vn-item" data-idx="4" role="button" tabindex="0" aria-label="Новости">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M20 3H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zM7 7h10v2H7V7zm0 4h10v2H7v-2zm0 4h7v2H7v-2z"/>
+    </svg>
+    <span class="vn-tip" aria-hidden="true">Новости</span>
+  </div>
+
+</nav>
+
+<button id="scrollTop" aria-label="Вернуться наверх">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/>
+  </svg>
+</button>
+
+<!-- ══════════════════════════════════════════════
+     SNAP ROOT — контейнер всех секций
+     ══════════════════════════════════════════════ -->
+<div id="snap-root">
+
+  <!-- ─── СЕКЦИЯ 0: ГЛАВНАЯ ─────────────────────────── -->
+  <section class="snap-sec" id="sec-hero" aria-label="Главная">
+
+    <div class="hero-info" role="complementary">
+      <div class="hero-info-item">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20 3h-1V1h-2v2H7V1H5v2H4a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm0 18H4V8h16v13z"/>
+        </svg>
+        <span>Каждую среду в 19:00</span>
+      </div>
+      <div class="hero-info-item">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/>
+        </svg>
+        <span>Запись: 28-111-00</span>
+      </div>
+      <a href="https://t.me/+79538411100" class="hero-tg" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
+        </svg>
+        <span>+7 (953) 841-11-00</span>
+      </a>
+    </div>
+
+    <div class="car-cont" role="region" aria-roledescription="карусель" aria-label="Слайдер">
+      <div class="car-wrap" id="car-wrap">
+
+        <div class="car-slide active" role="group" aria-roledescription="слайд" aria-label="1 из 3">
+          <div>
+            <div class="slide-tag">Красноярск · ул. Бограда 134</div>
+            <div class="slide-title">ЦЕРКОВЬ<br>ЖИЗНИ</div>
+            <div class="slide-subtitle">Местная религиозная организация</div>
+            <div class="slide-org">Христиан Веры Евангельской (Пятидесятников)<br>г. Красноярска Красноярского края</div>
+            <div class="slide-foot">Тел. 28-111-00 · kclc.ru</div>
+          </div>
+          <div class="slide-r">
+            <div class="slide-r-title">ВРЕМЯ<br>ЖИЗНИ</div>
+          </div>
+        </div>
+
+        <div class="car-slide" role="group" aria-roledescription="слайд" aria-label="2 из 3">
+          <div class="slide-center">
+            <div class="slide-badge">Богослужение</div>
+            <div class="slide-cs-title">ВОСКРЕСНОЕ<br>СЛУЖЕНИЕ</div>
+            <div class="slide-cs-info">11:00 · Бограда 134</div>
+            <div class="slide-cs-det">Онлайн-трансляция на YouTube</div>
+            <div class="slide-icon-box" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="car-slide" role="group" aria-roledescription="слайд" aria-label="3 из 3">
+          <div class="slide-center">
+            <div class="slide-badge">Для молодёжи</div>
+            <div class="slide-cs-title">МОЛОДЁЖНОЕ<br>СЛУЖЕНИЕ</div>
+            <div class="slide-cs-info">Пятница 19:30</div>
+            <div class="slide-cs-det">ул. Бограда 134 · Вход свободный</div>
+            <div class="slide-icon-box" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <button class="car-arrow prev" aria-label="Предыдущий слайд">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+      </button>
+      <button class="car-arrow next" aria-label="Следующий слайд">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+      </button>
+    </div>
+
+    <div class="car-footer" role="tablist" aria-label="Слайды">
+      <span class="car-dot active" role="tab" tabindex="0" aria-selected="true" aria-label="Слайд 1"></span>
+      <span class="car-dot" role="tab" tabindex="0" aria-selected="false" aria-label="Слайд 2"></span>
+      <span class="car-dot" role="tab" tabindex="0" aria-selected="false" aria-label="Слайд 3"></span>
+    </div>
+
+  </section>
+
+  <!-- ─── СЕКЦИЯ 1: ТАЙМЕР ──────────────────────────── -->
+  <section class="snap-sec" id="sec-timer" aria-label="Таймер до богослужения">
+    <div class="sec-inner">
+
+      <div id="state-timer" class="timer-wrap">
+        <div class="timer-eyebrow">До начала прямой трансляции</div>
+        <h2 class="timer-heading">Воскресного богослужения</h2>
+        <div class="countdown" role="timer" aria-live="off" aria-label="Обратный отсчёт">
+          <div class="cd-item">
+            <span class="cd-val" id="days">0</span>
+            <div class="cd-lbl">дней</div>
+          </div>
+          <div class="cd-sep" aria-hidden="true">:</div>
+          <div class="cd-item">
+            <span class="cd-val" id="hours">00</span>
+            <div class="cd-lbl">часов</div>
+          </div>
+          <div class="cd-sep" aria-hidden="true">:</div>
+          <div class="cd-item">
+            <span class="cd-val" id="minutes">00</span>
+            <div class="cd-lbl">минут</div>
+          </div>
+          <div class="cd-sep" aria-hidden="true">:</div>
+          <div class="cd-item">
+            <span class="cd-val" id="seconds">00</span>
+            <div class="cd-lbl">секунд</div>
+          </div>
+        </div>
+        <div class="timer-note">Каждое воскресенье в 11:00 · Красноярск GMT+7</div>
+      </div>
+
+      <div id="state-presoon" class="presoon-wrap" style="display:none">
+        <div class="presoon-badge" aria-live="polite">Скоро начнётся</div>
+        <h2 class="presoon-title">Трансляция начнётся в 11:00</h2>
+        <p class="presoon-sub">Воскресное богослужение · ЦХЖ Красноярск</p>
+        <div class="presoon-count" id="presoon-count" aria-live="polite">00:00</div>
+      </div>
+
+      <div id="state-live" style="display:none; width:100%; max-width:860px">
+        <div class="sec-label">
+          <svg viewBox="0 0 24 24" style="width:24px;height:24px;fill:var(--live-red);display:block" aria-hidden="true">
+            <path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/>
+          </svg>
+          <h2 class="sec-title">Прямой эфир</h2>
+          <div class="live-badge" aria-label="Идёт трансляция">
+            <span class="live-dot" aria-hidden="true"></span>LIVE
+          </div>
+        </div>
+        <div class="card">
+          <div class="vid-player" id="live-player" aria-label="Плеер прямой трансляции"></div>
+          <div class="vid-meta">
+            <span class="vid-date" id="live-date" aria-live="polite"></span>
+            <a href="https://www.youtube.com/@chzhkrasnoyarsk" class="yt-btn" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.7-.8-2.1-.9C16.3 5 12 5 12 5s-4.3 0-6.9.1c-.4.1-1.3.1-2.1.9C2.4 6.6 2.2 8 2.2 8S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.2.8C6.8 19 12 19 12 19s4.3 0 6.9-.1c.4-.1 1.3-.1 2.1-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM9.7 14.5V9l5.7 2.8-5.7 2.7z"/></svg>
+              Открыть YouTube
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── СЕКЦИЯ 2: ВИДЕО ───────────────────────────── -->
+  <section class="snap-sec" id="sec-video" aria-label="Прошедшее служение">
+    <div class="sec-inner">
+      <div class="container" style="max-width:920px">
+
+        <div class="sec-label">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6a7 7 0 1 1 2.05 4.95L6.64 18.36A9 9 0 1 0 13 3zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/>
+          </svg>
+          <h2 class="sec-title">Прошедшее служение</h2>
+        </div>
+
+        <div class="card">
+          <div class="vid-player" id="prev-player" aria-label="Плеер записи">
+            <div class="vid-fallback" id="prev-fallback" aria-live="polite">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.7-.8-2.1-.9C16.3 5 12 5 12 5s-4.3 0-6.9.1c-.4.1-1.3.1-2.1.9C2.4 6.6 2.2 8 2.2 8S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.2.8C6.8 19 12 19 12 19s4.3 0 6.9-.1c.4-.1 1.3-.1 2.1-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM9.7 14.5V9l5.7 2.8-5.7 2.7z"/></svg>
+              <span>Загружаем запись богослужения…</span>
+            </div>
+          </div>
+          <div class="vid-meta">
+            <span class="vid-date" id="prev-date" aria-live="polite"></span>
+            <a href="#" class="yt-btn" id="watch-btn" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.7-.8-2.1-.9C16.3 5 12 5 12 5s-4.3 0-6.9.1c-.4.1-1.3.1-2.1.9C2.4 6.6 2.2 8 2.2 8S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.2.8C6.8 19 12 19 12 19s4.3 0 6.9-.1c.4-.1 1.3-.1 2.1-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM9.7 14.5V9l5.7 2.8-5.7 2.7z"/></svg>
+              Смотреть на YouTube
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── СЕКЦИЯ 3: ПОДКАСТ ─────────────────────────── -->
+  <section class="snap-sec" id="sec-podcast" aria-label="Аудиоподкаст">
+    <div class="sec-inner">
+      <div class="container" style="max-width:920px">
+
+        <div class="pod-hdr-row">
+          <div class="sec-label" style="margin-bottom:0">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.93V20H9v2h6v-2h-2v-2.07A7 7 0 0 0 19 11h-2z"/>
+            </svg>
+            <h2 class="sec-title">Аудиоподкаст</h2>
+          </div>
+          <div class="ep-count-badge" id="ep-count">224 эпизода</div>
+        </div>
+
+        <div class="card">
+          <div class="pod-meta">
+            <div><div class="meta-lbl">Сезон</div><div class="meta-val">7</div></div>
+            <div><div class="meta-lbl">Эпизод</div><div class="meta-val">5</div></div>
+            <div><div class="meta-lbl">Дата</div><div class="meta-val">1 февраля</div></div>
+          </div>
+
+          <div class="curr-ep" id="curr-ep">
+            <button class="play-btn" id="play-btn" aria-label="Воспроизвести">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <div>
+              <div class="ep-title" id="ep-cur-title">ПОКЛОНЕНИЕ ГОСПОДУ: БОЛЬШЕ, ЧЕМ ПЕНИЕ</div>
+              <div class="ep-speaker" id="ep-cur-speaker">Максим Притчин</div>
+              <div class="ep-dur" id="ep-cur-dur">26:07</div>
+            </div>
+          </div>
+
+          <div class="ep-list" role="list" aria-label="Список эпизодов">
+            <div class="ep-row" role="listitem" tabindex="0"
+                 data-title="ИСЦЕЛЕНИЕ ИСТОЧНИКА" data-speaker="Владимир Ашаев" data-dur="38:47">
+              <span class="ep-row-title">ИСЦЕЛЕНИЕ ИСТОЧНИКА — Владимир Ашаев</span>
+              <span class="ep-row-dur">38:47</span>
+            </div>
+            <div class="ep-row" role="listitem" tabindex="0"
+                 data-title="СИЛА КРОВИ ХРИСТА" data-speaker="Максим Притчин" data-dur="25:46">
+              <span class="ep-row-title">СИЛА КРОВИ ХРИСТА — Максим Притчин</span>
+              <span class="ep-row-dur">25:46</span>
+            </div>
+            <div class="ep-row" role="listitem" tabindex="0"
+                 data-title="ОСТАВЬ СОЛЕНЫЙ СЛЕД В ИСТОРИИ" data-speaker="Владимир Ашаев" data-dur="45:27">
+              <span class="ep-row-title">ОСТАВЬ СОЛЕНЫЙ СЛЕД В ИСТОРИИ — Владимир Ашаев</span>
+              <span class="ep-row-dur">45:27</span>
+            </div>
+          </div>
+
+          <div class="pod-foot">
+            <div class="pod-foot-item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.93V20H9v2h6v-2h-2v-2.07A7 7 0 0 0 19 11h-2z"/></svg>
+              <span>Podster.fm</span>
+            </div>
+            <div class="pod-foot-item">0:00 / 1.0x</div>
+          </div>
+
+          <a href="#" class="all-ep" aria-label="Все эпизоды подкаста">
+            Все эпизоды подкаста
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── СЕКЦИЯ 4: НОВОСТИ ─────────────────────────── -->
+  <section class="snap-sec" id="sec-news" aria-label="Новости">
+    <div class="sec-inner">
+      <div class="container">
+
+        <div class="sec-label">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 3H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zM7 7h10v2H7V7zm0 4h10v2H7v-2zm0 4h7v2H7v-2z"/>
+          </svg>
+          <h2 class="sec-title">Новости</h2>
+        </div>
+
+        <div class="card">
+          <div class="news-grid" id="news-grid">
+            <div class="news-group">
+              <div class="news-date">28.10.2025</div>
+              <div>
+                <div class="news-item">27 октября в епархиальном управлении РПЦ состоялась встреча с новым митрополитом Красноярским и Ачинским, Никитой</div>
+                <div class="news-item">01.03.2025 — Первые шаги с Богом</div>
+              </div>
+            </div>
+            <div class="news-group">
+              <div class="news-date">18.05.2025</div>
+              <div>
+                <div class="news-item">Толкование снов</div>
+                <div class="news-item">Мужская конференция «Сила братства» с Дмитрием Тычинским</div>
+              </div>
+            </div>
+            <div class="news-group">
+              <div class="news-date">03.04.2025</div>
+              <div>
+                <div class="news-item">Время Божьей славы!</div>
+                <div class="news-item">Как сдержать гнев и не кричать на ребенка</div>
+              </div>
+            </div>
+            <div class="news-group">
+              <div class="news-date">16.03.2025</div>
+              <div>
+                <div class="news-item">В церкви состоялись Пророческие курсы 2 ступень</div>
+                <div class="news-item">18.01.2025 — Ближе к Богу</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── СЕКЦИЯ 5: ПОДВАЛ ──────────────────────────── -->
+  <section class="snap-sec" id="sec-footer" aria-label="Контакты" role="contentinfo">
+    <div class="foot-inner">
+      <div class="foot-logo">ЦЕРКОВЬ ХРИСТИАНСКОЙ ЖИЗНИ</div>
+      <div class="foot-contacts">
+        Красноярск, ул. Бограда 134&nbsp;&nbsp;·&nbsp;&nbsp;
+        Телефон: 28-111-00&nbsp;&nbsp;·&nbsp;&nbsp;
+        Telegram: +7 (953) 841-11-00
+      </div>
+      <div class="foot-copy">&copy; 2026 ЦХЖ Красноярск · kclc.ru</div>
+      <div class="foot-legal">
+        МЕСТНАЯ РЕЛИГИОЗНАЯ ОРГАНИЗАЦИЯ ЦЕРКОВЬ «ХРИСТИАНСКОЙ ЖИЗНИ»
+        ХРИСТИАН ВЕРЫ ЕВАНГЕЛЬСКОЙ (ПЯТИДЕСЯТНИКОВ) Г. КРАСНОЯРСКА КРАСНОЯРСКОГО КРАЯ
+      </div>
+    </div>
+  </section>
+
+</div><!-- /snap-root -->
+
+<!-- ── МОБИЛЬНАЯ НАВИГАЦИЯ ── -->
+<nav id="mob-nav" aria-label="Мобильная навигация">
+  <div class="mob-nav-row">
+    <div class="mn-item active" data-idx="0" role="button" tabindex="0" aria-label="Главная">
+      <div class="mn-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></div>
+      <span class="mn-label">Главная</span>
+    </div>
+    <div class="mn-item" data-idx="1" role="button" tabindex="0" aria-label="Таймер">
+      <div class="mn-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"/><path d="M13 7h-2v5.414l3.293 3.293 1.414-1.414L13 11.586z"/></svg></div>
+      <span class="mn-label">Таймер</span>
+    </div>
+    <div class="mn-item" data-idx="2" role="button" tabindex="0" aria-label="Видео">
+      <div class="mn-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/></svg></div>
+      <span class="mn-label">Видео</span>
+    </div>
+    <div class="mn-item" data-idx="3" role="button" tabindex="0" aria-label="Подкаст">
+      <div class="mn-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.93V20H9v2h6v-2h-2v-2.07A7 7 0 0 0 19 11h-2z"/></svg></div>
+      <span class="mn-label">Подкаст</span>
+    </div>
+    <div class="mn-item" data-idx="4" role="button" tabindex="0" aria-label="Новости">
+      <div class="mn-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 3H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zM7 7h10v2H7V7zm0 4h10v2H7v-2zm0 4h7v2H7v-2z"/></svg></div>
+      <span class="mn-label">Новости</span>
+    </div>
+  </div>
+</nav>
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script>
+/* ============================================================
+   ЦХЖ · JS — Midnight Gold
+   ============================================================ */
+
+// ── CONFIG ──────────────────────────────────────────────────
+const CFG = {
+  YT_CHANNEL_ID: 'UCUntqEjTbvNznwBpRN-4wLw',
+  YT_RSS_URL:    'https://www.youtube.com/feeds/videos.xml?channel_id=UCUntqEjTbvNznwBpRN-4wLw',
+  GMT_OFFSET:    7,
+  BCAST_H:       11,
+  BCAST_END:     13,
+  LIVE_KW:       ['LIVE', 'ПРЯМОЙ ЭФИР', 'ПРЯМАЯ ТРАНСЛЯЦИЯ'],
+  PREV_KW:       ['ВОСКРЕСНОЕ СЛУЖЕНИЕ', 'ЦХЖ Красноярск']
+};
+
+const $ = id => document.getElementById(id);
+const $$ = s => document.querySelectorAll(s);
+const pad = n => String(n).padStart(2, '0');
+const getKraTime = () => {
+  const n = new Date();
+  return new Date(n.getTime() + n.getTimezoneOffset() * 60000 + CFG.GMT_OFFSET * 3600000);
+};
+
+// ── СЕКЦИИ ──────────────────────────────────────────────────
+const SECTIONS = ['sec-hero', 'sec-timer', 'sec-video', 'sec-podcast', 'sec-news', 'sec-footer'];
+const snapRoot = $('snap-root');
+
+const getActiveIdx = () => {
+  const scrollTop = snapRoot.scrollTop;
+  const h = snapRoot.clientHeight;
+  return Math.round(scrollTop / h);
+};
+
+const setNavActive = idx => {
+  const navIdx = Math.min(idx, 4);
+  $$('.vn-item').forEach((el, i) => {
+    el.classList.toggle('active', i === navIdx);
+    el.setAttribute('aria-current', i === navIdx ? 'true' : 'false');
+  });
+  $$('.mn-item').forEach((el, i) => {
+    el.classList.toggle('active', i === navIdx);
+    el.setAttribute('aria-current', i === navIdx ? 'true' : 'false');
+  });
+};
+
+const scrollToSection = idx => {
+  const sec = $(SECTIONS[idx]);
+  if (!sec) return;
+  sec.scrollIntoView({ behavior: 'smooth' });
+};
+
+snapRoot.addEventListener('scroll', () => {
+  const idx = getActiveIdx();
+  setNavActive(idx);
+  $('scrollTop').classList.toggle('show', idx > 0);
+}, { passive: true });
+
+$$('.vn-item').forEach(el => {
+  const activate = () => scrollToSection(Number(el.dataset.idx));
+  el.addEventListener('click', activate);
+  el.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+  });
+});
+$$('.mn-item').forEach(el => {
+  const activate = () => scrollToSection(Number(el.dataset.idx));
+  el.addEventListener('click', activate);
+  el.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+  });
+});
+$('scrollTop').addEventListener('click', () => scrollToSection(0));
+
+// ── ЧАСЫ ────────────────────────────────────────────────────
+const updateClock = () => {
+  const t = getKraTime();
+  $('current-time').textContent = `${pad(t.getHours())}:${pad(t.getMinutes())} GMT+7`;
+};
+
+// ── ТАЙМЕР ОБРАТНОГО ОТСЧЁТА ─────────────────────────────────
+const updateCountdown = () => {
+  const now  = getKraTime();
+  const day  = now.getDay();
+  const hour = now.getHours();
+
+  if (day === 0 && hour < CFG.BCAST_H && $('state-presoon').style.display !== 'none') {
+    const target = new Date(now);
+    target.setHours(CFG.BCAST_H, 0, 0, 0);
+    const diff = Math.max(0, target - now);
+    const mm = Math.floor(diff / 60000);
+    const ss = Math.floor((diff % 60000) / 1000);
+    $('presoon-count').textContent = `${pad(mm)}:${pad(ss)}`;
+  }
+
+  let next = new Date(now);
+  if (day === 0 && hour < CFG.BCAST_H) {
+    next.setHours(CFG.BCAST_H, 0, 0, 0);
+  } else {
+    const days = (7 - day) % 7 || 7;
+    next.setDate(now.getDate() + days);
+    next.setHours(CFG.BCAST_H, 0, 0, 0);
+  }
+  const diff = Math.max(0, next - now);
+  $('days').textContent    = Math.floor(diff / 86400000);
+  $('hours').textContent   = pad(Math.floor((diff % 86400000) / 3600000));
+  $('minutes').textContent = pad(Math.floor((diff % 3600000) / 60000));
+  $('seconds').textContent = pad(Math.floor((diff % 60000) / 1000));
+};
+
+// ── ОПРЕДЕЛЕНИЕ СОСТОЯНИЯ ──────────────────────────────────
+const showTimerState = mode => {
+  $('state-timer').style.display   = mode === 'timer'   ? '' : 'none';
+  $('state-presoon').style.display = mode === 'presoon' ? '' : 'none';
+  $('state-live').style.display    = mode === 'live'    ? '' : 'none';
+};
+
+const getVideoId = entry =>
+  entry.querySelector('yt\\:videoId, videoId')?.textContent ||
+  (entry.querySelector('link[rel="alternate"]')?.href || '').split('v=')[1] || '';
+
+const buildIframe = (id, autoplay) => {
+  const safeId = id.replace(/[^a-zA-Z0-9_-]/g, '');
+  return `<iframe src="https://www.youtube.com/embed/${safeId}${autoplay ? '?autoplay=1' : ''}"
+    title="YouTube видео" frameborder="0" loading="lazy"
+    allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"
+    allowfullscreen></iframe>`;
+};
+
+const detectState = async () => {
+  const now = getKraTime();
+  const day = now.getDay(), h = now.getHours();
+  const inWindow = day === 0 && h >= CFG.BCAST_H && h < CFG.BCAST_END;
+
+  try {
+    const r = await fetch(CFG.YT_RSS_URL);
+    const xml = new DOMParser().parseFromString(await r.text(), 'text/xml');
+    const entries = Array.from(xml.querySelectorAll('entry'));
+    if (!entries.length) throw new Error('no entries in RSS');
+    const latest = entries[0];
+
+    if (latest) {
+      const title = (latest.querySelector('title')?.textContent || '').toUpperCase();
+      const isLive = CFG.LIVE_KW.some(kw => title.includes(kw));
+      if (isLive) {
+        const vid = getVideoId(latest);
+        if (vid) {
+          showTimerState('live');
+          const lp = $('live-player');
+          if (!lp.querySelector('iframe')) lp.innerHTML = buildIframe(vid, true);
+          $('live-date').textContent = `Прямой эфир · ${now.toLocaleString('ru-RU', {
+            hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'long'
+          })}`;
+          return;
+        }
+      }
+    }
+  } catch (e) { console.warn('RSS:', e); }
+
+  if (inWindow) { showTimerState('presoon'); return; }
+  showTimerState('timer');
+};
+
+// ── ЗАГРУЗКА ПРОШЕДШЕГО СЛУЖЕНИЯ ─────────────────────────────
+const loadPrev = async () => {
+  try {
+    const r = await fetch(CFG.YT_RSS_URL);
+    const xml = new DOMParser().parseFromString(await r.text(), 'text/xml');
+    const entries = Array.from(xml.querySelectorAll('entry'));
+
+    if (!entries.length) throw new Error('no entries');
+    let found = null;
+    for (const e of entries) {
+      const t = e.querySelector('title')?.textContent || '';
+      if (CFG.PREV_KW.every(kw => t.includes(kw))) { found = e; break; }
+    }
+    const entry = found || entries[0];
+    const vid = getVideoId(entry);
+    const title = entry?.querySelector('title')?.textContent || '';
+    const pub = entry?.querySelector('published')?.textContent;
+
+    if (vid) {
+      const pp = $('prev-player');
+      pp.innerHTML = buildIframe(vid, false);
+      $('watch-btn').href = `https://www.youtube.com/watch?v=${vid}`;
+      const dateStr = pub ? new Date(pub).toLocaleDateString('ru-RU', {
+        year: 'numeric', month: 'long', day: 'numeric'
+      }) : '';
+      $('prev-date').textContent = dateStr ? `${title} · ${dateStr}` : title;
+    } else throw new Error('no id');
+  } catch (e) {
+    console.warn('prev stream:', e);
+    $('prev-player').innerHTML = `
+      <div class="vid-fallback">
+        <svg viewBox="0 0 24 24"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.7-.8-2.1-.9C16.3 5 12 5 12 5s-4.3 0-6.9.1c-.4.1-1.3.1-2.1.9C2.4 6.6 2.2 8 2.2 8S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.2.8C6.8 19 12 19 12 19s4.3 0 6.9-.1c.4-.1 1.3-.1 2.1-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM9.7 14.5V9l5.7 2.8-5.7 2.7z"/></svg>
+        <span>Не удалось загрузить видео.</span>
+        <a href="https://www.youtube.com/channel/${CFG.YT_CHANNEL_ID}" target="_blank" class="yt-btn" style="margin-top:8px">
+          <svg viewBox="0 0 24 24"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.7-.8-2.1-.9C16.3 5 12 5 12 5s-4.3 0-6.9.1c-.4.1-1.3.1-2.1.9C2.4 6.6 2.2 8 2.2 8S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.2.8C6.8 19 12 19 12 19s4.3 0 6.9-.1c.4-.1 1.3-.1 2.1-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM9.7 14.5V9l5.7 2.8-5.7 2.7z"/></svg>
+          Открыть канал
+        </a>
+      </div>`;
+    $('watch-btn').href = `https://www.youtube.com/channel/${CFG.YT_CHANNEL_ID}`;
+  }
+};
+
+// ── КАРУСЕЛЬ ─────────────────────────────────────────────────
+let slideIdx = 0, autoPlay;
+const slides = $$('.car-slide');
+const dots   = $$('.car-dot');
+const TOTAL  = slides.length;
+
+const showSlide = n => {
+  n = ((n % TOTAL) + TOTAL) % TOTAL;
+  slides.forEach((s, i) => {
+    s.classList.toggle('active', i === n);
+    s.setAttribute('aria-hidden', i !== n ? 'true' : 'false');
+  });
+  dots.forEach((d, i) => {
+    d.classList.toggle('active', i === n);
+    d.setAttribute('aria-selected', i === n ? 'true' : 'false');
+  });
+  slideIdx = n;
+};
+slides.forEach((s, i) => s.setAttribute('aria-hidden', i === 0 ? 'false' : 'true'));
+
+const resetAuto = () => {
+  clearInterval(autoPlay);
+  autoPlay = setInterval(() => showSlide(slideIdx + 1), 6500);
+};
+resetAuto();
+
+$$('.car-arrow.prev')[0]?.addEventListener('click', () => { showSlide(slideIdx - 1); resetAuto(); });
+$$('.car-arrow.next')[0]?.addEventListener('click', () => { showSlide(slideIdx + 1); resetAuto(); });
+dots.forEach((d, i) => d.addEventListener('click', () => { showSlide(i); resetAuto(); }));
+
+const carCont = document.querySelector('.car-cont');
+carCont?.addEventListener('mouseenter', () => clearInterval(autoPlay));
+carCont?.addEventListener('mouseleave', resetAuto);
+
+// Свайп
+let tx = 0, ty = 0;
+$('car-wrap')?.addEventListener('touchstart', e => {
+  tx = e.touches[0].clientX; ty = e.touches[0].clientY;
+}, { passive: true });
+$('car-wrap')?.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - tx;
+  const dy = e.changedTouches[0].clientY - ty;
+  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+    showSlide(dx < 0 ? slideIdx + 1 : slideIdx - 1);
+    resetAuto();
+  }
+}, { passive: true });
+
+// ── ПОДКАСТ: выбор эпизода ───────────────────────────────────
+$$('.ep-row').forEach(row => {
+  const select = () => {
+    const t = row.dataset.title, s = row.dataset.speaker, d = row.dataset.dur;
+    if (!t) return;
+    $('ep-cur-title').textContent   = t;
+    $('ep-cur-speaker').textContent = s || '';
+    $('ep-cur-dur').textContent     = d || '';
+    $$('.ep-row').forEach(r => r.style.color = '');
+    row.style.color = 'var(--navy)';
+    $('curr-ep')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  };
+  row.addEventListener('click', select);
+  row.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(); }
+  });
+});
+
+// ── ИНИЦИАЛИЗАЦИЯ ────────────────────────────────────────────
+const init = () => {
+  updateClock();
+  updateCountdown();
+  detectState();
+  loadPrev();
+
+  setInterval(updateClock,     30000);
+  setInterval(updateCountdown,  1000);
+  setInterval(detectState,     60000);
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+</script>
+{% endblock %}

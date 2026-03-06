@@ -1,0 +1,85 @@
+{% extends 'library/base_library.html' %}
+{% load static %}
+
+{% block title %}День {{ reading.day_number }}: {{ reading.title }}{% endblock %}
+
+{% block library_content %}
+<div style="max-width: 800px; margin: 0 auto;">
+    <!-- Навигация -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <a href="{% url 'bible_plan_detail' plan.id %}" style="color: #f1c40f; text-decoration: none;">
+            <i class="fas fa-arrow-left"></i> К плану
+        </a>
+        <div style="color: white; background: rgba(255,255,255,0.1); padding: 8px 20px; border-radius: 20px;">
+            День {{ reading.day_number }} из {{ plan.days_count }}
+        </div>
+    </div>
+    
+    <!-- Заголовок -->
+    <div style="text-align: center; margin-bottom: 40px;">
+        <h1 style="color: white; font-size: 2.2rem; margin-bottom: 15px;">{{ reading.title }}</h1>
+        <h2 style="color: #f1c40f; font-size: 1.5rem;">{{ reading.bible_passage }}</h2>
+    </div>
+    
+    <!-- Содержание чтения -->
+    <div style="background: rgba(255,255,255,0.05); border-radius: 20px; padding: 40px; margin-bottom: 40px; color: white; line-height: 1.8; font-size: 1.1rem;">
+        {% if reading.content %}
+            {{ reading.content|linebreaks }}
+        {% else %}
+            <p style="text-align: center; color: rgba(255,255,255,0.7);">
+                Прочитайте {{ reading.bible_passage }} в вашей Библии или в приложении
+            </p>
+        {% endif %}
+    </div>
+    
+    <!-- Кнопка отметить прочитанным -->
+    {% if user.is_authenticated %}
+        {% if is_completed %}
+            <div style="text-align: center; padding: 20px; background: rgba(46,204,113,0.2); border-radius: 15px; border: 2px solid #2ecc71;">
+                <i class="fas fa-check-circle" style="color: #2ecc71; font-size: 2rem; margin-bottom: 10px;"></i>
+                <p style="color: white;">Вы уже прочитали этот день</p>
+            </div>
+        {% else %}
+            <form method="post" style="text-align: center;">
+                {% csrf_token %}
+                <button type="submit" class="complete-btn" style="
+                    background: #2ecc71;
+                    color: white;
+                    border: none;
+                    padding: 15px 40px;
+                    border-radius: 30px;
+                    font-size: 1.2rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 5px 0 #27ae60;
+                ">
+                    <i class="fas fa-check"></i> Отметить прочитанным
+                </button>
+            </form>
+        {% endif %}
+    {% else %}
+        <div style="text-align: center; padding: 30px; background: rgba(255,255,255,0.05); border-radius: 15px;">
+            <p style="color: white; margin-bottom: 15px;">Войдите, чтобы отмечать прогресс чтения</p>
+            <a href="{% url 'login' %}" style="background: #f1c40f; color: #2c3e50; padding: 12px 30px; border-radius: 30px; text-decoration: none; font-weight: 600;">Войти</a>
+        </div>
+    {% endif %}
+    
+    <!-- Навигация по дням -->
+    <div style="display: flex; justify-content: space-between; margin-top: 50px;">
+        {% if reading.day_number > 1 %}
+        <a href="{% url 'bible_read_day' plan.id reading.day_number|add:'-1' %}" style="color: #f1c40f; text-decoration: none;">
+            <i class="fas fa-chevron-left"></i> Предыдущий день
+        </a>
+        {% else %}
+        <div></div>
+        {% endif %}
+        
+        {% if reading.day_number < plan.days_count %}
+        <a href="{% url 'bible_read_day' plan.id reading.day_number|add:'1' %}" style="color: #f1c40f; text-decoration: none;">
+            Следующий день <i class="fas fa-chevron-right"></i>
+        </a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

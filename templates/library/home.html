@@ -1,0 +1,621 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Библиотека - Духовный Путь{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================================
+   БИБЛИОТЕКА · СТИЛИ ОСНОВНОЙ СТРАНИЦЫ
+   ============================================================ */
+
+:root {
+  --bg:        #f5f0e8;
+  --bg-warm:   #efe9df;
+  --bg-deep:   #e8e1d5;
+  --card:      #faf7f2;
+  --card2:     #ffffff;
+  --card-dark: #e8e1d5;
+  --navy:      #1a1f36;
+  --navy-h:    #252b48;
+  --navy-l:    rgba(26,31,54,0.10);
+  --navy-ll:   rgba(26,31,54,0.05);
+  --gold:      #c9a84c;
+  --gold-h:    #d4b65e;
+  --gold-d:    #b0922f;
+  --gold-l:    rgba(201,168,76,0.15);
+  --sage:      #7a9e7e;
+  --sage-d:    #5f8363;
+  --txt:       #1a1f36;
+  --txt-sub:   #3d4260;
+  --txt-mid:   #5c6080;
+  --txt-muted: #8b8fa8;
+  --b:         rgba(26,31,54,0.10);
+  --b-h:       rgba(26,31,54,0.20);
+  --b-l:       rgba(26,31,54,0.05);
+  --live-red:  #d94452;
+  --t:         0.32s cubic-bezier(0.4,0,0.2,1);
+  --r:         18px;
+  --r-sm:      10px;
+  --shadow:    0 8px 32px rgba(26,31,54,0.10), 0 2px 8px rgba(26,31,54,0.06);
+  --shadow-lg: 0 16px 48px rgba(26,31,54,0.14);
+  --hdr: 72px;
+}
+
+/* ── RESET ── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+.library-page {
+  width:100%;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--txt);
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding-top: var(--hdr);
+}
+
+.library-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 36px;
+}
+
+/* ── ЗАГОЛОВОК СЕКЦИИ (как на главной) ── */
+.sec-label {
+  display:flex; align-items:center; gap:14px;
+  margin-bottom:28px;
+}
+.sec-label svg { width:26px; height:26px; fill:var(--gold); display:block; flex-shrink:0; }
+.sec-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--txt);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+/* ── КАРТОЧКА (как на главной) ── */
+.card {
+  background: var(--card2);
+  border: 1px solid var(--b);
+  border-radius: var(--r);
+  padding: 32px;
+  box-shadow: var(--shadow);
+  transition: border-color var(--t);
+}
+.card:hover { border-color:var(--b-h); }
+
+/* ── СЕТКА КАРТОЧЕК ── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 28px;
+  margin: 30px 0 50px;
+}
+
+/* ── КАРТОЧКА КАТЕГОРИИ ── */
+.category-card {
+  background: var(--card2);
+  border: 1px solid var(--b);
+  border-radius: var(--r);
+  padding: 32px 24px;
+  text-decoration: none;
+  color: inherit;
+  transition: all var(--t);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.category-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--gold);
+  box-shadow: var(--shadow-lg);
+}
+
+.category-icon {
+  width: 80px;
+  height: 80px;
+  background: var(--gold-l);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  transition: background var(--t);
+}
+
+.category-card:hover .category-icon {
+  background: var(--gold);
+}
+
+.category-icon svg {
+  width: 40px;
+  height: 40px;
+  fill: var(--gold);
+  transition: fill var(--t);
+}
+
+.category-card:hover .category-icon svg {
+  fill: white;
+}
+
+.category-card h3 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 12px;
+}
+
+.category-card p {
+  color: var(--txt-sub);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── КАРТОЧКА КОНТЕНТА ── */
+.content-card {
+  background: var(--card2);
+  border: 1px solid var(--b);
+  border-radius: var(--r);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: all var(--t);
+  box-shadow: var(--shadow);
+}
+
+.content-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold);
+  box-shadow: var(--shadow-lg);
+}
+
+.card-image {
+  position: relative;
+  aspect-ratio: 16/9;
+  background: var(--navy-l);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-image svg {
+  width: 48px;
+  height: 48px;
+  fill: var(--gold);
+  opacity: 0.7;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--gold);
+  color: var(--navy);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.card-content {
+  padding: 18px 16px;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.card-meta {
+  display: flex;
+  gap: 16px;
+  color: var(--txt-muted);
+  font-size: 0.85rem;
+}
+
+.card-meta span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.card-meta svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+/* ── ЗАГОЛОВОК БИБЛИОТЕКИ ── */
+.library-header {
+  margin: 40px 0 48px;
+  text-align: center;
+}
+
+.library-header h1 {
+  font-size: 3.2rem;
+  font-weight: 700;
+  color: var(--navy);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.library-header h1 svg {
+  width: 48px;
+  height: 48px;
+  fill: var(--gold);
+}
+
+.library-header p {
+  font-size: 1.2rem;
+  color: var(--txt-sub);
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* ── ССЫЛКА "ВСЕ" ── */
+.view-all {
+  color: var(--gold);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  transition: color var(--t);
+  margin-left: auto;
+}
+
+.view-all:hover {
+  color: var(--gold-d);
+}
+
+/* ── ПРОГРЕСС-БАР ── */
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: var(--b);
+  border-radius: 3px;
+  margin-top: 12px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--gold-h));
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+/* ── ПУСТОЕ СОСТОЯНИЕ ── */
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  background: var(--card);
+  border-radius: var(--r);
+  border: 1px solid var(--b);
+  margin: 40px 0;
+}
+
+.empty-state svg {
+  width: 64px;
+  height: 64px;
+  fill: var(--gold);
+  opacity: 0.5;
+  margin-bottom: 24px;
+}
+
+.empty-state h3 {
+  font-size: 1.8rem;
+  color: var(--navy);
+  margin-bottom: 16px;
+}
+
+.empty-state p {
+  color: var(--txt-sub);
+  font-size: 1.1rem;
+  max-width: 500px;
+  margin: 0 auto 28px;
+}
+
+/* ── КНОПКИ АДМИНИСТРАТОРА ── */
+.admin-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.admin-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all var(--t);
+  border: 1px solid transparent;
+}
+
+.admin-btn.primary {
+  background: var(--gold);
+  color: var(--navy);
+}
+
+.admin-btn.primary:hover {
+  background: var(--gold-h);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(201,168,76,0.25);
+}
+
+.admin-btn.secondary {
+  background: var(--navy);
+  color: white;
+}
+
+.admin-btn.secondary:hover {
+  background: var(--navy-h);
+  transform: translateY(-2px);
+}
+
+/* ── АДАПТИВНОСТЬ ── */
+@media (max-width: 900px) {
+  :root { --hdr: 60px; }
+  .library-container { padding: 0 20px; }
+  .library-header h1 { font-size: 2.4rem; }
+  .library-header h1 svg { width: 36px; height: 36px; }
+  .sec-title { font-size: 1.5rem; }
+  .card-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+}
+
+@media (max-width: 600px) {
+  .library-header h1 { font-size: 2rem; flex-direction: column; gap: 12px; }
+  .card-grid { grid-template-columns: 1fr; }
+  .admin-actions { flex-direction: column; }
+  .admin-btn { width: 100%; justify-content: center; }
+}
+
+::selection { background: var(--gold-l); color: var(--navy); }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="library-page">
+  <div class="library-container">
+
+    <!-- Заголовок библиотеки -->
+    <div class="library-header">
+      <h1>
+        <svg viewBox="0 0 24 24">
+          <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 12.5v-9l6 4.5-6 4.5z"/>
+        </svg>
+        Библиотека
+      </h1>
+      <p>Видео, планы чтения Библии, события и детский контент для всей семьи</p>
+    </div>
+
+    <!-- Категории -->
+    {% if categories %}
+    <div class="sec-label">
+      <svg viewBox="0 0 24 24">
+        <path d="M10 4H4c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h6c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 8H4V6h6v6zm10-8h-6c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h6c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 8h-6V6h6v6zM10 18H4c-1.1 0-2 .9-2 2v2h2v-2h6v2h2v-2c0-1.1-.9-2-2-2zm10 0h-6c-1.1 0-2 .9-2 2v2h2v-2h6v2h2v-2c0-1.1-.9-2-2-2z"/>
+      </svg>
+      <h2 class="sec-title">Категории</h2>
+    </div>
+
+    <div class="card-grid">
+      {% for category in categories %}
+      <a href="{% url 'library_category' category.slug %}" class="category-card">
+        <div class="category-icon">
+          <svg viewBox="0 0 24 24">
+            {% if category.icon == 'fa-video' %}
+            <path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/>
+            {% elif category.icon == 'fa-bible' %}
+            <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+            {% elif category.icon == 'fa-calendar' %}
+            <path d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/>
+            {% elif category.icon == 'fa-child' %}
+            <path d="M12 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm0 2c-1.66 0-5 1.34-5 4v2h10v-2c0-2.66-3.34-4-5-4z"/>
+            {% else %}
+            <path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm10 16H4V8h16v12z"/>
+            {% endif %}
+          </svg>
+        </div>
+        <h3>{{ category.name }}</h3>
+        <p>{{ category.description|truncatechars:80 }}</p>
+      </a>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Недавние видео -->
+    {% if recent_videos %}
+    <div class="sec-label">
+      <svg viewBox="0 0 24 24">
+        <path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/>
+      </svg>
+      <h2 class="sec-title">Недавние видео</h2>
+      <a href="{% url 'library_category' 'video' %}" class="view-all">
+        Все видео →
+      </a>
+    </div>
+
+    <div class="card-grid">
+      {% for video in recent_videos %}
+      <a href="{% url 'video_detail' video.id %}" class="content-card">
+        <div class="card-image">
+          {% if video.thumbnail %}
+            <img src="{{ video.thumbnail.url }}" alt="{{ video.title }}" loading="lazy">
+          {% else %}
+            <svg viewBox="0 0 24 24">
+              <path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/>
+            </svg>
+          {% endif %}
+          {% if video.duration %}
+          <div class="card-badge">{{ video.duration }} мин</div>
+          {% endif %}
+        </div>
+        <div class="card-content">
+          <div class="card-title">{{ video.title|truncatechars:40 }}</div>
+          <div class="card-meta">
+            <span>
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm.5-13H11v6l5.2 3.1.8-1.2-4.5-2.7V7z"/></svg>
+              {{ video.created_at|date:"d.m.Y" }}
+            </span>
+            <span>
+              <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.7 7.6 1 12c1.7 4.4 6 7.5 11 7.5s9.3-3.1 11-7.5c-1.7-4.4-6-7.5-11-7.5zM12 17c-2.8 0-5-2.2-5-5s2.2-5 5-5 5 2.2 5 5-2.2 5-5 5z"/></svg>
+              {{ video.views_count }}
+            </span>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Ближайшие события -->
+    {% if upcoming_events %}
+    <div class="sec-label">
+      <svg viewBox="0 0 24 24">
+        <path d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/>
+      </svg>
+      <h2 class="sec-title">Ближайшие события</h2>
+      <a href="{% url 'events_list' %}" class="view-all">
+        Все события →
+      </a>
+    </div>
+
+    <div class="card-grid">
+      {% for event in upcoming_events %}
+      <a href="{% url 'event_detail' event.id %}" class="content-card">
+        <div class="card-image">
+          {% if event.image %}
+            <img src="{{ event.image.url }}" alt="{{ event.title }}" loading="lazy">
+          {% else %}
+            <svg viewBox="0 0 24 24">
+              <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V9h14v10zM7 11h5v5H7v-5z"/>
+            </svg>
+          {% endif %}
+          <div class="card-badge">{{ event.get_event_type_display }}</div>
+        </div>
+        <div class="card-content">
+          <div class="card-title">{{ event.title|truncatechars:40 }}</div>
+          <div class="card-meta">
+            <span>
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm.5-13H11v6l5.2 3.1.8-1.2-4.5-2.7V7z"/></svg>
+              {{ event.start_date|date:"d.m.Y H:i" }}
+            </span>
+            <span>
+              <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5s1.1-2.5 2.5-2.5 2.5 1.1 2.5 2.5-1.1 2.5-2.5 2.5z"/></svg>
+              {{ event.location|truncatechars:15 }}
+            </span>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Детский контент -->
+    {% if kids_content %}
+    <div class="sec-label">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm0 2c-1.66 0-5 1.34-5 4v2h10v-2c0-2.66-3.34-4-5-4z"/>
+      </svg>
+      <h2 class="sec-title">Детский уголок</h2>
+      <a href="{% url 'kids_home' %}" class="view-all">
+        Все для детей →
+      </a>
+    </div>
+
+    <div class="card-grid">
+      {% for item in kids_content %}
+      <a href="{% url 'kids_content_detail' item.id %}" class="content-card">
+        <div class="card-image">
+          {% if item.thumbnail %}
+            <img src="{{ item.thumbnail.url }}" alt="{{ item.title }}" loading="lazy">
+          {% else %}
+            <svg viewBox="0 0 24 24">
+              <path d="M12 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm0 2c-1.66 0-5 1.34-5 4v2h10v-2c0-2.66-3.34-4-5-4z"/>
+            </svg>
+          {% endif %}
+          <div class="card-badge">{{ item.get_content_type_display }}</div>
+        </div>
+        <div class="card-content">
+          <div class="card-title">{{ item.title|truncatechars:40 }}</div>
+          <div class="card-meta">
+            <span>
+              <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+              {{ item.get_age_group_display }}
+            </span>
+            <span>
+              <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.7 7.6 1 12c1.7 4.4 6 7.5 11 7.5s9.3-3.1 11-7.5c-1.7-4.4-6-7.5-11-7.5zM12 17c-2.8 0-5-2.2-5-5s2.2-5 5-5 5 2.2 5 5-2.2 5-5 5z"/></svg>
+              {{ item.views_count }}
+            </span>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Пустое состояние (если ничего нет) -->
+    {% if not categories and not recent_videos and not upcoming_events and not kids_content %}
+    <div class="empty-state">
+      <svg viewBox="0 0 24 24">
+        <path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm10 16H4V8h16v12z"/>
+      </svg>
+      <h3>Библиотека пока пуста</h3>
+      <p>Контент появится здесь совсем скоро. Зайдите позже или создайте его, если вы администратор.</p>
+      
+      {% if user.is_superuser %}
+      <div class="admin-actions">
+        <a href="/admin/church_app/category/add/" class="admin-btn primary">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+          Создать категории
+        </a>
+        <a href="/admin/church_app/video/add/" class="admin-btn secondary">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M17 10.5V7c0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1v10c0 .6.4 1 1 1h12c.6 0 1-.4 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+          Добавить видео
+        </a>
+        <a href="/admin/church_app/event/add/" class="admin-btn secondary">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/></svg>
+          Создать событие
+        </a>
+      </div>
+      {% endif %}
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}

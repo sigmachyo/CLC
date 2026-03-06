@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ЦХЖ Красноярск - {% block title %}Главная{% endblock %}</title>
+    {% load static %}
+
+    {% block extra_css %}{% endblock %}
+
+    <style>
+        /* ============================================================
+           ЦХЖ КРАСНОЯРСК · MIDNIGHT GOLD — BASE
+           Единая палитра для всего сайта
+           ============================================================ */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* ── Основные фоны ── */
+            --bg:        #f5f0e8;
+            --bg-warm:   #efe9df;
+            --bg-deep:   #e8e1d5;
+            --card:      #faf7f2;
+            --card2:     #ffffff;
+            --card-dark: #e8e1d5;
+
+            /* ── Акцент: глубокий синий ── */
+            --navy:      #1a1f36;
+            --navy-h:    #252b48;
+            --navy-l:    rgba(26,31,54,0.10);
+            --navy-ll:   rgba(26,31,54,0.05);
+
+            /* ── Акцент: тёплое золото ── */
+            --gold:      #c9a84c;
+            --gold-h:    #d4b65e;
+            --gold-d:    #b0922f;
+            --gold-l:    rgba(201,168,76,0.15);
+
+            /* ── Шалфей ── */
+            --sage:      #7a9e7e;
+            --sage-d:    #5f8363;
+
+            /* ── Текст ── */
+            --txt:       #1a1f36;
+            --txt-sub:   #3d4260;
+            --txt-mid:   #5c6080;
+            --txt-muted: #8b8fa8;
+
+            /* ── Рамки ── */
+            --b:         rgba(26,31,54,0.10);
+            --b-h:       rgba(26,31,54,0.20);
+            --b-l:       rgba(26,31,54,0.05);
+
+            /* ── Семантические ── */
+            --success:   #4caf7a;
+            --error:     #d94452;
+            --info:      #5b8db8;
+
+            /* ── Утилиты ── */
+            --t:         0.28s cubic-bezier(0.4, 0, 0.2, 1);
+            --r:         16px;
+            --r-sm:      9px;
+            --shadow:    0 8px 32px rgba(26,31,54,0.10), 0 2px 8px rgba(26,31,54,0.06);
+            --shadow-lg: 0 16px 48px rgba(26,31,54,0.14);
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--txt);
+            min-height: 100vh;
+            padding-bottom: 90px;
+            position: relative;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .main-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+        }
+
+        /* ============================================================
+           НАВИГАЦИОННЫЙ БАР — MIDNIGHT GOLD
+           ============================================================ */
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 48px);
+            max-width: 650px;
+            background: var(--navy);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 40px;
+            padding: 8px 16px;
+            box-shadow: var(--shadow-lg), 0 0 0 1px rgba(201,168,76,0.15) inset;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+            border: 1px solid rgba(201,168,76,0.2);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: rgba(245,240,232,0.5);
+            padding: 10px 14px;
+            border-radius: 30px;
+            transition: all var(--t);
+            position: relative;
+            flex: 1;
+            max-width: 90px;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .nav-item i {
+            font-size: 1.5rem;
+            margin-bottom: 4px;
+            transition: all var(--t);
+            color: currentColor;
+        }
+
+        .nav-item span {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: all var(--t);
+        }
+
+        .nav-item:hover {
+            color: #f5f0e8;
+            background: rgba(245,240,232,0.08);
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            color: var(--gold);
+            background: rgba(201,168,76,0.08);
+            position: relative;
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 3px;
+            background: var(--gold);
+            border-radius: 3px;
+            transition: all var(--t);
+        }
+
+        .nav-item.active i {
+            transform: scale(1.1);
+        }
+
+        .nav-item.active span {
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        @keyframes pulse-gold {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(201,168,76,0.2);
+            }
+            50% {
+                box-shadow: 0 0 0 8px rgba(201,168,76,0);
+            }
+        }
+
+        .nav-item.active {
+            animation: pulse-gold 2.5s infinite;
+        }
+
+        /* ============================================================
+           МОДАЛЬНОЕ ОКНО — MIDNIGHT GOLD
+           ============================================================ */
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26,31,54,0.75);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card2);
+            border-radius: var(--r);
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--b);
+            animation: modalSlideIn 0.3s var(--t);
+        }
+
+        .modal-content::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .modal-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb {
+            background: var(--b-h);
+            border-radius: 2px;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--navy);
+            border: 2px solid rgba(201,168,76,0.2);
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--gold);
+            transition: all var(--t);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            z-index: 10;
+            line-height: 1;
+            padding: 0;
+            box-shadow: var(--shadow);
+        }
+
+        .modal-close:hover {
+            background: var(--navy-h);
+            transform: rotate(90deg) scale(1.1);
+            color: var(--gold-h);
+        }
+
+        .modal-body {
+            padding: 32px;
+            color: var(--txt);
+        }
+
+        .modal-body h2 {
+            font-size: 1.8rem;
+            color: var(--navy);
+            margin-bottom: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .modal-body p {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--txt-sub);
+            margin-bottom: 16px;
+        }
+
+        /* ============================================================
+           АДАПТИВНОСТЬ
+           ============================================================ */
+
+        @media (max-width: 900px) {
+            .bottom-nav {
+                bottom: 16px;
+                width: calc(100% - 32px);
+                padding: 6px 12px;
+            }
+
+            .nav-item {
+                padding: 8px 10px;
+            }
+
+            .nav-item i {
+                font-size: 1.3rem;
+            }
+
+            .nav-item span {
+                font-size: 0.65rem;
+            }
+
+            .nav-item.active::before {
+                width: 20px;
+                height: 2px;
+                top: -3px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .bottom-nav {
+                bottom: 12px;
+                border-radius: 30px;
+            }
+
+            .nav-item i {
+                font-size: 1.2rem;
+                margin-bottom: 2px;
+            }
+
+            .nav-item span {
+                font-size: 0.6rem;
+            }
+
+            .nav-item {
+                padding: 6px 6px;
+            }
+
+            .modal-body {
+                padding: 24px;
+            }
+
+            .modal-body h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-item span {
+                font-size: 0.55rem;
+                letter-spacing: 0.02em;
+            }
+
+            .nav-item i {
+                font-size: 1.1rem;
+            }
+        }
+
+        @supports (padding: max(0px)) {
+            .bottom-nav {
+                bottom: max(16px, env(safe-area-inset-bottom, 16px));
+            }
+        }
+
+        ::selection {
+            background: rgba(201,168,76,0.25);
+            color: var(--txt);
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--gold);
+            outline-offset: 3px;
+        }
+
+        /* Кнопки в стиле Midnight Gold */
+        .modal-body .yt-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            background: var(--navy);
+            color: var(--gold);
+            padding: 11px 24px;
+            border-radius: var(--r-sm);
+            text-decoration: none;
+            font-size: 0.92rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            transition: background var(--t), transform var(--t);
+            box-shadow: var(--shadow);
+            margin-top: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .modal-body .yt-btn:hover {
+            background: var(--navy-h);
+            transform: translateY(-2px);
+        }
+
+        .modal-body .yt-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Основной контент -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- НАВИГАЦИОННЫЙ БАР — MIDNIGHT GOLD -->
+    <nav class="bottom-nav" aria-label="Мобильная навигация">
+        <a href="{% url 'home' %}" class="nav-item {% if request.path == '/' %}active{% endif %}" aria-label="Главная">
+            <i class="fas fa-home"></i>
+            <span>Главная</span>
+        </a>
+
+        <a href="{% url 'index' %}" class="nav-item {% if '/index' in request.path or '/map' in request.path %}active{% endif %}" aria-label="Путь">
+            <i class="fas fa-map"></i>
+            <span>Путь</span>
+        </a>
+
+        <a href="#" class="nav-item" aria-label="Чаты">
+            <i class="fas fa-comments"></i>
+            <span>Чаты</span>
+        </a>
+
+        <!-- БИБЛИОТЕКА -->
+        <a href="{% url 'library_home' %}" class="nav-item {% if '/library' in request.path %}active{% endif %}">
+            <i class="fas fa-book"></i>
+            <span>Библиотека</span>
+            {% if '/library' in request.path %}
+            <span style="position: absolute; top: -5px; right: 5px; font-size: 0.6rem;">●</span>
+            {% endif %}
+        </a>
+        
+        <a href="{% if user.is_authenticated %}{% url 'profile' %}{% else %}{% url 'login' %}{% endif %}"
+           class="nav-item {% if '/profile' in request.path %}active{% endif %}" aria-label="Профиль">
+            <i class="fas fa-user"></i>
+            <span>Профиль</span>
+        </a>
+    </nav>
+
+    <!-- Модальное окно -->
+    <div class="modal" id="levelModal">
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Закрыть">&times;</button>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/script.js' %}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('levelModal');
+            const closeBtn = document.querySelector('.modal-close');
+
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    modal.classList.remove('show');
+                });
+            }
+
+            window.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.classList.remove('show');
+                }
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.classList.contains('show')) {
+                    modal.classList.remove('show');
+                }
+            });
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

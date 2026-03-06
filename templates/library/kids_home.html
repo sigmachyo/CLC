@@ -1,0 +1,307 @@
+{% extends 'library/base_library.html' %}
+{% load static %}
+
+{% block title %}Детский уголок{% endblock %}
+
+{% block extra_css %}
+<style>
+    .kids-header {
+        background: linear-gradient(145deg, #ff9a9e, #fad0c4);
+        border-radius: 30px;
+        padding: 50px;
+        text-align: center;
+        margin-bottom: 50px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .kids-header h1 {
+        font-size: 3rem;
+        color: white;
+        text-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+        position: relative;
+        z-index: 2;
+    }
+    
+    .kids-header p {
+        font-size: 1.3rem;
+        color: white;
+        margin-top: 15px;
+        position: relative;
+        z-index: 2;
+    }
+    
+    .floating-elements {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+    
+    .floating-element {
+        position: absolute;
+        animation: float 3s infinite ease-in-out;
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(5deg); }
+    }
+    
+    .age-filter {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+    }
+    
+    .age-btn {
+        padding: 12px 25px;
+        border-radius: 30px;
+        background: rgba(255,255,255,0.1);
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+    
+    .age-btn:hover,
+    .age-btn.active {
+        background: #f1c40f;
+        color: #2c3e50;
+        transform: translateY(-3px);
+    }
+    
+    .content-type-tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+    }
+    
+    .type-tab {
+        padding: 10px 20px;
+        border-radius: 20px;
+        background: rgba(255,255,255,0.05);
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .type-tab:hover,
+    .type-tab.active {
+        background: #3498db;
+    }
+    
+    .game-card .card-image {
+        background: linear-gradient(145deg, #f39c12, #e67e22);
+    }
+    
+    .cartoon-card .card-image {
+        background: linear-gradient(145deg, #3498db, #2980b9);
+    }
+    
+    .lesson-card .card-image {
+        background: linear-gradient(145deg, #2ecc71, #27ae60);
+    }
+    
+    .craft-card .card-image {
+        background: linear-gradient(145deg, #9b59b6, #8e44ad);
+    }
+    
+    .song-card .card-image {
+        background: linear-gradient(145deg, #e74c3c, #c0392b);
+    }
+</style>
+{% endblock %}
+
+{% block library_content %}
+<!-- Яркий заголовок для детей -->
+<div class="kids-header">
+    <h1><i class="fas fa-child"></i> Детский уголок</h1>
+    <p>Мультфильмы, игры, уроки и поделки для маленьких христиан</p>
+    
+    <div class="floating-elements">
+        <div class="floating-element" style="top: 20px; left: 10%;">⭐</div>
+        <div class="floating-element" style="top: 50px; right: 15%; animation-delay: 0.5s;">🌈</div>
+        <div class="floating-element" style="bottom: 30px; left: 20%; animation-delay: 1s;">🦁</div>
+        <div class="floating-element" style="bottom: 40px; right: 25%; animation-delay: 1.5s;">🐧</div>
+    </div>
+</div>
+
+<!-- Фильтр по возрасту -->
+<div class="age-filter">
+    <a href="{% url 'kids_home' %}" class="age-btn {% if not filters.age %}active{% endif %}">
+        Все возрасты
+    </a>
+    {% for age_code, age_name in age_groups %}
+    <a href="?age={{ age_code }}{% if filters.type %}&type={{ filters.type }}{% endif %}" 
+       class="age-btn {% if filters.age == age_code %}active{% endif %}">
+        {{ age_name }}
+    </a>
+    {% endfor %}
+</div>
+
+<!-- Вкладки по типу контента -->
+<div class="content-type-tabs">
+    <a href="{% url 'kids_home' %}{% if filters.age %}?age={{ filters.age }}{% endif %}" 
+       class="type-tab {% if not filters.type %}active{% endif %}">
+        <i class="fas fa-star"></i> Всё
+    </a>
+    {% for type_code, type_name in content_types %}
+    <a href="?type={{ type_code }}{% if filters.age %}&age={{ filters.age }}{% endif %}" 
+       class="type-tab {% if filters.type == type_code %}active{% endif %}">
+        <i class="fas fa-{% if type_code == 'cartoon' %}film{% elif type_code == 'game' %}gamepad{% elif type_code == 'lesson' %}book-open{% elif type_code == 'craft' %}paint-brush{% else %}music{% endif %}"></i>
+        {{ type_name }}
+    </a>
+    {% endfor %}
+</div>
+
+<!-- Рекомендуемое (только на главной) -->
+{% if not filters.type and not filters.age and featured %}
+<div class="section-title">
+    <i class="fas fa-star"></i>
+    <h2>Рекомендуемое</h2>
+</div>
+<div class="card-grid">
+    {% for item in featured %}
+    <a href="{% url 'kids_content_detail' item.id %}" class="content-card {{ item.content_type }}-card">
+        <div class="card-image">
+            {% if item.thumbnail %}
+                <img src="{{ item.thumbnail.url }}" alt="{{ item.title }}">
+            {% else %}
+                <i class="fas fa-{% if item.content_type == 'cartoon' %}film{% elif item.content_type == 'game' %}gamepad{% elif item.content_type == 'lesson' %}book-open{% elif item.content_type == 'craft' %}paint-brush{% else %}music{% endif %}"></i>
+            {% endif %}
+            <div class="card-badge">{{ item.get_content_type_display }}</div>
+        </div>
+        <div class="card-content">
+            <div class="card-title">{{ item.title }}</div>
+            <div class="card-meta">
+                <span><i class="fas fa-users"></i> {{ item.get_age_group_display }}</span>
+                <span><i class="fas fa-eye"></i> {{ item.views_count }}</span>
+            </div>
+            {% if item.user_progress and item.user_progress.completed %}
+            <div style="color: #2ecc71; margin-top: 10px;">
+                <i class="fas fa-check-circle"></i> Пройдено
+            </div>
+            {% endif %}
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Мультфильмы -->
+{% if not filters.type or filters.type == 'cartoon' %}
+<div class="section-title">
+    <i class="fas fa-film"></i>
+    <h2>Мультфильмы</h2>
+    {% if not filters.type %}<a href="?type=cartoon{% if filters.age %}&age={{ filters.age }}{% endif %}" style="margin-left: auto; color: #f1c40f;">Все мультфильмы →</a>{% endif %}
+</div>
+<div class="card-grid">
+    {% for item in cartoons %}
+    <a href="{% url 'kids_content_detail' item.id %}" class="content-card cartoon-card">
+        <div class="card-image">
+            {% if item.thumbnail %}
+                <img src="{{ item.thumbnail.url }}" alt="{{ item.title }}">
+            {% else %}
+                <i class="fas fa-film"></i>
+            {% endif %}
+            <div class="card-badge">{{ item.get_age_group_display }}</div>
+        </div>
+        <div class="card-content">
+            <div class="card-title">{{ item.title }}</div>
+            <div class="card-meta">
+                <span><i class="fas fa-eye"></i> {{ item.views_count }}</span>
+            </div>
+            {% if item.bible_verse %}
+            <div style="color: #f1c40f; font-size: 0.8rem; margin-top: 8px;">
+                <i class="fas fa-bible"></i> {{ item.bible_verse }}
+            </div>
+            {% endif %}
+        </div>
+    </a>
+    {% empty %}
+    <p style="grid-column: 1/-1; color: rgba(255,255,255,0.7);">Нет мультфильмов в этой категории</p>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Уроки воскресной школы -->
+{% if not filters.type or filters.type == 'lesson' %}
+<div class="section-title">
+    <i class="fas fa-chalkboard-teacher"></i>
+    <h2>Уроки воскресной школы</h2>
+    {% if not filters.type %}<a href="?type=lesson{% if filters.age %}&age={{ filters.age }}{% endif %}" style="margin-left: auto; color: #f1c40f;">Все уроки →</a>{% endif %}
+</div>
+<div class="card-grid">
+    {% for item in lessons %}
+    <a href="{% url 'kids_content_detail' item.id %}" class="content-card lesson-card">
+        <div class="card-image">
+            {% if item.thumbnail %}
+                <img src="{{ item.thumbnail.url }}" alt="{{ item.title }}">
+            {% else %}
+                <i class="fas fa-chalkboard-teacher"></i>
+            {% endif %}
+            <div class="card-badge">{{ item.get_age_group_display }}</div>
+        </div>
+        <div class="card-content">
+            <div class="card-title">{{ item.title }}</div>
+            <div class="card-meta">
+                <span><i class="fas fa-eye"></i> {{ item.views_count }}</span>
+            </div>
+            {% if item.printable_material %}
+            <div style="color: #f1c40f; font-size: 0.8rem; margin-top: 8px;">
+                <i class="fas fa-download"></i> Есть материалы для печати
+            </div>
+            {% endif %}
+        </div>
+    </a>
+    {% empty %}
+    <p style="grid-column: 1/-1; color: rgba(255,255,255,0.7);">Нет уроков в этой категории</p>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Игры -->
+{% if not filters.type or filters.type == 'game' %}
+<div class="section-title">
+    <i class="fas fa-gamepad"></i>
+    <h2>Игры</h2>
+    {% if not filters.type %}<a href="?type=game{% if filters.age %}&age={{ filters.age }}{% endif %}" style="margin-left: auto; color: #f1c40f;">Все игры →</a>{% endif %}
+</div>
+<div class="card-grid">
+    {% for item in games %}
+    <a href="{% url 'kids_content_detail' item.id %}" class="content-card game-card">
+        <div class="card-image">
+            {% if item.thumbnail %}
+                <img src="{{ item.thumbnail.url }}" alt="{{ item.title }}">
+            {% else %}
+                <i class="fas fa-gamepad"></i>
+            {% endif %}
+            <div class="card-badge">{{ item.get_age_group_display }}</div>
+        </div>
+        <div class="card-content">
+            <div class="card-title">{{ item.title }}</div>
+            <div class="card-meta">
+                <span><i class="fas fa-star"></i> {{ item.views_count }} сыграли</span>
+            </div>
+        </div>
+    </a>
+    {% empty %}
+    <p style="grid-column: 1/-1; color: rgba(255,255,255,0.7);">Нет игр в этой категории</p>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Если ничего не найдено -->
+{% if not cartoons and not lessons and not games %}
+<div style="text-align: center; padding: 60px; background: rgba(255,255,255,0.05); border-radius: 20px;">
+    <i class="fas fa-smile" style="font-size: 4rem; color: #f1c40f; margin-bottom: 20px;"></i>
+    <h3 style="color: white; margin-bottom: 10px;">Ничего не найдено</h3>
+    <p style="color: rgba(255,255,255,0.7);">Попробуйте выбрать другие фильтры</p>
+</div>
+{% endif %}
+{% endblock %}

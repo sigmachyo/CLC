@@ -1,0 +1,101 @@
+{% extends 'library/base_library.html' %}
+{% load static %}
+
+{% block title %}События{% endblock %}
+
+{% block library_content %}
+<div class="library-header">
+    <h1><i class="fas fa-calendar-alt"></i> События и календарь</h1>
+    <p>Богослужения, молодежки, встречи и особые события</p>
+</div>
+
+<!-- Фильтры -->
+<div style="display: flex; gap: 20px; margin-bottom: 40px; flex-wrap: wrap;">
+    <select onchange="window.location.href=this.value" style="padding: 12px 20px; background: rgba(255,255,255,0.1); color: white; border: 2px solid rgba(255,255,255,0.1); border-radius: 15px;">
+        <option value="{% url 'events_list' %}" style="background: #1a4a3a;">Все типы</option>
+        <option value="?type=service" {% if current_filter.type == 'service' %}selected{% endif %} style="background: #1a4a3a;">Богослужения</option>
+        <option value="?type=youth" {% if current_filter.type == 'youth' %}selected{% endif %} style="background: #1a4a3a;">Молодежка</option>
+        <option value="?type=kids" {% if current_filter.type == 'kids' %}selected{% endif %} style="background: #1a4a3a;">Детское</option>
+        <option value="?type=study" {% if current_filter.type == 'study' %}selected{% endif %} style="background: #1a4a3a;">Библейские уроки</option>
+        <option value="?type=prayer" {% if current_filter.type == 'prayer' %}selected{% endif %} style="background: #1a4a3a;">Молитвенные</option>
+        <option value="?type=special" {% if current_filter.type == 'special' %}selected{% endif %} style="background: #1a4a3a;">Особые</option>
+    </select>
+    
+    <select onchange="window.location.href=this.value" style="padding: 12px 20px; background: rgba(255,255,255,0.1); color: white; border: 2px solid rgba(255,255,255,0.1); border-radius: 15px;">
+        <option value="{% url 'events_list' %}" style="background: #1a4a3a;">Все даты</option>
+        {% for month in months %}
+        <option value="?month={{ month.month|date:'Y-m' }}" {% if current_filter.month == month.month|date:'Y-m' %}selected{% endif %} style="background: #1a4a3a;">
+            {{ month.month|date:"F Y" }} ({{ month.count }})
+        </option>
+        {% endfor %}
+    </select>
+</div>
+
+<!-- Предстоящие события -->
+<div class="section-title">
+    <i class="fas fa-clock"></i>
+    <h2>Предстоящие события</h2>
+</div>
+
+{% if upcoming_events %}
+<div class="card-grid">
+    {% for event in upcoming_events %}
+    <a href="{% url 'event_detail' event.id %}" class="content-card">
+        <div class="card-image">
+            {% if event.image %}
+                <img src="{{ event.image.url }}" alt="{{ event.title }}">
+            {% else %}
+                <i class="fas fa-calendar-check"></i>
+            {% endif %}
+            <div class="card-badge">{{ event.get_event_type_display }}</div>
+        </div>
+        <div class="card-content">
+            <div class="card-title">{{ event.title }}</div>
+            <div class="card-meta">
+                <span><i class="fas fa-clock"></i> {{ event.start_date|date:"d.m.Y H:i" }}</span>
+                <span><i class="fas fa-map-marker-alt"></i> {{ event.location|truncatechars:15 }}</span>
+            </div>
+            {% if event.days_until %}
+            <div style="color: #f1c40f; margin-top: 10px;">
+                <i class="fas fa-hourglass-half"></i> через {{ event.days_until }} дн.
+            </div>
+            {% endif %}
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<div style="text-align: center; padding: 40px; background: rgba(255,255,255,0.05); border-radius: 20px;">
+    <i class="fas fa-calendar-times" style="font-size: 3rem; color: #f1c40f; margin-bottom: 15px;"></i>
+    <p style="color: rgba(255,255,255,0.7);">Нет предстоящих событий</p>
+</div>
+{% endif %}
+
+<!-- Прошедшие события -->
+{% if past_events %}
+<div class="section-title" style="margin-top: 50px;">
+    <i class="fas fa-history"></i>
+    <h2>Прошедшие события</h2>
+</div>
+<div class="card-grid">
+    {% for event in past_events %}
+    <a href="{% url 'event_detail' event.id %}" class="content-card" style="opacity: 0.8;">
+        <div class="card-image">
+            {% if event.image %}
+                <img src="{{ event.image.url }}" alt="{{ event.title }}">
+            {% else %}
+                <i class="fas fa-calendar-check"></i>
+            {% endif %}
+            <div class="card-badge">Прошло</div>
+        </div>
+        <div class="card-content">
+            <div class="card-title">{{ event.title }}</div>
+            <div class="card-meta">
+                <span><i class="fas fa-clock"></i> {{ event.start_date|date:"d.m.Y" }}</span>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

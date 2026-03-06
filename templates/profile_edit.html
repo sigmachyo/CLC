@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Редактирование профиля{% endblock %}
+
+{% block content %}
+<div class="profile-edit-container">
+    <div class="profile-edit-card">
+        <div class="edit-header">
+            <div class="edit-icon">
+                <i class="fas fa-user-edit"></i>
+            </div>
+            <h1>Редактирование профиля</h1>
+            <p>Обновите вашу личную информацию</p>
+        </div>
+        
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="message {% if message.tags %}message-{{ message.tags }}{% endif %}">
+                <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% else %}check-circle{% endif %}"></i>
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <form method="post" class="edit-form">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="first_name">
+                    <i class="fas fa-user"></i>
+                    Имя
+                </label>
+                <input type="text" 
+                       id="first_name" 
+                       name="first_name" 
+                       value="{{ user.first_name }}" 
+                       placeholder="Введите ваше имя">
+            </div>
+            
+            <div class="form-group">
+                <label for="last_name">
+                    <i class="fas fa-user"></i>
+                    Фамилия
+                </label>
+                <input type="text" 
+                       id="last_name" 
+                       name="last_name" 
+                       value="{{ user.last_name }}" 
+                       placeholder="Введите вашу фамилию">
+            </div>
+            
+            <div class="form-group">
+                <label for="email">
+                    <i class="fas fa-envelope"></i>
+                    Email
+                </label>
+                <input type="email" 
+                       id="email" 
+                       name="email" 
+                       value="{{ user.email }}" 
+                       required 
+                       placeholder="Введите email">
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn-save">
+                    <i class="fas fa-save"></i>
+                    Сохранить изменения
+                </button>
+                <a href="{% url 'profile' %}" class="btn-cancel">
+                    <i class="fas fa-times"></i>
+                    Отмена
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+.profile-edit-container {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px 80px;
+}
+
+.profile-edit-card {
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 600px;
+    padding: 40px;
+}
+
+.edit-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.edit-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #3498db, #2ecc71);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    color: white;
+    font-size: 2.5rem;
+}
+
+.edit-header h1 {
+    font-size: 2rem;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.edit-header p {
+    color: #7f8c8d;
+    font-size: 1rem;
+}
+
+.edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-group label i {
+    color: #3498db;
+    width: 20px;
+}
+
+.form-group input {
+    padding: 12px 16px;
+    border: 2px solid #e0e6ed;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
+}
+
+.form-group input:disabled {
+    background: #f8f9fa;
+    color: #95a5a6;
+    cursor: not-allowed;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn-save, .btn-cancel {
+    flex: 1;
+    padding: 14px 20px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.btn-save {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: white;
+    border: none;
+}
+
+.btn-save:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(46,204,113,0.3);
+}
+
+.btn-cancel {
+    background: #f8f9fa;
+    color: #7f8c8d;
+    border: 2px solid #e0e6ed;
+}
+
+.btn-cancel:hover {
+    background: #e74c3c;
+    color: white;
+    border-color: #e74c3c;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .profile-edit-card {
+        padding: 30px 20px;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-edit-container {
+        padding: 20px 15px 80px;
+    }
+    
+    .profile-edit-card {
+        padding: 20px 15px;
+    }
+    
+    .edit-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+    }
+    
+    .edit-header h1 {
+        font-size: 1.8rem;
+    }
+}
+</style>
+{% endblock %}

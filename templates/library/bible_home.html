@@ -1,0 +1,85 @@
+{% extends 'library/base_library.html' %}
+{% load static %}
+
+{% block title %}Чтение Библии{% endblock %}
+
+{% block library_content %}
+<div class="library-header">
+    <h1><i class="fas fa-bible"></i> Чтение Библии</h1>
+    <p>Выберите план чтения или читайте Библию самостоятельно</p>
+</div>
+
+<!-- Популярные планы -->
+{% if popular_plans %}
+<div class="section-title">
+    <i class="fas fa-fire"></i>
+    <h2>Популярные планы</h2>
+</div>
+<div class="card-grid">
+    {% for plan in popular_plans %}
+    <a href="{% url 'bible_plan_detail' plan.id %}" class="content-card">
+        <div class="card-image">
+            {% if plan.image %}
+                <img src="{{ plan.image.url }}" alt="{{ plan.title }}">
+            {% else %}
+                <i class="fas fa-book"></i>
+            {% endif %}
+            <div class="card-badge">{{ plan.days_count }} дней</div>
+        </div>
+        <div class="card-content">
+            <div class="card-title">{{ plan.title }}</div>
+            <div class="card-meta">
+                <span><i class="fas fa-users"></i> {{ plan.userbibleprogress_set.count }} читают</span>
+            </div>
+            {% if plan.user_progress %}
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {{ plan.user_progress.get_progress_percentage }}%;"></div>
+            </div>
+            <div style="color: #f1c40f; font-size: 0.9rem; margin-top: 10px;">
+                {{ plan.user_progress.get_progress_percentage }}% завершено
+            </div>
+            {% endif %}
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Все планы -->
+<div class="section-title">
+    <i class="fas fa-list"></i>
+    <h2>Все планы чтения</h2>
+</div>
+<div class="card-grid">
+    {% for plan in plans %}
+    <a href="{% url 'bible_plan_detail' plan.id %}" class="content-card">
+        <div class="card-image">
+            {% if plan.image %}
+                <img src="{{ plan.image.url }}" alt="{{ plan.title }}">
+            {% else %}
+                <i class="fas fa-book-open"></i>
+            {% endif %}
+            <div class="card-badge">{{ plan.days_count }} дней</div>
+        </div>
+        <div class="card-content">
+            <div class="card-title">{{ plan.title }}</div>
+            <div class="card-meta">
+                <span><i class="fas fa-calendar"></i> {{ plan.days_count }} дней</span>
+            </div>
+            {% if plan.user_progress %}
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: {{ plan.user_progress.get_progress_percentage }}%;"></div>
+                </div>
+                <div style="color: #f1c40f; font-size: 0.9rem; margin-top: 10px;">
+                    {{ plan.user_progress.get_progress_percentage }}% завершено
+                </div>
+            {% endif %}
+        </div>
+    </a>
+    {% empty %}
+    <p style="grid-column: 1/-1; color: rgba(255,255,255,0.7); text-align: center; padding: 40px;">
+        Планы чтения пока не добавлены
+    </p>
+    {% endfor %}
+</div>
+{% endblock %}
