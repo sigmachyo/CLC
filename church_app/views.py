@@ -7,36 +7,368 @@ from .models import SpiritualLevel, UserProgress, Announcement
 from django.http import JsonResponse
 from django.utils import timezone
 from django.db import models
+from django.views.decorators.cache import cache_page
+from django.views.decorators.http import require_GET
 import datetime
-from .views_library import *
+import requests
+import re
+import json as _json
+import logging
+from datetime import datetime as dt, timedelta
+from .views_library import *  # Импорт всех функций из views_library
+
+logger = logging.getLogger(__name__)
 
 # =============================================
-# 🏠 НОВАЯ ГЛАВНАЯ СТРАНИЦА - ТАЙМЕР ТРАНСЛЯЦИИ
+# 📡 НАСТРОЙКИ ВИДЕОПЛАТФОРМ
 # =============================================
+# Rutube - основная платформа
+RUTUBE_CHANNEL_ID = '39733690'
+RUTUBE_API_URL = f'https://rutube.ru/api/video/person/{RUTUBE_CHANNEL_ID}/?page=1&format=json'
 
+# YouTube - резервная платформа
+YT_CHANNEL_HANDLE = 'kclcfamily'
+YT_STREAMS_URL = f'https://www.youtube.com/@{YT_CHANNEL_HANDLE}/streams'
+
+STREAM_KEYWORDS = ['ВОСКРЕСНОЕ СЛУЖЕНИЕ', 'ВОСКРЕСНОЕ', 'СЛУЖЕНИЕ']
+
+# Расписание трансляций (Красноярск GMT+7)
+SCHEDULE = {
+    'weekday': 6,  # Воскресенье (0=Пн, 6=Вс)
+    'hour': 11,
+    'minute': 0,
+    'timezone_offset': 7  # GMT+7
+}
+
+_YT_HEADERS = {
+    'User-Agent': (
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+        'AppleWebKit/537.36 (KHTML, like Gecko) '
+        'Chrome/122.0.0.0 Safari/537.36'
+    ),
+    'Accept-Language': 'ru-RU,ru;q=0.9',
+}
+
+_YT_COOKIES = {
+    'SOCS': 'CAISNQgDEitib3FfaWRlbnRpdHlmcm9udGVuZHVpc2VydmVyXzIwMjMwODI5LjA3X3AxGgJlbiACGgYIgJnSmgY',
+}
+
+# =============================================
+# 🕐 ФУНКЦИИ ВРЕМЕНИ И ТАЙМЕРА
+# =============================================
+def get_next_sunday_service():
+    """Вычисляет время следующего воскресного служения"""
+    now = timezone.now()
+    target = now.replace(hour=SCHEDULE['hour'], minute=SCHEDULE['minute'], second=0, microsecond=0)
+    
+    # Добавляем смещение часового пояса
+    target = target - timedelta(hours=SCHEDULE['timezone_offset'])
+    
+    days_ahead = SCHEDULE['weekday'] - target.weekday()
+    if days_ahead < 0:
+        days_ahead += 7
+    
+    # Если сегодня воскресенье и время ещё не прошло
+    if days_ahead == 0 and target <= now:
+        days_ahead = 7
+    
+    target += timedelta(days=days_ahead)
+    return target
+
+def is_stream_live():
+    """Проверяет, идёт ли сейчас прямая трансляция (окно 3 часа от начала)"""
+    now = timezone.now()
+    next_service = get_next_sunday_service()
+    # Трансляция текущего воскресенья: от next_service - 7 дней до next_service - 7 дней + 3 часа
+    current_service_start = next_service - timedelta(days=7)
+    current_service_end = current_service_start + timedelta(hours=3)
+
+    # Трансляция считается "live" в течение 3 часов после начала текущего служения
+    return current_service_start <= now <= current_service_end
+
+def get_time_until_service():
+    """Возвращает время до начала следующей службы"""
+    now = timezone.now()
+    next_service = get_next_sunday_service()
+
+    # Проверяем, идёт ли сейчас трансляция
+    live = is_stream_live()
+
+    # Если трансляция идёт, показываем что до следующей служения ещё ждать
+    delta = next_service - now
+
+    # Если время уже прошло (дельта отрицательная), значит служение идёт сейчас
+    if delta.total_seconds() <= 0:
+        return {
+            'days': 0,
+            'hours': 0,
+            'minutes': 0,
+            'seconds': 0,
+            'is_live': live,
+            'until_next_week': True  # Флаг что следующее служение через неделю
+        }
+
+    return {
+        'days': delta.days,
+        'hours': delta.seconds // 3600,
+        'minutes': (delta.seconds % 3600) // 60,
+        'seconds': delta.seconds % 60,
+        'is_live': live,
+        'until_next_week': False
+    }
+
+# =============================================
+# 📡 RUTUBE API (ОСНОВНОЙ)
+# =============================================
+@require_GET
+@cache_page(60)
+def rutube_stream_api(request):
+    """
+    Запрашивает API Rutube канала.
+    Возвращает JSON с video_id последнего воскресного служения.
+    """
+    try:
+        resp = requests.get(RUTUBE_API_URL, timeout=10, headers={
+            'User-Agent': _YT_HEADERS['User-Agent'],
+        })
+        resp.raise_for_status()
+    except requests.Timeout:
+        return JsonResponse(
+            {'video_id': None, 'error': 'Rutube timeout', 'platform': 'rutube'},
+            status=503
+        )
+    except requests.RequestException as e:
+        return JsonResponse(
+            {'video_id': None, 'error': f'network: {e}', 'platform': 'rutube'},
+            status=503
+        )
+    
+    try:
+        data = resp.json()
+    except Exception as e:
+        logger.exception('Ошибка парсинга ответа Rutube API')
+        return JsonResponse(
+            {'video_id': None, 'error': f'parse error: {e}', 'platform': 'rutube'},
+            status=500
+        )
+
+    results = data.get('results', [])
+    if not results:
+        return JsonResponse(
+            {'video_id': None, 'error': 'Видео не найдены', 'platform': 'rutube'},
+            status=404
+        )
+
+    stream_entries = []
+    all_entries = []
+    
+    for item in results:
+        title = item.get('title', '').strip()
+        video_id = None
+        embed_url = item.get('embed_url', '')
+        
+        if embed_url:
+            video_id = embed_url.rstrip('/').split('/')[-1]
+        
+        if not video_id:
+            continue
+
+        # Проверяем, является ли видео воскресным служением
+        is_stream = any(kw.upper() in title.upper() for kw in STREAM_KEYWORDS)
+        
+        # Получаем дату публикации
+        published = item.get('created_at', '')
+        
+        entry = {
+            'video_id': str(video_id),
+            'title': title,
+            'is_stream': is_stream,
+            'published': published,
+            'thumbnail': item.get('thumbnail_url', ''),
+        }
+        all_entries.append(entry)
+        if is_stream:
+            stream_entries.append(entry)
+
+    if not all_entries:
+        return JsonResponse(
+            {'video_id': None, 'error': 'Видео не найдены', 'platform': 'rutube'},
+            status=404
+        )
+
+    # Приоритет: воскресные служения, затем последнее видео
+    best = stream_entries[0] if stream_entries else all_entries[0]
+    is_live = is_stream_live()
+
+    return JsonResponse({
+        'video_id': best['video_id'],
+        'title': best['title'],
+        'is_stream': best['is_stream'],
+        'is_live': is_live,
+        'platform': 'rutube',
+        'channel_id': RUTUBE_CHANNEL_ID,
+        'all_streams': stream_entries[:5],
+        'latest_video': all_entries[0] if all_entries else None,
+    })
+
+# =============================================
+# 📡 YOUTUBE API (РЕЗЕРВНЫЙ)
+# =============================================
+def _parse_streams_page(html):
+    """Парсит HTML страницы /streams канала YouTube"""
+    match = re.search(r'var\s+ytInitialData\s*=\s*({.+?})\s*;\s*', html)
+    if not match:
+        return []
+    try:
+        data = _json.loads(match.group(1))
+    except _json.JSONDecodeError:
+        return []
+
+    results = []
+    seen_ids = set()
+
+    def _extract_videos(obj):
+        if isinstance(obj, dict):
+            if 'videoRenderer' in obj:
+                vr = obj['videoRenderer']
+                vid = vr.get('videoId', '')
+                if not vid or vid in seen_ids:
+                    return
+                seen_ids.add(vid)
+
+                title_obj = vr.get('title', {})
+                if 'runs' in title_obj:
+                    title = ''.join(r.get('text', '') for r in title_obj['runs'])
+                else:
+                    title = title_obj.get('simpleText', '')
+
+                title = title.strip()
+                is_stream = any(kw.upper() in title.upper() for kw in STREAM_KEYWORDS)
+
+                results.append({
+                    'video_id': vid,
+                    'title': title,
+                    'published': '',
+                    'is_stream': is_stream,
+                })
+                return
+
+            for v in obj.values():
+                _extract_videos(v)
+        elif isinstance(obj, list):
+            for item in obj:
+                _extract_videos(item)
+
+    _extract_videos(data)
+    return results
+
+@require_GET
+@cache_page(20)
+def live_stream_api(request):
+    """Резервный API для YouTube"""
+    try:
+        resp = requests.get(YT_STREAMS_URL, timeout=10, headers=_YT_HEADERS, cookies=_YT_COOKIES)
+        resp.raise_for_status()
+    except requests.Timeout:
+        return JsonResponse(
+            {'video_id': None, 'error': 'YouTube timeout', 'platform': 'youtube'},
+            status=503
+        )
+    except requests.RequestException as e:
+        return JsonResponse(
+            {'video_id': None, 'error': f'network: {e}', 'platform': 'youtube'},
+            status=503
+        )
+
+    try:
+        entries = _parse_streams_page(resp.text)
+    except Exception as e:
+        logger.exception('Ошибка парсинга страницы YouTube streams')
+        return JsonResponse(
+            {'video_id': None, 'error': f'parse error: {e}', 'platform': 'youtube'},
+            status=500
+        )
+
+    if not entries:
+        return JsonResponse(
+            {'video_id': None, 'error': 'Видео не найдены', 'platform': 'youtube'},
+            status=404
+        )
+
+    stream_entries = [e for e in entries if e['is_stream']]
+    best = stream_entries[0] if stream_entries else entries[0]
+    is_live = is_stream_live()
+
+    return JsonResponse({
+        'video_id': best['video_id'],
+        'title': best['title'],
+        'published': best['published'],
+        'is_stream': best['is_stream'],
+        'is_live': is_live,
+        'platform': 'youtube',
+        'channel_handle': YT_CHANNEL_HANDLE,
+        'all_streams': stream_entries[:5],
+    })
+
+# =============================================
+# 📡 УНИФИЦИРОВАННЫЙ VIDEO API
+# =============================================
+@require_GET
+@cache_page(30)
+def video_api(request):
+    """
+    Единый API для получения видео.
+    Сначала пробует Rutube, при ошибке - YouTube.
+    """
+    # Пробуем Rutube (основной)
+    rutube_resp = rutube_stream_api(request)
+    if rutube_resp.status_code == 200:
+        data = _json.loads(rutube_resp.content)
+        if data.get('video_id'):
+            data['time_until_service'] = get_time_until_service()
+            return JsonResponse(data)
+    
+    # Fallback на YouTube
+    yt_resp = live_stream_api(request)
+    if yt_resp.status_code == 200:
+        data = _json.loads(yt_resp.content)
+        if data.get('video_id'):
+            data['time_until_service'] = get_time_until_service()
+            return JsonResponse(data)
+    
+    return JsonResponse({
+        'video_id': None,
+        'error': 'Видео недоступно',
+        'platform': None,
+        'time_until_service': get_time_until_service()
+    }, status=404)
+
+# =============================================
+# 🏠 ГЛАВНАЯ СТРАНИЦА
+# =============================================
 def home(request):
     """Главная страница с таймером воскресной трансляции"""
-    
-    # Получаем прогресс пользователя для статистики в навбаре
     completed_levels = 0
     total_levels = SpiritualLevel.objects.count()
     progress_percentage = 0
-    
+
     if request.user.is_authenticated:
         completed_levels = UserProgress.objects.filter(
-            user=request.user, 
+            user=request.user,
             is_completed=True
         ).count()
         if total_levels > 0:
-            progress_percentage = int((completed_levels / total_levels * 100))
-    
-    # Получаем активное объявление (если нужно)
+            progress_percentage = int((completed_levels / total_levels) * 100)
+
     current_announcement = Announcement.objects.filter(
         is_active=True
     ).filter(
         models.Q(expires_at__isnull=True) | models.Q(expires_at__gt=timezone.now())
     ).first()
-    
+
+    # Получаем информацию о времени до службы
+    time_info = get_time_until_service()
+
     context = {
         'completed_levels': completed_levels,
         'total_levels': total_levels,
@@ -44,44 +376,40 @@ def home(request):
         'announcement': current_announcement,
         'show_announcement': current_announcement is not None,
         'user': request.user,
+        'time_until_service': time_info,
+        'is_live': time_info['is_live'],
+        'service_schedule': SCHEDULE,
     }
     return render(request, 'home.html', context)
 
-
 # =============================================
-# 🗺️ СТРАНИЦА С КАРТОЙ УРОВНЕЙ (БЫВШАЯ ГЛАВНАЯ)
+# 🗺️ СТРАНИЦА С КАРТОЙ УРОВНЕЙ
 # =============================================
 def index(request):
-    """Страница с картой прогресса - ВСЕ УРОВНИ"""
-    
-    # Получаем ВСЕ уровни из базы данных
+    """Страница с картой прогресса — все уровни"""
     levels = SpiritualLevel.objects.all().order_by('order')
-    
-    # Получаем активное объявление
+
     current_announcement = Announcement.objects.filter(
         is_active=True
     ).filter(
         models.Q(expires_at__isnull=True) | models.Q(expires_at__gt=timezone.now())
     ).first()
-    
-    # Прогресс пользователя
+
     user_progress_dict = {}
     completed_levels = 0
-    
+
     if request.user.is_authenticated:
         progress_entries = UserProgress.objects.filter(user=request.user)
         for progress in progress_entries:
             user_progress_dict[progress.level_id] = progress
         completed_levels = progress_entries.filter(is_completed=True).count()
-    
-    # СОЗДАЕМ СПИСОК УРОВНЕЙ
+
     city_buildings = []
-    
     for level in levels:
         is_completed = False
         if level.id in user_progress_dict:
             is_completed = user_progress_dict[level.id].is_completed
-        
+
         city_buildings.append({
             'id': level.id,
             'order': level.order,
@@ -98,10 +426,10 @@ def index(request):
             'height': 3,
             'color': '#3498db',
         })
-    
+
     total_levels = len(city_buildings)
-    progress_percentage = int((completed_levels / total_levels * 100)) if total_levels > 0 else 0
-    
+    progress_percentage = int((completed_levels / total_levels) * 100) if total_levels > 0 else 0
+
     context = {
         'city_buildings': city_buildings,
         'announcement': current_announcement,
@@ -111,14 +439,11 @@ def index(request):
         'progress_percentage': progress_percentage,
         'user': request.user,
     }
-    
     return render(request, 'index.html', context)
-
 
 # =============================================
 # 🔐 АУТЕНТИФИКАЦИЯ
 # =============================================
-
 def register_view(request):
     """Регистрация пользователя"""
     if request.method == 'POST':
@@ -130,71 +455,60 @@ def register_view(request):
         if password1 != password2:
             messages.error(request, 'Пароли не совпадают')
             return redirect('register')
-        
+
         if User.objects.filter(username=username).exists():
             messages.error(request, 'Имя пользователя уже занято')
             return redirect('register')
-        
+
         if User.objects.filter(email=email).exists():
             messages.error(request, 'Email уже используется')
             return redirect('register')
-        
-        user = User.objects.create_user(
-            username=username,
-            email=email,
-            password=password1
-        )
+
+        user = User.objects.create_user(username=username, email=email, password=password1)
         login(request, user)
         messages.success(request, f'Добро пожаловать, {username}! Регистрация прошла успешно!')
-        return redirect('home')  # Перенаправляем на главную с таймером
-    
-    return render(request, 'register.html')
+        return redirect('home')
 
+    return render(request, 'register.html')
 
 def login_view(request):
     """Вход пользователя"""
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        
         user = authenticate(request, username=username, password=password)
         
         if user is not None:
             login(request, user)
             messages.success(request, f'С возвращением, {user.username}!')
-            return redirect('home')  # Перенаправляем на главную с таймером
+            return redirect('home')
         else:
             messages.error(request, 'Неверное имя пользователя или пароль')
-    
-    return render(request, 'login.html')
 
+    return render(request, 'login.html')
 
 def logout_view(request):
     """Выход пользователя"""
     logout(request)
     messages.success(request, 'Вы успешно вышли из системы')
-    return redirect('home')  # Перенаправляем на главную с таймером
-
+    return redirect('home')
 
 # =============================================
 # 👤 ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ
 # =============================================
-
 @login_required
 def profile_view(request):
     """Страница профиля"""
     user = request.user
-    
     progress_entries = UserProgress.objects.filter(user=user)
     completed_levels = progress_entries.filter(is_completed=True)
-    
     total_completed = completed_levels.count()
     total_levels = SpiritualLevel.objects.count()
-    progress_percentage = int((total_completed / total_levels * 100)) if total_levels > 0 else 0
-    
+    progress_percentage = int((total_completed / total_levels) * 100) if total_levels > 0 else 0
+
     recent_completed = completed_levels.order_by('-completed_at')[:5]
     in_progress = progress_entries.filter(is_completed=False)[:5]
-    
+
     context = {
         'user': user,
         'total_completed': total_completed,
@@ -205,7 +519,6 @@ def profile_view(request):
     }
     return render(request, 'profile.html', context)
 
-
 @login_required
 def profile_edit_view(request):
     """Редактирование профиля"""
@@ -215,12 +528,9 @@ def profile_edit_view(request):
         user.last_name = request.POST.get('last_name', '')
         user.email = request.POST.get('email', '')
         user.save()
-        
         messages.success(request, 'Профиль успешно обновлен!')
         return redirect('profile')
-    
     return render(request, 'profile_edit.html', {'user': request.user})
-
 
 @login_required
 def change_password_view(request):
@@ -234,48 +544,43 @@ def change_password_view(request):
         if not user.check_password(old_password):
             messages.error(request, 'Текущий пароль неверен')
             return redirect('change_password')
-        
+
         if new_password1 != new_password2:
             messages.error(request, 'Новые пароли не совпадают')
             return redirect('change_password')
-        
+
         if len(new_password1) < 8:
             messages.error(request, 'Пароль должен быть не менее 8 символов')
             return redirect('change_password')
-        
+
         user.set_password(new_password1)
         user.save()
         login(request, user)
         messages.success(request, 'Пароль успешно изменен!')
         return redirect('profile')
-    
-    return render(request, 'change_password.html')
 
+    return render(request, 'change_password.html')
 
 # =============================================
 # 🎮 УРОВНИ
 # =============================================
-
 def level_detail(request, level_id):
     """Детальная страница уровня"""
     level = get_object_or_404(SpiritualLevel, id=level_id)
-    
     user_progress = None
     if request.user.is_authenticated:
         user_progress = UserProgress.objects.filter(user=request.user, level=level).first()
-    
+
     return render(request, 'level_detail.html', {
         'level': level,
-        'user_progress': user_progress
+        'user_progress': user_progress,
     })
-
 
 @login_required
 def complete_level(request, level_id):
     """Завершение уровня"""
     if request.method == 'POST':
         level = get_object_or_404(SpiritualLevel, id=level_id)
-        
         user_progress, created = UserProgress.objects.get_or_create(
             user=request.user,
             level=level
@@ -284,20 +589,18 @@ def complete_level(request, level_id):
         user_progress.completed_at = timezone.now()
         user_progress.progress_percentage = 100
         user_progress.save()
-        
+
         return JsonResponse({
             'success': True,
             'message': f'Уровень "{level.title}" пройден!',
-            'xp_earned': level.order * 15
+            'xp_earned': level.order * 15,
         })
-    
-    return JsonResponse({'success': False, 'error': 'Только POST запросы'}, status=400)
 
+    return JsonResponse({'success': False, 'error': 'Только POST запросы'}, status=400)
 
 # =============================================
 # 📢 ОБЪЯВЛЕНИЯ
 # =============================================
-
 def dismiss_announcement(request):
     """Закрытие объявления"""
     if request.method == 'POST':
@@ -305,6 +608,6 @@ def dismiss_announcement(request):
         dismissed = request.session.get('dismissed_announcements', [])
         if announcement_id not in dismissed:
             dismissed.append(announcement_id)
-        request.session['dismissed_announcements'] = dismissed
+            request.session['dismissed_announcements'] = dismissed
         return JsonResponse({'success': True})
     return JsonResponse({'success': False}, status=400)
