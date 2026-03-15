@@ -56,56 +56,98 @@ _YT_COOKIES = {
 # =============================================
 # 🕐 ФУНКЦИИ ВРЕМЕНИ И ТАЙМЕРА
 # =============================================
+
+# Часовой пояс Красноярска (GMT+7)
+from zoneinfo import ZoneInfo
+KRA_TZ = ZoneInfo('Asia/Krasnoyarsk')
+
+def _kra_now():
+    """Текущее время в Красноярске"""
+    return timezone.now().astimezone(KRA_TZ)
+
+def _service_time_today_kra():
+    """Время начала служения сегодня (в Красноярске), как aware datetime"""
+    kra = _kra_now()
+    return kra.replace(hour=SCHEDULE['hour'], minute=SCHEDULE['minute'], second=0, microsecond=0)
+
+def get_current_service_start():
+    """
+    Если сейчас воскресенье и мы в окне трансляции (от начала до +3ч),
+    возвращает время начала текущего служения (UTC).
+    Иначе возвращает None.
+    """
+    kra = _kra_now()
+    # Воскресенье = weekday() == 6
+    if kra.weekday() != SCHEDULE['weekday']:
+        return None
+
+    service_start_kra = _service_time_today_kra()
+    service_end_kra = service_start_kra + timedelta(hours=3)
+
+    if service_start_kra <= kra <= service_end_kra:
+        return service_start_kra.astimezone(ZoneInfo('UTC'))
+
+    return None
+
 def get_next_sunday_service():
-    """Вычисляет время следующего воскресного служения"""
-    now = timezone.now()
-    target = now.replace(hour=SCHEDULE['hour'], minute=SCHEDULE['minute'], second=0, microsecond=0)
-    
-    # Добавляем смещение часового пояса
-    target = target - timedelta(hours=SCHEDULE['timezone_offset'])
-    
-    days_ahead = SCHEDULE['weekday'] - target.weekday()
+    """
+    Вычисляет время СЛЕДУЮЩЕГО (будущего) воскресного служения.
+    Если сейчас идёт трансляция, возвращает СЛЕДУЮЩЕЕ воскресенье.
+    Если трансляция ещё не началась сегодня, возвращает сегодня.
+    """
+    kra = _kra_now()
+    service_today = _service_time_today_kra()
+
+    days_ahead = SCHEDULE['weekday'] - kra.weekday()
     if days_ahead < 0:
         days_ahead += 7
-    
-    # Если сегодня воскресенье и время ещё не прошло
-    if days_ahead == 0 and target <= now:
-        days_ahead = 7
-    
-    target += timedelta(days=days_ahead)
-    return target
+
+    if days_ahead == 0:
+        # Сегодня воскресенье
+        if kra >= service_today:
+            # Время служения прошло или идёт → следующее через неделю
+            days_ahead = 7
+        # Иначе days_ahead = 0, служение сегодня ещё впереди
+
+    next_service_kra = service_today + timedelta(days=days_ahead)
+    return next_service_kra.astimezone(pytz.utc)
 
 def is_stream_live():
     """Проверяет, идёт ли сейчас прямая трансляция (окно 3 часа от начала)"""
-    now = timezone.now()
-    next_service = get_next_sunday_service()
-    # Трансляция текущего воскресенья: от next_service - 7 дней до next_service - 7 дней + 3 часа
-    current_service_start = next_service - timedelta(days=7)
-    current_service_end = current_service_start + timedelta(hours=3)
-
-    # Трансляция считается "live" в течение 3 часов после начала текущего служения
-    return current_service_start <= now <= current_service_end
+    return get_current_service_start() is not None
 
 def get_time_until_service():
-    """Возвращает время до начала следующей службы"""
+    """
+    Возвращает время до начала следующей службы.
+    Таймер показывается ТОЛЬКО для предстоящей трансляции.
+    Если трансляция идёт — is_live=True, таймер обнулён.
+    """
     now = timezone.now()
-    next_service = get_next_sunday_service()
-
-    # Проверяем, идёт ли сейчас трансляция
     live = is_stream_live()
 
-    # Если трансляция идёт, показываем что до следующей служения ещё ждать
-    delta = next_service - now
-
-    # Если время уже прошло (дельта отрицательная), значит служение идёт сейчас
-    if delta.total_seconds() <= 0:
+    if live:
+        # Трансляция идёт — таймер показывает нули
         return {
             'days': 0,
             'hours': 0,
             'minutes': 0,
             'seconds': 0,
-            'is_live': live,
-            'until_next_week': True  # Флаг что следующее служение через неделю
+            'is_live': True,
+            'until_next_week': False
+        }
+
+    next_service = get_next_sunday_service()
+    delta = next_service - now
+
+    if delta.total_seconds() <= 0:
+        # Не должно произойти, но на всякий случай
+        return {
+            'days': 0,
+            'hours': 0,
+            'minutes': 0,
+            'seconds': 0,
+            'is_live': False,
+            'until_next_week': True
         }
 
     return {
@@ -113,7 +155,7 @@ def get_time_until_service():
         'hours': delta.seconds // 3600,
         'minutes': (delta.seconds % 3600) // 60,
         'seconds': delta.seconds % 60,
-        'is_live': live,
+        'is_live': False,
         'until_next_week': False
     }
 
