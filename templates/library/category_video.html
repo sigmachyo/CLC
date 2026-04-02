@@ -1,0 +1,38 @@
+{% extends 'library/base_library.html' %}
+
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block library_content %}
+<div class="library-header">
+    <h1><i class="fas {{ category.icon }}"></i> {{ category.name }}</h1>
+    <p>{{ category.description }}</p>
+</div>
+
+<div class="card-grid">
+    {% for video in videos %}
+    <a href="{% url 'video_detail' video.id %}" class="content-card">
+        <div class="card-image">
+            {% if video.thumbnail %}
+            <img src="{{ video.thumbnail.url }}" alt="{{ video.title }}">
+            {% else %}
+            <i class="fas fa-play-circle"></i>
+            {% endif %}
+            {% if video.is_featured %}
+            <span class="card-badge">⭐ Рекомендуем</span>
+            {% endif %}
+        </div>
+        <div class="card-content">
+            <div class="card-title">{{ video.title }}</div>
+            <div class="card-meta">
+                <span><i class="fas fa-eye"></i> {{ video.views_count }}</span>
+                <span><i class="fas fa-clock"></i> {{ video.duration|floatformat:0 }} сек</span>
+            </div>
+        </div>
+    </a>
+    {% empty %}
+    <p style="color: var(--txt-sub); grid-column: 1/-1; text-align: center; padding: 40px;">
+        Видео пока нет. Скоро здесь появится контент!
+    </p>
+    {% endfor %}
+</div>
+{% endblock %}

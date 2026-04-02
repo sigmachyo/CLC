@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Добавить нужду{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-container { max-width: 600px; margin: 100px auto 80px; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+    h1 { font-family: var(--font-display); color: var(--navy); margin-bottom: 20px; text-align: center; }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--navy); }
+    input[type="text"], textarea { width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 10px; font-family: inherit; font-size: 1rem; transition: border 0.3s; }
+    input[type="text"]:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(201,168,76,0.1); }
+    textarea { height: 150px; resize: vertical; }
+    .checkbox-container { display: flex; align-items: center; gap: 10px; margin-bottom: 30px; }
+    .checkbox-container input { width: 20px; height: 20px; accent-color: var(--primary); }
+    .btn-submit { width: 100%; background: var(--navy); color: white; border: none; padding: 15px; border-radius: 10px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
+    .btn-submit:hover { background: var(--primary); }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1>Оставить нужду</h1>
+    <p style="text-align: center; color: var(--txt-sub); margin-bottom: 30px;">
+        "Много может усиленная молитва праведного" (Иакова 5:16)
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="title">Тема молитвы</label>
+            <input type="text" id="title" name="title" required placeholder="Кратко суть просьбы (напр. О здоровье бабушки)">
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Описание (подробности)</label>
+            <textarea id="description" name="description" required placeholder="Опишите ситуацию подробнее..."></textarea>
+        </div>
+
+        <div class="checkbox-container">
+            <input type="checkbox" id="is_public" name="is_public" checked>
+            <label for="is_public" style="margin: 0; font-weight: normal; color: var(--txt-sub);">Разместить на публичной стене (будет видно всем)</label>
+        </div>
+
+        <button type="submit" class="btn-submit">Опубликовать просьбу</button>
+        <div style="text-align: center; margin-top: 15px;">
+            <a href="{% url 'prayer_list' %}" style="color: var(--txt-muted); text-decoration: none;">Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

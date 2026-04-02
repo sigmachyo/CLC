@@ -1,0 +1,41 @@
+{% extends 'library/base_library.html' %}
+
+{% block title %}{{ content.title }}{% endblock %}
+
+{% block library_content %}
+<div style="max-width: 800px; margin: 0 auto;">
+    <h1 style="color: white; font-size: 2rem; margin-bottom: 20px;">✂️ {{ content.title }}</h1>
+
+    {% if content.bible_verse %}
+    <div style="background: rgba(241,196,15,0.1); border-left: 4px solid #f1c40f; padding: 15px 20px; border-radius: 0 10px 10px 0; margin-bottom: 25px;">
+        <p style="color: #f1c40f; font-style: italic;">{{ content.bible_verse }}</p>
+    </div>
+    {% endif %}
+
+    {% if content.thumbnail %}
+    <div style="border-radius: 15px; overflow: hidden; margin-bottom: 30px;">
+        <img src="{{ content.thumbnail.url }}" alt="{{ content.title }}" style="width: 100%; max-height: 400px; object-fit: cover;">
+    </div>
+    {% endif %}
+
+    <div style="color: rgba(255,255,255,0.9); line-height: 1.8; margin-bottom: 30px;">
+        {{ content.description|linebreaks }}
+    </div>
+
+    {% if content.printable_material %}
+    <a href="{{ content.printable_material.url }}" download style="display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(145deg, #f1c40f, #f39c12); color: #2c3e50; padding: 15px 30px; border-radius: 30px; font-weight: 700; text-decoration: none; font-size: 1rem;">
+        <i class="fas fa-print"></i> Скачать и распечатать
+    </a>
+    {% endif %}
+
+    {% if user.is_authenticated and progress and not progress.completed %}
+    <form method="post" style="margin-top: 20px;">
+        {% csrf_token %}
+        <input type="hidden" name="complete" value="1">
+        <button type="submit" style="background: linear-gradient(145deg, #2ecc71, #27ae60); color: white; border: none; padding: 15px 30px; border-radius: 30px; font-size: 1rem; font-weight: 700; cursor: pointer;">
+            ✅ Поделка готова!
+        </button>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}

@@ -2255,14 +2255,14 @@
      ══════════════════════════════════════════════ -->
 <nav id="v-nav" aria-label="Навигация по разделам">
 
-  <div class="vn-item active" data-idx="0" role="button" tabindex="0" aria-label="Главная" aria-current="true">
+  <div class="vn-item active" data-target="sec-hero" role="button" tabindex="0" aria-label="Главная" aria-current="true">
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
     </svg>
     <span class="vn-tip" aria-hidden="true">Главная</span>
   </div>
 
-  <div class="vn-item" data-idx="1" role="button" tabindex="0" aria-label="Таймер">
+  <div class="vn-item" data-target="sec-timer" role="button" tabindex="0" aria-label="Таймер">
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path
         d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z" />
@@ -2271,14 +2271,14 @@
     <span class="vn-tip" aria-hidden="true">Таймер</span>
   </div>
 
-  <div class="vn-item" data-idx="2" role="button" tabindex="0" aria-label="Видео">
+  <div class="vn-item" data-target="sec-video" role="button" tabindex="0" aria-label="Видео">
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z" />
     </svg>
     <span class="vn-tip" aria-hidden="true">Видео</span>
   </div>
 
-  <div class="vn-item" data-idx="3" role="button" tabindex="0" aria-label="Подкаст">
+  <div class="vn-item" data-target="sec-podcast" role="button" tabindex="0" aria-label="Подкаст">
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path
         d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.93V20H9v2h6v-2h-2v-2.07A7 7 0 0 0 19 11h-2z" />
@@ -2286,7 +2286,7 @@
     <span class="vn-tip" aria-hidden="true">Подкаст</span>
   </div>
 
-  <div class="vn-item" data-idx="4" role="button" tabindex="0" aria-label="Новости">
+  <div class="vn-item" data-target="sec-news" role="button" tabindex="0" aria-label="Новости">
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path
         d="M20 3H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zM7 7h10v2H7V7zm0 4h10v2H7v-2zm0 4h7v2H7v-2z" />
@@ -2358,6 +2358,30 @@
         </div>
     </div>
   </section>
+
+  <!-- ─── DAILY VERSE СЕКЦИЯ ─────────────────────────── -->
+  {% if daily_verse %}
+  <section class="snap-sec w-full flex flex-col items-center justify-center relative px-4 sm:px-8 py-10 bg-background-light" id="sec-verse" aria-label="Стих дня">
+    <div class="max-w-4xl w-full">
+        <div class="bg-white rounded-3xl shadow-lg border border-primary/20 p-8 md:p-12 text-center relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary to-[#e6c86e]"></div>
+            <div class="mb-4 text-primary">
+                <i class="fa-solid fa-book-bible text-4xl opacity-80"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-navy mb-6 tracking-wider uppercase text-sm">Стих дня</h2>
+            <p class="text-2xl md:text-3xl lg:text-4xl font-display font-medium text-navy leading-relaxed mb-6 italic">
+                "{{ daily_verse.verse_text }}"
+            </p>
+            <div class="text-primary font-bold text-lg md:text-xl">{{ daily_verse.reference }}</div>
+            {% if daily_verse.reflection %}
+            <div class="mt-8 pt-8 border-t border-navy/10 text-navy/70 text-base max-w-2xl mx-auto">
+                {{ daily_verse.reflection }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+  </section>
+  {% endif %}
 
   <!-- ─── СЕКЦИЯ 1: ТАЙМЕР ──────────────────────────── -->
   <section class="snap-sec min-h-screen w-full flex flex-col items-center justify-center relative px-4 sm:px-8 py-20 bg-background-light" id="sec-timer" aria-label="Таймер до богослужения">
@@ -3509,6 +3533,52 @@
 
 
 
+  // ── ВЕРТИКАЛЬНАЯ НАВИГАЦИЯ (IntersectionObserver) ────────────────────────────
+  const initVerticalNav = () => {
+    const vNavItems = document.querySelectorAll('.vn-item');
+    const sections = document.querySelectorAll('.snap-sec');
+    const snapRoot = document.getElementById('snap-root');
+    
+    if (!vNavItems.length || !sections.length || !snapRoot) return;
+
+    // Клик по точкам
+    vNavItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const targetId = item.dataset.target;
+        if (targetId) {
+          const targetSection = document.getElementById(targetId);
+          if (targetSection) scrollSmooth(targetSection);
+        }
+      });
+    });
+
+    // Наблюдатель за секциями
+    const observerOptions = {
+      root: snapRoot,
+      threshold: 0.5
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const targetId = entry.target.id;
+          
+          vNavItems.forEach(nav => {
+            const isActive = nav.dataset.target === targetId;
+            nav.classList.toggle('active', isActive);
+            if (isActive) {
+              nav.setAttribute('aria-current', 'true');
+            } else {
+              nav.removeAttribute('aria-current');
+            }
+          });
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach(sec => observer.observe(sec));
+  };
+
   // ── ИНИЦИАЛИЗАЦИЯ ────────────────────────────────────────────────────────────
   const init = () => {
     initialState();
@@ -3517,6 +3587,7 @@
     detectState();
     loadPrev();
     startIntervals();
+    initVerticalNav();
   };
 
   if (document.readyState === 'loading') {

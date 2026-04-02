@@ -9,6 +9,7 @@
         max-width: 1200px;
         margin: 0 auto;
         padding: 100px 20px 80px;
+        color: var(--navy);
     }
     
     .library-header {
@@ -17,18 +18,20 @@
     }
     
     .library-header h1 {
-        color: white;
+        font-family: var(--font-display);
+        color: var(--navy);
         font-size: 2.5rem;
         margin-bottom: 15px;
+        font-weight: 800;
     }
     
     .library-header h1 i {
-        color: #f1c40f;
+        color: var(--primary);
         margin-right: 15px;
     }
     
     .library-header p {
-        color: rgba(255,255,255,0.8);
+        color: var(--txt-sub);
         font-size: 1.1rem;
         max-width: 600px;
         margin: 0 auto;
@@ -42,50 +45,58 @@
     }
     
     .category-card {
-        background: rgba(255,255,255,0.05);
-        backdrop-filter: blur(10px);
+        background: white;
         border-radius: 20px;
         padding: 30px 20px;
         text-align: center;
         text-decoration: none;
-        color: white;
+        color: var(--navy);
         transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        border: 1px solid rgba(255,255,255,0.1);
+        border: 1px solid rgba(26,31,54,0.05);
+        box-shadow: 0 4px 15px rgba(26,31,54,0.05);
     }
     
     .category-card:hover {
         transform: translateY(-10px);
-        background: rgba(255,255,255,0.1);
-        border-color: #f1c40f;
+        border-color: var(--primary);
+        box-shadow: 0 10px 30px rgba(201,168,76,0.15);
     }
     
     .category-icon {
         width: 80px;
         height: 80px;
-        background: linear-gradient(145deg, #f1c40f, #f39c12);
+        background: rgba(201,168,76,0.15);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         margin: 0 auto 20px;
         font-size: 2.5rem;
+        color: var(--primary);
+        transition: 0.3s;
+    }
+    
+    .category-card:hover .category-icon {
+        background: var(--primary);
         color: white;
     }
     
     .category-card h3 {
         font-size: 1.4rem;
         margin-bottom: 10px;
+        font-weight: 700;
     }
     
     .category-card p {
-        color: rgba(255,255,255,0.7);
-        font-size: 0.9rem;
+        color: var(--txt-sub);
+        font-size: 0.95rem;
         line-height: 1.5;
     }
     
     .section-title {
-        color: white;
+        color: var(--navy);
         font-size: 1.8rem;
+        font-weight: 800;
         margin: 50px 0 30px;
         display: flex;
         align-items: center;
@@ -93,7 +104,7 @@
     }
     
     .section-title i {
-        color: #f1c40f;
+        color: var(--primary);
     }
     
     .card-grid {
@@ -103,31 +114,31 @@
     }
     
     .content-card {
-        background: rgba(255,255,255,0.05);
-        backdrop-filter: blur(10px);
+        background: white;
         border-radius: 15px;
         overflow: hidden;
         text-decoration: none;
-        color: white;
+        color: var(--navy);
         transition: all 0.3s ease;
-        border: 1px solid rgba(255,255,255,0.1);
+        border: 1px solid rgba(26,31,54,0.05);
+        box-shadow: 0 4px 15px rgba(26,31,54,0.05);
     }
     
     .content-card:hover {
         transform: translateY(-5px);
-        border-color: #f1c40f;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        border-color: var(--primary);
+        box-shadow: 0 10px 30px rgba(201,168,76,0.15);
     }
     
     .card-image {
         width: 100%;
         height: 160px;
-        background: linear-gradient(145deg, #3498db, #2980b9);
+        background: rgba(26,31,54,0.05);
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 3rem;
-        color: white;
+        color: var(--primary);
         position: relative;
     }
     
@@ -141,8 +152,8 @@
         position: absolute;
         top: 10px;
         right: 10px;
-        background: #f1c40f;
-        color: #2c3e50;
+        background: var(--primary);
+        color: white;
         padding: 5px 10px;
         border-radius: 20px;
         font-size: 0.8rem;
@@ -154,16 +165,17 @@
     }
     
     .card-title {
-        font-size: 1.2rem;
-        font-weight: 600;
+        font-size: 1.1rem;
+        font-weight: 700;
         margin-bottom: 8px;
+        line-height: 1.4;
     }
     
     .card-meta {
         display: flex;
         align-items: center;
         gap: 15px;
-        color: rgba(255,255,255,0.6);
+        color: var(--txt-muted);
         font-size: 0.85rem;
         margin-top: 10px;
     }
@@ -175,7 +187,7 @@
     .progress-bar {
         width: 100%;
         height: 6px;
-        background: rgba(255,255,255,0.1);
+        background: rgba(26,31,54,0.05);
         border-radius: 3px;
         margin-top: 15px;
         overflow: hidden;
@@ -183,7 +195,7 @@
     
     .progress-fill {
         height: 100%;
-        background: linear-gradient(90deg, #f1c40f, #f39c12);
+        background: var(--primary);
         transition: width 0.3s ease;
     }
     

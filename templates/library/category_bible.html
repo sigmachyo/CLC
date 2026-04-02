@@ -1,0 +1,40 @@
+{% extends 'library/base_library.html' %}
+
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block library_content %}
+<div class="library-header">
+    <h1><i class="fas fa-bible"></i> {{ category.name }}</h1>
+    <p>{{ category.description }}</p>
+</div>
+
+<div class="card-grid">
+    {% for plan in plans %}
+    <a href="{% url 'bible_plan_detail' plan.id %}" class="content-card">
+        <div class="card-image" style="background: linear-gradient(145deg, #27ae60, #2ecc71);">
+            {% if plan.image %}
+            <img src="{{ plan.image.url }}" alt="{{ plan.title }}">
+            {% else %}
+            <i class="fas fa-book-open"></i>
+            {% endif %}
+        </div>
+        <div class="card-content">
+            <div class="card-title">{{ plan.title }}</div>
+            <p style="color: var(--txt-sub); font-size: 0.9rem; margin-top:5px; line-height:1.4;">{{ plan.description|truncatewords:20 }}</p>
+            <div class="card-meta">
+                <span><i class="fas fa-calendar-day"></i> {{ plan.days_count }} дней</span>
+            </div>
+            {% if plan.user_progress %}
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {{ plan.progress_percentage|default:0 }}%"></div>
+            </div>
+            {% endif %}
+        </div>
+    </a>
+    {% empty %}
+    <p style="color: var(--txt-sub); grid-column: 1/-1; text-align: center; padding: 40px;">
+        Планы чтения скоро появятся!
+    </p>
+    {% endfor %}
+</div>
+{% endblock %}

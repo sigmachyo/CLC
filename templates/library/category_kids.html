@@ -1,0 +1,36 @@
+{% extends 'library/base_library.html' %}
+
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block library_content %}
+<div class="library-header">
+    <h1><i class="fas fa-child"></i> {{ category.name }}</h1>
+    <p>{{ category.description }}</p>
+</div>
+
+<div class="card-grid">
+    {% for item in kids_content %}
+    <a href="{% url 'kids_content_detail' item.id %}" class="content-card">
+        <div class="card-image" style="background: linear-gradient(145deg, #e74c3c, #f39c12);">
+            {% if item.thumbnail %}
+            <img src="{{ item.thumbnail.url }}" alt="{{ item.title }}">
+            {% else %}
+            <i class="fas fa-star"></i>
+            {% endif %}
+            <span class="card-badge">{{ item.get_content_type_display }}</span>
+        </div>
+        <div class="card-content">
+            <div class="card-title">{{ item.title }}</div>
+            <div class="card-meta">
+                <span><i class="fas fa-users"></i> {{ item.get_age_group_display }}</span>
+                <span><i class="fas fa-eye"></i> {{ item.views_count }}</span>
+            </div>
+        </div>
+    </a>
+    {% empty %}
+    <p style="color: rgba(255,255,255,0.7); grid-column: 1/-1; text-align: center; padding: 40px;">
+        Детский контент скоро появится! 🌟
+    </p>
+    {% endfor %}
+</div>
+{% endblock %}

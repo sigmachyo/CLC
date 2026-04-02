@@ -1,0 +1,36 @@
+{% extends 'library/base_library.html' %}
+
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block library_content %}
+<div class="library-header">
+    <h1><i class="fas fa-calendar-alt"></i> {{ category.name }}</h1>
+    <p>{{ category.description }}</p>
+</div>
+
+<div class="card-grid">
+    {% for event in events %}
+    <a href="{% url 'event_detail' event.id %}" class="content-card">
+        <div class="card-image" style="background: linear-gradient(145deg, #8e44ad, #9b59b6);">
+            {% if event.image %}
+            <img src="{{ event.image.url }}" alt="{{ event.title }}">
+            {% else %}
+            <i class="fas fa-calendar-check"></i>
+            {% endif %}
+            <span class="card-badge">{{ event.get_event_type_display }}</span>
+        </div>
+        <div class="card-content">
+            <div class="card-title">{{ event.title }}</div>
+            <div class="card-meta">
+                <span><i class="fas fa-clock"></i> {{ event.start_date|date:"d.m.Y H:i" }}</span>
+                <span><i class="fas fa-map-marker-alt"></i> {{ event.location }}</span>
+            </div>
+        </div>
+    </a>
+    {% empty %}
+    <p style="color: rgba(255,255,255,0.7); grid-column: 1/-1; text-align: center; padding: 40px;">
+        Предстоящих событий пока нет.
+    </p>
+    {% endfor %}
+</div>
+{% endblock %}

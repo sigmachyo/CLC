@@ -45,7 +45,7 @@ class AnnouncementAdmin(admin.ModelAdmin):
         }),
     )
 
-from .models import Category, Video, BiblePlan, BibleReading, UserBibleProgress, Event, EventRegistration, KidsContent, KidsProgress
+from .models import Category, Video, BiblePlan, BibleReading, UserBibleProgress, Event, EventRegistration, KidsContent, KidsProgress, DailyVerse, PrayerRequest, ChatRoom, ChatMessage, PushSubscription
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -148,3 +148,37 @@ class KidsProgressAdmin(admin.ModelAdmin):
     list_display = ('user', 'content', 'completed', 'score', 'last_accessed')
     list_filter = ('completed', 'content__content_type')
     search_fields = ('user__username', 'content__title')
+
+@admin.register(DailyVerse)
+class DailyVerseAdmin(admin.ModelAdmin):
+    list_display = ('date', 'reference', 'verse_text')
+    list_filter = ('date',)
+    search_fields = ('verse_text', 'reference')
+    ordering = ('-date',)
+
+@admin.register(PrayerRequest)
+class PrayerRequestAdmin(admin.ModelAdmin):
+    list_display = ('title', 'user', 'is_answered', 'prayer_count', 'is_public', 'created_at')
+    list_filter = ('is_answered', 'is_public', 'created_at')
+    search_fields = ('title', 'description', 'user__username')
+    date_hierarchy = 'created_at'
+    ordering = ('-created_at',)
+
+@admin.register(ChatRoom)
+class ChatRoomAdmin(admin.ModelAdmin):
+    list_display = ('name', 'created_at')
+    search_fields = ('name',)
+
+@admin.register(ChatMessage)
+class ChatMessageAdmin(admin.ModelAdmin):
+    list_display = ('room', 'author', 'created_at', 'text')
+    list_filter = ('room', 'created_at')
+    search_fields = ('text', 'author__username')
+
+@admin.register(PushSubscription)
+class PushSubscriptionAdmin(admin.ModelAdmin):
+    list_display = ('user', 'endpoint_snippet', 'created_at')
+    list_filter = ('created_at',)
+    
+    def endpoint_snippet(self, obj):
+        return obj.endpoint[:40] + '...' if len(obj.endpoint) > 40 else obj.endpoint

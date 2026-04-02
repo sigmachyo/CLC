@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Личные нужды{% endblock %}
+
+{% block extra_css %}
+<style>
+    .prayer-container { max-width: 800px; margin: 0 auto; padding: 100px 20px 80px; }
+    .header-section { text-align: center; margin-bottom: 40px; }
+    .header-section h1 { font-family: var(--font-display); font-size: 2.2rem; font-weight: 800; color: var(--navy); }
+    .nav-bar { display: flex; gap: 15px; margin-bottom: 30px; }
+    .nav-btn { padding: 10px 20px; border-radius: 20px; text-decoration: none; font-weight: 600; background: white; color: var(--txt-sub); box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+    .nav-btn.active { background: var(--primary); color: white; }
+    
+    .prayer-card { background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid var(--navy); }
+    .prayer-card.answered { border-left-color: var(--primary); background: rgba(201,168,76,0.05); }
+    .title { font-size: 1.2rem; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
+    .desc { color: var(--txt-sub); margin-bottom: 15px; }
+    
+    .actions { display: flex; justify-content: space-between; align-items: center; padding-top: 15px; border-top: 1px solid rgba(0,0,0,0.05); }
+    .btn-toggle { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 8px 15px; border-radius: 15px; cursor: pointer; transition: 0.3s; font-weight: 600; }
+    .btn-toggle:hover { background: var(--primary); color: white; }
+    .btn-toggle.answered { background: var(--primary); color: white; }
+    .btn-toggle.answered:hover { background: transparent; color: var(--primary); }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="prayer-container">
+    <div class="header-section">
+        <h1>Мои молитвенные нужды</h1>
+    </div>
+
+    <div class="nav-bar">
+        <a href="{% url 'prayer_list' %}" class="nav-btn"><i class="fa-solid fa-arrow-left"></i> На стену</a>
+        <a href="{% url 'my_prayers' %}" class="nav-btn active">Мои нужды</a>
+        <a href="{% url 'prayer_add' %}" class="nav-btn" style="margin-left: auto; background: var(--navy); color: white;"><i class="fa-solid fa-plus"></i> Новая</a>
+    </div>
+
+    {% for prayer in prayers %}
+    <div class="prayer-card {% if prayer.is_answered %}answered{% endif %}">
+        <div class="title">{{ prayer.title }}</div>
+        <div class="desc">{{ prayer.description|linebreaksbr }}</div>
+        
+        <div class="actions">
+            <span style="color: var(--txt-muted); font-size: 0.9rem;">
+                <i class="fa-solid fa-users"></i> Поддержали: {{ prayer.prayer_count }} | 
+                <i class="fa-regular fa-clock"></i> {{ prayer.created_at|date:"d.m.Y" }}
+            </span>
+            <form method="post" action="{% url 'prayer_toggle_answered' prayer.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-toggle {% if prayer.is_answered %}answered{% endif %}">
+                    {% if prayer.is_answered %}
+                    <i class="fa-solid fa-check"></i> Отвечено (Снять)
+                    {% else %}
+                    Отметить как отвеченную
+                    {% endif %}
+                </button>
+            </form>
+        </div>
+    </div>
+    {% empty %}
+    <p style="text-align: center; color: var(--txt-sub); padding: 40px;">У вас пока нет добавленных молитвенных нужд.</p>
+    {% endfor %}
+</div>
+{% endblock %}

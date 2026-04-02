@@ -1,0 +1,57 @@
+{% extends 'library/base_library.html' %}
+
+{% block title %}{{ content.title }}{% endblock %}
+
+{% block library_content %}
+<div style="max-width: 800px; margin: 0 auto;">
+    <h1 style="color: var(--navy); font-size: 2.2rem; font-weight:800; margin-bottom: 20px;">{{ content.title }}</h1>
+
+    {% if content.thumbnail %}
+    <div style="border-radius: 15px; overflow: hidden; margin-bottom: 30px;">
+        <img src="{{ content.thumbnail.url }}" alt="{{ content.title }}" style="width: 100%; max-height: 400px; object-fit: cover;">
+    </div>
+    {% endif %}
+
+    {% if content.bible_verse %}
+    <div style="background: var(--cream); border-left: 4px solid var(--gold); padding: 15px 20px; border-radius: 0 10px 10px 0; margin-bottom: 25px;">
+        <p style="color: var(--navy); font-style: italic;">{{ content.bible_verse }}</p>
+    </div>
+    {% endif %}
+
+    <div style="color: var(--navy-light); line-height: 1.8; margin-bottom: 30px; font-size:1.05rem;">
+        {{ content.description|linebreaks }}
+    </div>
+
+    {% if user.is_authenticated and progress and not progress.completed %}
+    <form method="post" style="margin-top: 20px; text-align: center;">
+        {% csrf_token %}
+        <input type="hidden" name="complete" value="1">
+        <button type="submit" style="background: linear-gradient(145deg, #2ecc71, #27ae60); color: white; border: none; padding: 15px 30px; border-radius: 30px; font-size: 1rem; font-weight: 700; cursor: pointer;">
+            ✅ Готово!
+        </button>
+    </form>
+    {% endif %}
+
+    {% if similar %}
+    <div style="margin-top: 40px;">
+        <h2 class="section-title"><i class="fas fa-child"></i> Похожий контент</h2>
+        <div class="card-grid">
+            {% for item in similar %}
+            <a href="{% url 'kids_content_detail' item.id %}" class="content-card">
+                <div class="card-image" style="background: linear-gradient(145deg, #e74c3c, #f39c12);">
+                    {% if item.thumbnail %}
+                    <img src="{{ item.thumbnail.url }}" alt="{{ item.title }}">
+                    {% else %}
+                    <i class="fas fa-star"></i>
+                    {% endif %}
+                </div>
+                <div class="card-content">
+                    <div class="card-title">{{ item.title }}</div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

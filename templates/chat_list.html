@@ -1,0 +1,46 @@
+{% extends 'library/base_library.html' %}
+
+{% block title %}Чаты | ЦХЖ Красноярск{% endblock %}
+
+{% block header_title %}Чаты и Форумы{% endblock %}
+
+{% block library_content %}
+<div class="space-y-6">
+    <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold" style="color:var(--navy)">Общение общины</h2>
+        <p class="mt-2" style="color:var(--navy-light)">Здесь вы можете общаться с другими членами церкви, задавать вопросы и делиться свидетельствами.</p>
+    </div>
+
+    <!-- Список чатов -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for data in rooms_data %}
+        <a href="{% url 'chat_room' data.room.id %}" class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-5 border flex items-start gap-4">
+            <div class="w-12 h-12 rounded-full flex items-center justify-center shrink-0" style="background:var(--cream); color:var(--gold);">
+                <span class="material-symbols-outlined text-2xl">{{ data.room.icon }}</span>
+            </div>
+            <div class="flex-1" style="min-width: 0;">
+                <h3 class="font-bold text-lg truncate" style="color:var(--navy)">{{ data.room.name }}</h3>
+                <p class="text-sm truncate mt-1" style="color:var(--navy-light)">
+                    {% if data.last_message %}
+                        <span class="font-medium">{{ data.last_message.author.username }}:</span>
+                        {{ data.last_message.text }}
+                    {% else %}
+                        <em>сообщений пока нет</em>
+                    {% endif %}
+                </p>
+            </div>
+            <div class="text-xs shrink-0 self-end mb-1" style="color:var(--gold)">
+                {% if data.last_message %}
+                    {{ data.last_message.created_at|date:"H:i" }}
+                {% endif %}
+            </div>
+        </a>
+        {% empty %}
+        <div class="col-span-full text-center py-10">
+            <span class="material-symbols-outlined" style="font-size: 48px; color:var(--cream-dark)">forum</span>
+            <p class="mt-4" style="color:var(--navy-light)">Чатов пока нет.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

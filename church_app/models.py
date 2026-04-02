@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 class SpiritualLevel(models.Model):
     """Уровень на духовном пути - здание в городе"""
@@ -213,9 +214,6 @@ class UserBibleProgress(models.Model):
             self.save()
     
     def get_progress_percentage(self):
-        return int((len(self.completed_days) / self.plan.days_count) * 100) if self.plan.days_count else 0
-    
-    def get_progress_percentage(self):
         if self.plan and self.plan.days_count > 0:
             return int((len(self.completed_days) / self.plan.days_count) * 100)
         return 0
@@ -339,3 +337,80 @@ class KidsProgress(models.Model):
     
     def __str__(self):
         return f"{self.user.username} - {self.content.title}"
+
+class DailyVerse(models.Model):
+    """Стих дня на главной странице"""
+    verse_text = models.TextField(verbose_name="Текст стиха")
+    reference = models.CharField(max_length=100, verbose_name="Ссылка (напр. Иоанна 3:16)")
+    date = models.DateField(unique=True, verbose_name="Дата")
+    reflection = models.TextField(blank=True, null=True, verbose_name="Короткое размышление")
+
+    class Meta:
+        verbose_name = "Стих дня"
+        verbose_name_plural = "Стихи дня"
+
+    def __str__(self):
+        return f"{self.date} - {self.reference}"
+
+class PrayerRequest(models.Model):
+    """Молитвенная нужда (Молитвенный трекер)"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
+    title = models.CharField(max_length=200, verbose_name="Тема молитвы")
+    description = models.TextField(verbose_name="Описание нужды")
+    is_answered = models.BooleanField(default=False, verbose_name="Получен ответ")
+    prayer_count = models.IntegerField(default=0, verbose_name="Сколько человек молится")
+    is_public = models.BooleanField(default=True, verbose_name="Публичная просьба")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Создана")
+    answered_at = models.DateTimeField(null=True, blank=True, verbose_name="Дата ответа")
+
+    class Meta:
+        verbose_name = "Молитвенная нужда"
+        verbose_name_plural = "Молитвенные нужды"
+
+    def __str__(self):
+        return f"{self.title} - {self.user.username}"
+
+class ChatRoom(models.Model):
+    """Комната чата (группа, форум)"""
+    name = models.CharField(max_length=150, verbose_name="Название чата")
+    description = models.TextField(blank=True, null=True, verbose_name="Описание")
+    icon = models.CharField(max_length=50, default="forum", verbose_name="Иконка (Material Symbols)")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Создана")
+
+    class Meta:
+        verbose_name = "Комната чата"
+        verbose_name_plural = "Комнаты чатов"
+
+    def __str__(self):
+        return self.name
+
+class ChatMessage(models.Model):
+    """Сообщение в чате"""
+    room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, related_name='messages', verbose_name="Чат")
+    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Автор")
+    text = models.TextField(verbose_name="Текст сообщения")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Время отправки")
+
+    class Meta:
+        verbose_name = "Сообщение чата"
+        verbose_name_plural = "Сообщения чата"
+        ordering = ['created_at']
+
+    def __str__(self):
+        return f"{self.author.username} ({self.created_at.strftime('%d.%m %H:%M')})"
+
+class PushSubscription(models.Model):
+    """Подписка на Web Push уведомления"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='push_subscriptions', null=True, blank=True, verbose_name="Пользователь")
+    endpoint = models.URLField(max_length=500, unique=True, verbose_name="Endpoint")
+    p256dh = models.CharField(max_length=100, verbose_name="Ключ p256dh")
+    auth = models.CharField(max_length=100, verbose_name="Ключ auth")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата подписки")
+
+    class Meta:
+        verbose_name = "Push Подписка"
+        verbose_name_plural = "Push Подписки"
+
+    def __str__(self):
+        username = self.user.username if self.user else "Аноним"
+        return f"Подписка ({username})"

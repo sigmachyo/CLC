@@ -7,6 +7,11 @@ document.addEventListener('DOMContentLoaded', function() {
     initModals();
     initTooltips();
     initLevelInteractions();
+    
+    // Запрос разрешений на Push
+    if ('Notification' in window && navigator.serviceWorker) {
+        initPushNotifications();
+    }
 });
 
 // Инициализация модальных окон
@@ -96,6 +101,18 @@ function initLevelInteractions() {
         node.addEventListener('mouseup', function() {
             this.style.transform = 'translateY(-5px)';
         });
+    });
+}
+
+// Push уведомления
+function initPushNotifications() {
+    Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+            console.log('Push разрешение получено.');
+            // В реальном приложении здесь делается подписка 
+            // navigator.serviceWorker.ready.then(reg => reg.pushManager.subscribe(...))
+            // и отправка endpoint + keys на сервер /api/push/subscribe/
+        }
     });
 }
 

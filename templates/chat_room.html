@@ -1,0 +1,168 @@
+{% extends 'library/base_library.html' %}
+
+{% block title %}{{ room.name }} | ЦХЖ Красноярск{% endblock %}
+
+{% block library_content %}
+<div class="flex flex-col h-[75vh] bg-white rounded-xl shadow-md border overflow-hidden">
+    <!-- Header -->
+    <div class="flex items-center px-4 py-3 border-b" style="background:var(--cream-light)">
+        <a href="{% url 'chat_list' %}" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-black/5 transition-colors mr-2" style="color:var(--navy)">
+            <span class="material-symbols-outlined">arrow_back</span>
+        </a>
+        <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 mr-3 shadow-inner" style="background:var(--gold-l); color:var(--gold);">
+            <span class="material-symbols-outlined">{{ room.icon }}</span>
+        </div>
+        <div class="flex-1">
+            <h2 class="font-bold text-lg leading-tight" style="color:var(--navy)">{{ room.name }}</h2>
+            {% if room.description %}
+            <p class="text-xs truncate" style="color:var(--navy-light)">{{ room.description }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Область сообщений -->
+    <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4" style="background:#f9f9f9;">
+        <div class="text-center text-xs opacity-50 py-4">Начало истории сообщений</div>
+        <!-- Сообщения будут рендериться здесь через JS -->
+    </div>
+
+    <!-- Поле ввода -->
+    <div class="p-3 border-t bg-white flex items-end gap-2">
+        <textarea id="chat-input" rows="1" class="flex-1 resize-none rounded-2xl border px-4 py-3 focus:outline-none focus:ring-2 focus:ring-black/10 transition-shadow" placeholder="Сообщение..." style="border-color:var(--cream-dark)"></textarea>
+        <button id="send-btn" class="w-12 h-12 flex items-center justify-center rounded-full shrink-0 transition-transform active:scale-95" style="background:var(--navy); color:var(--gold);">
+            <span class="material-symbols-outlined text-xl" style="transform: translateX(2px);">send</span>
+        </button>
+    </div>
+</div>
+
+<!-- Скрипт для AJAX (Long polling) -->
+<script>
+    const roomId = '{{ room.id }}';
+    const currentUserId = '{{ user.id }}';
+    const messagesContainer = document.getElementById('chat-messages');
+    const inputField = document.getElementById('chat-input');
+    const sendBtn = document.getElementById('send-btn');
+    
+    let lastMessageId = 0;
+    
+    // Авто-высота textarea
+    inputField.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight < 120 ? this.scrollHeight : 120) + 'px';
+    });
+    
+    // Отправка по Enter (без Shift)
+    inputField.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+    
+    sendBtn.addEventListener('click', sendMessage);
+    
+    function sendMessage() {
+        const text = inputField.value.trim();
+        if (!text) return;
+        
+        inputField.disabled = true;
+        
+        fetch(`/api/chat/${roomId}/send/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({text: text})
+        })
+        .then(res => res.json())
+        .then(data => {
+            inputField.disabled = false;
+            if (data.status === 'ok') {
+                inputField.value = '';
+                inputField.style.height = 'auto';
+                fetchMessages(); // Сразу подтягиваем только что отправленное
+            } else {
+                console.error(data.message);
+            }
+            inputField.focus();
+        })
+        .catch(err => {
+            console.error(err);
+            inputField.disabled = false;
+        });
+    }
+    
+    function fetchMessages() {
+        fetch(`/api/chat/${roomId}/messages/?last_id=${lastMessageId}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.messages && data.messages.length > 0) {
+                let shouldScroll = false;
+                // Проверяем, был ли скролл в самом низу
+                if (messagesContainer.scrollHeight - messagesContainer.scrollTop <= messagesContainer.clientHeight + 50) {
+                    shouldScroll = true;
+                }
+                
+                data.messages.forEach(msg => {
+                    if (msg.id > lastMessageId) {
+                        lastMessageId = msg.id;
+                        renderMessage(msg);
+                    }
+                });
+                
+                if (shouldScroll) {
+                    scrollToBottom();
+                }
+            }
+        })
+        .catch(err => console.error("Polling error:", err));
+    }
+    
+    function renderMessage(msg) {
+        const div = document.createElement('div');
+        div.className = `flex flex-col max-w-[80%] ${msg.is_me ? 'ml-auto items-end' : 'mr-auto items-start'}`;
+        
+        const bubble = document.createElement('div');
+        bubble.className = `px-4 py-2 rounded-2xl shadow-sm text-sm whitespace-pre-wrap leading-relaxed ${msg.is_me ? 'rounded-br-sm' : 'rounded-bl-sm'}`;
+        
+        if (msg.is_me) {
+            bubble.style.background = 'var(--navy)';
+            bubble.style.color = 'white';
+        } else {
+            bubble.style.background = 'white';
+            bubble.style.color = 'var(--navy)';
+            bubble.style.border = '1px solid var(--cream-dark)';
+            
+            // Имя автора, если это не я
+            const authorEl = document.createElement('div');
+            authorEl.className = 'text-[11px] font-bold mb-1';
+            authorEl.style.color = 'var(--gold)';
+            authorEl.textContent = msg.author_username;
+            bubble.appendChild(authorEl);
+        }
+        
+        // Текст сообщения
+        const textEl = document.createElement('span');
+        textEl.textContent = msg.text;
+        bubble.appendChild(textEl);
+        
+        // Время (выравнивание)
+        const timeEl = document.createElement('div');
+        timeEl.className = `text-[10px] mt-1 opacity-70 ${msg.is_me ? 'text-right text-gray-300' : 'text-right text-gray-500'}`;
+        timeEl.textContent = msg.created_at;
+        bubble.appendChild(timeEl);
+        
+        div.appendChild(bubble);
+        messagesContainer.appendChild(div);
+    }
+    
+    function scrollToBottom() {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+    
+    // Initial fetch & set poll
+    fetchMessages();
+    setInterval(fetchMessages, 3000); // Polling каждые 3 секунды
+</script>
+{% endblock %}

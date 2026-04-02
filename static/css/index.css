@@ -3,18 +3,19 @@
 
 /* ===== ГЛОБАЛЬНЫЕ СТИЛИ ===== */
 :root {
-    --primary-gold: #f1c40f;
-    --secondary-gold: #f39c12;
-    --dark-green: #0a2e1f;
-    --medium-green: #1a4a3a;
-    --light-green: #2a5a4a;
+    /* Переопределяем цвета Duloingo-карты на стиль Midnight Gold */
+    --primary-gold: var(--gold, #c9a84c);
+    --secondary-gold: var(--gold-d, #dfbc55);
+    --dark-green: var(--navy, #1a1f36);
+    --medium-green: var(--navy-light, #212745);
+    --light-green: var(--bg-card, #2b3353);
     --success-green: #2ecc71;
     --error-red: #e74c3c;
-    --blue: #3498db;
+    --blue: var(--b-h, #3a446e); 
     --purple: #9b59b6;
     --teal: #1abc9c;
-    --orange: #e67e22;
-    --pink: #e84393;
+    --orange: var(--gold);
+    --pink: var(--txt-sub, #a9b5df);
 }
 
 * {

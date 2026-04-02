@@ -184,7 +184,7 @@ def events_list(request):
                 start_date__year=year,
                 start_date__month=month_num
             )
-        except:
+        except (ValueError, TypeError):
             pass
     
     upcoming_events = events.filter(end_date__gte=timezone.now()).order_by('start_date')
@@ -345,38 +345,4 @@ def kids_content_detail(request, content_id):
         'song': 'library/kids_song.html',
     }
     
-    return render(request, template_map.get(content.content_type, 'library/kids_detail.html'), context)
-
-def bible_home(request):
-    """Страница чтения Библии"""
-    plans = BiblePlan.objects.filter(is_active=True).order_by('order')
-    
-    if request.user.is_authenticated:
-        user_progress = {p.plan_id: p for p in UserBibleProgress.objects.filter(user=request.user)}
-        for plan in plans:
-            if plan.id in user_progress:
-                plan.user_progress = user_progress[plan.id]
-            else:
-                plan.user_progress = None
-    else:
-        for plan in plans:
-            plan.user_progress = None
-    
-    # Популярные планы
-    popular_plans = BiblePlan.objects.filter(is_active=True).annotate(
-        users_count=Count('userbibleprogress')
-    ).order_by('-users_count')[:3]
-    
-    # Для популярных планов тоже добавляем прогресс
-    if request.user.is_authenticated:
-        for plan in popular_plans:
-            if plan.id in user_progress:
-                plan.user_progress = user_progress[plan.id]
-            else:
-                plan.user_progress = None
-    
-    context = {
-        'plans': plans,
-        'popular_plans': popular_plans,
-    }
-    return render(request, 'library/bible_home.html', context)
+    return render(request, template_map.get(content.content_type, 'library/kids_detail.html'), context)

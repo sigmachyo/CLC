@@ -16,6 +16,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     <!-- Font Awesome (for legacy icons) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- PWA -->
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <meta name="theme-color" content="#1a1f36">
+    <link rel="apple-touch-icon" href="{% static 'icons/icon-192x192.png' %}">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -678,14 +683,17 @@
                     class="hdr-nav-link {% if request.path == '/' %}active{% endif %}">Главная</a>
                 <a href="{% url 'index' %}"
                     class="hdr-nav-link {% if '/index' in request.path or '/map' in request.path %}active{% endif %}">Путь</a>
-                <a href="#" class="hdr-nav-link">Чаты</a>
+                <a href="{% url 'chat_list' %}"
+                    class="hdr-nav-link {% if '/chat' in request.path %}active{% endif %}">Чаты</a>
                 <a href="{% url 'library_home' %}"
                     class="hdr-nav-link {% if '/library' in request.path %}active{% endif %}">Библиотека</a>
+                <a href="{% url 'prayer_list' %}"
+                    class="hdr-nav-link {% if '/prayer' in request.path %}active{% endif %}">Молитва</a>
             </nav>
 
             <!-- Header Actions -->
             <div class="hdr-actions">
-                <a href="#" class="hdr-btn-donate">
+                <a href="{% url 'donate' %}" class="hdr-btn-donate">
                     <span class="material-symbols-outlined">favorite</span>
                     Пожертвовать
                 </a>
@@ -713,7 +721,7 @@
             <span class="material-symbols-outlined">explore</span>
             Путь
         </a>
-        <a href="#" class="mobile-menu-link">
+        <a href="{% url 'chat_list' %}" class="mobile-menu-link {% if '/chat' in request.path %}active{% endif %}">
             <span class="material-symbols-outlined">forum</span>
             Чаты
         </a>
@@ -722,12 +730,17 @@
             <span class="material-symbols-outlined">menu_book</span>
             Библиотека
         </a>
+        <a href="{% url 'prayer_list' %}"
+            class="mobile-menu-link {% if '/prayer' in request.path %}active{% endif %}">
+            <span class="material-symbols-outlined">front_hand</span>
+            Молитва
+        </a>
         <a href="{% if user.is_authenticated %}{% url 'profile' %}{% else %}{% url 'login' %}{% endif %}"
             class="mobile-menu-link {% if '/profile' in request.path %}active{% endif %}">
             <span class="material-symbols-outlined">person</span>
             Профиль
         </a>
-        <a href="#" class="mobile-menu-link" style="margin-top:8px; background:var(--gold-l);">
+        <a href="{% url 'donate' %}" class="mobile-menu-link" style="margin-top:8px; background:var(--gold-l);">
             <span class="material-symbols-outlined fill-icon" style="color:var(--gold)">favorite</span>
             <span style="color:var(--gold); font-weight:700;">Пожертвовать</span>
         </a>
@@ -752,7 +765,7 @@
             <span class="material-symbols-outlined">explore</span>
             <span>Путь</span>
         </a>
-        <a href="#" class="nav-item" aria-label="Чаты">
+        <a href="{% url 'chat_list' %}" class="nav-item {% if '/chat' in request.path %}active{% endif %}" aria-label="Чаты">
             <span class="material-symbols-outlined">forum</span>
             <span>Чаты</span>
         </a>
@@ -765,6 +778,11 @@
             class="nav-item {% if '/profile' in request.path %}active{% endif %}" aria-label="Профиль">
             <span class="material-symbols-outlined">person</span>
             <span>Профиль</span>
+        </a>
+        <a href="{% url 'donate' %}"
+            class="nav-item {% if '/donate' in request.path %}active{% endif %}" aria-label="Дар">
+            <span class="material-symbols-outlined">favorite</span>
+            <span>Дар</span>
         </a>
     </nav>
     {% endblock %}
@@ -833,6 +851,19 @@
                 });
             }
         });
+
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('{% static "sw.js" %}')
+                    .then(registration => {
+                        console.log('SW registered with scope:', registration.scope);
+                    })
+                    .catch(err => {
+                        console.error('SW registration failed:', err);
+                    });
+            });
+        }
     </script>
     {% block extra_js %}{% endblock %}
 </body>

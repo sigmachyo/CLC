@@ -1,0 +1,21 @@
+{
+  "name": "FaithTogether - ЦХЖ Красноярск",
+  "short_name": "CLC App",
+  "description": "Интерактивное духовное пространство для роста, общения и поддержки.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f0e8",
+  "theme_color": "#1a1f36",
+  "icons": [
+    {
+      "src": "/static/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
