@@ -3,300 +3,157 @@
 
 {% block title %}Регистрация{% endblock %}
 
+{% block main_class %}flex-grow flex flex-col w-full p-0 m-0{% endblock %}
+
 {% block content %}
-<div class="auth-container">
-    <div class="auth-card">
-        <div class="auth-header">
-            <div class="auth-icon">
-                <i class="fas fa-user-plus"></i>
-            </div>
-            <h1>Регистрация</h1>
-            <p>Присоединяйтесь к духовному путешествию</p>
+<div class="flex-grow flex flex-col lg:flex-row min-h-[calc(100vh-72px)] w-full relative">
+    
+    <!-- Left panel: Visuals -->
+    <div class="hidden lg:flex lg:w-1/2 relative bg-navy items-center justify-center overflow-hidden order-2 lg:order-1">
+        <div class="absolute inset-0">
+            <div class="absolute inset-0 bg-gradient-to-tr from-navy via-[#1e2540] to-black opacity-90 z-10"></div>
+            <!-- Decorative golden orbs -->
+            <div class="absolute -top-[10%] -left-[10%] w-[500px] h-[500px] bg-primary rounded-full blur-[140px] opacity-20 z-0 animate-pulse" style="animation-duration: 9s;"></div>
+            <div class="absolute bottom-[0%] -right-[20%] w-[600px] h-[600px] bg-primary rounded-full blur-[160px] opacity-10 z-0 animate-pulse" style="animation-duration: 14s;"></div>
         </div>
         
-        {% if messages %}
-        <div class="messages">
-            {% for message in messages %}
-            <div class="message {% if message.tags %}message-{{ message.tags }}{% endif %}">
-                <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% else %}check-circle{% endif %}"></i>
-                {{ message }}
+        <div class="relative z-20 text-center px-16 max-w-2xl">
+            <div class="mb-8 text-primary opacity-50">
+                <span class="material-symbols-outlined" style="font-size: 80px;">church</span>
             </div>
-            {% endfor %}
+            <h2 class="text-4xl lg:text-5xl font-display font-bold text-white mb-6 leading-tight">
+                Начните свое <br>духовное восхождение
+            </h2>
+            <p class="text-lg text-white/70 font-light leading-relaxed">
+                Зарегистрируйтесь, чтобы сохранять прогресс в чтении, следить за своим духовным ростом и стать частью великого Божьего дела.
+            </p>
+            <div class="mt-12 flex justify-center gap-6">
+                <!-- Mini stats/features -->
+                <div class="text-center">
+                    <div class="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-3 backdrop-blur-md">
+                        <span class="material-symbols-outlined text-primary">explore</span>
+                    </div>
+                    <div class="text-white/90 text-sm font-semibold">Карта Пути</div>
+                </div>
+                <div class="text-center">
+                    <div class="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-3 backdrop-blur-md">
+                        <span class="material-symbols-outlined text-primary">forum</span>
+                    </div>
+                    <div class="text-white/90 text-sm font-semibold">Общение</div>
+                </div>
+            </div>
         </div>
-        {% endif %}
-        
-        <form method="post" class="auth-form">
-            {% csrf_token %}
-            
-            <div class="form-group">
-                <label for="username">
-                    <i class="fas fa-user"></i>
-                    Имя пользователя
-                </label>
-                <input type="text" 
-                       id="username" 
-                       name="username" 
-                       required 
-                       placeholder="Введите имя пользователя"
-                       autocomplete="username">
-            </div>
-            
-            <div class="form-group">
-                <label for="email">
-                    <i class="fas fa-envelope"></i>
-                    Email
-                </label>
-                <input type="email" 
-                       id="email" 
-                       name="email" 
-                       required 
-                       placeholder="Введите email"
-                       autocomplete="email">
-            </div>
-            
-            <div class="form-group">
-                <label for="password1">
-                    <i class="fas fa-lock"></i>
-                    Пароль
-                </label>
-                <input type="password" 
-                       id="password1" 
-                       name="password1" 
-                       required 
-                       placeholder="Придумайте пароль"
-                       autocomplete="new-password">
-                <small class="form-text">Минимум 8 символов</small>
-            </div>
-            
-            <div class="form-group">
-                <label for="password2">
-                    <i class="fas fa-lock"></i>
-                    Подтверждение пароля
-                </label>
-                <input type="password" 
-                       id="password2" 
-                       name="password2" 
-                       required 
-                       placeholder="Повторите пароль"
-                       autocomplete="new-password">
-            </div>
-            
-            <div class="form-group form-checkbox">
-                <label>
-                    <input type="checkbox" name="agreement" required>
-                    <span>Я соглашаюсь с <a href="#">условиями использования</a> и <a href="#">политикой конфиденциальности</a></span>
-                </label>
-            </div>
-            
-            <button type="submit" class="btn-auth">
-                <i class="fas fa-user-plus"></i>
-                Зарегистрироваться
-            </button>
-            
-            <div class="auth-links">
-                <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
-                <a href="{% url 'index' %}" class="back-link">
-                    <i class="fas fa-arrow-left"></i>
-                    Вернуться на главную
-                </a>
-            </div>
-        </form>
     </div>
+
+    <!-- Right panel: Form -->
+    <div class="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 relative z-10 bg-background-light order-1 lg:order-2">
+        <div class="w-full max-w-md bg-white/80 backdrop-blur-xl p-8 sm:p-10 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/40">
+            
+            <div class="mb-10 text-center lg:text-left">
+                <h1 class="text-3xl font-display font-bold text-navy mb-3">Создать аккаунт</h1>
+                <p class="text-txt-sub">Добро пожаловать в нашу общину!</p>
+            </div>
+
+            {% if messages %}
+            <div class="space-y-3 mb-6">
+                {% for message in messages %}
+                <div class="p-4 rounded-xl flex items-center gap-3 text-sm font-medium
+                    {% if message.tags == 'error' %}bg-red-50 text-red-600 border border-red-100{% else %}bg-green-50 text-green-700 border border-green-100{% endif %}">
+                    <span class="material-symbols-outlined">{% if message.tags == 'error' %}error{% else %}check_circle{% endif %}</span>
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form method="post" class="space-y-5">
+                {% csrf_token %}
+                
+                <!-- Floating Label Input: Username -->
+                <div class="relative group">
+                    <input type="text" id="username" name="username" required placeholder=" "
+                        class="peer w-full px-5 pb-3 pt-7 bg-gray-50 border-2 border-transparent rounded-xl text-navy focus:bg-white focus:border-primary focus:ring-0 outline-none transition-all"
+                        autocomplete="username">
+                    <label for="username" 
+                        class="absolute left-5 top-5 text-gray-400 text-base transition-all duration-200 pointer-events-none 
+                        peer-focus:text-xs peer-focus:top-2 peer-focus:font-semibold peer-focus:text-primary 
+                        peer-valid:text-xs peer-valid:top-2 peer-valid:font-semibold peer-valid:text-gray-500">
+                        Имя пользователя
+                    </label>
+                </div>
+
+                <!-- Floating Label Input: Email -->
+                <div class="relative group">
+                    <input type="email" id="email" name="email" required placeholder=" "
+                        class="peer w-full px-5 pb-3 pt-7 bg-gray-50 border-2 border-transparent rounded-xl text-navy focus:bg-white focus:border-primary focus:ring-0 outline-none transition-all"
+                        autocomplete="email">
+                    <label for="email" 
+                        class="absolute left-5 top-5 text-gray-400 text-base transition-all duration-200 pointer-events-none 
+                        peer-focus:text-xs peer-focus:top-2 peer-focus:font-semibold peer-focus:text-primary 
+                        peer-valid:text-xs peer-valid:top-2 peer-valid:font-semibold peer-valid:text-gray-500">
+                        Электронная почта
+                    </label>
+                </div>
+
+                <!-- Floating Label Input: Password 1 -->
+                <div class="relative group">
+                    <input type="password" id="password1" name="password1" required placeholder=" "
+                        class="peer w-full px-5 pb-3 pt-7 bg-gray-50 border-2 border-transparent rounded-xl text-navy focus:bg-white focus:border-primary focus:ring-0 outline-none transition-all"
+                        autocomplete="new-password">
+                    <label for="password1" 
+                        class="absolute left-5 top-5 text-gray-400 text-base transition-all duration-200 pointer-events-none 
+                        peer-focus:text-xs peer-focus:top-2 peer-focus:font-semibold peer-focus:text-primary 
+                        peer-valid:text-xs peer-valid:top-2 peer-valid:font-semibold peer-valid:text-gray-500">
+                        Придумайте пароль
+                    </label>
+                </div>
+
+                <!-- Floating Label Input: Password 2 -->
+                <div class="relative group">
+                    <input type="password" id="password2" name="password2" required placeholder=" "
+                        class="peer w-full px-5 pb-3 pt-7 bg-gray-50 border-2 border-transparent rounded-xl text-navy focus:bg-white focus:border-primary focus:ring-0 outline-none transition-all"
+                        autocomplete="new-password">
+                    <label for="password2" 
+                        class="absolute left-5 top-5 text-gray-400 text-base transition-all duration-200 pointer-events-none 
+                        peer-focus:text-xs peer-focus:top-2 peer-focus:font-semibold peer-focus:text-primary 
+                        peer-valid:text-xs peer-valid:top-2 peer-valid:font-semibold peer-valid:text-gray-500">
+                        Повторите пароль
+                    </label>
+                </div>
+
+                <div class="flex items-start gap-3 mt-4">
+                    <input type="checkbox" name="agreement" required id="agreement" class="mt-1 w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/20 transition-all cursor-pointer">
+                    <label for="agreement" class="text-sm text-txt-sub leading-tight cursor-pointer">
+                        Я соглашаюсь с <a href="#" class="text-primary font-semibold hover:underline">условиями использования</a> и обработкой моих персональных данных
+                    </label>
+                </div>
+
+                <button type="submit" id="submit-btn" class="w-full mt-2 bg-primary hover:bg-primary-hover text-white font-bold py-4 px-6 rounded-xl transition-all transform hover:-translate-y-1 shadow-[0_8px_20px_rgba(201,168,76,0.3)] flex justify-center items-center gap-2">
+                    Создать аккаунт
+                </button>
+
+                <div class="text-center pt-6 lg:text-left">
+                    <p class="text-txt-sub font-medium">
+                        Уже есть аккаунт? 
+                        <a href="{% url 'login' %}" class="text-navy hover:text-primary font-bold underline decoration-2 underline-offset-4 transition-colors">Войти</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </div>
 
-<style>
-/* ── Midnight Gold Auth Redesign ── */
-.auth-container {
-    min-height: calc(100vh - var(--hdr) - 80px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 60px 20px;
-    background: var(--bg);
-}
-
-.auth-card {
-    background: var(--bg-card, #ffffff);
-    border-radius: 24px;
-    box-shadow: var(--shadow-lg);
-    width: 100%;
-    max-width: 480px;
-    padding: 50px 40px;
-    position: relative;
-    z-index: 10;
-    border: 1px solid var(--b);
-    animation: fadeIn 0.4s ease-out;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.auth-header {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.auth-icon {
-    width: 80px;
-    height: 80px;
-    background: rgba(201, 168, 76, 0.15);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 20px;
-    color: var(--gold);
-    font-size: 2.2rem;
-    border: 1px solid rgba(201, 168, 76, 0.3);
-}
-
-.auth-header h1 {
-    font-size: 2.2rem;
-    color: var(--navy);
-    font-weight: 700;
-    margin-bottom: 8px;
-    font-family: 'Merriweather', serif;
-}
-
-.auth-header p {
-    color: var(--txt-sub);
-    font-size: 1rem;
-}
-
-.auth-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    position: relative;
-}
-
-.form-group label {
-    font-weight: 600;
-    color: var(--navy);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.form-group label i {
-    color: var(--gold);
-    opacity: 0.8;
-}
-
-.form-group input {
-    padding: 14px 18px;
-    border: 1px solid var(--b);
-    border-radius: 12px;
-    font-size: 1rem;
-    transition: all 0.2s ease;
-    background: var(--bg);
-    color: var(--txt);
-    width: 100%;
-    font-family: inherit;
-}
-
-.form-group input:focus {
-    outline: none;
-    border-color: var(--gold);
-    box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
-}
-
-.form-text {
-    font-size: 0.8rem;
-    color: var(--txt-sub);
-    position: absolute;
-    bottom: -20px;
-    left: 4px;
-}
-
-.form-checkbox {
-    flex-direction: row;
-    align-items: center;
-    margin-top: 10px;
-}
-
-.form-checkbox input {
-    width: 18px;
-    height: 18px;
-    accent-color: var(--gold);
-    cursor: pointer;
-}
-
-.form-checkbox label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 400;
-    color: var(--txt-sub);
-    font-size: 0.9rem;
-    text-transform: none;
-    letter-spacing: normal;
-}
-
-.form-checkbox a {
-    color: var(--gold);
-    text-decoration: none;
-    font-weight: 600;
-}
-.form-checkbox a:hover { text-decoration: underline; }
-
-.btn-auth {
-    background: var(--gold);
-    color: var(--navy);
-    border: none;
-    padding: 16px;
-    border-radius: 12px;
-    font-size: 1.1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    text-transform: uppercase; letter-spacing: 0.05em;
-    margin-top: 16px;
-    box-shadow: 0 4px 12px rgba(201, 168, 76, 0.2);
-    width: 100%;
-}
-
-.btn-auth:hover {
-    background: var(--gold-d); transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(201, 168, 76, 0.3);
-}
-
-.auth-links {
-    text-align: center;
-    margin-top: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    border-top: 1px solid var(--b);
-    padding-top: 24px;
-}
-
-.auth-links p { color: var(--txt-sub); font-size: 0.95rem; }
-.auth-links a { color: var(--gold); font-weight: 600; text-decoration: none; margin-left: 4px; }
-.auth-links a:hover { text-decoration: underline; }
-
-.back-link { display: inline-flex; align-items: center; justify-content: center; gap: 6px; color: var(--txt-sub) !important; font-weight: 400 !important; font-size: 0.9rem; margin-top: 0; }
-.back-link:hover { color: var(--gold) !important; }
-
-.messages .message { padding: 14px 16px; border-radius: 12px; display: flex; align-items: center; gap: 10px; margin-bottom: 20px; font-size: 0.95rem; border: 1px solid currentColor; }
-.message-success { background: rgba(39, 174, 96, 0.1); color: #27ae60; }
-.message-error { background: rgba(231, 76, 60, 0.1); color: #e74c3c; }
-
-@media (max-width: 600px) {
-    .auth-card { padding: 40px 24px; border-radius: 16px; border: none; box-shadow: none; background: transparent; margin: 0; }
-    .auth-container { padding: 20px 10px; background: var(--bg-card); display: block; min-height: auto; }
-}
-</style>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('form');
+    const btn = document.getElementById('submit-btn');
+    if(form) {
+        form.addEventListener('submit', () => {
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin">progress_activity</span> Создание...';
+            btn.classList.add('opacity-90', 'cursor-not-allowed');
+        });
+    }
+});
+</script>
 {% endblock %}

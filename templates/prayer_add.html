@@ -2,50 +2,57 @@
 
 {% block title %}Добавить нужду{% endblock %}
 
-{% block extra_css %}
-<style>
-    .form-container { max-width: 600px; margin: 100px auto 80px; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-    h1 { font-family: var(--font-display); color: var(--navy); margin-bottom: 20px; text-align: center; }
-    .form-group { margin-bottom: 20px; }
-    label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--navy); }
-    input[type="text"], textarea { width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 10px; font-family: inherit; font-size: 1rem; transition: border 0.3s; }
-    input[type="text"]:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(201,168,76,0.1); }
-    textarea { height: 150px; resize: vertical; }
-    .checkbox-container { display: flex; align-items: center; gap: 10px; margin-bottom: 30px; }
-    .checkbox-container input { width: 20px; height: 20px; accent-color: var(--primary); }
-    .btn-submit { width: 100%; background: var(--navy); color: white; border: none; padding: 15px; border-radius: 10px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.3s; }
-    .btn-submit:hover { background: var(--primary); }
-</style>
-{% endblock %}
+{% block main_class %}flex-grow relative bg-background-light{% endblock %}
 
 {% block content %}
-<div class="form-container">
-    <h1>Оставить нужду</h1>
-    <p style="text-align: center; color: var(--txt-sub); margin-bottom: 30px;">
-        "Много может усиленная молитва праведного" (Иакова 5:16)
-    </p>
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pb-24">
+    
+    <div class="bg-white rounded-[2rem] p-8 sm:p-12 shadow-[0_12px_40px_rgba(0,0,0,0.06)] border border-navy/5 relative overflow-hidden">
+        <!-- Decoration graphic -->
+        <div class="absolute -top-16 -right-16 w-40 h-40 bg-primary/10 rounded-full blur-2xl"></div>
+        <div class="absolute -bottom-16 -left-16 w-48 h-48 bg-navy/5 rounded-full blur-2xl"></div>
 
-    <form method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="title">Тема молитвы</label>
-            <input type="text" id="title" name="title" required placeholder="Кратко суть просьбы (напр. О здоровье бабушки)">
-        </div>
-        
-        <div class="form-group">
-            <label for="description">Описание (подробности)</label>
-            <textarea id="description" name="description" required placeholder="Опишите ситуацию подробнее..."></textarea>
-        </div>
+        <div class="relative z-10">
+            <div class="text-center mb-10">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 text-primary mb-4">
+                    <span class="material-symbols-outlined text-3xl">edit_document</span>
+                </div>
+                <h1 class="text-3xl sm:text-4xl font-display font-bold text-navy mb-3">Оставить нужду</h1>
+                <p class="text-txt-sub italic font-medium">"Много может усиленная молитва праведного" <br/><span class="text-xs text-gray-400 not-italic">(Иакова 5:16)</span></p>
+            </div>
 
-        <div class="checkbox-container">
-            <input type="checkbox" id="is_public" name="is_public" checked>
-            <label for="is_public" style="margin: 0; font-weight: normal; color: var(--txt-sub);">Разместить на публичной стене (будет видно всем)</label>
-        </div>
+            <form method="post" class="space-y-6 max-w-xl mx-auto">
+                {% csrf_token %}
+                
+                <div class="space-y-2">
+                    <label for="title" class="block text-sm font-bold text-navy uppercase tracking-wide">Тема молитвы</label>
+                    <input type="text" id="title" name="title" required placeholder="Кратко суть просьбы (напр. О здоровье бабушки)" 
+                           class="w-full bg-gray-50 border border-gray-200 text-navy text-base rounded-xl focus:ring-4 focus:ring-primary/10 focus:border-primary block p-4 transition-all outline-none">
+                </div>
+                
+                <div class="space-y-2">
+                    <label for="description" class="block text-sm font-bold text-navy uppercase tracking-wide">Описание подробностей</label>
+                    <textarea id="description" name="description" required placeholder="Опишите ситуацию подробнее..." rows="5"
+                              class="w-full bg-gray-50 border border-gray-200 text-navy text-base rounded-xl focus:ring-4 focus:ring-primary/10 focus:border-primary block p-4 transition-all outline-none resize-y"></textarea>
+                </div>
 
-        <button type="submit" class="btn-submit">Опубликовать просьбу</button>
-        <div style="text-align: center; margin-top: 15px;">
-            <a href="{% url 'prayer_list' %}" style="color: var(--txt-muted); text-decoration: none;">Отмена</a>
+                <div class="flex items-center gap-3 bg-navy/5 p-4 rounded-xl border border-navy/10 mt-2">
+                    <input type="checkbox" id="is_public" name="is_public" checked class="w-5 h-5 rounded border-gray-300 text-primary border-2 focus:ring-primary/30 accent-primary cursor-pointer shrink-0">
+                    <label for="is_public" class="text-sm font-medium text-navy/80 cursor-pointer select-none">
+                        Разместить на публичной стене (будет видно всем участникам)
+                    </label>
+                </div>
+
+                <div class="pt-4 flex flex-col sm:flex-row gap-4 items-center">
+                    <button type="submit" class="w-full sm:w-auto flex-1 bg-navy hover:bg-navy-light text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5 active:scale-95 text-center">
+                        Опубликовать просьбу
+                    </button>
+                    <a href="{% url 'prayer_list' %}" class="w-full sm:w-auto text-txt-sub font-semibold hover:text-navy px-6 py-4 rounded-xl hover:bg-gray-50 transition-colors text-center">
+                        Отмена
+                    </a>
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
 </div>
 {% endblock %}

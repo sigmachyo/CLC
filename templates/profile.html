@@ -3,401 +3,224 @@
 
 {% block title %}Личный кабинет{% endblock %}
 
+{% block main_class %}flex-grow relative bg-background-light{% endblock %}
+
 {% block content %}
-<div class="profile-container">
-    <!-- Шапка профиля -->
-    <div class="profile-header">
-        <div class="profile-cover">
-            <div class="profile-avatar">
-                <i class="fas fa-user-circle"></i>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 mb-20">
+    
+    <!-- HEADER: Profile Banner & Info -->
+    <div class="relative rounded-[2rem] overflow-hidden mb-12 bg-white shadow-[0_8px_40px_rgba(0,0,0,0.04)] border border-navy/5">
+        <!-- Banner gradient -->
+        <div class="absolute top-0 left-0 right-0 h-40 sm:h-48 bg-gradient-to-tr from-navy to-navy-light overflow-hidden">
+            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
+            <div class="absolute -top-24 -right-24 w-64 h-64 bg-primary rounded-full blur-[80px] opacity-20"></div>
+            <div class="absolute -bottom-24 -left-12 w-48 h-48 bg-primary rounded-full blur-[60px] opacity-20"></div>
+        </div>
+
+        <div class="relative z-10 pt-24 sm:pt-32 px-6 sm:px-12 pb-8 sm:pb-12 flex flex-col sm:flex-row items-center sm:items-end gap-6 sm:gap-8">
+            <!-- Avatar -->
+            <div class="flex-shrink-0 relative">
+                <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-navy border-4 border-white flex items-center justify-center shadow-xl overflow-hidden relative group cursor-pointer">
+                    <span class="material-symbols-outlined text-primary text-6xl group-hover:scale-110 transition-transform duration-500">account_circle</span>
+                    <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
+                        <span class="material-symbols-outlined text-white text-3xl">photo_camera</span>
+                    </div>
+                </div>
             </div>
-            <div class="profile-info">
-                <h1>{{ user.username }}</h1>
-                <p>{{ user.email }}</p>
+
+            <!-- User Info -->
+            <div class="flex-grow text-center sm:text-left">
+                <h1 class="text-3xl sm:text-4xl font-display font-bold text-navy mb-1">{{ user.username }}</h1>
+                <p class="text-txt-sub text-lg mb-3">{{ user.email }}</p>
                 {% if user.first_name or user.last_name %}
-                <p class="profile-name">{{ user.first_name }} {{ user.last_name }}</p>
-                {% endif %}
-            </div>
-            <div class="profile-actions">
-                <a href="{% url 'profile_edit' %}" class="btn-edit">
-                    <i class="fas fa-edit"></i>
-                    Редактировать
-                </a>
-                <a href="{% url 'change_password' %}" class="btn-password">
-                    <i class="fas fa-key"></i>
-                    Сменить пароль
-                </a>
-                <a href="{% url 'logout' %}" class="btn-logout">
-                    <i class="fas fa-sign-out-alt"></i>
-                    Выйти
-                </a>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Статистика -->
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-icon">
-                <i class="fas fa-tree"></i>
-            </div>
-            <div class="stat-details">
-                <span class="stat-value">{{ total_completed }}/{{ total_levels }}</span>
-                <span class="stat-label">Уровней пройдено</span>
-            </div>
-        </div>
-        
-        <div class="stat-card">
-            <div class="stat-icon">
-                <i class="fas fa-chart-line"></i>
-            </div>
-            <div class="stat-details">
-                <span class="stat-value">{{ progress_percentage }}%</span>
-                <span class="stat-label">Общий прогресс</span>
-            </div>
-        </div>
-        
-        <div class="stat-card">
-            <div class="stat-icon">
-                <i class="fas fa-calendar-alt"></i>
-            </div>
-            <div class="stat-details">
-                <span class="stat-value">{{ user.date_joined|date:"d.m.Y" }}</span>
-                <span class="stat-label">На сайте с</span>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Прогресс бар -->
-    <div class="progress-section">
-        <h2>Ваш духовный прогресс</h2>
-        <div class="progress-container">
-            <div class="progress-bar" style="width: {{ progress_percentage }}%;"></div>
-        </div>
-        <p class="progress-text">Вы прошли {{ total_completed }} из {{ total_levels }} уровней</p>
-    </div>
-    
-    <!-- Недавняя активность -->
-    <div class="activity-section">
-        <h2>Недавняя активность</h2>
-        
-        <div class="activity-grid">
-            <!-- Недавно пройденные -->
-            <div class="activity-card">
-                <div class="activity-header">
-                    <i class="fas fa-check-circle"></i>
-                    <h3>Недавно пройдено</h3>
-                </div>
-                
-                {% if recent_completed %}
-                <div class="activity-list">
-                    {% for progress in recent_completed %}
-                    <div class="activity-item">
-                        <div class="activity-icon completed">
-                            <i class="fas fa-trophy"></i>
-                        </div>
-                        <div class="activity-details">
-                            <span class="activity-title">{{ progress.level.title }}</span>
-                            <span class="activity-date">{{ progress.completed_at|date:"d.m.Y H:i" }}</span>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                {% else %}
-                <div class="empty-state">
-                    <i class="fas fa-clock"></i>
-                    <p>Пока нет пройденных уровней</p>
-                    <a href="{% url 'index' %}" class="btn-start">Начать обучение</a>
+                <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-primary/10 text-primary font-semibold text-sm border border-primary/20">
+                    {{ user.first_name }} {{ user.last_name }}
                 </div>
                 {% endif %}
             </div>
+
+            <!-- Actions -->
+            <div class="flex flex-wrap justify-center sm:justify-end gap-3 w-full sm:w-auto mt-4 sm:mt-0">
+                <a href="{% url 'profile_edit' %}" class="flex items-center gap-2 bg-primary hover:bg-primary-hover text-navy font-bold py-3 px-5 rounded-xl transition-all shadow-[0_4px_12px_rgba(201,168,76,0.3)] hover:-translate-y-1">
+                    <span class="material-symbols-outlined text-xl">edit</span>
+                    <span>Редактировать</span>
+                </a>
+                <a href="{% url 'change_password' %}" class="flex items-center gap-2 bg-white hover:bg-gray-50 border border-gray-200 text-navy font-semibold py-3 px-5 rounded-xl transition-all hover:border-gray-300">
+                    <span class="material-symbols-outlined text-xl">key</span>
+                    <span class="hidden xl:inline">Сменить пароль</span>
+                </a>
+                <a href="{% url 'logout' %}" class="flex items-center gap-2 bg-red-50 hover:bg-red-100 border border-red-100 text-red-600 font-semibold py-3 px-5 rounded-xl transition-all">
+                    <span class="material-symbols-outlined text-xl">logout</span>
+                    <span class="hidden xl:inline">Выйти</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- LEFT COLUMN: Stats & Quick Actions -->
+        <div class="lg:col-span-1 space-y-8">
             
-            <!-- В процессе -->
-            <div class="activity-card">
-                <div class="activity-header">
-                    <i class="fas fa-spinner"></i>
-                    <h3>В процессе</h3>
-                </div>
+            <!-- Statistics Card -->
+            <div class="bg-white rounded-[2rem] p-8 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-navy/5">
+                <h2 class="text-xl font-display font-bold text-navy mb-6">Ваша статистика</h2>
                 
-                {% if in_progress %}
-                <div class="activity-list">
-                    {% for progress in in_progress %}
-                    <div class="activity-item">
-                        <div class="activity-icon in-progress">
-                            <i class="fas fa-hourglass-half"></i>
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4 group">
+                        <div class="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-2xl">auto_awesome</span>
                         </div>
-                        <div class="activity-details">
-                            <span class="activity-title">{{ progress.level.title }}</span>
-                            <span class="activity-progress">{{ progress.progress_percentage }}%</span>
+                        <div>
+                            <div class="text-2xl font-bold text-navy leading-none">{{ total_completed }}/{{ total_levels }}</div>
+                            <div class="text-sm text-txt-sub font-semibold uppercase tracking-wider mt-1">Уровней пройдено</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-4 group">
+                        <div class="w-14 h-14 rounded-2xl bg-success/10 text-success flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-2xl">trending_up</span>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-navy leading-none">{{ progress_percentage }}%</div>
+                            <div class="text-sm text-txt-sub font-semibold uppercase tracking-wider mt-1">Общий прогресс</div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-4 group">
+                        <div class="w-14 h-14 rounded-2xl bg-navy/5 text-navy flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-2xl">event</span>
+                        </div>
+                        <div>
+                            <div class="text-xl font-bold text-navy leading-none">{{ user.date_joined|date:"d.m.Y" }}</div>
+                            <div class="text-sm text-txt-sub font-semibold uppercase tracking-wider mt-1">На сайте с</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Bar Detail -->
+                <div class="mt-8 pt-8 border-t border-gray-100">
+                    <div class="flex justify-between text-sm mb-2">
+                        <span class="text-navy font-semibold">Прогресс пути</span>
+                        <span class="text-primary font-bold">{{ progress_percentage }}%</span>
+                    </div>
+                    <div class="h-3 w-full bg-gray-100 rounded-full overflow-hidden">
+                        <div class="h-full bg-gradient-to-r from-primary to-primary-hover rounded-full transition-all duration-1000" style="width: {{ progress_percentage }}%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions Grid -->
+            <div class="bg-navy rounded-[2rem] p-8 shadow-[0_8px_30px_rgba(0,0,0,0.1)] relative overflow-hidden text-center">
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-primary opacity-10 rounded-full blur-3xl"></div>
+                <h2 class="text-xl font-display font-bold text-white mb-6 relative z-10">Быстрый доступ</h2>
+                
+                <div class="grid grid-cols-2 gap-4 relative z-10">
+                    <a href="{% url 'index' %}" class="flex flex-col items-center gap-3 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all group">
+                        <span class="material-symbols-outlined text-primary text-3xl group-hover:scale-110 transition-transform">explore</span>
+                        <span class="text-white text-sm font-semibold">Карта</span>
+                    </a>
+                    <a href="{% url 'library_home' %}" class="flex flex-col items-center gap-3 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all group">
+                        <span class="material-symbols-outlined text-primary text-3xl group-hover:scale-110 transition-transform">menu_book</span>
+                        <span class="text-white text-sm font-semibold">Библиотека</span>
+                    </a>
+                    <a href="{% url 'prayer_list' %}" class="flex flex-col items-center gap-3 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all group">
+                        <span class="material-symbols-outlined text-primary text-3xl group-hover:scale-110 transition-transform">front_hand</span>
+                        <span class="text-white text-sm font-semibold">Молитвы</span>
+                    </a>
+                    <a href="{% url 'chat_list' %}" class="flex flex-col items-center gap-3 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all group">
+                        <span class="material-symbols-outlined text-primary text-3xl group-hover:scale-110 transition-transform">forum</span>
+                        <span class="text-white text-sm font-semibold">Общение</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: Activity Feed -->
+        <div class="lg:col-span-2 space-y-8">
+            
+            <!-- In Progress Items -->
+            <div class="bg-white rounded-[2rem] p-8 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-navy/5">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary">hourglass_top</span>
+                    </div>
+                    <h2 class="text-2xl font-display font-bold text-navy">В процессе</h2>
+                </div>
+
+                {% if in_progress %}
+                <div class="space-y-4">
+                    {% for progress in in_progress %}
+                    <div class="flex items-center gap-5 p-4 rounded-2xl border border-gray-100 hover:border-primary/30 hover:shadow-md transition-all bg-gray-50/50 group cursor-pointer">
+                        <div class="w-14 h-14 rounded-xl bg-white shadow-sm flex items-center justify-center border border-gray-100 flex-shrink-0 group-hover:bg-primary/5">
+                            <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings: 'FILL' 1;">star_half</span>
+                        </div>
+                        <div class="flex-grow min-w-0">
+                            <h3 class="text-lg font-bold text-navy truncate group-hover:text-primary transition-colors">{{ progress.level.title }}</h3>
+                            <div class="flex items-center gap-3 mt-1 text-sm">
+                                <span class="bg-primary/10 text-primary font-bold px-2 py-0.5 rounded text-xs">{{ progress.progress_percentage }}%</span>
+                                <span class="text-txt-sub truncate">Уровень духовного роста</span>
+                            </div>
+                        </div>
+                        <div class="pl-2">
+                            <span class="material-symbols-outlined text-gray-300 group-hover:text-primary transition-colors">arrow_forward_ios</span>
                         </div>
                     </div>
                     {% endfor %}
                 </div>
                 {% else %}
-                <div class="empty-state">
-                    <i class="fas fa-flag"></i>
-                    <p>Нет уровней в процессе</p>
-                    <a href="{% url 'index' %}" class="btn-start">Выбрать уровень</a>
+                <div class="bg-gray-50 rounded-2xl p-8 text-center border border-gray-100 border-dashed">
+                    <span class="material-symbols-outlined text-4xl text-gray-300 mb-3 block">flag</span>
+                    <p class="text-txt-sub mb-4 font-medium">Нет уровней в процессе</p>
+                    <a href="{% url 'index' %}" class="inline-flex items-center bg-white border border-gray-200 text-navy font-semibold py-2 px-5 rounded-xl hover:border-primary/50 hover:text-primary transition-all">Выбрать уровень</a>
                 </div>
                 {% endif %}
             </div>
-        </div>
-    </div>
-    
-    <!-- Быстрые действия -->
-    <div class="quick-actions">
-        <h2>Быстрые действия</h2>
-        <div class="actions-grid">
-            <a href="{% url 'index' %}" class="action-card">
-                <i class="fas fa-map-marked-alt"></i>
-                <span>Карта пути</span>
-            </a>
-            <a href="#" class="action-card">
-                <i class="fas fa-chart-bar"></i>
-                <span>Моя статистика</span>
-            </a>
-            <a href="#" class="action-card">
-                <i class="fas fa-medal"></i>
-                <span>Достижения</span>
-            </a>
-            <a href="#" class="action-card">
-                <i class="fas fa-book-open"></i>
-                <span>Библиотека</span>
-            </a>
+
+            <!-- Recently Completed -->
+            <div class="bg-white rounded-[2rem] p-8 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-navy/5">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 rounded-full bg-success/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-success">check_circle</span>
+                    </div>
+                    <h2 class="text-2xl font-display font-bold text-navy">Недавно пройдено</h2>
+                </div>
+
+                {% if recent_completed %}
+                <div class="space-y-4">
+                    {% for progress in recent_completed %}
+                    <div class="flex items-center gap-5 p-4 rounded-2xl border border-gray-100 hover:border-success/30 hover:shadow-md transition-all bg-gray-50/50 group cursor-pointer">
+                        <div class="w-14 h-14 rounded-xl bg-white shadow-sm flex items-center justify-center border border-gray-100 flex-shrink-0 group-hover:bg-success/5">
+                            <span class="material-symbols-outlined text-success text-3xl" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+                        </div>
+                        <div class="flex-grow min-w-0">
+                            <h3 class="text-lg font-bold text-navy truncate">{{ progress.level.title }}</h3>
+                            <div class="flex items-center gap-2 mt-1 text-sm text-txt-sub">
+                                <span class="material-symbols-outlined text-base">event</span>
+                                <span>{{ progress.completed_at|date:"d.m.Y H:i" }}</span>
+                            </div>
+                        </div>
+                        <div class="pl-2">
+                            <div class="w-8 h-8 rounded-full bg-success/10 text-success flex items-center justify-center">
+                                <span class="material-symbols-outlined text-sm font-bold">done</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="bg-gray-50 rounded-2xl p-8 text-center border border-gray-100 border-dashed">
+                    <span class="material-symbols-outlined text-4xl text-gray-300 mb-3 block">history</span>
+                    <p class="text-txt-sub mb-4 font-medium">Пока нет пройденных уровней</p>
+                    <a href="{% url 'index' %}" class="inline-flex items-center bg-primary text-navy font-bold py-2 px-6 rounded-xl hover:bg-primary-hover shadow-md transition-all">Начать обучение</a>
+                </div>
+                {% endif %}
+            </div>
+
         </div>
     </div>
 </div>
 
-<style>
-/* ── Midnight Gold Profile ── */
-.profile-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: calc(var(--hdr) + 30px) 20px 80px;
-    background: var(--bg);
-}
-
-/* Шапка профиля */
-.profile-header {
-    background: var(--bg-card);
-    border: 1px solid var(--b);
-    border-radius: 24px;
-    overflow: hidden;
-    margin-bottom: 30px;
-    box-shadow: var(--shadow-lg);
-    position: relative;
-}
-
-.profile-header::before {
-    content:'';
-    position: absolute; top:0; left:0; right:0; height: 120px;
-    background: linear-gradient(135deg, rgba(26,31,54,0.8), rgba(201,168,76,0.1) 100%);
-    z-index: 1;
-}
-
-.profile-cover {
-    padding: 60px 40px 40px;
-    position: relative;
-    z-index: 2;
-    color: var(--txt);
-    display: flex;
-    align-items: flex-end;
-    gap: 30px;
-    flex-wrap: wrap;
-}
-
-.profile-avatar {
-    width: 120px;
-    height: 120px;
-    background: var(--navy);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 4px solid var(--bg-card);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-}
-
-.profile-avatar i {
-    font-size: 5rem;
-    color: var(--gold);
-}
-
-.profile-info { flex: 1; margin-bottom: 10px; }
-.profile-info h1 { font-size: 2.2rem; margin-bottom: 5px; color: var(--navy); font-family: 'Merriweather', serif; font-weight: 700; }
-.profile-info p { font-size: 1.1rem; color: var(--txt-sub); margin-bottom: 5px; }
-
-.profile-name {
-    font-size: 1rem !important;
-    background: rgba(201,168,76,0.1);
-    color: var(--gold);
-    display: inline-block;
-    padding: 6px 16px;
-    border-radius: 20px;
-    border: 1px solid rgba(201,168,76,0.3);
-}
-
-.profile-actions {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-.btn-edit, .btn-password, .btn-logout {
-    padding: 12px 20px;
-    border-radius: 12px;
-    text-decoration: none;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: all 0.3s ease;
-    font-size: 0.95rem;
-}
-
-.btn-edit { background: var(--gold); color: var(--navy); }
-.btn-password { background: transparent; color: var(--navy); border: 1px solid var(--b-h); }
-.btn-logout { background: transparent; color: rgba(231,76,60,0.9); border: 1px solid rgba(231,76,60,0.3); }
-
-.btn-edit:hover, .btn-password:hover, .btn-logout:hover { transform: translateY(-2px); }
-.btn-edit:hover { background: var(--gold-d); box-shadow: 0 5px 15px rgba(201,168,76,0.2); }
-.btn-password:hover { background: var(--b); }
-.btn-logout:hover { background: rgba(231,76,60,0.1); }
-
-/* Статистика */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    margin-bottom: 40px;
-}
-
-.stat-card {
-    background: var(--bg-card);
-    border: 1px solid var(--b);
-    border-radius: 20px;
-    padding: 24px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.3s ease;
-}
-
-.stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
-
-.stat-icon {
-    width: 60px;
-    height: 60px;
-    background: rgba(201,168,76,0.1);
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--gold);
-    font-size: 1.8rem;
-    border: 1px solid rgba(201,168,76,0.2);
-}
-
-.stat-details { display: flex; flex-direction: column; }
-.stat-value { font-size: 1.8rem; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
-.stat-label { font-size: 0.85rem; color: var(--txt-sub); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
-
-/* Активность */
-.activity-section h2, .quick-actions h2 { color: var(--navy); margin-bottom: 25px; font-size: 1.5rem; font-family:'Merriweather', serif; }
-
-.activity-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 24px;
-    margin-bottom: 40px;
-}
-
-.activity-card {
-    background: var(--bg-card);
-    border: 1px solid var(--b);
-    border-radius: 20px;
-    padding: 24px;
-    box-shadow: var(--shadow-sm);
-}
-
-.activity-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid var(--b);
-}
-
-.activity-header i { font-size: 1.5rem; color: var(--gold); }
-.activity-header h3 { font-size: 1.2rem; color: var(--navy); font-weight: 700; }
-
-.activity-list { display: flex; flex-direction: column; gap: 12px; }
-.activity-item {
-    display: flex; align-items: center; gap: 15px; padding: 12px; border-radius: 12px;
-    background: var(--bg); border: 1px solid var(--b); transition: 0.2s;
-}
-.activity-item:hover { border-color: var(--gold); }
-
-.activity-icon {
-    width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
-}
-.activity-icon.completed { background: rgba(39, 174, 96, 0.1); color: #27ae60; }
-.activity-icon.in-progress { background: rgba(241, 196, 15, 0.1); color: var(--gold); }
-
-.activity-details { flex: 1; display: flex; flex-direction: column; }
-.activity-title { font-weight: 600; color: var(--navy); }
-.activity-date { font-size: 0.85rem; color: var(--txt-sub); }
-.activity-progress { font-size: 0.9rem; color: var(--gold); font-weight: 600; }
-
-.empty-state { text-align: center; padding: 30px 20px; color: var(--txt-sub); }
-.empty-state i { font-size: 3rem; margin-bottom: 15px; opacity: 0.3; }
-.empty-state p { margin-bottom: 20px; font-size: 0.95rem; }
-.btn-start { display: inline-block; padding: 10px 24px; background: var(--gold); color: var(--navy); text-decoration: none; border-radius: 10px; font-weight: 600; transition: 0.2s; }
-.btn-start:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(201,168,76,0.2); }
-
-/* Прогресс бар */
-.progress-section {
-    background: var(--bg-card); border-radius: 20px; padding: 30px; margin-bottom: 40px; box-shadow: var(--shadow-sm); border: 1px solid var(--b);
-}
-.progress-section h2 { color: var(--navy); font-family: 'Merriweather', serif; font-size: 1.5rem; margin-bottom: 20px; }
-.progress-container { width: 100%; height: 16px; background: var(--b); border-radius: 10px; overflow: hidden; margin-bottom: 15px; }
-.progress-bar { height: 100%; background: linear-gradient(90deg, var(--gold), var(--navy)); border-radius: 10px; transition: width 0.5s ease; position: relative; }
-.progress-text { text-align: center; color: var(--txt-sub); font-size: 1rem; font-weight: 500; }
-
-/* Быстрые действия */
-.actions-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;
-}
-
-.action-card {
-    background: var(--bg-card); border-radius: 16px; padding: 25px; text-decoration: none; color: var(--navy); display: flex; flex-direction: column; align-items: center; gap: 15px; transition: 0.3s; box-shadow: var(--shadow-sm); border: 1px solid var(--b);
-}
-
-.action-card i { font-size: 2.5rem; color: var(--gold); }
-.action-card span { font-weight: 600; }
-
-.action-card:hover {
-    transform: translateY(-5px); box-shadow: var(--shadow-lg); background: var(--navy); color: var(--gold); border-color: var(--navy);
-}
-
-/* Адаптивность */
-@media (max-width: 768px) {
-    .profile-cover { flex-direction: column; text-align: center; padding: 60px 20px 30px; align-items: center; }
-    .profile-info h1 { font-size: 1.8rem; }
-    .profile-actions { width: 100%; justify-content: center; }
-    .stats-grid, .activity-grid { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 480px) {
-    .profile-container { padding: calc(var(--hdr) + 20px) 15px 80px; }
-    .profile-avatar { width: 90px; height: 90px; }
-    .profile-avatar i { font-size: 4rem; }
-    .btn-edit, .btn-password, .btn-logout { justify-content: center; flex: 1; }
-    .stat-card { padding: 20px; }
-    .stat-icon { width: 50px; height: 50px; font-size: 1.5rem; }
-    .stat-value { font-size: 1.5rem; }
-}
-</style>
 {% endblock %}

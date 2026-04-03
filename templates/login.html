@@ -3,331 +3,136 @@
 
 {% block title %}Вход в систему{% endblock %}
 
+{% block main_class %}flex-grow flex flex-col w-full p-0 m-0{% endblock %}
+
 {% block content %}
-<div class="auth-container">
-    <div class="auth-card">
-        <div class="auth-header">
-            <div class="auth-icon">
-                <i class="fas fa-sign-in-alt"></i>
-            </div>
-            <h1>Добро пожаловать!</h1>
-            <p>Войдите в свой духовный путь</p>
-        </div>
-        
-        {% if messages %}
-        <div class="messages">
-            {% for message in messages %}
-            <div class="message {% if message.tags %}message-{{ message.tags }}{% endif %}">
-                <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% else %}check-circle{% endif %}"></i>
-                {{ message }}
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-        
-        <form method="post" class="auth-form">
-            {% csrf_token %}
+<div class="flex-grow flex flex-col lg:flex-row min-h-[calc(100vh-72px)] w-full relative">
+    
+    <!-- Left panel: Form -->
+    <div class="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 relative z-10 bg-background-light">
+        <div class="w-full max-w-md bg-white/80 backdrop-blur-xl p-8 sm:p-10 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/40">
             
-            <div class="form-group">
-                <label for="username">
-                    <i class="fas fa-user"></i>
-                    Имя пользователя
-                </label>
-                <input type="text" 
-                       id="username" 
-                       name="username" 
-                       required 
-                       placeholder="Введите имя пользователя"
-                       autocomplete="username"
-                       class="form-input">
-                <span class="focus-border"></span>
+            <div class="text-center mb-10">
+                <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 text-primary mb-6 ring-8 ring-primary/5">
+                    <span class="material-symbols-outlined text-4xl">vpn_key</span>
+                </div>
+                <h1 class="text-3xl font-display font-bold text-navy mb-3">С возвращением!</h1>
+                <p class="text-txt-sub">Войдите, чтобы продолжить свой духовный путь</p>
             </div>
-            
-            <div class="form-group">
-                <label for="password">
-                    <i class="fas fa-lock"></i>
-                    Пароль
-                </label>
-                <div class="password-wrapper">
-                    <input type="password" 
-                           id="password" 
-                           name="password" 
-                           required 
-                           placeholder="Введите пароль"
-                           autocomplete="current-password"
-                           class="form-input password-input">
-                    <button type="button" class="toggle-password" onclick="togglePassword()">
-                        <i class="fas fa-eye"></i>
+
+            {% if messages %}
+            <div class="space-y-3 mb-6">
+                {% for message in messages %}
+                <div class="p-4 rounded-xl flex items-center gap-3 text-sm font-medium
+                    {% if message.tags == 'error' %}bg-red-50 text-red-600 border border-red-100{% else %}bg-green-50 text-green-700 border border-green-100{% endif %}">
+                    <span class="material-symbols-outlined">{% if message.tags == 'error' %}error{% else %}check_circle{% endif %}</span>
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                <!-- Floating Label Input: Username -->
+                <div class="relative group">
+                    <input type="text" id="username" name="username" required placeholder=" "
+                        class="peer w-full px-5 pb-3 pt-7 bg-gray-50 border-2 border-transparent rounded-xl text-navy focus:bg-white focus:border-primary focus:ring-0 outline-none transition-all"
+                        autocomplete="username">
+                    <label for="username" 
+                        class="absolute left-5 top-5 text-gray-400 text-base transition-all duration-200 pointer-events-none 
+                        peer-focus:text-xs peer-focus:top-2 peer-focus:font-semibold peer-focus:text-primary 
+                        peer-valid:text-xs peer-valid:top-2 peer-valid:font-semibold peer-valid:text-gray-500">
+                        Имя пользователя
+                    </label>
+                </div>
+
+                <!-- Floating Label Input: Password -->
+                <div class="relative group">
+                    <input type="password" id="password" name="password" required placeholder=" "
+                        class="peer w-full px-5 pb-3 pt-7 bg-gray-50 border-2 border-transparent rounded-xl text-navy focus:bg-white focus:border-primary focus:ring-0 outline-none transition-all pr-12"
+                        autocomplete="current-password">
+                    <label for="password" 
+                        class="absolute left-5 top-5 text-gray-400 text-base transition-all duration-200 pointer-events-none 
+                        peer-focus:text-xs peer-focus:top-2 peer-focus:font-semibold peer-focus:text-primary 
+                        peer-valid:text-xs peer-valid:top-2 peer-valid:font-semibold peer-valid:text-gray-500">
+                        Пароль
+                    </label>
+                    <button type="button" onclick="togglePassword()" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors focus:outline-none">
+                        <span class="material-symbols-outlined" id="eye-icon">visibility</span>
                     </button>
                 </div>
-                <span class="focus-border"></span>
-            </div>
-            
-            <div class="form-options">
-                <label class="checkbox-label">
-                    <input type="checkbox" name="remember" class="checkbox">
-                    <span class="checkbox-custom"></span>
-                    <span class="checkbox-text">Запомнить меня</span>
-                </label>
-                <a href="#" class="forgot-password">Забыли пароль?</a>
-            </div>
-            
-            <button type="submit" class="btn-auth">
-                <i class="fas fa-sign-in-alt"></i>
-                Войти
-            </button>
-            
-            <div class="auth-footer">
-                <p>Нет аккаунта? <a href="{% url 'register' %}" class="register-link">Создать аккаунт</a></p>
-            </div>
-            
-            <div class="auth-divider">
-                <span>или</span>
-            </div>
-            
-            <div class="social-login">
-                <a href="#" class="social-btn google">
-                    <i class="fab fa-google"></i>
-                    <span>Google</span>
-                </a>
-                <a href="#" class="social-btn github">
-                    <i class="fab fa-github"></i>
-                    <span>GitHub</span>
-                </a>
-            </div>
-            
-            <div class="back-link">
-                <a href="{% url 'index' %}">
-                    <i class="fas fa-arrow-left"></i>
-                    Вернуться на главную
-                </a>
-            </div>
-        </form>
+
+                <div class="flex items-center justify-between text-sm">
+                    <label class="flex items-center gap-2 cursor-pointer group">
+                        <input type="checkbox" name="remember" class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/20 transition-all cursor-pointer">
+                        <span class="text-txt-sub group-hover:text-navy font-medium transition-colors">Запомнить меня</span>
+                    </label>
+                    <a href="#" class="font-semibold text-primary hover:text-primary-hover transition-colors">Забыли пароль?</a>
+                </div>
+
+                <button type="submit" id="submit-btn" class="w-full bg-primary hover:bg-primary-hover text-white font-bold py-4 px-6 rounded-xl transition-all transform hover:-translate-y-1 shadow-[0_8px_20px_rgba(201,168,76,0.3)] flex justify-center items-center gap-2">
+                    Войти
+                </button>
+
+                <div class="text-center pt-4 border-t border-gray-100">
+                    <p class="text-txt-sub font-medium">
+                        Нет аккаунта? 
+                        <a href="{% url 'register' %}" class="text-navy hover:text-primary font-bold underline decoration-2 underline-offset-4 transition-colors">Зарегистрироваться</a>
+                    </p>
+                </div>
+            </form>
+        </div>
     </div>
-    
-    <!-- Декоративные элементы -->
-    <div class="auth-decoration">
-        <div class="decoration-circle circle-1"></div>
-        <div class="decoration-circle circle-2"></div>
-        <div class="decoration-circle circle-3"></div>
-        <div class="decoration-dots"></div>
+
+    <!-- Right panel: Visuals -->
+    <div class="hidden lg:flex lg:w-1/2 relative bg-navy items-center justify-center overflow-hidden">
+        <div class="absolute inset-0">
+            <!-- Subtle mesh gradient background -->
+            <div class="absolute inset-0 bg-gradient-to-br from-navy via-[#1e2540] to-black opacity-90 z-10"></div>
+            <!-- Decorative golden orbs -->
+            <div class="absolute -top-[20%] -right-[10%] w-[500px] h-[500px] bg-primary rounded-full blur-[120px] opacity-20 z-0 animate-pulse" style="animation-duration: 8s;"></div>
+            <div class="absolute -bottom-[20%] -left-[10%] w-[600px] h-[600px] bg-primary rounded-full blur-[140px] opacity-10 z-0 animate-pulse" style="animation-duration: 12s;"></div>
+        </div>
+        
+        <div class="relative z-20 text-center px-16 max-w-2xl">
+            <div class="mb-10 text-primary opacity-50">
+                <span class="material-symbols-outlined" style="font-size: 80px;">auto_awesome</span>
+            </div>
+            <h2 class="text-5xl font-display font-bold text-white mb-6 leading-tight">
+                Ваш личный шаг <br>к духовному свету
+            </h2>
+            <p class="text-xl text-white/70 font-light leading-relaxed">
+                Открывайте новые горизонты веры, общайтесь с братством и проходите уровни духовного роста.
+            </p>
+        </div>
     </div>
+
 </div>
-
-<style>
-/* ── Midnight Gold Auth Redesign ── */
-.auth-container {
-    min-height: calc(100vh - var(--hdr) - 80px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 60px 20px;
-    background: var(--bg); /* --cream-light or --bg-warm */
-}
-
-.auth-card {
-    background: var(--bg-card, #ffffff);
-    border-radius: 24px;
-    box-shadow: var(--shadow-lg);
-    width: 100%;
-    max-width: 480px;
-    padding: 50px 40px;
-    position: relative;
-    z-index: 10;
-    border: 1px solid var(--b);
-    animation: fadeIn 0.4s ease-out;
-}
-
-.auth-header {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.auth-icon {
-    width: 80px;
-    height: 80px;
-    background: rgba(201, 168, 76, 0.15);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 20px;
-    color: var(--gold);
-    font-size: 2.2rem;
-    border: 1px solid rgba(201, 168, 76, 0.3);
-}
-
-.auth-header h1 {
-    font-size: 2.2rem;
-    color: var(--navy);
-    font-weight: 700;
-    margin-bottom: 8px;
-    font-family: 'Merriweather', serif;
-}
-
-.auth-header p {
-    color: var(--txt-sub);
-    font-size: 1rem;
-}
-
-.auth-form {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    position: relative;
-}
-
-.form-group label {
-    font-weight: 600;
-    color: var(--navy);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.form-group label i {
-    color: var(--gold);
-    opacity: 0.8;
-}
-
-.form-input {
-    padding: 14px 18px;
-    border: 1px solid var(--b);
-    border-radius: 12px;
-    font-size: 1rem;
-    transition: all 0.2s ease;
-    background: var(--bg);
-    color: var(--txt);
-    width: 100%;
-    font-family: inherit;
-}
-
-.form-input:focus {
-    outline: none;
-    border-color: var(--gold);
-    box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
-}
-
-.password-wrapper { position: relative; width: 100%; }
-.password-input { padding-right: 50px; }
-.toggle-password {
-    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
-    background: none; border: none; color: var(--txt-sub);
-    cursor: pointer; font-size: 1.1rem; transition: color 0.2s;
-}
-.toggle-password:hover { color: var(--gold); }
-
-.form-options {
-    display: flex; align-items: center; justify-content: space-between;
-}
-
-.checkbox-label {
-    display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--txt-sub); font-size: 0.9rem;
-}
-.checkbox { accent-color: var(--gold); width: 16px; height: 16px; cursor: pointer; }
-
-.forgot-password { color: var(--navy); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
-.forgot-password:hover { color: var(--gold); text-decoration: underline; }
-
-.btn-auth {
-    background: var(--gold);
-    color: var(--navy);
-    border: none;
-    padding: 16px;
-    border-radius: 12px;
-    font-size: 1.1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    text-transform: uppercase; letter-spacing: 0.05em;
-    margin-top: 8px;
-    box-shadow: 0 4px 12px rgba(201, 168, 76, 0.2);
-}
-
-.btn-auth:hover {
-    background: var(--gold-d); transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(201, 168, 76, 0.3);
-}
-
-.auth-footer { text-align: center; margin-top: 16px; padding-top: 24px; border-top: 1px solid var(--b); }
-.auth-footer p { color: var(--txt-sub); }
-.register-link { color: var(--gold); font-weight: 600; text-decoration: none; margin-left: 4px; }
-.register-link:hover { text-decoration: underline; }
-
-.auth-divider { text-align: center; position: relative; margin: 20px 0 10px; }
-.auth-divider::before, .auth-divider::after { content:''; position:absolute; top:50%; width:calc(50% - 25px); height:1px; background:var(--b); }
-.auth-divider::before { left:0; } .auth-divider::after { right:0; }
-.auth-divider span { background:var(--bg-card); padding:0 15px; color:var(--txt-sub); font-size:0.85rem; font-weight:600; }
-
-.social-login { display: flex; gap: 12px; margin-top: 8px; }
-.social-btn { flex: 1; display:flex; align-items:center; justify-content:center; gap:8px; padding:12px; border-radius:12px; text-decoration:none; font-weight:600; color:var(--txt); background:var(--bg); border:1px solid var(--b); transition:0.2s; }
-.social-btn:hover { background:var(--b); border-color:var(--b-h); }
-
-.back-link { text-align: center; margin-top: 24px; }
-.back-link a { color: var(--txt-sub); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; font-size: 0.9rem; }
-.back-link a:hover { color: var(--gold); }
-
-.messages .message { padding: 14px 16px; border-radius: 12px; display: flex; align-items: center; gap: 10px; margin-bottom: 20px; font-size: 0.95rem; border: 1px solid currentColor; }
-.message-success { background: rgba(39, 174, 96, 0.1); color: #27ae60; }
-.message-error { background: rgba(231, 76, 60, 0.1); color: #e74c3c; }
-
-@media (max-width: 600px) {
-    .auth-card { padding: 40px 24px; border-radius: 16px; border: none; box-shadow: none; background: transparent; }
-    .auth-container { padding: 20px 10px; background: var(--bg-card); display: block; min-height: auto; }
-}
-</style>
 
 <script>
 function togglePassword() {
-    const passwordInput = document.getElementById('password');
-    const toggleIcon = document.querySelector('.toggle-password i');
-    
-    if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        toggleIcon.classList.remove('fa-eye');
-        toggleIcon.classList.add('fa-eye-slash');
+    const pwd = document.getElementById('password');
+    const icon = document.getElementById('eye-icon');
+    if (pwd.type === 'password') {
+        pwd.type = 'text';
+        icon.textContent = 'visibility_off';
     } else {
-        passwordInput.type = 'password';
-        toggleIcon.classList.remove('fa-eye-slash');
-        toggleIcon.classList.add('fa-eye');
+        pwd.type = 'password';
+        icon.textContent = 'visibility';
     }
 }
 
-// Добавляем анимацию загрузки при отправке формы
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.querySelector('.auth-form');
-    const submitBtn = document.querySelector('.btn-auth');
-    
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            submitBtn.classList.add('loading');
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Вход...';
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('form');
+    const btn = document.getElementById('submit-btn');
+    if(form) {
+        form.addEventListener('submit', () => {
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin">progress_activity</span> Вход...';
+            btn.classList.add('opacity-90', 'cursor-not-allowed');
         });
     }
-    
-    // Анимация для полей ввода
-    const inputs = document.querySelectorAll('.form-input');
-    inputs.forEach(input => {
-        input.addEventListener('focus', function() {
-            this.parentElement.classList.add('focused');
-        });
-        
-        input.addEventListener('blur', function() {
-            if (!this.value) {
-                this.parentElement.classList.remove('focused');
-            }
-        });
-    });
 });
 </script>
 {% endblock %}
