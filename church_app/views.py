@@ -3,7 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import SpiritualLevel, UserProgress, Announcement
+from .models import SpiritualLevel, UserProgress, Announcement, DailyVerse
+from .forms import RegisterForm, LoginForm, ProfileEditForm, ChangePasswordForm
 from django.http import JsonResponse
 from django.utils import timezone
 from django.db import models
@@ -16,7 +17,7 @@ import json as _json
 import logging
 import pytz
 from datetime import datetime as dt, timedelta
-from .views_library import *  # Импорт всех функций из views_library
+
 
 logger = logging.getLogger(__name__)
 
@@ -412,6 +413,8 @@ def home(request):
     # Получаем информацию о времени до службы
     time_info = get_time_until_service()
 
+
+
     context = {
         'completed_levels': completed_levels,
         'total_levels': total_levels,
@@ -424,6 +427,10 @@ def home(request):
         'service_schedule': SCHEDULE,
     }
     return render(request, 'home.html', context)
+
+def offline_view(request):
+    """Страница при отсутствии интернета"""
+    return render(request, 'offline.html')
 
 # =============================================
 # 🗺️ СТРАНИЦА С КАРТОЙ УРОВНЕЙ
@@ -490,45 +497,47 @@ def index(request):
 def register_view(request):
     """Регистрация пользователя"""
     if request.method == 'POST':
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        password1 = request.POST.get('password1')
-        password2 = request.POST.get('password2')
-        
-        if password1 != password2:
-            messages.error(request, 'Пароли не совпадают')
-            return redirect('register')
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = User.objects.create_user(
+                username=form.cleaned_data['username'],
+                email=form.cleaned_data['email'],
+                password=form.cleaned_data['password1'],
+            )
+            login(request, user)
+            messages.success(request, f'Добро пожаловать, {user.username}! Регистрация прошла успешно!')
+            return redirect('home')
+        else:
+            for error in form.non_field_errors():
+                messages.error(request, error)
+            for field in form:
+                for error in field.errors:
+                    messages.error(request, f'{field.label}: {error}')
+    else:
+        form = RegisterForm()
 
-        if User.objects.filter(username=username).exists():
-            messages.error(request, 'Имя пользователя уже занято')
-            return redirect('register')
-
-        if User.objects.filter(email=email).exists():
-            messages.error(request, 'Email уже используется')
-            return redirect('register')
-
-        user = User.objects.create_user(username=username, email=email, password=password1)
-        login(request, user)
-        messages.success(request, f'Добро пожаловать, {username}! Регистрация прошла успешно!')
-        return redirect('home')
-
-    return render(request, 'register.html')
+    return render(request, 'register.html', {'form': form})
 
 def login_view(request):
     """Вход пользователя"""
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        
-        if user is not None:
-            login(request, user)
-            messages.success(request, f'С возвращением, {user.username}!')
-            return redirect('home')
-        else:
-            messages.error(request, 'Неверное имя пользователя или пароль')
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            user = authenticate(
+                request,
+                username=form.cleaned_data['username'],
+                password=form.cleaned_data['password'],
+            )
+            if user is not None:
+                login(request, user)
+                messages.success(request, f'С возвращением, {user.username}!')
+                return redirect('home')
+            else:
+                messages.error(request, 'Неверное имя пользователя или пароль')
+    else:
+        form = LoginForm()
 
-    return render(request, 'login.html')
+    return render(request, 'login.html', {'form': form})
 
 def logout_view(request):
     """Выход пользователя"""
@@ -566,43 +575,46 @@ def profile_view(request):
 def profile_edit_view(request):
     """Редактирование профиля"""
     if request.method == 'POST':
-        user = request.user
-        user.first_name = request.POST.get('first_name', '')
-        user.last_name = request.POST.get('last_name', '')
-        user.email = request.POST.get('email', '')
-        user.save()
-        messages.success(request, 'Профиль успешно обновлен!')
-        return redirect('profile')
-    return render(request, 'profile_edit.html', {'user': request.user})
+        form = ProfileEditForm(request.POST)
+        if form.is_valid():
+            user = request.user
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name = form.cleaned_data['last_name']
+            user.email = form.cleaned_data['email']
+            user.save()
+            messages.success(request, 'Профиль успешно обновлен!')
+            return redirect('profile')
+    else:
+        form = ProfileEditForm(initial={
+            'first_name': request.user.first_name,
+            'last_name': request.user.last_name,
+            'email': request.user.email,
+        })
+    return render(request, 'profile_edit.html', {'user': request.user, 'form': form})
 
 @login_required
 def change_password_view(request):
     """Смена пароля"""
     if request.method == 'POST':
-        user = request.user
-        old_password = request.POST.get('old_password')
-        new_password1 = request.POST.get('new_password1')
-        new_password2 = request.POST.get('new_password2')
-        
-        if not user.check_password(old_password):
-            messages.error(request, 'Текущий пароль неверен')
-            return redirect('change_password')
+        form = ChangePasswordForm(request.POST)
+        if form.is_valid():
+            user = request.user
+            if not user.check_password(form.cleaned_data['old_password']):
+                messages.error(request, 'Текущий пароль неверен')
+                return redirect('change_password')
 
-        if new_password1 != new_password2:
-            messages.error(request, 'Новые пароли не совпадают')
-            return redirect('change_password')
+            user.set_password(form.cleaned_data['new_password1'])
+            user.save()
+            login(request, user)
+            messages.success(request, 'Пароль успешно изменен!')
+            return redirect('profile')
+        else:
+            for error in form.non_field_errors():
+                messages.error(request, error)
+    else:
+        form = ChangePasswordForm()
 
-        if len(new_password1) < 8:
-            messages.error(request, 'Пароль должен быть не менее 8 символов')
-            return redirect('change_password')
-
-        user.set_password(new_password1)
-        user.save()
-        login(request, user)
-        messages.success(request, 'Пароль успешно изменен!')
-        return redirect('profile')
-
-    return render(request, 'change_password.html')
+    return render(request, 'change_password.html', {'form': form})
 
 # =============================================
 # 🎮 УРОВНИ

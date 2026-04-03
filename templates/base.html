@@ -22,6 +22,8 @@
     <meta name="theme-color" content="#1a1f36">
     <link rel="apple-touch-icon" href="{% static 'icons/icon-192x192.png' %}">
 
+    <div style="display: none;">{% csrf_token %}</div>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
@@ -139,6 +141,8 @@
             color: var(--txt);
             min-height: 100vh;
             position: relative;
+            display: flex;
+            flex-direction: column;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
@@ -748,9 +752,14 @@
     {% endblock %}
 
     <!-- ═══════════════ ОСНОВНОЙ КОНТЕНТ ═══════════════ -->
-    <main class="{% block main_class %}main-content{% endblock %}">
+    <main class="{% block main_class %}main-content{% endblock %} flex-grow">
         {% block content %}{% endblock %}
     </main>
+
+    <!-- ═══════════════ GLOBAL FOOTER ═══════════════ -->
+    {% block site_footer %}
+        {% include "partials/footer.html" %}
+    {% endblock %}
 
     <!-- ═══════════════ НИЖНИЙ БАР (МОБИЛЬНЫЙ, Telegram-style) ═══════════════ -->
     {% block bottom_nav %}

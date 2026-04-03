@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.utils import timezone
 from django.db.models import Q, Count
-from .models import Category, Video, BiblePlan, BibleReading, UserBibleProgress, Event, EventRegistration, KidsContent, KidsProgress
+from .models import Category, Video, BiblePlan, BibleReading, UserBibleProgress, Event, EventRegistration, KidsContent, KidsProgress, DailyVerse
 import json
 
 def library_home(request):
@@ -23,11 +23,19 @@ def library_home(request):
     # Получаем детский контент для превью
     kids_content = KidsContent.objects.filter(is_active=True).order_by('-is_featured', '-created_at')[:4]
     
+    # Получаем стих дня (на сегодня или последний доступный)
+    today = timezone.localdate()
+    daily_verse = (
+        DailyVerse.objects.filter(date=today).first()
+        or DailyVerse.objects.order_by('-date').first()
+    )
+    
     context = {
         'categories': categories,
         'recent_videos': recent_videos,
         'upcoming_events': upcoming_events,
         'kids_content': kids_content,
+        'daily_verse': daily_verse,
     }
     return render(request, 'library/home.html', context)
 

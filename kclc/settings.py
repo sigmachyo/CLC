@@ -5,10 +5,13 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-your-secret-key-here-changeme-in-production'
+SECRET_KEY = os.environ.get(
+    'DJANGO_SECRET_KEY',
+    'django-insecure-your-secret-key-here-changeme-in-production'
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', 'True').lower() in ('true', '1', 'yes')
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -20,6 +23,12 @@ ALLOWED_HOSTS = [
 ]
 
 # Application definition
+
+# Web Push
+VAPID_PUBLIC_KEY = 'BPWzM8Sg21koEirpUOKjfqqqUeOL6c4PrF3KwT32QYT9pQP6R1Da9u8jSS0UMTkx4DL_75iOadzTAPNSOJVGlpo'
+VAPID_PRIVATE_KEY = 'a4IVr9jA_SyFG-cohYOfztaM0Ul3xrXZI8qgl6a_KKk'
+VAPID_ADMIN_EMAIL = 'mailto:webmaster@kclc.ru'
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -86,7 +95,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 LANGUAGE_CODE = 'ru-ru'
-TIME_ZONE = 'Europe/Moscow'
+TIME_ZONE = 'Asia/Krasnoyarsk'
 USE_I18N = True
 USE_TZ = True
 
@@ -105,3 +114,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = '/login/'  # URL для входа
 LOGIN_REDIRECT_URL = '/profile/'  # Куда перенаправлять после входа
 LOGOUT_REDIRECT_URL = '/'  # Куда перенаправлять после выхода
+
+# Security
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SESSION_COOKIE_HTTPONLY = True

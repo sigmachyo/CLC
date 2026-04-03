@@ -1,7 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 import json
 from .models import ChatRoom, ChatMessage
@@ -30,7 +29,6 @@ def chat_room_view(request, room_id):
     return render(request, 'chat_room.html', {'room': room})
 
 @login_required
-@csrf_exempt
 def api_send_message(request, room_id):
     """API для отправки сообщения через AJAX"""
     if request.method == 'POST':

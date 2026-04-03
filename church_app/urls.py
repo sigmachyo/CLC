@@ -71,4 +71,7 @@ urlpatterns = [
     path('library/kids/<int:content_id>/', views_library.kids_content_detail, name='kids_content_detail'),
     # 🔔 Уведомления (Push API)
     path('api/push/subscribe/', views_push.subscribe, name='api_push_subscribe'),
+
+    # PWA Offline fallback
+    path('offline/', views.offline_view, name='offline'),
 ]

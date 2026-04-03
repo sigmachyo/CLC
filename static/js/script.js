@@ -8,6 +8,13 @@ document.addEventListener('DOMContentLoaded', function() {
     initTooltips();
     initLevelInteractions();
     
+    // PWA Service Worker Registration
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js', { scope: '/' })
+            .then(reg => console.log('[SW] Service Worker зарегистрирован со скоупом:', reg.scope))
+            .catch(err => console.error('[SW] Ошибка регистрации Service Worker:', err));
+    }
+
     // Запрос разрешений на Push
     if ('Notification' in window && navigator.serviceWorker) {
         initPushNotifications();
@@ -105,13 +112,43 @@ function initLevelInteractions() {
 }
 
 // Push уведомления
+function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+}
+
 function initPushNotifications() {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+    
     Notification.requestPermission().then(permission => {
         if (permission === 'granted') {
             console.log('Push разрешение получено.');
-            // В реальном приложении здесь делается подписка 
-            // navigator.serviceWorker.ready.then(reg => reg.pushManager.subscribe(...))
-            // и отправка endpoint + keys на сервер /api/push/subscribe/
+            navigator.serviceWorker.ready.then(reg => {
+                const applicationServerKey = urlBase64ToUint8Array('BPWzM8Sg21koEirpUOKjfqqqUeOL6c4PrF3KwT32QYT9pQP6R1Da9u8jSS0UMTkx4DL_75iOadzTAPNSOJVGlpo');
+                reg.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: applicationServerKey
+                }).then(sub => {
+                    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+                    if (!csrfToken) return; // Cannot subscribe without CSRF setup
+                    fetch('/api/push/subscribe/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json', 
+                            'X-CSRFToken': csrfToken
+                        },
+                        body: JSON.stringify(sub)
+                    }).then(r => r.json()).then(data => {
+                        console.log('Push subscription:', data);
+                    });
+                }).catch(e => console.error('Push subscription failed:', e));
+            });
         }
     });
 }

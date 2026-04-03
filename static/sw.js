@@ -32,11 +32,48 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
     // Network first, cache fallback logic
-    if (event.request.method === 'GET') {
+    if (event.request.method === 'GET' && !event.request.url.includes('/api/')) {
         event.respondWith(
             fetch(event.request).catch(() => {
                 return caches.match(event.request);
             })
         );
     }
+});
+
+self.addEventListener('push', function(event) {
+    let data = {};
+    if (event.data) {
+        try {
+            data = event.data.json();
+        } catch (e) {
+            data = { body: event.data.text() };
+        }
+    }
+    const title = data.title || 'CLC Красноярск';
+    const options = {
+        body: data.body || 'Новое уведомление',
+        icon: '/static/icons/icon-192x192.png',
+        badge: '/static/icons/icon-192x192.png',
+        data: data.url || '/'
+    };
+    event.waitUntil(self.registration.showNotification(title, options));
+});
+
+self.addEventListener('notificationclick', function(event) {
+    event.notification.close();
+    const urlToOpen = event.notification.data || '/';
+    event.waitUntil(
+        clients.matchAll({ type: 'window' }).then(windowClients => {
+            for (var i = 0; i < windowClients.length; i++) {
+                var client = windowClients[i];
+                if (client.url.includes(urlToOpen) && 'focus' in client) {
+                    return client.focus();
+                }
+            }
+            if (clients.openWindow) {
+                return clients.openWindow(urlToOpen);
+            }
+        })
+    );
 });

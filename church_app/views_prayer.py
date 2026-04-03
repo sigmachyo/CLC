@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import PrayerRequest
+from .forms import PrayerRequestForm
 from django.utils import timezone
 
 def prayer_list(request):
@@ -18,30 +19,34 @@ def prayer_list(request):
 def prayer_add(request):
     """Добавление новой молитвенной нужды"""
     if request.method == 'POST':
-        title = request.POST.get('title')
-        description = request.POST.get('description')
-        is_public = request.POST.get('is_public') == 'on'
-        
-        if title and description:
+        form = PrayerRequestForm(request.POST)
+        if form.is_valid():
             PrayerRequest.objects.create(
                 user=request.user,
-                title=title,
-                description=description,
-                is_public=is_public
+                title=form.cleaned_data['title'],
+                description=form.cleaned_data['description'],
+                is_public=form.cleaned_data['is_public'],
             )
             messages.success(request, 'Ваша нужда добавлена на молитвенную стену.')
             return redirect('prayer_list')
-            
-    return render(request, 'prayer_add.html', {'title': 'Добавить нужду'})
+    else:
+        form = PrayerRequestForm()
+
+    return render(request, 'prayer_add.html', {'title': 'Добавить нужду', 'form': form})
 
 @login_required
 def prayer_support(request, prayer_id):
-    """Поддержать в молитве (+1)"""
+    """Поддержать в молитве (+1) — с защитой от повторного голосования"""
     prayer = get_object_or_404(PrayerRequest, id=prayer_id)
     if request.method == 'POST':
-        prayer.prayer_count += 1
-        prayer.save()
-        messages.success(request, f'Вы присоединились к молитве за: {prayer.title}')
+        supported_key = f'prayer_supported_{prayer_id}'
+        if request.session.get(supported_key):
+            messages.info(request, 'Вы уже поддержали эту молитву.')
+        else:
+            prayer.prayer_count += 1
+            prayer.save()
+            request.session[supported_key] = True
+            messages.success(request, f'Вы присоединились к молитве за: {prayer.title}')
     return redirect('prayer_list')
 
 @login_required
@@ -66,3 +71,4 @@ def prayer_toggle_answered(request, prayer_id):
         status = 'отвечена' if prayer.is_answered else 'активна'
         messages.success(request, f'Нужда отмечена как {status}.')
     return redirect('my_prayers')
+

@@ -423,6 +423,28 @@
       <p>Видео, планы чтения Библии, события и детский контент для всей семьи</p>
     </div>
 
+    <!-- ─── DAILY VERSE СЕКЦИЯ ─────────────────────────── -->
+    {% if daily_verse %}
+    <div class="mb-12 w-full flex flex-col items-center justify-center relative px-4 sm:px-8 py-8 md:py-10 bg-white rounded-3xl shadow-lg border border-primary/20">
+      <div class="max-w-4xl w-full text-center relative overflow-hidden">
+          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-[#e6c86e]"></div>
+          <div class="mb-4 mt-2 text-primary">
+              <span class="material-symbols-outlined text-4xl opacity-80" style="font-variation-settings: 'FILL' 1;">book</span>
+          </div>
+          <h2 class="text-xl font-bold text-navy mb-4 tracking-wider uppercase text-sm">Стих дня</h2>
+          <p class="text-xl md:text-2xl lg:text-3xl font-display font-medium text-navy leading-relaxed mb-4 italic">
+              "{{ daily_verse.verse_text }}"
+          </p>
+          <div class="text-primary font-bold text-base md:text-lg">{{ daily_verse.reference }}</div>
+          {% if daily_verse.reflection %}
+          <div class="mt-6 pt-6 border-t border-navy/10 text-navy/70 text-sm md:text-base max-w-2xl mx-auto">
+              {{ daily_verse.reflection }}
+          </div>
+          {% endif %}
+      </div>
+    </div>
+    {% endif %}
+
     <!-- Категории -->
     {% if categories %}
     <div class="sec-label">

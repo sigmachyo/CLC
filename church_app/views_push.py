@@ -1,9 +1,7 @@
 import json
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from church_app.models import PushSubscription
 
-@csrf_exempt
 def subscribe(request):
     if request.method == 'POST':
         try:

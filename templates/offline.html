@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Нет подключения | ЦХЖ Красноярск{% endblock %}
+
+{% block content %}
+<div class="min-h-[80vh] flex flex-col items-center justify-center p-6 text-center">
+    <!-- Icon Wrapper -->
+    <div class="relative mb-8 group">
+        <div class="absolute inset-0 bg-gold/10 rounded-full blur-xl transform group-hover:scale-110 transition-transform duration-700"></div>
+        <div class="w-32 h-32 rounded-full border border-gold/30 bg-white/5 backdrop-blur-md flex items-center justify-center relative shadow-lg">
+            <span class="material-symbols-outlined text-6xl text-gold animate-pulse">wifi_off</span>
+        </div>
+    </div>
+    
+    <!-- Title and Content -->
+    <h1 class="text-3xl md:text-5xl font-display font-medium text-navy tracking-tight mb-4 uppercase">
+        СЕТЬ НЕДОСТУПНА
+    </h1>
+    
+    <p class="text-navy-light text-lg mb-10 max-w-sm mx-auto leading-relaxed">
+        Вы находитесь в офлайн-режиме. Пожалуйста, проверьте подключение к интернету для полного доступа.
+    </p>
+    
+    <!-- Action Button -->
+    <button onclick="window.location.reload()" class="bg-navy hover:bg-navy-h text-gold px-8 py-4 rounded-xl font-medium tracking-wide uppercase transition-all duration-300 shadow hover:shadow-lg hover:-translate-y-1 group">
+        <span class="flex items-center space-x-2">
+            <span class="material-symbols-outlined text-xl group-hover:rotate-180 transition-transform duration-500">refresh</span>
+            <span>Обновить страницу</span>
+        </span>
+    </button>
+</div>
+{% endblock %}
