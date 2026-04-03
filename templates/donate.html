@@ -34,12 +34,26 @@
     </div>
 
     <div class="donate-card">
-        <h2 style="color: var(--navy); font-size: 1.5rem; margin-bottom: 30px;">Перевод по реквизитам</h2>
+        <h2 style="color: var(--navy); font-size: 1.5rem; margin-bottom: 20px;">Онлайн пожертвование</h2>
+        <form method="POST" action="{% url 'donate' %}">
+            {% csrf_token %}
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; text-align: left; margin-bottom: 8px; color: var(--txt-sub); font-weight: 500;">Сумма (₽)</label>
+                <input type="number" name="amount" min="10" placeholder="1000" required
+                    style="width: 100%; padding: 15px; border: 2px solid #eee; border-radius: 10px; font-size: 1.2rem; outline: none; transition: border-color 0.3s;"
+                    onfocus="this.style.borderColor='var(--primary)'"
+                    onblur="this.style.borderColor='#eee'">
+            </div>
+            <button type="submit" style="width: 100%; background: var(--primary); color: white; border: none; padding: 16px; border-radius: 10px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;">
+                Перейти к оплате
+            </button>
+        </form>
+    </div>
+
+    <div class="donate-card">
+        <h2 style="color: var(--navy); font-size: 1.5rem; margin-bottom: 30px;">Или перевод по реквизитам</h2>
         
         <div class="qr-container">
-            <i class="fa-solid fa-qrcode" style="font-size: 4rem; color: #ddd;"></i>
-            <span style="position: absolute; color: #aaa; margin-top: 80px;">QR-код (скоро)</span>
-        </div>
 
         <div class="bank-details">
             <div class="detail-row">

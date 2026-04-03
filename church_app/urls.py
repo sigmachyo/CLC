@@ -43,6 +43,9 @@ urlpatterns = [
 
     # 💖 Пожертвования
     path('donate/', views_donate.donate_page, name='donate'),
+    path('donate/gateway/<uuid:payment_id>/', views_donate.mock_payment_gateway, name='mock_payment_gateway'),
+    path('donate/success/', views_donate.donate_success, name='donate_success'),
+    path('donate/fail/', views_donate.donate_fail, name='donate_fail'),
 
     # 💬 Чаты и Форумы
     path('chat/', views_chat.chat_list_view, name='chat_list'),
