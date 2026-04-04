@@ -1,4 +1,5 @@
 import os
+import ipaddress
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,8 +21,10 @@ ALLOWED_HOSTS = [
     '0.0.0.0',
     '172.18.0.1',
     '10.30.225.3',
-    '192.168.0.103'
 ]
+
+# Добавляем диапазон 192.168.0.0/23 (от 192.168.0.0 до 192.168.1.255)
+ALLOWED_HOSTS.extend([str(ip) for ip in ipaddress.IPv4Network('192.168.0.0/23')])
 
 # Application definition
 
@@ -121,6 +124,11 @@ LOGOUT_REDIRECT_URL = '/'  # Куда перенаправлять после в
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SESSION_COOKIE_HTTPONLY = True
+
+# Session Persistence (Account stays saved for 1 year)
+SESSION_COOKIE_AGE = 31536000  # 365 days
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_SAVE_EVERY_REQUEST = True
 
 # -------------------------------------------------------------
 # JAZZMIN ADMIN CONFIGURATION (Midnight Gold Theme)

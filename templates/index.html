@@ -19,37 +19,37 @@
     <div class="relative z-10 max-w-7xl mx-auto">
         
         <!-- HEADER БЛОК (Вместо Duolingo header) -->
-        <div class="flex flex-col md:flex-row justify-between items-center bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-8 mb-12 shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
+        <div class="flex flex-col lg:flex-row justify-between items-center bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-5 sm:p-8 mb-12 shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
             <div class="flex items-center gap-5 mb-6 md:mb-0">
                 <div class="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-primary-hover flex items-center justify-center shadow-[0_0_20px_rgba(201,168,76,0.4)]">
                     <span class="material-symbols-outlined text-white text-3xl">auto_awesome</span>
                 </div>
                 <div>
-                    <h1 class="text-3xl font-display font-bold text-white tracking-wide">Путь к Свету</h1>
-                    <p class="text-primary font-medium text-sm mt-1 uppercase tracking-widest">Твое духовное восхождение</p>
+                    <h1 class="text-3xl font-display font-black text-white tracking-wide">Путь к Свету</h1>
+                    <p class="text-primary font-bold text-xs mt-1.5 uppercase tracking-[0.2em] opacity-90">Твое духовное восхождение</p>
                 </div>
             </div>
             
-            <div class="flex flex-wrap justify-center gap-4">
-                <div class="bg-black/20 backdrop-blur-md rounded-2xl px-5 py-3 border border-white/5 flex items-center gap-3">
+            <div class="flex flex-wrap justify-center lg:justify-end gap-3 md:gap-4">
+                <div class="bg-black/20 backdrop-blur-md rounded-2xl px-4 py-2.5 sm:px-5 sm:py-3 border border-white/5 flex items-center gap-3 flex-grow sm:flex-grow-0">
                     <span class="material-symbols-outlined text-primary text-xl">whatshot</span>
                     <div class="flex flex-col">
-                        <span class="text-xs text-white/50 uppercase font-bold tracking-wider">Дней подряд</span>
-                        <span class="text-white font-bold text-lg leading-none">0</span>
+                        <span class="text-[10px] text-white/50 uppercase font-bold tracking-wider leading-tight">Дней подряд</span>
+                        <span class="text-white font-bold text-base sm:text-lg leading-none">0</span>
                     </div>
                 </div>
-                <div class="bg-black/20 backdrop-blur-md rounded-2xl px-5 py-3 border border-white/5 flex items-center gap-3">
+                <div class="bg-black/20 backdrop-blur-md rounded-2xl px-4 py-2.5 sm:px-5 sm:py-3 border border-white/5 flex items-center gap-3 flex-grow sm:flex-grow-0">
                     <span class="material-symbols-outlined text-primary text-xl">workspace_premium</span>
                     <div class="flex flex-col">
-                        <span class="text-xs text-white/50 uppercase font-bold tracking-wider">Опыт (XP)</span>
-                        <span class="text-white font-bold text-lg leading-none">{{ completed_levels|add:completed_levels }}</span>
+                        <span class="text-[10px] text-white/50 uppercase font-bold tracking-wider leading-tight">Опыт (XP)</span>
+                        <span class="text-white font-bold text-base sm:text-lg leading-none">{{ completed_levels|add:completed_levels }}</span>
                     </div>
                 </div>
-                <div class="bg-black/20 backdrop-blur-md rounded-2xl px-5 py-3 border border-white/5 flex items-center gap-3">
+                <div class="bg-black/20 backdrop-blur-md rounded-2xl px-4 py-2.5 sm:px-5 sm:py-3 border border-white/5 flex items-center gap-3 flex-grow sm:flex-grow-0">
                     <span class="material-symbols-outlined text-success text-xl">trending_up</span>
                     <div class="flex flex-col">
-                        <span class="text-xs text-white/50 uppercase font-bold tracking-wider">Пройдено</span>
-                        <span class="text-white font-bold text-lg leading-none">{{ progress_percentage }}%</span>
+                        <span class="text-[10px] text-white/50 uppercase font-bold tracking-wider leading-tight">Пройдено</span>
+                        <span class="text-white font-bold text-base sm:text-lg leading-none">{{ progress_percentage }}%</span>
                     </div>
                 </div>
             </div>
@@ -82,7 +82,7 @@
 
                     <div>
                         <div class="flex justify-between text-sm mb-2">
-                            <span class="text-white/60 font-medium tracking-wide uppercase text-xs">Прогресс пути</span>
+                            <span class="text-white/80 font-bold tracking-wider uppercase text-[11px]">Прогресс пути</span>
                             <span class="text-primary font-bold">{{ completed_levels }} / {{ total_levels }}</span>
                         </div>
                         <div class="h-2 w-full bg-black/40 rounded-full overflow-hidden">
@@ -151,12 +151,12 @@
                             <!-- Текст -->
                             <div class="mb-4 flex-grow">
                                 <h3 class="text-xl font-bold text-white mb-1 group-hover:text-primary transition-colors">{{ building.title }}</h3>
-                                <div class="text-xs font-bold uppercase tracking-wider mb-2
-                                    {% if building.is_completed %}text-primary/80{% else %}text-white/40{% endif %}">
+                                <div class="text-[11px] font-black uppercase tracking-[0.15em] mb-2.5
+                                    {% if building.is_completed %}text-primary{% else %}text-white/60{% endif %}">
                                     {{ building.type_display }}
                                 </div>
                                 {% if building.description %}
-                                <p class="text-sm text-white/60 leading-relaxed font-light">
+                                <p class="text-[15px] text-white/90 leading-relaxed font-normal">
                                     {{ building.description|truncatechars:90 }}
                                 </p>
                                 {% endif %}
@@ -166,13 +166,13 @@
                             <div class="mt-auto pt-4 border-t border-white/10 flex items-center gap-2">
                                 {% if building.is_completed %}
                                     <span class="material-symbols-outlined text-primary">check_circle</span>
-                                    <span class="text-primary text-sm font-bold uppercase tracking-wide">Пройдено</span>
+                                    <span class="text-primary text-xs font-black uppercase tracking-widest">Пройдено</span>
                                 {% elif not building.is_available %}
-                                    <span class="material-symbols-outlined text-white/40">lock</span>
-                                    <span class="text-white/40 text-sm font-bold uppercase tracking-wide">Заблокировано</span>
+                                    <span class="material-symbols-outlined text-white/50">lock</span>
+                                    <span class="text-white/50 text-xs font-black uppercase tracking-widest">Заблокировано</span>
                                 {% else %}
                                     <span class="material-symbols-outlined text-white">play_circle</span>
-                                    <span class="text-white text-sm font-bold uppercase tracking-wide">Доступно</span>
+                                    <span class="text-white text-xs font-black uppercase tracking-widest">Доступно</span>
                                 {% endif %}
                             </div>
                         </div>

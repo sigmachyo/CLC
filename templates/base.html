@@ -7,9 +7,13 @@
     <title>ЦХЖ Красноярск - {% block title %}Главная{% endblock %}</title>
     {% load static %}
 
-    <!-- Google Fonts -->
+    <!-- Preconnect / Preload -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" as="style">
+    <link rel="preload" href="https://cdn.tailwindcss.com?plugins=forms,container-queries" as="script">
+
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Material Symbols -->
@@ -20,7 +24,10 @@
     <!-- PWA -->
     <link rel="manifest" href="{% static 'manifest.json' %}">
     <meta name="theme-color" content="#1a1f36">
-    <link rel="apple-touch-icon" href="{% static 'icons/icon-192x192.png' %}">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="CLC Красноярск">
+    <link rel="apple-touch-icon" href="{% static 'icons/apple-touch-icon.png' %}">
 
     <div style="display: none;">{% csrf_token %}</div>
 
@@ -102,9 +109,9 @@
 
             /* ── Текст ── */
             --txt: #1a1f36;
-            --txt-sub: #3d4260;
-            --txt-mid: #5c6080;
-            --txt-muted: #8b8fa8;
+            --txt-sub: #2d334d;
+            --txt-mid: #4a506b;
+            --txt-muted: #646a85;
 
             /* ── Рамки ── */
             --b: rgba(26, 31, 54, 0.10);
@@ -135,16 +142,25 @@
             font-variation-settings: 'FILL' 1;
         }
 
+        html {
+            font-size: 17px;
+            -webkit-text-size-adjust: 100%;
+        }
+
         body {
             font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg);
             color: var(--txt);
+            font-size: 1rem;
+            line-height: 1.625;
+            letter-spacing: -0.011em;
             min-height: 100vh;
             position: relative;
             display: flex;
             flex-direction: column;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
         }
 
         /* Mobile bottom padding for nav bar — только на не-главных страницах */
@@ -288,41 +304,6 @@
             flex-shrink: 0;
         }
 
-        .hdr-btn-donate {
-            display: none;
-            align-items: center;
-            gap: 6px;
-            padding: 9px 20px;
-            background: var(--gold);
-            color: var(--navy);
-            border: none;
-            border-radius: 999px;
-            font-size: 0.75rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            cursor: pointer;
-            transition: all var(--t);
-            text-decoration: none;
-            box-shadow: 0 4px 16px rgba(201, 168, 76, 0.3);
-        }
-
-        @media (min-width: 768px) {
-            .hdr-btn-donate {
-                display: inline-flex;
-            }
-        }
-
-        .hdr-btn-donate:hover {
-            background: #fff;
-            transform: translateY(-1px);
-        }
-
-        .hdr-btn-donate .material-symbols-outlined {
-            font-size: 16px;
-            font-variation-settings: 'FILL' 1;
-        }
-
         .hdr-btn-account {
             width: 40px;
             height: 40px;
@@ -347,90 +328,6 @@
             font-size: 22px;
         }
 
-        /* Burger button (mobile only) */
-        .hdr-burger {
-            display: flex;
-            width: 40px;
-            height: 40px;
-            align-items: center;
-            justify-content: center;
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: rgba(255, 255, 255, 0.7);
-            transition: color var(--t);
-        }
-
-        .hdr-burger:hover {
-            color: #fff;
-        }
-
-        @media (min-width: 768px) {
-            .hdr-burger {
-                display: none;
-            }
-        }
-
-        /* Mobile slide-down nav */
-        .mobile-menu-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(26, 31, 54, 0.6);
-            z-index: 790;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .mobile-menu-overlay.open {
-            display: block;
-            opacity: 1;
-        }
-
-        .mobile-menu {
-            position: fixed;
-            top: var(--hdr);
-            left: 0;
-            right: 0;
-            background: var(--navy);
-            z-index: 795;
-            padding: 16px 24px 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            transform: translateY(-100%);
-            opacity: 0;
-            transition: all 0.3s var(--t);
-            border-bottom: 2px solid var(--gold-l);
-        }
-
-        .mobile-menu.open {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .mobile-menu-link {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 16px;
-            border-radius: 12px;
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 600;
-            transition: all var(--t);
-        }
-
-        .mobile-menu-link:hover,
-        .mobile-menu-link.active {
-            background: rgba(201, 168, 76, 0.1);
-            color: var(--gold);
-        }
-
-        .mobile-menu-link .material-symbols-outlined {
-            font-size: 22px;
-        }
 
         /* ============================================================
            BOTTOM NAV BAR — MOBILE ONLY (Telegram-style)
@@ -474,6 +371,13 @@
             gap: 3px;
         }
 
+        @media (max-width: 340px) {
+            .nav-item {
+                padding: 4px 8px;
+                gap: 1px;
+            }
+        }
+
         .nav-item .material-symbols-outlined {
             font-size: 24px;
             transition: all var(--t);
@@ -486,6 +390,13 @@
             transition: all var(--t);
         }
 
+        @media (max-width: 340px) {
+            .nav-item span {
+                font-size: 9px;
+                letter-spacing: 0.02em;
+            }
+        }
+
         .nav-item:active {
             transform: scale(0.92);
         }
@@ -494,8 +405,18 @@
             color: var(--gold);
         }
 
-        .nav-item.active .material-symbols-outlined {
-            font-variation-settings: 'FILL' 1;
+        .nav-svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+            transition: all var(--t);
+        }
+
+        @media (max-width: 340px) {
+            .nav-svg {
+                width: 20px;
+                height: 20px;
+            }
         }
 
         /* ============================================================
@@ -697,58 +618,14 @@
 
             <!-- Header Actions -->
             <div class="hdr-actions">
-                <a href="{% url 'donate' %}" class="hdr-btn-donate">
-                    <span class="material-symbols-outlined">favorite</span>
-                    Пожертвовать
-                </a>
                 <a href="{% if user.is_authenticated %}{% url 'profile' %}{% else %}{% url 'login' %}{% endif %}"
                     class="hdr-btn-account" aria-label="Аккаунт">
                     <span class="material-symbols-outlined">account_circle</span>
                 </a>
-                <!-- Burger (mobile only) -->
-                <button class="hdr-burger" id="hdr-burger" aria-label="Открыть меню" aria-expanded="false">
-                    <span class="material-symbols-outlined" style="font-size:28px">menu</span>
-                </button>
             </div>
         </div>
     </header>
 
-    <!-- Mobile slide-down menu overlay -->
-    <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
-    <nav class="mobile-menu" id="mobile-menu" aria-label="Мобильное меню">
-        <a href="{% url 'home' %}" class="mobile-menu-link {% if request.path == '/' %}active{% endif %}">
-            <span class="material-symbols-outlined">home</span>
-            Главная
-        </a>
-        <a href="{% url 'index' %}"
-            class="mobile-menu-link {% if '/index' in request.path or '/map' in request.path %}active{% endif %}">
-            <span class="material-symbols-outlined">explore</span>
-            Путь
-        </a>
-        <a href="{% url 'chat_list' %}" class="mobile-menu-link {% if '/chat' in request.path %}active{% endif %}">
-            <span class="material-symbols-outlined">forum</span>
-            Чаты
-        </a>
-        <a href="{% url 'library_home' %}"
-            class="mobile-menu-link {% if '/library' in request.path %}active{% endif %}">
-            <span class="material-symbols-outlined">menu_book</span>
-            Библиотека
-        </a>
-        <a href="{% url 'prayer_list' %}"
-            class="mobile-menu-link {% if '/prayer' in request.path %}active{% endif %}">
-            <span class="material-symbols-outlined">front_hand</span>
-            Молитва
-        </a>
-        <a href="{% if user.is_authenticated %}{% url 'profile' %}{% else %}{% url 'login' %}{% endif %}"
-            class="mobile-menu-link {% if '/profile' in request.path %}active{% endif %}">
-            <span class="material-symbols-outlined">person</span>
-            Профиль
-        </a>
-        <a href="{% url 'donate' %}" class="mobile-menu-link" style="margin-top:8px; background:var(--gold-l);">
-            <span class="material-symbols-outlined fill-icon" style="color:var(--gold)">favorite</span>
-            <span style="color:var(--gold); font-weight:700;">Пожертвовать</span>
-        </a>
-    </nav>
     {% endblock %}
 
     <!-- ═══════════════ ОСНОВНОЙ КОНТЕНТ ═══════════════ -->
@@ -765,33 +642,28 @@
     {% block bottom_nav %}
     <nav class="bottom-nav" aria-label="Мобильная навигация">
         <a href="{% url 'home' %}" class="nav-item {% if request.path == '/' %}active{% endif %}" aria-label="Главная">
-            <span class="material-symbols-outlined">home</span>
+            <svg class="nav-svg mb-1" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
             <span>Главная</span>
         </a>
         <a href="{% url 'index' %}"
             class="nav-item {% if '/index' in request.path or '/map' in request.path %}active{% endif %}"
             aria-label="Путь">
-            <span class="material-symbols-outlined">explore</span>
+            <svg class="nav-svg mb-1" viewBox="0 0 24 24"><path d="M12 10.9c-.61 0-1.1.49-1.1 1.1s.49 1.1 1.1 1.1 1.1-.49 1.1-1.1-.49-1.1-1.1-1.1zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm2.19 12.19L6 18l3.81-8.19L18 6l-3.81 8.19z"/></svg>
             <span>Путь</span>
         </a>
         <a href="{% url 'chat_list' %}" class="nav-item {% if '/chat' in request.path %}active{% endif %}" aria-label="Чаты">
-            <span class="material-symbols-outlined">forum</span>
+            <svg class="nav-svg mb-1" viewBox="0 0 24 24"><path d="M21 6h-2v9H6v2c0 .55.45 1 1 1h11l4 4V7c0-.55-.45-1-1-1zm-4 6V3c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1v14l4-4h10c.55 0 1-.45 1-1z"/></svg>
             <span>Чаты</span>
         </a>
         <a href="{% url 'library_home' %}" class="nav-item {% if '/library' in request.path %}active{% endif %}"
             aria-label="Библиотека">
-            <span class="material-symbols-outlined">menu_book</span>
+            <svg class="nav-svg mb-1" viewBox="0 0 24 24"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5-1.17 0-2.39.15-3.5.5V19c1.11-.35 2.33-.5 3.5-.5 1.95 0 4.05.4 5.5 1.5 1.45-1.1 3.55-1.5 5.5-1.5 1.17 0 2.39.15 3.5.5V5zM13 19V7c1.45-1.1 3.55-1.5 5.5-1.5 1.17 0 2.39.15 3.5.5v12c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5z"/></svg>
             <span>Библиотека</span>
         </a>
-        <a href="{% if user.is_authenticated %}{% url 'profile' %}{% else %}{% url 'login' %}{% endif %}"
-            class="nav-item {% if '/profile' in request.path %}active{% endif %}" aria-label="Профиль">
-            <span class="material-symbols-outlined">person</span>
-            <span>Профиль</span>
-        </a>
-        <a href="{% url 'donate' %}"
-            class="nav-item {% if '/donate' in request.path %}active{% endif %}" aria-label="Дар">
-            <span class="material-symbols-outlined">favorite</span>
-            <span>Дар</span>
+        <a href="{% url 'prayer_list' %}"
+            class="nav-item {% if '/prayer' in request.path %}active{% endif %}" aria-label="Молитва">
+            <svg class="nav-svg mb-1" viewBox="0 0 24 24"><path d="M18 8h-7c-1.1 0-2 .9-2 2v3c0 1.1.9 2 2 2h7l4 4V10c0-1.1-.9-2-2-2zM5 14l-4 4V6c0-1.1.9-2 2-2h12V8H5v6z"/></svg>
+            <span>Молитва</span>
         </a>
     </nav>
     {% endblock %}
@@ -820,45 +692,6 @@
             document.addEventListener('keydown', function (e) {
                 if (e.key === 'Escape' && modal.classList.contains('show')) modal.classList.remove('show');
             });
-
-            // ── Mobile burger menu
-            const burger = document.getElementById('hdr-burger');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const overlay = document.getElementById('mobile-menu-overlay');
-
-            function openMobileMenu() {
-                mobileMenu.classList.add('open');
-                overlay.classList.add('open');
-                burger.setAttribute('aria-expanded', 'true');
-                burger.querySelector('.material-symbols-outlined').textContent = 'close';
-                document.body.style.overflow = 'hidden';
-            }
-            function closeMobileMenu() {
-                mobileMenu.classList.remove('open');
-                overlay.classList.remove('open');
-                burger.setAttribute('aria-expanded', 'false');
-                burger.querySelector('.material-symbols-outlined').textContent = 'menu';
-                document.body.style.overflow = '';
-            }
-
-            // Только если мобильное меню из base.html присутствует (не на home-странице)
-            if (burger && mobileMenu) {
-                burger.addEventListener('click', function () {
-                    mobileMenu.classList.contains('open') ? closeMobileMenu() : openMobileMenu();
-                });
-            }
-            if (overlay && mobileMenu) {
-                overlay.addEventListener('click', closeMobileMenu);
-            }
-            // Close on link click
-            mobileMenu?.querySelectorAll('.mobile-menu-link').forEach(link => {
-                link.addEventListener('click', closeMobileMenu);
-            });
-            if (mobileMenu) {
-                document.addEventListener('keydown', function (e) {
-                    if (e.key === 'Escape' && mobileMenu.classList.contains('open')) closeMobileMenu();
-                });
-            }
         });
 
         // Register Service Worker

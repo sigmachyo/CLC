@@ -64,8 +64,8 @@
   .snap-sec {
     scroll-snap-align: start;
     scroll-snap-stop: always;
-    height: 100dvh;
-    min-height: 100dvh;
+    height: 100%;
+    min-height: 100%;
     /* На мобильных учитываем моб-навигацию снизу */
     width: 100%;
     position: relative;
@@ -2255,7 +2255,8 @@
      ══════════════════════════════════════════════ -->
 <nav id="v-nav" aria-label="Навигация по разделам">
 
-  <div class="vn-item active" data-target="sec-hero" role="button" tabindex="0" aria-label="Главная" aria-current="true">
+  <div class="vn-item active" data-target="sec-hero" role="button" tabindex="0" aria-label="Главная"
+    aria-current="true">
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
     </svg>
@@ -2308,184 +2309,228 @@
 <div id="snap-root">
 
   <!-- ─── СЕКЦИЯ 0: ГЛАВНАЯ ─────────────────────────── -->
-  <section class="snap-sec relative flex-grow h-full w-full overflow-hidden group p-6 lg:p-10" id="sec-hero" aria-label="Главная">
+  <section class="snap-sec relative flex-grow h-full w-full overflow-hidden group p-6 lg:p-10" id="sec-hero"
+    aria-label="Главная">
     <!-- Background Image -->
-    <div class="absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105 rounded-3xl" data-alt="Modern bright church interior with stage lighting and rows of seats" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCo_I8bK6alHPZsiwYqIEz--e2chG15tWfih8nKjZvRd7kAIgCqJgkKgy4w8Otr4Q18vULOYhZiVe2_K2pJA7q-UIyl63AYRop-TYxQZiHWNAT2aITtLpLThY-IWlrMNhk-U0-n21kwHT3HmX7w8VpIdAMPNJDVs_yVLkJ85IxvqpTM2cyuzbQaQUXwy3tzjjVeJyyw8Imm1tyQ52E9Rkekjf3N8KnPYcxVp3Pwod2znvF_pFt7wyZSBKpMbRdBnO9kQ6xShQaPznU');">
-        <!-- Overlay gradient -->
-        <div class="absolute inset-0 bg-gradient-to-r from-background-light/90 via-background-light/40 to-transparent md:from-background-light/95 md:via-background-light/60"></div>
+    <div
+      class="absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105 rounded-3xl"
+      data-alt="Modern bright church interior with stage lighting and rows of seats"
+      style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCo_I8bK6alHPZsiwYqIEz--e2chG15tWfih8nKjZvRd7kAIgCqJgkKgy4w8Otr4Q18vULOYhZiVe2_K2pJA7q-UIyl63AYRop-TYxQZiHWNAT2aITtLpLThY-IWlrMNhk-U0-n21kwHT3HmX7w8VpIdAMPNJDVs_yVLkJ85IxvqpTM2cyuzbQaQUXwy3tzjjVeJyyw8Imm1tyQ52E9Rkekjf3N8KnPYcxVp3Pwod2znvF_pFt7wyZSBKpMbRdBnO9kQ6xShQaPznU');">
+      <!-- Overlay gradient -->
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-background-light/90 via-background-light/40 to-transparent md:from-background-light/95 md:via-background-light/60">
+      </div>
     </div>
     <!-- Hero Content -->
     <div class="relative z-10 h-full flex flex-col justify-center px-6 md:px-20 max-w-4xl">
-        <!-- Location Badge -->
-        <div class="inline-flex items-center gap-2 bg-primary/10 backdrop-blur-sm border border-primary/20 rounded-full py-1.5 px-4 w-fit mb-6">
-            <span class="material-symbols-outlined text-primary text-sm">location_on</span>
-            <span class="text-navy font-semibold text-sm tracking-wide uppercase">Красноярск · Бограда 134</span>
+      <!-- Location Badge -->
+      <div
+        class="inline-flex items-center gap-2 bg-primary/10 backdrop-blur-sm border border-primary/20 rounded-full py-1.5 px-4 w-fit mb-6">
+        <span class="material-symbols-outlined text-primary text-sm">location_on</span>
+        <span class="text-navy font-semibold text-sm tracking-wide uppercase">Красноярск · Бограда 134</span>
+      </div>
+      <!-- Main Title -->
+      <h1 class="text-5xl xs:text-6xl md:text-8xl font-black text-navy leading-tight xs:leading-[0.9] tracking-tighter mb-6 drop-shadow-sm">
+        ЦЕРКОВЬ<br />
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-navy via-navy-light to-primary">ЖИЗНИ</span>
+      </h1>
+      <p class="text-navy/70 text-lg md:text-xl font-medium max-w-lg mb-10 leading-relaxed">
+        Место, где каждый находит смысл, поддержку и настоящую жизнь. Присоединяйтесь к нам в это воскресенье.
+      </p>
+      <!-- Mission Bar (Embedded in Hero for Desktop) -->
+      <div
+        class="hidden md:flex items-center gap-6 bg-navy text-background-light p-1 pr-8 rounded-2xl w-fit shadow-xl border border-navy-light/50">
+        <div class="bg-primary w-12 h-12 flex items-center justify-center rounded-xl text-navy shadow-inner">
+          <span class="material-symbols-outlined fill-current">favorite</span>
         </div>
-        <!-- Main Title -->
-        <h1 class="text-6xl md:text-8xl font-black text-navy leading-[0.9] tracking-tighter mb-6 drop-shadow-sm">
-            ЦЕРКОВЬ<br/>
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-navy via-navy-light to-primary">ЖИЗНИ</span>
-        </h1>
-        <p class="text-navy/70 text-lg md:text-xl font-medium max-w-lg mb-10 leading-relaxed">
-            Место, где каждый находит смысл, поддержку и настоящую жизнь. Присоединяйтесь к нам в это воскресенье.
-        </p>
-        <!-- Mission Bar (Embedded in Hero for Desktop) -->
-        <div class="hidden md:flex items-center gap-6 bg-navy text-background-light p-1 pr-8 rounded-2xl w-fit shadow-xl border border-navy-light/50">
-            <div class="bg-primary w-12 h-12 flex items-center justify-center rounded-xl text-navy shadow-inner">
-                <span class="material-symbols-outlined fill-current">favorite</span>
-            </div>
-            <div class="flex flex-col">
-                <span class="text-xs text-primary uppercase font-bold tracking-wider opacity-80">Наша миссия</span>
-                <span class="text-lg font-bold leading-tight">Любить Бога, любить людей</span>
-            </div>
-            <div class="h-8 w-px bg-white/10 mx-2"></div>
-            <button class="text-sm font-bold text-primary hover:text-white flex items-center gap-1 transition-colors group/btn">
-                Подробнее 
-                <span class="material-symbols-outlined text-lg group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
-            </button>
+        <div class="flex flex-col">
+          <span class="text-xs text-primary uppercase font-bold tracking-wider opacity-80">Наша миссия</span>
+          <span class="text-lg font-bold leading-tight">Любить Бога, любить людей</span>
         </div>
+        <div class="h-8 w-px bg-white/10 mx-2"></div>
+        <button
+          class="text-sm font-bold text-primary hover:text-white flex items-center gap-1 transition-colors group/btn">
+          Подробнее
+          <span
+            class="material-symbols-outlined text-lg group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+        </button>
+      </div>
     </div>
-    <!-- Mobile Only Mission Card -->
-    <div class="absolute bottom-24 left-4 right-4 md:hidden bg-navy text-white p-4 rounded-xl shadow-lg border border-primary/20">
+
+    <!-- Mobile Only Mission Card (Moved into content flow for better spacing) -->
+    <div class="md:hidden mt-auto mb-10 px-6">
+      <div class="bg-navy text-white p-5 rounded-2xl shadow-lg border border-primary/20">
         <div class="flex items-center gap-4">
-            <div class="bg-primary/20 p-2 rounded-lg text-primary">
-                <span class="material-symbols-outlined fill-current">favorite</span>
-            </div>
-            <div>
-                <h3 class="font-bold text-lg">Наша Миссия</h3>
-                <p class="text-white/70 text-sm">Любить Бога, любить людей</p>
-            </div>
+          <div class="bg-primary/20 p-2.5 rounded-xl text-primary">
+            <span class="material-symbols-outlined fill-current">favorite</span>
+          </div>
+          <div>
+            <h3 class="font-bold text-lg leading-tight uppercase tracking-wide">Наша Миссия</h3>
+            <p class="text-white/60 text-[13px] mt-0.5 leading-snug">Любить Бога, любить людей</p>
+          </div>
         </div>
+      </div>
     </div>
   </section>
 
 
   <!-- ─── СЕКЦИЯ 1: ТАЙМЕР ──────────────────────────── -->
-  <section class="snap-sec min-h-screen w-full flex flex-col items-center justify-center relative px-4 sm:px-8 py-20 bg-background-light" id="sec-timer" aria-label="Таймер до богослужения">
+  <section
+    class="snap-sec min-h-screen w-full flex flex-col items-center justify-center relative px-4 sm:px-8 py-10 md:py-20 bg-background-light"
+    id="sec-timer" aria-label="Таймер до богослужения">
     <!-- Decorative Elements -->
     <div class="absolute top-1/4 left-10 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-10"></div>
     <div class="absolute bottom-1/4 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl -z-10"></div>
-    
+
     <div class="max-w-4xl w-full flex flex-col items-center text-center space-y-12">
 
       <!-- STATE: TIMER -->
       <div id="state-timer" class="w-full flex flex-col items-center text-center space-y-12">
         <!-- Title -->
         <div class="space-y-4">
-            <div class="inline-flex items-center gap-2 bg-navy/5 px-4 py-1.5 rounded-full border border-navy/10 mb-2">
-                <span class="material-symbols-outlined text-primary text-sm">schedule</span>
-                <span class="text-xs font-bold uppercase tracking-widest text-navy/70">До начала трансляции</span>
-            </div>
-            <h2 class="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-navy">
-                Воскресное богослужение
-            </h2>
-            <p class="text-navy/60 font-medium max-w-lg mx-auto">
-                Присоединяйтесь к нам онлайн. Подготовка уже идет, мы ждем только вас.
-            </p>
+          <div class="inline-flex items-center gap-2 bg-navy/5 px-4 py-1.5 rounded-full border border-navy/10 mb-2">
+            <span class="material-symbols-outlined text-primary text-sm">schedule</span>
+            <span class="text-xs font-bold uppercase tracking-widest text-navy/70">До начала трансляции</span>
+          </div>
+          <h2 class="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-navy">
+            Воскресное богослужение
+          </h2>
+          <p class="text-navy/60 font-medium max-w-lg mx-auto">
+            Присоединяйтесь к нам онлайн. Подготовка уже идет, мы ждем только вас.
+          </p>
         </div>
 
         <!-- Timer Cards -->
-        <div class="flex flex-wrap items-center justify-center gap-4 md:gap-8 w-full">
-            <!-- Days -->
-            <div class="flex flex-col gap-3 group">
-                <div class="bg-white px-6 md:px-8 py-8 md:py-10 rounded-3xl shadow-lg shadow-navy/5 border border-primary/10 flex items-center justify-center min-w-[100px] md:min-w-[140px] group-hover:-translate-y-2 transition-transform duration-500">
-                    <span class="text-primary text-5xl md:text-7xl font-bold font-sans tabular-nums tracking-tighter drop-shadow-sm" id="days">0</span>
-                </div>
-                <span class="text-primary font-medium text-sm md:text-base uppercase tracking-widest opacity-80">Дни</span>
+        <div class="grid grid-cols-2 lg:flex items-center justify-center gap-4 md:gap-8 w-full">
+          <!-- Days -->
+          <div class="flex flex-col gap-3 group">
+            <div
+              class="bg-white px-4 py-6 md:px-8 md:py-10 rounded-2xl md:rounded-3xl shadow-lg shadow-navy/5 border border-primary/10 flex items-center justify-center min-w-0 md:min-w-[140px] group-hover:-translate-y-2 transition-transform duration-500">
+              <span
+                class="text-primary text-4xl md:text-7xl font-bold font-sans tabular-nums tracking-tighter drop-shadow-sm"
+                id="days">0</span>
             </div>
-            <!-- Separator -->
-            <span class="hidden md:block text-5xl font-light text-navy/20 -mt-8">:</span>
-            <!-- Hours -->
-            <div class="flex flex-col gap-3 group">
-                <div class="bg-white px-6 md:px-8 py-8 md:py-10 rounded-3xl shadow-lg shadow-navy/5 border border-primary/10 flex items-center justify-center min-w-[100px] md:min-w-[140px] group-hover:-translate-y-2 transition-transform duration-500 delay-75">
-                    <span class="text-navy text-5xl md:text-7xl font-bold font-sans tabular-nums tracking-tighter drop-shadow-sm" id="hours">00</span>
-                </div>
-                <span class="text-navy/60 font-medium text-sm md:text-base uppercase tracking-widest">Часы</span>
+            <span class="text-primary font-medium text-xs md:text-base uppercase tracking-widest opacity-80">Дни</span>
+          </div>
+          <!-- Separator (Hidden on Mobile Grid) -->
+          <span class="hidden lg:block text-5xl font-light text-navy/20 -mt-8">:</span>
+          <!-- Hours -->
+          <div class="flex flex-col gap-3 group">
+            <div
+              class="bg-white px-4 py-6 md:px-8 md:py-10 rounded-2xl md:rounded-3xl shadow-lg shadow-navy/5 border border-primary/10 flex items-center justify-center min-w-0 md:min-w-[140px] group-hover:-translate-y-2 transition-transform duration-500 delay-75">
+              <span
+                class="text-navy text-4xl md:text-7xl font-bold font-sans tabular-nums tracking-tighter drop-shadow-sm"
+                id="hours">00</span>
             </div>
-            <!-- Separator -->
-            <span class="hidden md:block text-5xl font-light text-navy/20 -mt-8">:</span>
-            <!-- Minutes -->
-            <div class="flex flex-col gap-3 group">
-                <div class="bg-white px-6 md:px-8 py-8 md:py-10 rounded-3xl shadow-lg shadow-navy/5 border border-primary/10 flex items-center justify-center min-w-[100px] md:min-w-[140px] group-hover:-translate-y-2 transition-transform duration-500 delay-150">
-                    <span class="text-navy text-5xl md:text-7xl font-bold font-sans tabular-nums tracking-tighter drop-shadow-sm" id="minutes">00</span>
-                </div>
-                <span class="text-navy/60 font-medium text-sm md:text-base uppercase tracking-widest">Минуты</span>
+            <span class="text-navy/60 font-medium text-xs md:text-base uppercase tracking-widest">Часы</span>
+          </div>
+          <!-- Separator (Hidden on Mobile Grid) -->
+          <span class="hidden lg:block text-5xl font-light text-navy/20 -mt-8">:</span>
+          <!-- Minutes -->
+          <div class="flex flex-col gap-3 group">
+            <div
+              class="bg-white px-4 py-6 md:px-8 md:py-10 rounded-2xl md:rounded-3xl shadow-lg shadow-navy/5 border border-primary/10 flex items-center justify-center min-w-0 md:min-w-[140px] group-hover:-translate-y-2 transition-transform duration-500 delay-150">
+              <span
+                class="text-navy text-4xl md:text-7xl font-bold font-sans tabular-nums tracking-tighter drop-shadow-sm"
+                id="minutes">00</span>
             </div>
-            <!-- Separator -->
-            <span class="hidden md:block text-5xl font-light text-navy/20 -mt-8">:</span>
-            <!-- Seconds -->
-            <div class="flex flex-col gap-3 group">
-                <div class="bg-white px-6 md:px-8 py-8 md:py-10 rounded-3xl shadow-lg shadow-navy/5 border border-primary/10 flex items-center justify-center min-w-[100px] md:min-w-[140px] group-hover:-translate-y-2 transition-transform duration-500 delay-200">
-                    <span class="text-navy text-5xl md:text-7xl font-bold font-sans tabular-nums tracking-tighter drop-shadow-sm" id="seconds">00</span>
-                </div>
-                <span class="text-navy/60 font-medium text-sm md:text-base uppercase tracking-widest">Секунды</span>
+            <span class="text-navy/60 font-medium text-xs md:text-base uppercase tracking-widest">Минуты</span>
+          </div>
+          <!-- Separator (Hidden on Mobile Grid) -->
+          <span class="hidden lg:block text-5xl font-light text-navy/20 -mt-8">:</span>
+          <!-- Seconds -->
+          <div class="flex flex-col gap-3 group">
+            <div
+              class="bg-white px-4 py-6 md:px-8 md:py-10 rounded-2xl md:rounded-3xl shadow-lg shadow-navy/5 border border-primary/10 flex items-center justify-center min-w-0 md:min-w-[140px] group-hover:-translate-y-2 transition-transform duration-500 delay-200">
+              <span
+                class="text-navy text-4xl md:text-7xl font-bold font-sans tabular-nums tracking-tighter drop-shadow-sm"
+                id="seconds">00</span>
             </div>
+            <span class="text-navy/60 font-medium text-xs md:text-base uppercase tracking-widest">Секунды</span>
+          </div>
         </div>
 
         <!-- Info Card -->
-        <div class="mt-8 md:mt-16 max-w-2xl mx-auto bg-white/50 backdrop-blur-md border border-white rounded-2xl p-6 sm:p-8 shadow-lg shadow-navy/5 flex flex-col sm:flex-row items-center gap-6 justify-between w-full">
-            <div class="text-left">
-                <h3 class="font-bold text-navy text-lg">Каждое воскресенье</h3>
-                <p class="text-navy/60 text-sm mt-1">в 11:00 · Красноярск GMT+7</p>
-            </div>
-            <div class="h-12 w-px bg-navy/10 hidden sm:block"></div>
-            <div class="flex gap-3">
-                <a href="https://rutube.ru/channel/39733690/" class="w-12 h-12 rounded-full bg-white border border-primary/20 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all shadow-sm group" title="Rutube">
-                    <span class="material-symbols-outlined">smart_display</span>
-                </a>
-                <a href="https://www.youtube.com/@kclcfamily" class="w-12 h-12 rounded-full bg-white border border-primary/20 flex items-center justify-center text-primary hover:bg-red-500 hover:text-white hover:border-red-500 transition-all shadow-sm group" title="YouTube">
-                    <span class="material-symbols-outlined">play_circle</span>
-                </a>
-            </div>
+        <div
+          class="mt-8 md:mt-16 max-w-2xl mx-auto bg-white/50 backdrop-blur-md border border-white rounded-2xl p-6 sm:p-8 shadow-lg shadow-navy/5 flex flex-col sm:flex-row items-center gap-6 justify-between w-full">
+          <div class="text-left">
+            <h3 class="font-bold text-navy text-lg">Каждое воскресенье</h3>
+            <p class="text-navy/60 text-sm mt-1">в 11:00 · Красноярск GMT+7</p>
+          </div>
+          <div class="h-12 w-px bg-navy/10 hidden sm:block"></div>
+          <div class="flex gap-3">
+            <a href="https://rutube.ru/channel/39733690/"
+              class="w-12 h-12 rounded-full bg-white border border-primary/20 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all shadow-sm group"
+              title="Rutube">
+              <span class="material-symbols-outlined">smart_display</span>
+            </a>
+            <a href="https://www.youtube.com/@kclcfamily"
+              class="w-12 h-12 rounded-full bg-white border border-primary/20 flex items-center justify-center text-primary hover:bg-red-500 hover:text-white hover:border-red-500 transition-all shadow-sm group"
+              title="YouTube">
+              <span class="material-symbols-outlined">play_circle</span>
+            </a>
+          </div>
         </div>
       </div>
 
       <!-- STATE: PRESOON -->
       <div id="state-presoon" class="w-full flex flex-col items-center text-center space-y-6 state-hidden">
-        <div class="inline-flex items-center gap-2 bg-primary px-5 py-2 rounded-full shadow-lg shadow-primary/30 animate-pulse">
-            <span class="material-symbols-outlined text-white text-sm">notifications_active</span>
-            <span class="text-xs font-bold uppercase tracking-widest text-white" aria-live="polite">Скоро начнётся</span>
+        <div
+          class="inline-flex items-center gap-2 bg-primary px-5 py-2 rounded-full shadow-lg shadow-primary/30 animate-pulse">
+          <span class="material-symbols-outlined text-white text-sm">notifications_active</span>
+          <span class="text-xs font-bold uppercase tracking-widest text-white" aria-live="polite">Скоро начнётся</span>
         </div>
         <h2 class="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-navy">
-            Трансляция начнётся в 11:00
+          Трансляция начнётся в 11:00
         </h2>
         <p class="text-navy/60 font-medium text-lg">Воскресное богослужение · ЦХЖ Красноярск</p>
-        <div class="text-7xl md:text-9xl font-black text-primary tracking-tighter tabular-nums drop-shadow-xl" id="presoon-count" aria-live="polite">00:00</div>
+        <div class="text-7xl md:text-9xl font-black text-primary tracking-tighter tabular-nums drop-shadow-xl"
+          id="presoon-count" aria-live="polite">00:00</div>
       </div>
 
       <!-- STATE: LIVE -->
       <div id="state-live" class="w-full text-left state-hidden">
         <div class="flex items-center gap-4 px-2 mb-6">
-            <h2 class="text-2xl md:text-3xl font-bold text-navy tracking-tight">Прямая трансляция</h2>
-            <div class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1 uppercase tracking-tighter">
-                <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
-                LIVE
-            </div>
+          <h2 class="text-2xl md:text-3xl font-bold text-navy tracking-tight">Прямая трансляция</h2>
+          <div
+            class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1 uppercase tracking-tighter">
+            <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
+            LIVE
+          </div>
         </div>
-        <div class="bg-white/80 backdrop-blur-md rounded-[2rem] p-4 md:p-6 shadow-xl border border-white/50 w-full mx-auto" style="max-width: 920px;">
-            <div class="relative w-full aspect-video bg-navy rounded-xl overflow-hidden shadow-inner" id="live-player" aria-label="Плеер прямой трансляции"></div>
-            
-            <div class="mt-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div>
-                    <h3 class="text-xl font-bold text-navy">Воскресное богослужение</h3>
-                    <div class="flex items-center gap-2 mt-2 text-navy/60 text-sm font-medium">
-                        <span class="flex items-center gap-1.5 text-red-600 font-bold uppercase tracking-wider animate-pulse">
-                            <span class="material-symbols-outlined text-sm">radio_button_checked</span>
-                            В эфире
-                        </span>
-                        <span class="w-1 h-1 bg-navy/30 rounded-full"></span>
-                        <span id="live-date" aria-live="polite"></span>
-                    </div>
-                </div>
-                <div class="flex items-center gap-3">
-                    <a href="https://rutube.ru/channel/39733690/" class="flex items-center justify-center w-12 h-12 bg-gray-50 rounded-full text-primary hover:bg-primary hover:text-white transition-all shadow-sm" id="live-ru-btn" target="_blank" rel="noopener" title="Rutube">
-                        <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">smart_display</span>
-                    </a>
-                    <a href="https://www.youtube.com/@kclcfamily" class="flex items-center justify-center w-12 h-12 bg-gray-50 rounded-full text-red-600 hover:bg-red-500 hover:text-white transition-all shadow-sm" id="live-yt-btn" target="_blank" rel="noopener" title="YouTube">
-                        <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">play_circle</span>
-                    </a>
-                </div>
+        <div
+          class="bg-white/80 backdrop-blur-md rounded-[2rem] p-4 md:p-6 shadow-xl border border-white/50 w-full mx-auto"
+          style="max-width: 920px;">
+          <div class="relative w-full aspect-video bg-navy rounded-xl overflow-hidden shadow-inner" id="live-player"
+            aria-label="Плеер прямой трансляции"></div>
+
+          <div class="mt-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div>
+              <h3 class="text-xl font-bold text-navy">Воскресное богослужение</h3>
+              <div class="flex items-center gap-2 mt-2 text-navy/60 text-sm font-medium">
+                <span class="flex items-center gap-1.5 text-red-600 font-bold uppercase tracking-wider animate-pulse">
+                  <span class="material-symbols-outlined text-sm">radio_button_checked</span>
+                  В эфире
+                </span>
+                <span class="w-1 h-1 bg-navy/30 rounded-full"></span>
+                <span id="live-date" aria-live="polite"></span>
+              </div>
             </div>
+            <div class="flex items-center gap-3">
+              <a href="https://rutube.ru/channel/39733690/"
+                class="flex items-center justify-center w-12 h-12 bg-gray-50 rounded-full text-primary hover:bg-primary hover:text-white transition-all shadow-sm"
+                id="live-ru-btn" target="_blank" rel="noopener" title="Rutube">
+                <span class="material-symbols-outlined text-2xl"
+                  style="font-variation-settings: 'FILL' 1;">smart_display</span>
+              </a>
+              <a href="https://www.youtube.com/@kclcfamily"
+                class="flex items-center justify-center w-12 h-12 bg-gray-50 rounded-full text-red-600 hover:bg-red-500 hover:text-white transition-all shadow-sm"
+                id="live-yt-btn" target="_blank" rel="noopener" title="YouTube">
+                <span class="material-symbols-outlined text-2xl"
+                  style="font-variation-settings: 'FILL' 1;">play_circle</span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -2496,33 +2541,46 @@
   <section class="snap-sec py-20 px-4 md:px-8 bg-background-light" id="sec-video" aria-label="Прошедшее служение">
     <div class="max-w-[920px] mx-auto w-full flex flex-col gap-8 animate-fade-in-up">
       <h2 class="text-2xl md:text-3xl font-bold text-navy tracking-tight">Прошедшее служение</h2>
-      
+
       <!-- Video Card -->
-      <div class="group relative w-full overflow-hidden rounded-2xl bg-white shadow-lg ring-1 ring-black/5 transition-all hover:shadow-xl">
+      <div
+        class="group relative w-full overflow-hidden rounded-2xl bg-white shadow-lg ring-1 ring-black/5 transition-all hover:shadow-xl">
         <div class="relative w-full aspect-video bg-navy overflow-hidden" id="prev-player" aria-label="Плеер записи">
           <!-- Скелетон загрузки (заглушка) -->
-          <div class="absolute inset-0 bg-cover bg-center opacity-60 transition-transform duration-700 group-hover:scale-105" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAjb3GqtLB9noWTRMfv0abZ8_eJhzOuf-jOekdWlRF9DYcePvK8wS2o22pok7r1Yw3auQjhi6P25QyHKDXIOhTKxvkB3NWeiAefQWG3S30S9rWONcqqD8fymiJB_qW8esT92j3OaMGQoFUAiMjnPeESZSlDANZ6b_zL8njfuHTfDdKhrklXR3jw3bhpM-QdJ0-JqTSc059NS6YFFCcByMl6Qm97zcEurIKXqwsw08fYlG1s4-c6OajvhlsZ2kCd_vv66qFdhbgpB3U');"></div>
+          <div
+            class="absolute inset-0 bg-cover bg-center opacity-60 transition-transform duration-700 group-hover:scale-105"
+            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAjb3GqtLB9noWTRMfv0abZ8_eJhzOuf-jOekdWlRF9DYcePvK8wS2o22pok7r1Yw3auQjhi6P25QyHKDXIOhTKxvkB3NWeiAefQWG3S30S9rWONcqqD8fymiJB_qW8esT92j3OaMGQoFUAiMjnPeESZSlDANZ6b_zL8njfuHTfDdKhrklXR3jw3bhpM-QdJ0-JqTSc059NS6YFFCcByMl6Qm97zcEurIKXqwsw08fYlG1s4-c6OajvhlsZ2kCd_vv66qFdhbgpB3U');">
+          </div>
           <div class="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/20 to-transparent"></div>
-          <div class="absolute inset-0 flex flex-col items-center justify-center text-center gap-4 p-4 z-10" id="prev-fallback" aria-live="polite">
-             <span class="material-symbols-outlined text-primary text-[48px] animate-pulse">hourglass_empty</span>
-             <span class="text-white/80 text-sm font-medium relative top-2">Загружаем запись богослужения…</span>
+          <div class="absolute inset-0 flex flex-col items-center justify-center text-center gap-4 p-4 z-10"
+            id="prev-fallback" aria-live="polite">
+            <span class="material-symbols-outlined text-primary text-[48px] animate-pulse">hourglass_empty</span>
+            <span class="text-white/80 text-sm font-medium relative top-2">Загружаем запись богослужения…</span>
           </div>
         </div>
-        
-        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-5 md:px-8 md:py-6 bg-white shrink-0">
+
+        <div
+          class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-5 md:px-8 md:py-6 bg-white shrink-0">
           <div class="flex items-center gap-4 w-full md:w-auto">
             <div class="flex flex-col">
               <h3 class="font-bold text-navy text-xl" id="prev-date" aria-live="polite">Воскресное служение</h3>
               <p class="text-sm text-navy/60 font-medium mt-1">ЦХЖ Красноярск</p>
             </div>
           </div>
-          <div class="flex w-full md:w-auto items-center justify-end gap-3 pt-4 border-t border-gray-100 md:border-t-0 md:pt-0">
-            <span class="text-xs font-bold text-navy/40 uppercase tracking-widest mr-2 hidden md:block">Смотреть на платформе:</span>
-            <a href="https://rutube.ru/channel/39733690/" class="flex items-center gap-2 rounded-full bg-navy/5 px-5 py-2.5 text-sm font-bold text-navy transition-all hover:bg-primary hover:text-white" id="prev-ru-btn" target="_blank" rel="noopener">
-              <span class="material-symbols-outlined text-[20px] font-variation-settings: 'FILL' 1;">smart_display</span>
+          <div
+            class="flex w-full md:w-auto items-center justify-end gap-3 pt-4 border-t border-gray-100 md:border-t-0 md:pt-0">
+            <span class="text-xs font-bold text-navy/40 uppercase tracking-widest mr-2 hidden md:block">Смотреть на
+              платформе:</span>
+            <a href="https://rutube.ru/channel/39733690/"
+              class="flex items-center gap-2 rounded-full bg-navy/5 px-5 py-2.5 text-sm font-bold text-navy transition-all hover:bg-primary hover:text-white"
+              id="prev-ru-btn" target="_blank" rel="noopener">
+              <span
+                class="material-symbols-outlined text-[20px] font-variation-settings: 'FILL' 1;">smart_display</span>
               <span>Rutube</span>
             </a>
-            <a href="https://www.youtube.com/@kclcfamily/videos" class="flex items-center gap-2 rounded-full bg-navy/5 px-5 py-2.5 text-sm font-bold text-navy transition-all hover:bg-red-500 hover:text-white" id="prev-yt-btn" target="_blank" rel="noopener">
+            <a href="https://www.youtube.com/@kclcfamily/videos"
+              class="flex items-center gap-2 rounded-full bg-navy/5 px-5 py-2.5 text-sm font-bold text-navy transition-all hover:bg-red-500 hover:text-white"
+              id="prev-yt-btn" target="_blank" rel="noopener">
               <span class="material-symbols-outlined text-[20px] font-variation-settings: 'FILL' 1;">play_circle</span>
               <span>YouTube</span>
             </a>
@@ -2542,41 +2600,49 @@
           <span class="material-symbols-outlined text-primary text-3xl shrink-0">headset_mic</span>
           <h2 class="text-2xl md:text-3xl font-bold text-navy tracking-tight">Аудиоподкаст</h2>
         </div>
-        <div class="bg-navy/5 text-navy px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase hidden md:block" id="ep-count">224 эпизода</div>
+        <div
+          class="bg-navy/5 text-navy px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase hidden md:block"
+          id="ep-count">224 эпизода</div>
       </div>
 
       <!-- Podcast Current Info -->
       <div class="bg-background-light rounded-3xl p-6 md:p-8 border border-navy/5 shadow-sm relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+        <div
+          class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3">
+        </div>
         <div class="relative z-10">
-            <div class="grid grid-cols-3 gap-4 mb-8 text-sm max-w-sm">
-              <div>
-                <span class="text-navy/50 font-bold tracking-widest uppercase block text-[10px] mb-1">Сезон</span>
-                <span class="font-medium text-navy">7</span>
-              </div>
-              <div>
-                <span class="text-navy/50 font-bold tracking-widest uppercase block text-[10px] mb-1">Эпизод</span>
-                <span class="font-medium text-navy">5</span>
-              </div>
-              <div>
-                <span class="text-navy/50 font-bold tracking-widest uppercase block text-[10px] mb-1">Дата</span>
-                <span class="font-medium text-navy">1 февраля</span>
-              </div>
+          <div class="grid grid-cols-3 gap-4 mb-8 text-sm max-w-sm">
+            <div>
+              <span class="text-navy/50 font-bold tracking-widest uppercase block text-[10px] mb-1">Сезон</span>
+              <span class="font-medium text-navy">7</span>
             </div>
+            <div>
+              <span class="text-navy/50 font-bold tracking-widest uppercase block text-[10px] mb-1">Эпизод</span>
+              <span class="font-medium text-navy">5</span>
+            </div>
+            <div>
+              <span class="text-navy/50 font-bold tracking-widest uppercase block text-[10px] mb-1">Дата</span>
+              <span class="font-medium text-navy">1 февраля</span>
+            </div>
+          </div>
 
-            <div class="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8" id="curr-ep">
-              <button class="size-20 shrink-0 bg-primary rounded-full shadow-lg shadow-primary/20 flex items-center justify-center text-white hover:scale-105 active:scale-95 transition-all outline-none focus:ring-4 focus:ring-primary/30" id="play-btn" aria-label="Воспроизвести" aria-pressed="false">
-                <span class="material-symbols-outlined text-4xl ml-1 font-variation-settings: 'FILL' 1;" id="play-icon">play_arrow</span>
-              </button>
-              <div class="flex-1 text-center md:text-left space-y-2 mt-2 md:mt-0">
-                <h3 class="text-xl md:text-2xl font-bold text-navy leading-tight" id="ep-cur-title">ПОКЛОНЕНИЕ ГОСПОДУ: БОЛЬШЕ, ЧЕМ ПЕНИЕ</h3>
-                <div class="flex items-center justify-center md:justify-start gap-3">
-                  <span class="text-primary font-medium" id="ep-cur-speaker">Максим Притчин</span>
-                  <span class="w-1.5 h-1.5 bg-navy/20 rounded-full"></span>
-                  <span class="text-navy/50 font-medium tabular-nums" id="ep-cur-dur">26:07</span>
-                </div>
+          <div class="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8" id="curr-ep">
+            <button
+              class="size-20 shrink-0 bg-primary rounded-full shadow-lg shadow-primary/20 flex items-center justify-center text-white hover:scale-105 active:scale-95 transition-all outline-none focus:ring-4 focus:ring-primary/30"
+              id="play-btn" aria-label="Воспроизвести" aria-pressed="false">
+              <span class="material-symbols-outlined text-4xl ml-1 font-variation-settings: 'FILL' 1;"
+                id="play-icon">play_arrow</span>
+            </button>
+            <div class="flex-1 text-center md:text-left space-y-2 mt-2 md:mt-0">
+              <h3 class="text-xl md:text-2xl font-bold text-navy leading-tight" id="ep-cur-title">ПОКЛОНЕНИЕ ГОСПОДУ:
+                БОЛЬШЕ, ЧЕМ ПЕНИЕ</h3>
+              <div class="flex items-center justify-center md:justify-start gap-3">
+                <span class="text-primary font-medium" id="ep-cur-speaker">Максим Притчин</span>
+                <span class="w-1.5 h-1.5 bg-navy/20 rounded-full"></span>
+                <span class="text-navy/50 font-medium tabular-nums" id="ep-cur-dur">26:07</span>
               </div>
             </div>
+          </div>
         </div>
       </div>
 
@@ -2586,32 +2652,50 @@
         <div id="ep-announce" class="sr-only" aria-live="polite" aria-atomic="true"></div>
         <div class="ep-list flex flex-col gap-1" role="group" aria-label="Список эпизодов">
           <!-- Row 1 -->
-          <div class="ep-row group flex items-center justify-between p-4 rounded-2xl hover:bg-navy/5 transition-all cursor-pointer border border-transparent hover:border-navy/10 ep-row--active" role="button" tabindex="0" aria-label="Воспроизвести: ИСЦЕЛЕНИЕ ИСТОЧНИКА — Владимир Ашаев" data-title="ИСЦЕЛЕНИЕ ИСТОЧНИКА" data-speaker="Владимир Ашаев" data-dur="38:47">
+          <div
+            class="ep-row group flex items-center justify-between p-4 rounded-2xl hover:bg-navy/5 transition-all cursor-pointer border border-transparent hover:border-navy/10 ep-row--active"
+            role="button" tabindex="0" aria-label="Воспроизвести: ИСЦЕЛЕНИЕ ИСТОЧНИКА — Владимир Ашаев"
+            data-title="ИСЦЕЛЕНИЕ ИСТОЧНИКА" data-speaker="Владимир Ашаев" data-dur="38:47">
             <div class="flex items-center gap-4">
-              <div class="size-10 rounded-full bg-navy/5 flex items-center justify-center text-navy/40 group-hover:bg-primary group-hover:text-white transition-colors shrink-0">
+              <div
+                class="size-10 rounded-full bg-navy/5 flex items-center justify-center text-navy/40 group-hover:bg-primary group-hover:text-white transition-colors shrink-0">
                 <span class="material-symbols-outlined font-variation-settings: 'FILL' 1;">play_arrow</span>
               </div>
-              <span class="font-bold text-navy group-hover:text-primary transition-colors ep-row-title text-sm md:text-base leading-snug">ИСЦЕЛЕНИЕ ИСТОЧНИКА — Владимир Ашаев</span>
+              <span
+                class="font-bold text-navy group-hover:text-primary transition-colors ep-row-title text-sm md:text-base leading-snug">ИСЦЕЛЕНИЕ
+                ИСТОЧНИКА — Владимир Ашаев</span>
             </div>
             <span class="text-sm font-medium text-navy/50 tabular-nums ep-row-dur hidden sm:block">38:47</span>
           </div>
           <!-- Row 2 -->
-          <div class="ep-row group flex items-center justify-between p-4 rounded-2xl hover:bg-navy/5 transition-all cursor-pointer border border-transparent hover:border-navy/10" role="button" tabindex="0" aria-label="Воспроизвести: СИЛА КРОВИ ХРИСТА — Максим Притчин" data-title="СИЛА КРОВИ ХРИСТА" data-speaker="Максим Притчин" data-dur="25:46">
+          <div
+            class="ep-row group flex items-center justify-between p-4 rounded-2xl hover:bg-navy/5 transition-all cursor-pointer border border-transparent hover:border-navy/10"
+            role="button" tabindex="0" aria-label="Воспроизвести: СИЛА КРОВИ ХРИСТА — Максим Притчин"
+            data-title="СИЛА КРОВИ ХРИСТА" data-speaker="Максим Притчин" data-dur="25:46">
             <div class="flex items-center gap-4">
-              <div class="size-10 rounded-full bg-navy/5 flex items-center justify-center text-navy/40 group-hover:bg-primary group-hover:text-white transition-colors shrink-0">
+              <div
+                class="size-10 rounded-full bg-navy/5 flex items-center justify-center text-navy/40 group-hover:bg-primary group-hover:text-white transition-colors shrink-0">
                 <span class="material-symbols-outlined font-variation-settings: 'FILL' 1;">play_arrow</span>
               </div>
-              <span class="font-bold text-navy group-hover:text-primary transition-colors ep-row-title text-sm md:text-base leading-snug">СИЛА КРОВИ ХРИСТА — Максим Притчин</span>
+              <span
+                class="font-bold text-navy group-hover:text-primary transition-colors ep-row-title text-sm md:text-base leading-snug">СИЛА
+                КРОВИ ХРИСТА — Максим Притчин</span>
             </div>
             <span class="text-sm font-medium text-navy/50 tabular-nums ep-row-dur hidden sm:block">25:46</span>
           </div>
           <!-- Row 3 -->
-          <div class="ep-row group flex items-center justify-between p-4 rounded-2xl hover:bg-navy/5 transition-all cursor-pointer border border-transparent hover:border-navy/10" role="button" tabindex="0" aria-label="Воспроизвести: ОСТАВЬ СОЛЕНЫЙ СЛЕД В ИСТОРИИ — Владимир Ашаев" data-title="ОСТАВЬ СОЛЕНЫЙ СЛЕД В ИСТОРИИ" data-speaker="Владимир Ашаев" data-dur="45:27">
+          <div
+            class="ep-row group flex items-center justify-between p-4 rounded-2xl hover:bg-navy/5 transition-all cursor-pointer border border-transparent hover:border-navy/10"
+            role="button" tabindex="0" aria-label="Воспроизвести: ОСТАВЬ СОЛЕНЫЙ СЛЕД В ИСТОРИИ — Владимир Ашаев"
+            data-title="ОСТАВЬ СОЛЕНЫЙ СЛЕД В ИСТОРИИ" data-speaker="Владимир Ашаев" data-dur="45:27">
             <div class="flex items-center gap-4">
-              <div class="size-10 rounded-full bg-navy/5 flex items-center justify-center text-navy/40 group-hover:bg-primary group-hover:text-white transition-colors shrink-0">
+              <div
+                class="size-10 rounded-full bg-navy/5 flex items-center justify-center text-navy/40 group-hover:bg-primary group-hover:text-white transition-colors shrink-0">
                 <span class="material-symbols-outlined font-variation-settings: 'FILL' 1;">play_arrow</span>
               </div>
-              <span class="font-bold text-navy group-hover:text-primary transition-colors ep-row-title text-sm md:text-base leading-snug">ОСТАВЬ СОЛЕНЫЙ СЛЕД В ИСТОРИИ — Владимир Ашаев</span>
+              <span
+                class="font-bold text-navy group-hover:text-primary transition-colors ep-row-title text-sm md:text-base leading-snug">ОСТАВЬ
+                СОЛЕНЫЙ СЛЕД В ИСТОРИИ — Владимир Ашаев</span>
             </div>
             <span class="text-sm font-medium text-navy/50 tabular-nums ep-row-dur hidden sm:block">45:27</span>
           </div>
@@ -2619,15 +2703,18 @@
       </div>
 
       <!-- Podcast Footer -->
-      <div class="flex flex-col flex-col-reverse sm:flex-row items-center justify-between gap-6 pt-6 mt-4 border-t border-navy/10 relative z-10 w-full">
+      <div
+        class="flex flex-col flex-col-reverse sm:flex-row items-center justify-between gap-6 pt-6 mt-4 border-t border-navy/10 relative z-10 w-full">
         <div class="flex items-center gap-2 text-navy/50">
           <span class="material-symbols-outlined text-[18px]">rss_feed</span>
           <span class="text-xs font-bold tracking-widest uppercase">Podster.fm</span>
           <span class="mx-2">·</span>
           <span class="text-xs font-bold tabular-nums tracking-wider uppercase">0:00 / 1.0x</span>
         </div>
-        <a href="https://podster.fm/album/124814" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-navy/5 hover:bg-navy hover:text-white text-navy font-bold rounded-full text-xs tracking-wide uppercase transition-all shadow-sm w-full sm:w-auto text-center" target="_blank" rel="noopener" aria-label="Все эпизоды подкаста на Podster.fm">
-          Все эпизоды 
+        <a href="https://podster.fm/album/124814"
+          class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-navy/5 hover:bg-navy hover:text-white text-navy font-bold rounded-full text-xs tracking-wide uppercase transition-all shadow-sm w-full sm:w-auto text-center"
+          target="_blank" rel="noopener" aria-label="Все эпизоды подкаста на Podster.fm">
+          Все эпизоды
           <span class="material-symbols-outlined text-[16px]">open_in_new</span>
         </a>
       </div>
@@ -2636,11 +2723,14 @@
   </section>
 
   <!-- ─── СЕКЦИЯ 4: НОВОСТИ ─────────────────────────── -->
-  <section class="snap-sec py-20 px-4 md:px-8 bg-background-light flex flex-col items-center justify-center min-h-screen" id="sec-news" aria-label="Новости">
+  <section
+    class="snap-sec py-20 px-4 md:px-8 bg-background-light flex flex-col items-center justify-center min-h-screen"
+    id="sec-news" aria-label="Новости">
     <div class="max-w-[1200px] mx-auto w-full">
       <div class="mb-10 text-center md:text-left md:border-l-4 md:border-primary md:pl-6">
         <h2 class="text-navy text-3xl md:text-4xl font-black leading-tight tracking-tight">Новости церкви</h2>
-        <p class="text-navy/60 text-base md:text-lg mt-2 max-w-2xl mx-auto md:mx-0">События, обновления и свидетельства нашей общины. Будьте в курсе жизни церкви.</p>
+        <p class="text-navy/60 text-base md:text-lg mt-2 max-w-2xl mx-auto md:mx-0">События, обновления и свидетельства
+          нашей общины. Будьте в курсе жизни церкви.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6" id="news-grid">
@@ -2676,12 +2766,14 @@
           </div>
         </div>
       </div>
-      
+
       <div class="flex justify-center md:justify-end mt-10 w-full">
-         <a href="https://kclc.ru/novosti-cerkvi/" class="inline-flex items-center justify-center gap-2 bg-navy text-white px-8 py-3.5 rounded-full text-xs font-bold tracking-widest uppercase hover:bg-primary transition-all shadow-md active:scale-95 w-full sm:w-auto" target="_blank" rel="noopener" aria-label="Все новости на kclc.ru">
-           Все новости
-           <span class="material-symbols-outlined text-[18px]">open_in_new</span>
-         </a>
+        <a href="https://kclc.ru/novosti-cerkvi/"
+          class="inline-flex items-center justify-center gap-2 bg-navy text-white px-8 py-3.5 rounded-full text-xs font-bold tracking-widest uppercase hover:bg-primary transition-all shadow-md active:scale-95 w-full sm:w-auto"
+          target="_blank" rel="noopener" aria-label="Все новости на kclc.ru">
+          Все новости
+          <span class="material-symbols-outlined text-[18px]">open_in_new</span>
+        </a>
       </div>
 
     </div>
@@ -3432,7 +3524,7 @@
     const vNavItems = document.querySelectorAll('.vn-item');
     const sections = document.querySelectorAll('.snap-sec');
     const snapRoot = document.getElementById('snap-root');
-    
+
     if (!vNavItems.length || !sections.length || !snapRoot) return;
 
     // Клик по точкам
@@ -3456,7 +3548,7 @@
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const targetId = entry.target.id;
-          
+
           vNavItems.forEach(nav => {
             const isActive = nav.dataset.target === targetId;
             nav.classList.toggle('active', isActive);
