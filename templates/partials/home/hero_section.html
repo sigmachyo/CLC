@@ -1,66 +1,311 @@
 {% load static %}
-<section class="snap-sec relative flex-grow h-full w-full overflow-hidden group" id="sec-hero"
-  aria-label="Главная">
-  <div class="snap-sec-inner flex flex-col justify-center">
-  <div class="absolute inset-0 w-full h-full rounded-3xl overflow-hidden" id="hero-slider">
-    {% if hero_backgrounds %}
+<section class="snap-sec relative flex-grow h-full w-full overflow-hidden" id="sec-hero" aria-label="Главная">
+  <div class="snap-sec-inner flex flex-col justify-end h-full">
+
+    <!-- ====== СЛАЙДЕР ФОНОВ ====== -->
+    <div class="hero-slides absolute inset-0 w-full h-full" id="hero-slider" aria-hidden="true">
+      {% if hero_backgrounds %}
       {% for slide in hero_backgrounds %}
-        <div class="hero-slide-bg absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-[3000ms] ease-in-out {% if forloop.first %}opacity-100 scale-[1.02]{% else %}opacity-0 scale-105{% endif %}"
-             style="background-image: url('{{ slide.image.url }}');">
-        </div>
+      <div class="hero-slide absolute inset-0 w-full h-full {% if forloop.first %}active{% endif %}"
+        data-index="{{ forloop.counter0 }}" {% if slide.link_url %}data-link="{{ slide.link_url }}" {% endif %}>
+        <div class="hero-slide-img absolute inset-0 w-full h-full bg-cover bg-center"
+          style="background-image: url('{{ slide.image.url }}');"></div>
+      </div>
       {% endfor %}
-    {% else %}
-      <div class="hero-slide-bg absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-[3000ms] ease-in-out opacity-100 scale-[1.02]"
-           style="background-image: url('https://kclc.ru/wp-content/uploads/2025/11/photo_2025-10-28_19-12-17-1024x768.jpg');">
-      </div>
-    {% endif %}
-    <div
-      class="absolute inset-0 bg-gradient-to-r from-background-light/90 via-background-light/40 to-transparent md:from-background-light/95 md:via-background-light/60 z-10 pointer-events-none">
-    </div>
-  </div>
-  <div class="relative z-20 h-full flex flex-col justify-center px-6 md:px-20 max-w-4xl">
-    <div
-      class="inline-flex items-center gap-2 bg-primary/10 backdrop-blur-sm border border-primary/20 rounded-full py-1.5 px-4 w-fit mb-6">
-      <span class="material-symbols-outlined text-primary text-sm">location_on</span>
-      <span class="text-navy font-semibold text-sm tracking-wide uppercase">Красноярск · Бограда 134</span>
-    </div>
-    <h1 class="text-5xl xs:text-6xl md:text-8xl font-black text-navy leading-tight xs:leading-[0.9] tracking-tighter mb-6 drop-shadow-sm">
-      ЦЕРКОВЬ<br />
-      <span class="text-transparent bg-clip-text bg-gradient-to-r from-navy via-navy-light to-primary">ЖИЗНИ</span>
-    </h1>
-    <p class="text-navy/70 text-lg md:text-xl font-medium max-w-lg mb-10 leading-relaxed">
-      Место, где каждый находит смысл, поддержку и настоящую жизнь. Присоединяйтесь к нам в это воскресенье.
-    </p>
-    <div
-      class="hidden md:flex items-center gap-6 bg-navy text-background-light p-1 pr-8 rounded-2xl w-fit shadow-xl border border-navy-light/50">
-      <div class="bg-primary w-12 h-12 flex items-center justify-center rounded-xl text-navy shadow-inner">
-        <span class="material-symbols-outlined fill-current">favorite</span>
-      </div>
-      <div class="flex flex-col">
-        <span class="text-xs text-primary uppercase font-bold tracking-wider opacity-80">Наша миссия</span>
-        <span class="text-lg font-bold leading-tight">Любить Бога, любить людей</span>
-      </div>
-      <div class="h-8 w-px bg-white/10 mx-2"></div>
-      <button
-        class="text-sm font-bold text-primary hover:text-white flex items-center gap-1 transition-colors group/btn">
-        Подробнее
-        <span
-          class="material-symbols-outlined text-lg group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
-      </button>
-    </div>
-  </div>
-  <div class="md:hidden mt-auto mb-10 px-6">
-    <div class="bg-navy text-white p-5 rounded-2xl shadow-lg border border-primary/20">
-      <div class="flex items-center gap-4">
-        <div class="bg-primary/20 p-2.5 rounded-xl text-primary">
-          <span class="material-symbols-outlined fill-current">favorite</span>
-        </div>
-        <div>
-          <h3 class="font-bold text-lg leading-tight uppercase tracking-wide">Наша Миссия</h3>
-          <p class="text-white/60 text-[13px] mt-0.5 leading-snug">Любить Бога, любить людей</p>
+      {% else %}
+      <div class="hero-slide active absolute inset-0" data-index="0">
+        <div class="hero-slide-img absolute inset-0 w-full h-full bg-cover bg-center"
+          style="background-image: url('https://kclc.ru/wp-content/uploads/2026/03/Сибирская-Альфа-конференция-2026-на-сайт.jpg');">
         </div>
       </div>
+      <div class="hero-slide absolute inset-0" data-index="1">
+        <div class="hero-slide-img absolute inset-0 w-full h-full bg-cover bg-center"
+          style="background-image: url('https://kclc.ru/wp-content/uploads/2026/02/Перезагрузка-2026.jpg');"></div>
+      </div>
+      <div class="hero-slide absolute inset-0" data-index="2">
+        <div class="hero-slide-img absolute inset-0 w-full h-full bg-cover bg-center"
+          style="background-image: url('https://kclc.ru/wp-content/uploads/2026/04/FCj8S39nKv27LRPj1ssnUP1YYINeUZKyxaJ1JNnD6aN6SRsQDdjT1zRZpbIR1ztQQJ4woCegZ4DtyymaXaXl2Lp4-1.jpg');">
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Многослойный градиент поверх фото -->
+      <div class="hero-overlay absolute inset-0 z-10 pointer-events-none"></div>
     </div>
-  </div>
+
+    <!-- ====== КОНТЕНТ ====== -->
+    <div class="relative z-20 w-full px-6 md:px-16 pb-16 md:pb-20 max-w-5xl">
+
+      <!-- Бейдж локации -->
+      <div class="hero-badge inline-flex items-center gap-2 mb-5 md:mb-6">
+        <span class="material-symbols-outlined text-sm" style="color:var(--gold)">location_on</span>
+        <span class="hero-badge-text text-xs font-bold tracking-[0.14em] uppercase">Красноярск · Бограда 134</span>
+      </div>
+
+      <!-- Заголовок -->
+      <h1 class="hero-title font-black leading-none tracking-tighter mb-5 md:mb-6">
+        <span class="hero-title-line block">ЦЕРКОВЬ</span>
+        <span class="hero-title-accent block">ЖИЗНИ</span>
+      </h1>
+
+      <!-- Подзаголовок -->
+      <p class="hero-sub mb-8 md:mb-10 max-w-md">
+        Место, где каждый находит смысл, поддержку и настоящую жизнь.<br class="hidden md:block" />
+        Присоединяйтесь к нам в это воскресенье.
+      </p>
+
+      <!-- Карточка миссии -->
+      <div class="hero-mission-card inline-flex items-center gap-4">
+        <div class="hero-mission-icon flex-shrink-0">
+          <span class="material-symbols-outlined fill-icon text-xl"
+            style="font-variation-settings:'FILL' 1">favorite</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="hero-mission-label text-xs font-bold tracking-[0.12em] uppercase mb-0.5">Наша миссия</span>
+          <span class="hero-mission-text font-bold leading-tight">Любить Бога, любить людей</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== ТОЧКИ (DOTS) ====== -->
+    <div class="hero-dots z-30" id="heroDots" role="tablist" aria-label="Слайды"></div>
+
   </div>
 </section>
+
+<style>
+  /* ─── Слайды ─────────────────────────────────────────────── */
+  .hero-slide {
+    opacity: 0;
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+  }
+
+  .hero-slide.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .hero-slide-img {
+    transform: scale(1.08);
+    transition: transform 8s ease-out;
+    will-change: transform;
+  }
+
+  .hero-slide.active .hero-slide-img {
+    transform: scale(1.0);
+  }
+
+  .hero-slide.leaving .hero-slide-img {
+    transform: scale(1.12);
+  }
+
+  /* ─── Оверлей ────────────────────────────────────────────── */
+  .hero-overlay {
+    background:
+      linear-gradient(to top,
+        rgba(10, 14, 36, 0.88) 0%,
+        rgba(10, 14, 36, 0.55) 32%,
+        rgba(10, 14, 36, 0.10) 58%,
+        transparent 100%),
+      linear-gradient(to right,
+        rgba(10, 14, 36, 0.40) 0%,
+        transparent 55%);
+  }
+
+  /* ─── Бейдж ──────────────────────────────────────────────── */
+  .hero-badge {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 100px;
+    padding: 6px 16px;
+  }
+
+  .hero-badge-text {
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  /* ─── Заголовок ──────────────────────────────────────────── */
+  .hero-title {
+    font-size: clamp(3.2rem, 10vw, 8rem);
+    color: #ffffff;
+    text-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  }
+
+  .hero-title-accent {
+    color: transparent;
+    -webkit-text-stroke: 2px var(--gold);
+    text-stroke: 2px var(--gold);
+    filter: drop-shadow(0 0 20px rgba(201, 168, 76, 0.35));
+  }
+
+  @supports (background-clip: text) or (-webkit-background-clip: text) {
+    .hero-title-accent {
+      background: linear-gradient(135deg, var(--gold-h) 0%, var(--gold) 50%, var(--gold-d) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-stroke: 0;
+      text-stroke: 0;
+      filter: drop-shadow(0 2px 16px rgba(201, 168, 76, 0.4));
+    }
+  }
+
+  /* ─── Подзаголовок ───────────────────────────────────────── */
+  .hero-sub {
+    font-size: clamp(0.95rem, 2vw, 1.15rem);
+    color: rgba(255, 255, 255, 0.72);
+    line-height: 1.65;
+    font-weight: 400;
+  }
+
+  /* ─── Карточка миссии ────────────────────────────────────── */
+  .hero-mission-card {
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 14px 20px;
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+
+  .hero-mission-card:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(201, 168, 76, 0.35);
+  }
+
+  .hero-mission-icon {
+    width: 44px;
+    height: 44px;
+    background: var(--gold);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--navy);
+    box-shadow: 0 4px 16px rgba(201, 168, 76, 0.35);
+    flex-shrink: 0;
+  }
+
+  .hero-mission-label {
+    color: var(--gold);
+  }
+
+  .hero-mission-text {
+    color: #fff;
+    font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+  }
+
+  /* ─── Точки-индикаторы ───────────────────────────────────── */
+  .hero-dots {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .hero-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.35);
+    border: none;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0;
+  }
+
+  .hero-dot.active {
+    background: var(--gold);
+    box-shadow: 0 0 10px rgba(201, 168, 76, 0.55);
+    transform: scale(1.25);
+  }
+
+  .hero-dot:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.65);
+    transform: scale(1.1);
+  }
+</style>
+
+<script>
+  (function () {
+    const DURATION = 7000; // 7 секунд между слайдами
+
+    const slider = document.getElementById('hero-slider');
+    const dotsWrap = document.getElementById('heroDots');
+    const slides = Array.from(slider.querySelectorAll('.hero-slide'));
+
+    if (!slides.length) return;
+
+    let current = 0;
+    let timer = null;
+    let paused = false;
+
+    // ── Создаём точки
+    slides.forEach((_, i) => {
+      const d = document.createElement('button');
+      d.className = 'hero-dot' + (i === 0 ? ' active' : '');
+      d.setAttribute('role', 'tab');
+      d.setAttribute('aria-label', 'Слайд ' + (i + 1));
+      d.addEventListener('click', () => { goTo(i); restartTimer(); });
+      dotsWrap.appendChild(d);
+    });
+
+    function getDots() {
+      return Array.from(dotsWrap.querySelectorAll('.hero-dot'));
+    }
+
+    function goTo(idx) {
+      if (idx === current) return;
+      const prev = slides[current];
+      prev.classList.remove('active');
+      prev.classList.add('leaving');
+      setTimeout(() => prev.classList.remove('leaving'), 1400);
+
+      current = (idx + slides.length) % slides.length;
+      slides[current].classList.add('active');
+
+      getDots().forEach((d, i) => d.classList.toggle('active', i === current));
+    }
+
+    function next() { goTo(current + 1); }
+
+    // ── Свайп на мобильных
+    let touchX = null;
+    slider.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+    slider.addEventListener('touchend', e => {
+      if (touchX === null) return;
+      const dx = e.changedTouches[0].clientX - touchX;
+      if (Math.abs(dx) > 40) {
+        dx < 0 ? next() : goTo(current - 1);
+        restartTimer();
+      }
+      touchX = null;
+    }, { passive: true });
+
+    // ── Авто-перелистывание
+    function startTimer() {
+      clearInterval(timer);
+      timer = setInterval(() => { if (!paused) next(); }, DURATION);
+    }
+    function restartTimer() { startTimer(); }
+
+    // Пауза при наведении
+    const sec = document.getElementById('sec-hero');
+    sec.addEventListener('mouseenter', () => { paused = true; });
+    sec.addEventListener('mouseleave', () => { paused = false; });
+
+    // Пауза при смене вкладки
+    document.addEventListener('visibilitychange', () => {
+      paused = document.hidden;
+    });
+
+    startTimer();
+  })();
+</script>
