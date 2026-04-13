@@ -1,33 +1,5 @@
 from django.contrib import admin
-from .models import SpiritualLevel, UserProgress, Announcement
-
-@admin.register(SpiritualLevel)
-class SpiritualLevelAdmin(admin.ModelAdmin):
-    list_display = ('title', 'level_type', 'building_style', 'order', 'is_available')
-    list_filter = ('level_type', 'building_style', 'is_available')
-    search_fields = ('title', 'description')
-    ordering = ('order',)
-    
-    fieldsets = (
-        ('Основная информация', {
-            'fields': ('title', 'description', 'level_type', 'building_style', 'order')
-        }),
-        ('Визуализация', {
-            'fields': ('image', 'position_x', 'position_y', 'height', 'color')
-        }),
-        ('Доступность', {
-            'fields': ('is_available',)
-        }),
-    )
-
-
-@admin.register(UserProgress)
-class UserProgressAdmin(admin.ModelAdmin):
-    list_display = ('user', 'level', 'is_completed', 'completed_at')
-    list_filter = ('is_completed', 'level__level_type')
-    search_fields = ('user__username', 'level__title')
-    date_hierarchy = 'completed_at'
-
+from .models import Announcement
 
 @admin.register(Announcement)
 class AnnouncementAdmin(admin.ModelAdmin):
@@ -35,7 +7,6 @@ class AnnouncementAdmin(admin.ModelAdmin):
     list_filter = ('is_active',)
     search_fields = ('title', 'description')
     date_hierarchy = 'created_at'
-    
     fieldsets = (
         ('Содержание', {
             'fields': ('title', 'description', 'image')
@@ -45,7 +16,17 @@ class AnnouncementAdmin(admin.ModelAdmin):
         }),
     )
 
-from .models import Category, Video, BiblePlan, BibleReading, UserBibleProgress, Event, EventRegistration, KidsContent, KidsProgress, DailyVerse, PrayerRequest, ChatRoom, ChatMessage, PushSubscription
+from .models import HeroBackground
+
+@admin.register(HeroBackground)
+class HeroBackgroundAdmin(admin.ModelAdmin):
+    list_display = ('title', 'is_active', 'order', 'link_url', 'created_at')
+    list_editable = ('is_active', 'order')
+    list_filter = ('is_active',)
+    search_fields = ('title',)
+    ordering = ('order', '-created_at')
+
+from .models import Category, Video, BiblePlan, BibleReading, UserBibleProgress, Event, EventRegistration, KidsContent, KidsProgress, DailyVerse, PrayerRequest, PushSubscription
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -164,21 +145,10 @@ class PrayerRequestAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
     ordering = ('-created_at',)
 
-@admin.register(ChatRoom)
-class ChatRoomAdmin(admin.ModelAdmin):
-    list_display = ('name', 'created_at')
-    search_fields = ('name',)
-
-@admin.register(ChatMessage)
-class ChatMessageAdmin(admin.ModelAdmin):
-    list_display = ('room', 'author', 'created_at', 'text')
-    list_filter = ('room', 'created_at')
-    search_fields = ('text', 'author__username')
-
 @admin.register(PushSubscription)
 class PushSubscriptionAdmin(admin.ModelAdmin):
     list_display = ('user', 'endpoint_snippet', 'created_at')
     list_filter = ('created_at',)
-    
+
     def endpoint_snippet(self, obj):
         return obj.endpoint[:40] + '...' if len(obj.endpoint) > 40 else obj.endpoint

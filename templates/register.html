@@ -1,22 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block title %}Регистрация{% endblock %}
-
 {% block main_class %}flex-grow flex flex-col w-full p-0 m-0{% endblock %}
-
 {% block content %}
 <div class="flex-grow flex flex-col lg:flex-row min-h-[calc(100vh-72px)] w-full relative">
-    
-    <!-- Left panel: Visuals -->
     <div class="hidden lg:flex lg:w-1/2 relative bg-navy items-center justify-center overflow-hidden order-2 lg:order-1">
         <div class="absolute inset-0">
             <div class="absolute inset-0 bg-gradient-to-tr from-navy via-[#1e2540] to-black opacity-90 z-10"></div>
-            <!-- Decorative golden orbs -->
             <div class="absolute -top-[10%] -left-[10%] w-[500px] h-[500px] bg-primary rounded-full blur-[140px] opacity-20 z-0 animate-pulse" style="animation-duration: 9s;"></div>
             <div class="absolute bottom-[0%] -right-[20%] w-[600px] h-[600px] bg-primary rounded-full blur-[160px] opacity-10 z-0 animate-pulse" style="animation-duration: 14s;"></div>
         </div>
-        
         <div class="relative z-20 text-center px-16 max-w-2xl">
             <div class="mb-8 text-primary opacity-50">
                 <span class="material-symbols-outlined" style="font-size: 80px;">church</span>
@@ -28,7 +21,6 @@
                 Зарегистрируйтесь, чтобы сохранять прогресс в чтении, следить за своим духовным ростом и стать частью великого Божьего дела.
             </p>
             <div class="mt-12 flex justify-center gap-6">
-                <!-- Mini stats/features -->
                 <div class="text-center">
                     <div class="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-3 backdrop-blur-md">
                         <span class="material-symbols-outlined text-primary">explore</span>
@@ -44,16 +36,12 @@
             </div>
         </div>
     </div>
-
-    <!-- Right panel: Form -->
     <div class="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 relative z-10 bg-background-light order-1 lg:order-2">
         <div class="w-full max-w-md bg-white/80 backdrop-blur-xl p-8 sm:p-10 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/40">
-            
             <div class="mb-10 text-center lg:text-left">
                 <h1 class="text-3xl font-display font-bold text-navy mb-3">Создать аккаунт</h1>
                 <p class="text-txt-sub">Добро пожаловать в нашу общину!</p>
             </div>
-
             {% if messages %}
             <div class="space-y-3 mb-6">
                 {% for message in messages %}
@@ -65,11 +53,8 @@
                 {% endfor %}
             </div>
             {% endif %}
-
             <form method="post" class="space-y-5">
                 {% csrf_token %}
-                
-                <!-- Floating Label Input: Username -->
                 <div class="relative group">
                     <input type="text" id="username" name="username" required placeholder=" "
                         class="peer w-full px-5 pb-3 pt-7 bg-gray-50 border-2 border-transparent rounded-xl text-navy focus:bg-white focus:border-primary focus:ring-0 outline-none transition-all"
@@ -81,8 +66,6 @@
                         Имя пользователя
                     </label>
                 </div>
-
-                <!-- Floating Label Input: Email -->
                 <div class="relative group">
                     <input type="email" id="email" name="email" required placeholder=" "
                         class="peer w-full px-5 pb-3 pt-7 bg-gray-50 border-2 border-transparent rounded-xl text-navy focus:bg-white focus:border-primary focus:ring-0 outline-none transition-all"
@@ -94,8 +77,6 @@
                         Электронная почта
                     </label>
                 </div>
-
-                <!-- Floating Label Input: Password 1 -->
                 <div class="relative group">
                     <input type="password" id="password1" name="password1" required placeholder=" "
                         class="peer w-full px-5 pb-3 pt-7 bg-gray-50 border-2 border-transparent rounded-xl text-navy focus:bg-white focus:border-primary focus:ring-0 outline-none transition-all"
@@ -107,8 +88,6 @@
                         Придумайте пароль
                     </label>
                 </div>
-
-                <!-- Floating Label Input: Password 2 -->
                 <div class="relative group">
                     <input type="password" id="password2" name="password2" required placeholder=" "
                         class="peer w-full px-5 pb-3 pt-7 bg-gray-50 border-2 border-transparent rounded-xl text-navy focus:bg-white focus:border-primary focus:ring-0 outline-none transition-all"
@@ -120,18 +99,15 @@
                         Повторите пароль
                     </label>
                 </div>
-
                 <div class="flex items-start gap-3 mt-4">
                     <input type="checkbox" name="agreement" required id="agreement" class="mt-1 w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/20 transition-all cursor-pointer">
                     <label for="agreement" class="text-sm text-txt-sub leading-tight cursor-pointer">
                         Я соглашаюсь с <a href="#" class="text-primary font-semibold hover:underline">условиями использования</a> и обработкой моих персональных данных
                     </label>
                 </div>
-
                 <button type="submit" id="submit-btn" class="w-full mt-2 bg-primary hover:bg-primary-hover text-white font-bold py-4 px-6 rounded-xl transition-all transform hover:-translate-y-1 shadow-[0_8px_20px_rgba(201,168,76,0.3)] flex justify-center items-center gap-2">
                     Создать аккаунт
                 </button>
-
                 <div class="text-center pt-6 lg:text-left">
                     <p class="text-txt-sub font-medium">
                         Уже есть аккаунт? 
@@ -141,9 +117,7 @@
             </form>
         </div>
     </div>
-
 </div>
-
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.querySelector('form');

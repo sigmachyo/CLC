@@ -1,9 +1,6 @@
 from django.core.management.base import BaseCommand
 from church_app.models import DailyVerse
 from datetime import date, timedelta
-
-
-# Набор стихов для автозаполнения
 VERSES = [
     {
         'verse_text': 'Ибо так возлюбил Бог мир, что отдал Сына Своего Единородного, дабы всякий, верующий в Него, не погиб, но имел жизнь вечную.',
@@ -76,26 +73,20 @@ VERSES = [
         'reflection': 'Мир от Бога — это внутренний покой, который не зависит от обстоятельств.',
     },
 ]
-
-
 class Command(BaseCommand):
     help = 'Заполняет стихи дня (DailyVerse) на ближайшие 14 дней'
-
     def add_arguments(self, parser):
         parser.add_argument(
             '--days', type=int, default=14,
             help='Количество дней для заполнения (по умолчанию 14)',
         )
-
     def handle(self, *args, **options):
         days = options['days']
         today = date.today()
         created = 0
-
         for i in range(days):
             target_date = today + timedelta(days=i)
             verse_data = VERSES[i % len(VERSES)]
-
             _, was_created = DailyVerse.objects.get_or_create(
                 date=target_date,
                 defaults={
@@ -109,7 +100,6 @@ class Command(BaseCommand):
                 self.stdout.write(f'  [OK] {target_date} — {verse_data["reference"]}')
             else:
                 self.stdout.write(f'  [SKIP] {target_date} — уже есть')
-
         self.stdout.write(self.style.SUCCESS(
             f'\nГотово! Создано {created} новых стихов из {days} дней.'
         ))

@@ -31,7 +31,7 @@ ALLOWED_HOSTS.extend([str(ip) for ip in ipaddress.IPv4Network('192.168.0.0/23')]
 # Web Push
 VAPID_PUBLIC_KEY = 'BPWzM8Sg21koEirpUOKjfqqqUeOL6c4PrF3KwT32QYT9pQP6R1Da9u8jSS0UMTkx4DL_75iOadzTAPNSOJVGlpo'
 VAPID_PRIVATE_KEY = 'a4IVr9jA_SyFG-cohYOfztaM0Ul3xrXZI8qgl6a_KKk'
-VAPID_ADMIN_EMAIL = 'mailto:webmaster@kclc.ru'
+VAPID_ADMIN_EMAIL = 'mailto:webmaster@localhost'
 
 INSTALLED_APPS = [
     'jazzmin',

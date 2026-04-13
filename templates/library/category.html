@@ -1,13 +1,10 @@
 {% extends 'library/base_library.html' %}
-
 {% block title %}{{ category.name }}{% endblock %}
-
 {% block library_content %}
 <div class="library-header">
     <h1><i class="fas {{ category.icon }}"></i> {{ category.name }}</h1>
     <p>{{ category.description }}</p>
 </div>
-
 <p style="color: rgba(255,255,255,0.7); text-align: center; padding: 60px 20px; font-size: 1.1rem;">
     Этот раздел находится в разработке. Скоро здесь появится контент!
 </p>

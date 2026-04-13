@@ -1,13 +1,8 @@
 {% extends 'base.html' %}
-
 {% block title %}Личные нужды{% endblock %}
-
 {% block main_class %}flex-grow relative bg-background-light{% endblock %}
-
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pb-24">
-    
-    <!-- Flash Messages -->
     {% if messages %}
     <div class="mb-8 space-y-3">
         {% for message in messages %}
@@ -18,8 +13,6 @@
         {% endfor %}
     </div>
     {% endif %}
-
-    <!-- Header Section -->
     <div class="text-center mb-12">
         <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 text-primary mb-6 shadow-inner">
             <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
@@ -27,8 +20,6 @@
         <h1 class="text-4xl sm:text-5xl font-display font-bold text-navy mb-4">Мои молитвенные нужды</h1>
         <p class="text-txt-sub text-lg max-w-2xl mx-auto">Управляйте своими просьбами и отмечайте отвеченные молитвы.</p>
     </div>
-
-    <!-- Action Bar -->
     <div class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white/60 backdrop-blur-md px-6 py-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-navy/5 mb-10">
         <div class="flex flex-wrap items-center gap-3">
             <a href="{% url 'prayer_list' %}" class="flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-txt-sub hover:text-navy hover:bg-white border border-transparent hover:border-gray-200 transition-all">
@@ -44,28 +35,22 @@
             </a>
         </div>
     </div>
-
-    <!-- Prayers Grid/List -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8">
         {% for prayer in prayers %}
         <div class="group flex flex-col bg-white rounded-3xl p-6 sm:p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] border-l-[6px] 
             {% if prayer.is_answered %}border-primary bg-primary/5{% else %}border-navy/20 hover:border-navy hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)]{% endif %} 
             transition-all duration-300 hover:-translate-y-1.5 focus-within:ring-2 focus-within:ring-primary/50 relative">
-            
             {% if prayer.is_answered %}
             <div class="absolute -top-3 -right-3 bg-gradient-to-r from-success to-[#2ecc71] text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-md flex items-center gap-1.5 z-10 animate-fade-in-up">
                 <span class="material-symbols-outlined text-[14px] font-bold">check</span>
                 Отвечено
             </div>
             {% endif %}
-            
             <div class="flex-grow">
                 <h3 class="text-xl font-bold text-navy mb-3 leading-snug group-hover:text-primary transition-colors">{{ prayer.title }}</h3>
                 <p class="text-txt-sub text-sm leading-relaxed mb-6">{{ prayer.description|linebreaksbr }}</p>
             </div>
-            
             <div class="flex flex-col mt-auto pt-5 border-t border-gray-100 gap-4">
-                <!-- Meta Info -->
                 <div class="flex items-center justify-between text-xs font-semibold text-txt-sub">
                     <div class="flex items-center gap-2">
                         <span class="material-symbols-outlined text-[16px] text-gray-400">groups</span>
@@ -76,8 +61,6 @@
                         <span>{{ prayer.created_at|date:"d.m.Y" }}</span>
                     </div>
                 </div>
-                
-                <!-- Action Button -->
                 <div class="mt-1">
                     <form method="post" action="{% url 'prayer_toggle_answered' prayer.id %}">
                         {% csrf_token %}
@@ -87,7 +70,6 @@
                             {% else %}
                             bg-white text-navy hover:bg-navy hover:text-white border-navy/20 hover:border-transparent shadow-sm
                             {% endif %}">
-                            
                             {% if prayer.is_answered %}
                             <span class="material-symbols-outlined text-[18px]">close</span>
                             <span>Снять отметку "Отвечено"</span>

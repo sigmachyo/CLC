@@ -1,13 +1,11 @@
 <footer class="bg-navy text-white/70 pt-16 pb-28 md:pb-8 relative overflow-hidden w-full flex flex-col justify-between {% if is_home %}min-h-screen{% else %}mt-auto{% endif %}">
     <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0); background-size: 40px 40px;"></div>
-    
     <div class="max-w-[1200px] mx-auto w-full px-6 relative z-10 flex-1 flex flex-col justify-center">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12 mb-12">
-            
             <div class="lg:col-span-5 text-center md:text-left">
                 <div class="flex items-center justify-center md:justify-start gap-3 mb-6">
                     <span class="material-symbols-outlined text-[32px] text-white">church</span>
-                    <span class="text-white font-black text-lg md:text-xl tracking-widest uppercase">CLC КРАСНОЯРСК</span>
+                    <span class="text-white font-black text-lg md:text-xl tracking-widest uppercase">KCLC КРАСНОЯРСК</span>
                 </div>
                 <h2 class="text-white text-3xl md:text-5xl font-black mb-6 leading-tight uppercase relative inline-block">
                     ЦЕРКОВЬ<br/>ХРИСТИАНСКОЙ<br/>ЖИЗНИ
@@ -21,26 +19,23 @@
                     <span class="material-symbols-outlined text-[18px]">volunteer_activism</span>
                 </a>
             </div>
-            
             <div class="lg:col-span-2 hidden md:block">
                 <h3 class="text-white text-lg font-bold mb-6 tracking-wide">Разделы сайта</h3>
                 <ul class="space-y-4 text-sm font-medium">
-                    <li><a class="hover:text-primary transition-colors flex items-center gap-2 group" href="https://kclc.ru/o-cerkvi-xristianskoj-zhizni/"><span class="material-symbols-outlined text-[14px] text-primary/0 group-hover:text-primary transition-colors">chevron_right</span>О церкви</a></li>
-                    <li><a class="hover:text-primary transition-colors flex items-center gap-2 group" href="https://kclc.ru/ministries/alfa-kurs/"><span class="material-symbols-outlined text-[14px] text-primary/0 group-hover:text-primary transition-colors">chevron_right</span>Альфа-курс</a></li>
-                    <li><a class="hover:text-primary transition-colors flex items-center gap-2 group" href="https://kclc.ru/ministries/"><span class="material-symbols-outlined text-[14px] text-primary/0 group-hover:text-primary transition-colors">chevron_right</span>Служения</a></li>
-                    <li><a class="hover:text-primary transition-colors flex items-center gap-2 group" href="https://kclc.ru/novosti-cerkvi/"><span class="material-symbols-outlined text-[14px] text-primary/0 group-hover:text-primary transition-colors">chevron_right</span>Новости</a></li>
-                    <li><a class="hover:text-primary transition-colors flex items-center gap-2 group" href="https://kclc.ru/event-kalendar/"><span class="material-symbols-outlined text-[14px] text-primary/0 group-hover:text-primary transition-colors">chevron_right</span>Календарь</a></li>
+                    <li><a class="hover:text-primary transition-colors flex items-center gap-2 group" href="{% url 'about' %}"><span class="material-symbols-outlined text-[14px] text-primary/0 group-hover:text-primary transition-colors">chevron_right</span>О церкви</a></li>
+                    <li><a class="hover:text-primary transition-colors flex items-center gap-2 group" href="{% url 'alpha' %}"><span class="material-symbols-outlined text-[14px] text-primary/0 group-hover:text-primary transition-colors">chevron_right</span>Альфа-курс</a></li>
+                    <li><a class="hover:text-primary transition-colors flex items-center gap-2 group" href="{% url 'ministries' %}"><span class="material-symbols-outlined text-[14px] text-primary/0 group-hover:text-primary transition-colors">chevron_right</span>Служения</a></li>
+                    <li><a class="hover:text-primary transition-colors flex items-center gap-2 group" href="{% url 'news_list' %}"><span class="material-symbols-outlined text-[14px] text-primary/0 group-hover:text-primary transition-colors">chevron_right</span>Новости</a></li>
+                    <li><a class="hover:text-primary transition-colors flex items-center gap-2 group" href="{% url 'calendar' %}"><span class="material-symbols-outlined text-[14px] text-primary/0 group-hover:text-primary transition-colors">chevron_right</span>Календарь</a></li>
                 </ul>
             </div>
-            
             <div class="lg:col-span-2 hidden md:block">
                 <h3 class="text-white text-lg font-bold mb-6 tracking-wide opacity-0 invisible">Дополнительно</h3>
                 <ul class="space-y-4 text-sm font-medium">
-                    <li><a class="hover:text-primary transition-colors flex items-center gap-2 group" href="https://kclc.ru/home-meet/"><span class="material-symbols-outlined text-[14px] text-primary/0 group-hover:text-primary transition-colors">chevron_right</span>Домашние встречи</a></li>
-                    <li><a class="hover:text-primary transition-colors flex items-center gap-2 group" href="https://kclc.ru/cerkvi-v-drugix-gorodax/"><span class="material-symbols-outlined text-[14px] text-primary/0 group-hover:text-primary transition-colors">chevron_right</span>Церкви региона</a></li>
+                    <li><a class="hover:text-primary transition-colors flex items-center gap-2 group" href="{% url 'home_meet' %}"><span class="material-symbols-outlined text-[14px] text-primary/0 group-hover:text-primary transition-colors">chevron_right</span>Домашние встречи</a></li>
+                    <li><a class="hover:text-primary transition-colors flex items-center gap-2 group" href="{% url 'regional_churches' %}"><span class="material-symbols-outlined text-[14px] text-primary/0 group-hover:text-primary transition-colors">chevron_right</span>Церкви региона</a></li>
                 </ul>
             </div>
-            
             <div class="lg:col-span-3 text-center md:text-left">
                 <h3 class="text-white text-lg font-bold mb-6 tracking-wide">Контакты</h3>
                 <ul class="space-y-5 text-sm md:text-base inline-block text-left">
@@ -69,16 +64,14 @@
                     </a>
                 </div>
             </div>
-            
         </div>
-        
         <div class="pt-8 border-t border-white/10 flex flex-col items-center text-[10px] md:text-xs gap-3 text-white/40 text-center uppercase tracking-widest md:tracking-wider leading-relaxed">
             <p class="font-bold">МЕСТНАЯ РЕЛИГИОЗНАЯ ОРГАНИЗАЦИЯ ЦЕРКОВЬ «ХРИСТИАНСКОЙ ЖИЗНИ»</p>
             <p>ХРИСТИАН ВЕРЫ ЕВАНГЕЛЬСКОЙ (ПЯТИДЕСЯТНИКОВ) Г. КРАСНОЯРСКА КРАСНОЯРСКОГО КРАЯ</p>
             <p>ОГРН 1022400010698 · ИНН 2460024300</p>
             <div class="mt-4 flex flex-col md:flex-row items-center justify-between w-full opacity-60 hover:opacity-100 transition-opacity">
-                <p>© 2026 ЦХЖ Красноярск. Все права защищены.</p>
-                <a class="hover:text-primary transition-colors mt-2 md:mt-0 underline decoration-white/20 underline-offset-4" href="https://kclc.ru/privacy-policy/">Политика конфиденциальности</a>
+                <p>© 2026 KCLC Красноярск. Все права защищены.</p>
+                <a class="hover:text-primary transition-colors mt-2 md:mt-0 underline decoration-white/20 underline-offset-4" href="{% url 'privacy' %}">Политика конфиденциальности</a>
             </div>
         </div>
     </div>

@@ -1,8 +1,6 @@
 {% extends 'library/base_library.html' %}
 {% load static %}
-
 {% block title %}Детский уголок{% endblock %}
-
 {% block extra_css %}
 <style>
     .kids-header {
@@ -14,7 +12,6 @@
         position: relative;
         overflow: hidden;
     }
-    
     .kids-header h1 {
         font-size: 3rem;
         color: white;
@@ -22,7 +19,6 @@
         position: relative;
         z-index: 2;
     }
-    
     .kids-header p {
         font-size: 1.3rem;
         color: white;
@@ -30,7 +26,6 @@
         position: relative;
         z-index: 2;
     }
-    
     .floating-elements {
         position: absolute;
         top: 0;
@@ -39,24 +34,20 @@
         height: 100%;
         pointer-events: none;
     }
-    
     .floating-element {
         position: absolute;
         animation: float 3s infinite ease-in-out;
     }
-    
     @keyframes float {
         0%, 100% { transform: translateY(0) rotate(0deg); }
         50% { transform: translateY(-20px) rotate(5deg); }
     }
-    
     .age-filter {
         display: flex;
         gap: 15px;
         margin-bottom: 30px;
         flex-wrap: wrap;
     }
-    
     .age-btn {
         padding: 12px 25px;
         border-radius: 30px;
@@ -66,21 +57,18 @@
         transition: all 0.3s ease;
         border: 2px solid transparent;
     }
-    
     .age-btn:hover,
     .age-btn.active {
         background: #f1c40f;
         color: #2c3e50;
         transform: translateY(-3px);
     }
-    
     .content-type-tabs {
         display: flex;
         gap: 10px;
         margin-bottom: 30px;
         flex-wrap: wrap;
     }
-    
     .type-tab {
         padding: 10px 20px;
         border-radius: 20px;
@@ -89,40 +77,31 @@
         text-decoration: none;
         transition: all 0.3s ease;
     }
-    
     .type-tab:hover,
     .type-tab.active {
         background: #3498db;
     }
-    
     .game-card .card-image {
         background: linear-gradient(145deg, #f39c12, #e67e22);
     }
-    
     .cartoon-card .card-image {
         background: linear-gradient(145deg, #3498db, #2980b9);
     }
-    
     .lesson-card .card-image {
         background: linear-gradient(145deg, #2ecc71, #27ae60);
     }
-    
     .craft-card .card-image {
         background: linear-gradient(145deg, #9b59b6, #8e44ad);
     }
-    
     .song-card .card-image {
         background: linear-gradient(145deg, #e74c3c, #c0392b);
     }
 </style>
 {% endblock %}
-
 {% block library_content %}
-<!-- Яркий заголовок для детей -->
 <div class="kids-header">
     <h1><i class="fas fa-child"></i> Детский уголок</h1>
     <p>Мультфильмы, игры, уроки и поделки для маленьких христиан</p>
-    
     <div class="floating-elements">
         <div class="floating-element" style="top: 20px; left: 10%;">⭐</div>
         <div class="floating-element" style="top: 50px; right: 15%; animation-delay: 0.5s;">🌈</div>
@@ -130,8 +109,6 @@
         <div class="floating-element" style="bottom: 40px; right: 25%; animation-delay: 1.5s;">🐧</div>
     </div>
 </div>
-
-<!-- Фильтр по возрасту -->
 <div class="age-filter">
     <a href="{% url 'kids_home' %}" class="age-btn {% if not filters.age %}active{% endif %}">
         Все возрасты
@@ -143,8 +120,6 @@
     </a>
     {% endfor %}
 </div>
-
-<!-- Вкладки по типу контента -->
 <div class="content-type-tabs">
     <a href="{% url 'kids_home' %}{% if filters.age %}?age={{ filters.age }}{% endif %}" 
        class="type-tab {% if not filters.type %}active{% endif %}">
@@ -158,8 +133,6 @@
     </a>
     {% endfor %}
 </div>
-
-<!-- Рекомендуемое (только на главной) -->
 {% if not filters.type and not filters.age and featured %}
 <div class="section-title">
     <i class="fas fa-star"></i>
@@ -192,8 +165,6 @@
     {% endfor %}
 </div>
 {% endif %}
-
-<!-- Мультфильмы -->
 {% if not filters.type or filters.type == 'cartoon' %}
 <div class="section-title">
     <i class="fas fa-film"></i>
@@ -228,8 +199,6 @@
     {% endfor %}
 </div>
 {% endif %}
-
-<!-- Уроки воскресной школы -->
 {% if not filters.type or filters.type == 'lesson' %}
 <div class="section-title">
     <i class="fas fa-chalkboard-teacher"></i>
@@ -264,8 +233,6 @@
     {% endfor %}
 </div>
 {% endif %}
-
-<!-- Игры -->
 {% if not filters.type or filters.type == 'game' %}
 <div class="section-title">
     <i class="fas fa-gamepad"></i>
@@ -295,8 +262,6 @@
     {% endfor %}
 </div>
 {% endif %}
-
-<!-- Если ничего не найдено -->
 {% if not cartoons and not lessons and not games %}
 <div style="text-align: center; padding: 60px; background: rgba(255,255,255,0.05); border-radius: 20px;">
     <i class="fas fa-smile" style="font-size: 4rem; color: #f1c40f; margin-bottom: 20px;"></i>

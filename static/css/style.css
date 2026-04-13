@@ -1,36 +1,30 @@
-/* Основные стили */
+
 html {
     scroll-behavior: smooth;
 }
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
 body {
     font-family: 'Inter', sans-serif;
     background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
     color: #333;
     min-height: 100vh;
-    padding-bottom: 80px; /* Для нижнего навигационного бара */
+    padding-bottom: 80px; 
     line-height: 1.6;
 }
-
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
 }
-
-/* Шапка */
 .header {
     text-align: center;
     padding: 30px 20px;
     margin-bottom: 30px;
 }
-
 .title {
     font-family: 'Merriweather', serif;
     font-size: 2.8rem;
@@ -42,7 +36,6 @@ body {
     background-clip: text;
     line-height: 1.2;
 }
-
 .subtitle {
     font-size: 1.2rem;
     color: #7f8c8d;
@@ -51,8 +44,6 @@ body {
     margin-left: auto;
     margin-right: auto;
 }
-
-/* Кнопки авторизации */
 .auth-buttons {
     display: flex;
     justify-content: center;
@@ -60,7 +51,6 @@ body {
     margin-top: 25px;
     flex-wrap: wrap;
 }
-
 .btn-login, .btn-register {
     padding: 12px 30px;
     border-radius: 12px;
@@ -71,33 +61,27 @@ body {
     min-width: 150px;
     text-align: center;
 }
-
 .btn-login {
     background: #3498db;
     color: white;
     border: 2px solid #3498db;
 }
-
 .btn-register {
     background: transparent;
     color: #3498db;
     border: 2px solid #3498db;
 }
-
 .btn-login:hover {
     background: #2980b9;
     border-color: #2980b9;
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
 }
-
 .btn-register:hover {
     background: rgba(52, 152, 219, 0.1);
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(52, 152, 219, 0.2);
 }
-
-/* Статистика пользователя */
 .user-stats {
     display: flex;
     justify-content: center;
@@ -105,7 +89,6 @@ body {
     margin-top: 25px;
     flex-wrap: wrap;
 }
-
 .stat-item {
     text-align: center;
     background: white;
@@ -115,11 +98,9 @@ body {
     min-width: 120px;
     transition: transform 0.3s ease;
 }
-
 .stat-item:hover {
     transform: translateY(-5px);
 }
-
 .stat-value {
     display: block;
     font-size: 2.2rem;
@@ -127,19 +108,15 @@ body {
     color: #3498db;
     margin-bottom: 5px;
 }
-
 .stat-label {
     font-size: 0.9rem;
     color: #7f8c8d;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
-
-/* Карта уровней */
 .levels-map {
     margin: 40px 0;
 }
-
 .map-container {
     display: flex;
     flex-direction: column;
@@ -147,7 +124,6 @@ body {
     gap: 40px;
     position: relative;
 }
-
 .level-node {
     display: flex;
     align-items: center;
@@ -161,30 +137,24 @@ body {
     position: relative;
     z-index: 1;
 }
-
 .level-node.available {
     cursor: pointer;
 }
-
 .level-node.available:hover {
     transform: translateY(-5px);
     box-shadow: 0 15px 35px rgba(0,0,0,0.12);
 }
-
 .level-node.completed {
     background: linear-gradient(135deg, #2ecc71, #27ae60);
     color: white;
     cursor: pointer;
 }
-
 .level-node.locked {
     background: #f8f9fa;
     color: #bdc3c7;
     cursor: not-allowed;
     opacity: 0.7;
 }
-
-/* Иконка уровня */
 .level-icon {
     width: 60px;
     height: 60px;
@@ -196,38 +166,30 @@ body {
     margin-right: 20px;
     flex-shrink: 0;
 }
-
 .level-node.available .level-icon {
     background: linear-gradient(135deg, #3498db, #2980b9);
     color: white;
 }
-
 .level-node.completed .level-icon {
     background: rgba(255,255,255,0.2);
     border: 2px solid rgba(255,255,255,0.3);
     color: white;
 }
-
 .level-node.locked .level-icon {
     background: #ecf0f1;
     color: #bdc3c7;
 }
-
-/* Информация об уровне */
 .level-info {
     flex-grow: 1;
 }
-
 .level-title {
     font-size: 1.4rem;
     font-weight: 600;
     margin-bottom: 5px;
 }
-
 .level-node.completed .level-title {
     color: white;
 }
-
 .level-type {
     font-size: 0.9rem;
     background: #f8f9fa;
@@ -236,23 +198,18 @@ body {
     display: inline-block;
     margin-right: 10px;
 }
-
 .level-node.completed .level-type {
     background: rgba(255,255,255,0.2);
     color: rgba(255,255,255,0.9);
 }
-
 .level-order {
     display: inline-block;
     font-size: 0.85rem;
     color: #95a5a6;
 }
-
 .level-node.completed .level-order {
     color: rgba(255,255,255,0.8);
 }
-
-/* Соединительные линии */
 .connection-line {
     position: absolute;
     bottom: -40px;
@@ -263,16 +220,12 @@ body {
     background: linear-gradient(to bottom, #3498db, #e0e6ed);
     z-index: 0;
 }
-
 .level-node.completed + .connection-line {
     background: linear-gradient(to bottom, #2ecc71, #e0e6ed);
 }
-
 .level-node.locked + .connection-line {
     background: #e0e6ed;
 }
-
-/* Нет уровней */
 .no-levels {
     text-align: center;
     padding: 60px 40px;
@@ -282,24 +235,19 @@ body {
     max-width: 500px;
     margin: 0 auto;
 }
-
 .no-levels i {
     font-size: 4rem;
     color: #bdc3c7;
     margin-bottom: 20px;
 }
-
 .no-levels h3 {
     color: #7f8c8d;
     margin-bottom: 15px;
 }
-
 .no-levels p {
     color: #95a5a6;
     line-height: 1.5;
 }
-
-/* Подсказка */
 .hint {
     display: flex;
     align-items: center;
@@ -312,17 +260,13 @@ body {
     max-width: 500px;
     color: #3498db;
 }
-
 .hint i {
     font-size: 1.2rem;
 }
-
 .hint p {
     margin: 0;
     font-size: 0.95rem;
 }
-
-/* Модальное окно */
 .modal {
     display: none;
     position: fixed;
@@ -337,12 +281,10 @@ body {
     padding: 20px;
     animation: fadeIn 0.3s ease;
 }
-
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
 }
-
 .modal-content {
     background: white;
     border-radius: 25px;
@@ -354,7 +296,6 @@ body {
     animation: modalSlide 0.3s ease;
     box-shadow: 0 20px 50px rgba(0,0,0,0.3);
 }
-
 @keyframes modalSlide {
     from {
         transform: translateY(50px);
@@ -365,7 +306,6 @@ body {
         opacity: 1;
     }
 }
-
 .modal-close {
     position: absolute;
     top: 20px;
@@ -385,35 +325,27 @@ body {
     z-index: 10;
     line-height: 1;
 }
-
 .modal-close:hover {
     background: #e74c3c;
     color: white;
     transform: rotate(90deg);
 }
-
 .modal-body {
     padding: 40px;
 }
-
-/* Сообщение об ошибке */
 .error-message {
     text-align: center;
     padding: 40px;
     color: #e74c3c;
 }
-
 .error-message i {
     font-size: 4rem;
     margin-bottom: 20px;
     opacity: 0.7;
 }
-
 .error-message h3 {
     margin-bottom: 10px;
 }
-
-/* Нижний навигационный бар */
 .bottom-nav {
     position: fixed;
     bottom: 0;
@@ -429,7 +361,6 @@ body {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
 }
-
 .nav-item {
     display: flex;
     flex-direction: column;
@@ -441,149 +372,119 @@ body {
     border-radius: 15px;
     min-width: 70px;
 }
-
 .nav-item i {
     font-size: 1.4rem;
     margin-bottom: 5px;
     transition: all 0.3s ease;
 }
-
 .nav-item span {
     font-size: 0.85rem;
     font-weight: 500;
     transition: all 0.3s ease;
 }
-
 .nav-item.active {
     color: #3498db;
     background: rgba(52, 152, 219, 0.1);
     transform: translateY(-5px);
 }
-
 .nav-item.active i {
     transform: scale(1.1);
 }
-
 .nav-item:hover:not(.active) {
     color: #2980b9;
     transform: translateY(-2px);
 }
-
-/* Адаптивность */
 @media (max-width: 768px) {
     .title {
         font-size: 2.2rem;
     }
-    
     .subtitle {
         font-size: 1.1rem;
     }
-    
     .level-node {
         width: 95%;
         padding: 15px 20px;
     }
-    
     .level-icon {
         width: 50px;
         height: 50px;
         font-size: 1.5rem;
         margin-right: 15px;
     }
-    
     .level-title {
         font-size: 1.2rem;
     }
-    
     .user-stats {
         gap: 20px;
     }
-    
     .stat-item {
         min-width: 100px;
         padding: 12px 20px;
     }
-    
     .stat-value {
         font-size: 1.8rem;
     }
-    
     .modal-content {
         width: 95%;
         margin: 10px;
     }
-    
     .modal-body {
         padding: 30px 20px;
     }
-    
     .hint {
         flex-direction: column;
         text-align: center;
         padding: 15px;
     }
 }
-
 @media (max-width: 480px) {
     .container {
         padding: 15px 10px;
     }
-    
     .title {
         font-size: 1.8rem;
     }
-    
     .subtitle {
         font-size: 1rem;
         padding: 0 10px;
     }
-    
     .level-node {
         flex-direction: column;
         text-align: center;
         padding: 20px;
         gap: 15px;
     }
-    
     .level-icon {
         margin-right: 0;
         margin-bottom: 0;
     }
-    
     .level-info {
         width: 100%;
     }
-    
     .user-stats {
         flex-direction: column;
         align-items: center;
         gap: 15px;
     }
-    
     .stat-item {
         width: 100%;
         max-width: 200px;
     }
-    
     .auth-buttons {
         flex-direction: column;
         align-items: center;
     }
-    
     .btn-login, .btn-register {
         width: 100%;
         max-width: 250px;
     }
-    
     .nav-item {
         min-width: 60px;
         padding: 8px 10px;
     }
-    
     .nav-item i {
         font-size: 1.2rem;
     }
-    
     .nav-item span {
         font-size: 0.75rem;
     }

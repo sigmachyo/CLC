@@ -1,34 +1,21 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block title %}Личный кабинет{% endblock %}
-
 {% block main_class %}flex-grow relative bg-background-light{% endblock %}
-
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 mb-20">
-    
-    <!-- HEADER: Profile Banner & Info -->
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 mb-20">
     <div class="relative rounded-[2rem] overflow-hidden mb-12 bg-white shadow-[0_8px_40px_rgba(0,0,0,0.04)] border border-navy/5">
-        <!-- Banner gradient -->
         <div class="absolute top-0 left-0 right-0 h-40 sm:h-48 bg-gradient-to-tr from-navy to-navy-light overflow-hidden">
             <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
             <div class="absolute -top-24 -right-24 w-64 h-64 bg-primary rounded-full blur-[80px] opacity-20"></div>
             <div class="absolute -bottom-24 -left-12 w-48 h-48 bg-primary rounded-full blur-[60px] opacity-20"></div>
         </div>
-
         <div class="relative z-10 pt-24 sm:pt-32 px-6 sm:px-12 pb-8 sm:pb-12 flex flex-col sm:flex-row items-center sm:items-end gap-6 sm:gap-8">
-            <!-- Avatar -->
             <div class="flex-shrink-0 relative">
-                <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-navy border-4 border-white flex items-center justify-center shadow-xl overflow-hidden relative group cursor-pointer">
+                <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-navy border-4 border-white flex items-center justify-center shadow-xl overflow-hidden relative">
                     <span class="material-symbols-outlined text-primary text-6xl group-hover:scale-110 transition-transform duration-500">account_circle</span>
-                    <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm">
-                        <span class="material-symbols-outlined text-white text-3xl">photo_camera</span>
-                    </div>
                 </div>
             </div>
-
-            <!-- User Info -->
             <div class="flex-grow text-center sm:text-left">
                 <h1 class="text-3xl sm:text-4xl font-display font-bold text-navy mb-1">{{ user.username }}</h1>
                 <p class="text-txt-sub text-lg mb-3">{{ user.email }}</p>
@@ -38,8 +25,6 @@
                 </div>
                 {% endif %}
             </div>
-
-            <!-- Actions -->
             <div class="flex flex-wrap justify-center sm:justify-end gap-3 w-full sm:w-auto mt-4 sm:mt-0">
                 <a href="{% url 'profile_edit' %}" class="flex items-center gap-2 bg-primary hover:bg-primary-hover text-navy font-bold py-3 px-5 rounded-xl transition-all shadow-[0_4px_12px_rgba(201,168,76,0.3)] hover:-translate-y-1">
                     <span class="material-symbols-outlined text-xl">edit</span>
@@ -56,171 +41,5 @@
             </div>
         </div>
     </div>
-
-    <!-- MAIN DASHBOARD -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        <!-- LEFT COLUMN: Stats & Quick Actions -->
-        <div class="lg:col-span-1 space-y-8">
-            
-            <!-- Statistics Card -->
-            <div class="bg-white rounded-[2rem] p-8 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-navy/5">
-                <h2 class="text-xl font-display font-bold text-navy mb-6">Ваша статистика</h2>
-                
-                <div class="space-y-6">
-                    <div class="flex items-center gap-4 group">
-                        <div class="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <span class="material-symbols-outlined text-2xl">auto_awesome</span>
-                        </div>
-                        <div>
-                            <div class="text-2xl font-bold text-navy leading-none">{{ total_completed }}/{{ total_levels }}</div>
-                            <div class="text-sm text-txt-sub font-semibold uppercase tracking-wider mt-1">Уровней пройдено</div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-center gap-4 group">
-                        <div class="w-14 h-14 rounded-2xl bg-success/10 text-success flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <span class="material-symbols-outlined text-2xl">trending_up</span>
-                        </div>
-                        <div>
-                            <div class="text-2xl font-bold text-navy leading-none">{{ progress_percentage }}%</div>
-                            <div class="text-sm text-txt-sub font-semibold uppercase tracking-wider mt-1">Общий прогресс</div>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center gap-4 group">
-                        <div class="w-14 h-14 rounded-2xl bg-navy/5 text-navy flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <span class="material-symbols-outlined text-2xl">event</span>
-                        </div>
-                        <div>
-                            <div class="text-xl font-bold text-navy leading-none">{{ user.date_joined|date:"d.m.Y" }}</div>
-                            <div class="text-sm text-txt-sub font-semibold uppercase tracking-wider mt-1">На сайте с</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Progress Bar Detail -->
-                <div class="mt-8 pt-8 border-t border-gray-100">
-                    <div class="flex justify-between text-sm mb-2">
-                        <span class="text-navy font-semibold">Прогресс пути</span>
-                        <span class="text-primary font-bold">{{ progress_percentage }}%</span>
-                    </div>
-                    <div class="h-3 w-full bg-gray-100 rounded-full overflow-hidden">
-                        <div class="h-full bg-gradient-to-r from-primary to-primary-hover rounded-full transition-all duration-1000" style="width: {{ progress_percentage }}%;"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quick Actions Grid -->
-            <div class="bg-navy rounded-[2rem] p-8 shadow-[0_8px_30px_rgba(0,0,0,0.1)] relative overflow-hidden text-center">
-                <div class="absolute -right-10 -top-10 w-40 h-40 bg-primary opacity-10 rounded-full blur-3xl"></div>
-                <h2 class="text-xl font-display font-bold text-white mb-6 relative z-10">Быстрый доступ</h2>
-                
-                <div class="grid grid-cols-2 gap-4 relative z-10">
-                    <a href="{% url 'index' %}" class="flex flex-col items-center gap-3 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all group">
-                        <span class="material-symbols-outlined text-primary text-3xl group-hover:scale-110 transition-transform">explore</span>
-                        <span class="text-white text-sm font-semibold">Карта</span>
-                    </a>
-                    <a href="{% url 'library_home' %}" class="flex flex-col items-center gap-3 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all group">
-                        <span class="material-symbols-outlined text-primary text-3xl group-hover:scale-110 transition-transform">menu_book</span>
-                        <span class="text-white text-sm font-semibold">Библиотека</span>
-                    </a>
-                    <a href="{% url 'prayer_list' %}" class="flex flex-col items-center gap-3 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all group">
-                        <span class="material-symbols-outlined text-primary text-3xl group-hover:scale-110 transition-transform">front_hand</span>
-                        <span class="text-white text-sm font-semibold">Молитвы</span>
-                    </a>
-                    <a href="{% url 'chat_list' %}" class="flex flex-col items-center gap-3 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all group">
-                        <span class="material-symbols-outlined text-primary text-3xl group-hover:scale-110 transition-transform">forum</span>
-                        <span class="text-white text-sm font-semibold">Общение</span>
-                    </a>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- RIGHT COLUMN: Activity Feed -->
-        <div class="lg:col-span-2 space-y-8">
-            
-            <!-- In Progress Items -->
-            <div class="bg-white rounded-[2rem] p-8 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-navy/5">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                        <span class="material-symbols-outlined text-primary">hourglass_top</span>
-                    </div>
-                    <h2 class="text-2xl font-display font-bold text-navy">В процессе</h2>
-                </div>
-
-                {% if in_progress %}
-                <div class="space-y-4">
-                    {% for progress in in_progress %}
-                    <div class="flex items-center gap-5 p-4 rounded-2xl border border-gray-100 hover:border-primary/30 hover:shadow-md transition-all bg-gray-50/50 group cursor-pointer">
-                        <div class="w-14 h-14 rounded-xl bg-white shadow-sm flex items-center justify-center border border-gray-100 flex-shrink-0 group-hover:bg-primary/5">
-                            <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings: 'FILL' 1;">star_half</span>
-                        </div>
-                        <div class="flex-grow min-w-0">
-                            <h3 class="text-lg font-bold text-navy truncate group-hover:text-primary transition-colors">{{ progress.level.title }}</h3>
-                            <div class="flex items-center gap-3 mt-1 text-sm">
-                                <span class="bg-primary/10 text-primary font-bold px-2 py-0.5 rounded text-xs">{{ progress.progress_percentage }}%</span>
-                                <span class="text-txt-sub truncate">Уровень духовного роста</span>
-                            </div>
-                        </div>
-                        <div class="pl-2">
-                            <span class="material-symbols-outlined text-gray-300 group-hover:text-primary transition-colors">arrow_forward_ios</span>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                {% else %}
-                <div class="bg-gray-50 rounded-2xl p-8 text-center border border-gray-100 border-dashed">
-                    <span class="material-symbols-outlined text-4xl text-gray-300 mb-3 block">flag</span>
-                    <p class="text-txt-sub mb-4 font-medium">Нет уровней в процессе</p>
-                    <a href="{% url 'index' %}" class="inline-flex items-center bg-white border border-gray-200 text-navy font-semibold py-2 px-5 rounded-xl hover:border-primary/50 hover:text-primary transition-all">Выбрать уровень</a>
-                </div>
-                {% endif %}
-            </div>
-
-            <!-- Recently Completed -->
-            <div class="bg-white rounded-[2rem] p-8 shadow-[0_8px_30px_rgba(0,0,0,0.03)] border border-navy/5">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="w-10 h-10 rounded-full bg-success/10 flex items-center justify-center">
-                        <span class="material-symbols-outlined text-success">check_circle</span>
-                    </div>
-                    <h2 class="text-2xl font-display font-bold text-navy">Недавно пройдено</h2>
-                </div>
-
-                {% if recent_completed %}
-                <div class="space-y-4">
-                    {% for progress in recent_completed %}
-                    <div class="flex items-center gap-5 p-4 rounded-2xl border border-gray-100 hover:border-success/30 hover:shadow-md transition-all bg-gray-50/50 group cursor-pointer">
-                        <div class="w-14 h-14 rounded-xl bg-white shadow-sm flex items-center justify-center border border-gray-100 flex-shrink-0 group-hover:bg-success/5">
-                            <span class="material-symbols-outlined text-success text-3xl" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
-                        </div>
-                        <div class="flex-grow min-w-0">
-                            <h3 class="text-lg font-bold text-navy truncate">{{ progress.level.title }}</h3>
-                            <div class="flex items-center gap-2 mt-1 text-sm text-txt-sub">
-                                <span class="material-symbols-outlined text-base">event</span>
-                                <span>{{ progress.completed_at|date:"d.m.Y H:i" }}</span>
-                            </div>
-                        </div>
-                        <div class="pl-2">
-                            <div class="w-8 h-8 rounded-full bg-success/10 text-success flex items-center justify-center">
-                                <span class="material-symbols-outlined text-sm font-bold">done</span>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                {% else %}
-                <div class="bg-gray-50 rounded-2xl p-8 text-center border border-gray-100 border-dashed">
-                    <span class="material-symbols-outlined text-4xl text-gray-300 mb-3 block">history</span>
-                    <p class="text-txt-sub mb-4 font-medium">Пока нет пройденных уровней</p>
-                    <a href="{% url 'index' %}" class="inline-flex items-center bg-primary text-navy font-bold py-2 px-6 rounded-xl hover:bg-primary-hover shadow-md transition-all">Начать обучение</a>
-                </div>
-                {% endif %}
-            </div>
-
-        </div>
-    </div>
 </div>
-
 {% endblock %}

@@ -1,14 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
-
 {% block title %}Библиотека - Духовный Путь{% endblock %}
-
 {% block main_class %}flex-grow relative bg-background-light{% endblock %}
-
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pb-24">
-
-    <!-- Заголовок библиотеки -->
     <div class="text-center mb-12 sm:mb-16">
         <h1 class="text-4xl sm:text-5xl font-display font-bold text-navy mb-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-5 uppercase tracking-wide">
             <svg class="w-10 h-10 sm:w-12 sm:h-12 text-primary fill-current" viewBox="0 0 24 24">
@@ -20,8 +15,6 @@
             Видео, планы чтения Библии, события и детский контент для всей семьи
         </p>
     </div>
-
-    <!-- DAILY VERSE СЕКЦИЯ -->
     {% if daily_verse %}
     <div class="mb-16 w-full flex flex-col items-center justify-center relative px-6 sm:px-10 py-10 sm:py-12 bg-white rounded-[2.5rem] shadow-[0_12px_40px_rgba(0,0,0,0.06)] border border-navy/5 overflow-hidden">
         <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary via-[#e6c86e] to-primary"></div>
@@ -42,13 +35,10 @@
             </div>
             {% endif %}
         </div>
-        <!-- Decorative subtle background elements -->
         <div class="absolute -top-24 -right-24 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
         <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-navy/5 rounded-full blur-3xl pointer-events-none"></div>
     </div>
     {% endif %}
-
-    <!-- Категории -->
     {% if categories %}
     <div class="flex items-center gap-3 mb-8">
         <svg class="w-7 h-7 text-primary fill-current shrink-0" viewBox="0 0 24 24">
@@ -56,7 +46,6 @@
         </svg>
         <h2 class="text-2xl sm:text-3xl font-bold text-navy uppercase tracking-wide">Категории</h2>
     </div>
-
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-16">
         {% for category in categories %}
         <a href="{% url 'library_category' category.slug %}" class="group bg-white rounded-[2rem] p-8 text-center border border-navy/5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:border-primary transition-all duration-300">
@@ -81,8 +70,6 @@
         {% endfor %}
     </div>
     {% endif %}
-
-    <!-- Недавние видео -->
     {% if recent_videos %}
     <div class="flex items-center justify-between gap-4 mb-8 flex-wrap">
         <div class="flex items-center gap-3">
@@ -95,7 +82,6 @@
             Все видео &rarr;
         </a>
     </div>
-
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-16">
         {% for video in recent_videos %}
         <a href="{% url 'video_detail' video.id %}" class="group bg-white rounded-3xl overflow-hidden border border-navy/5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:-translate-y-1.5 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:border-primary transition-all duration-300">
@@ -107,13 +93,11 @@
                     <path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/>
                 </svg>
                 {% endif %}
-                
                 <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <div class="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center translate-y-4 group-hover:translate-y-0 shadow-lg text-primary transition-all duration-300">
                         <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
                     </div>
                 </div>
-
                 {% if video.duration %}
                 <div class="absolute top-3 right-3 bg-primary/95 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-sm shadow-md">
                     {{ video.duration }} мин
@@ -137,8 +121,6 @@
         {% endfor %}
     </div>
     {% endif %}
-
-    <!-- Ближайшие события -->
     {% if upcoming_events %}
     <div class="flex items-center justify-between gap-4 mb-8 flex-wrap">
         <div class="flex items-center gap-3">
@@ -151,7 +133,6 @@
             Все события &rarr;
         </a>
     </div>
-
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-16">
         {% for event in upcoming_events %}
         <a href="{% url 'event_detail' event.id %}" class="group bg-white rounded-3xl overflow-hidden border border-navy/5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:-translate-y-1.5 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:border-primary transition-all duration-300">
@@ -184,8 +165,6 @@
         {% endfor %}
     </div>
     {% endif %}
-
-    <!-- Детский контент -->
     {% if kids_content %}
     <div class="flex items-center justify-between gap-4 mb-8 flex-wrap">
         <div class="flex items-center gap-3">
@@ -198,7 +177,6 @@
             Все для детей &rarr;
         </a>
     </div>
-
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-16">
         {% for item in kids_content %}
         <a href="{% url 'kids_content_detail' item.id %}" class="group bg-white rounded-3xl overflow-hidden border border-navy/5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:-translate-y-1.5 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:border-primary transition-all duration-300">
@@ -231,8 +209,6 @@
         {% endfor %}
     </div>
     {% endif %}
-
-    <!-- Пустое состояние (если ничего нет) -->
     {% if not categories and not recent_videos and not upcoming_events and not kids_content %}
     <div class="bg-white rounded-[2rem] p-12 sm:p-20 text-center border border-dashed border-navy/20 shadow-sm max-w-3xl mx-auto my-12">
         <div class="w-24 h-24 mx-auto bg-gray-50 rounded-full flex items-center justify-center mb-8">
@@ -240,7 +216,6 @@
         </div>
         <h3 class="text-3xl font-display font-bold text-navy mb-4">Библиотека пока пуста</h3>
         <p class="text-txt-sub text-lg mb-10 max-w-lg mx-auto">Контент появится здесь совсем скоро. Зайдите позже или создайте его, если вы администратор.</p>
-        
         {% if user.is_superuser %}
         <div class="flex flex-wrap items-center justify-center gap-4">
             <a href="/admin/church_app/category/add/" class="flex items-center gap-2 bg-primary hover:bg-primary-hover text-navy font-bold px-6 py-3 rounded-xl shadow-lg transition-all hover:-translate-y-1">
@@ -259,6 +234,5 @@
         {% endif %}
     </div>
     {% endif %}
-
 </div>
 {% endblock %}

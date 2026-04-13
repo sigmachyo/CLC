@@ -4,28 +4,22 @@ from django.conf import settings
 from django.utils import timezone
 from pywebpush import webpush, WebPushException
 from church_app.models import PushSubscription, DailyVerse
-
 class Command(BaseCommand):
     help = 'Отправить Стих Дня всем подписанным пользователям'
-
     def handle(self, *args, **options):
         today = timezone.localdate()
         daily_verse = DailyVerse.objects.filter(date=today).first() or DailyVerse.objects.order_by('-date').first()
-        
         if not daily_verse:
             self.stdout.write(self.style.WARNING("Нет доступного стиха дня."))
             return
-            
         payload = {
             'title': 'Стих дня',
             'body': f'{daily_verse.verse_text} - {daily_verse.reference}',
             'url': '/library/'
         }
-        
         subscriptions = PushSubscription.objects.all()
         count = 0
         deleted = 0
-        
         for sub in subscriptions:
             try:
                 sub_info = {
@@ -35,7 +29,6 @@ class Command(BaseCommand):
                         "auth": sub.auth
                     }
                 }
-                
                 webpush(
                     subscription_info=sub_info,
                     data=json.dumps(payload),
@@ -50,5 +43,4 @@ class Command(BaseCommand):
                     deleted += 1
             except Exception as e:
                 self.stderr.write(self.style.ERROR(f"Неизвестная ошибка: {e}"))
-                
         self.stdout.write(self.style.SUCCESS(f"Успешно отправлено {count} уведомлений. Удалено устаревших подписок: {deleted}"))

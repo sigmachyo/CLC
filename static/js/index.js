@@ -1,42 +1,33 @@
 document.addEventListener('DOMContentLoaded', function() {
     'use strict';
-    
     const levelCards = document.querySelectorAll('.level-card');
-    
     function initLevelCards() {
         levelCards.forEach(card => {
             card.removeEventListener('click', handleCardClick);
             card.addEventListener('click', handleCardClick);
         });
     }
-    
     function handleCardClick(e) {
         const card = e.currentTarget;
         const levelId = card.dataset.levelId;
-        
         if (card.classList.contains('locked')) {
             e.preventDefault();
             showNotification('❌ Этот уровень пока недоступен', 'error');
             return;
         }
-        
         animateCardClick(card);
-        
         setTimeout(() => {
             window.location.href = `/level/${levelId}/`;
         }, 300);
     }
-    
     function animateCardClick(card) {
         card.style.transform = 'scale(0.95)';
         setTimeout(() => {
             card.style.transform = '';
         }, 200);
     }
-    
     function showNotification(message, type = 'info') {
         let notificationContainer = document.querySelector('.notification-container');
-        
         if (!notificationContainer) {
             notificationContainer = document.createElement('div');
             notificationContainer.className = 'notification-container';
@@ -51,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
             document.body.appendChild(notificationContainer);
         }
-        
         const notification = document.createElement('div');
         notification.className = `notification notification-${type}`;
         notification.style.cssText = `
@@ -66,9 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
             animation: slideIn 0.3s ease;
         `;
         notification.textContent = message;
-        
         notificationContainer.appendChild(notification);
-        
         setTimeout(() => {
             notification.style.animation = 'slideOut 0.3s ease';
             setTimeout(() => {
@@ -76,7 +64,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 300);
         }, 3000);
     }
-    
     function animateProgressBar() {
         const progressFill = document.querySelector('.progress-bar-fill');
         if (progressFill) {
@@ -87,25 +74,20 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 100);
         }
     }
-    
     function initParallax() {
         const mapContainer = document.querySelector('.map-container');
-        
         window.addEventListener('mousemove', (e) => {
             if (window.innerWidth > 768) {
                 const x = e.clientX / window.innerWidth;
                 const y = e.clientY / window.innerHeight;
-                
                 const moveX = (x - 0.5) * 20;
                 const moveY = (y - 0.5) * 20;
-                
                 if (mapContainer) {
                     mapContainer.style.backgroundPosition = `${50 + moveX}% ${30 + moveY}%`;
                 }
             }
         });
     }
-    
     function initSmoothScroll() {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
@@ -120,27 +102,23 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-    
     function initCardsAnimation() {
         levelCards.forEach((card, index) => {
             card.style.opacity = '0';
             card.style.transform = 'translateY(30px)';
             card.style.transition = 'all 0.5s ease';
-            
             setTimeout(() => {
                 card.style.opacity = '1';
                 card.style.transform = 'translateY(0)';
             }, index * 50);
         });
     }
-    
     function initLockedLevels() {
         const lockedCards = document.querySelectorAll('.level-card.locked');
         lockedCards.forEach(card => {
             card.setAttribute('title', 'Завершите предыдущие уровни чтобы открыть этот');
         });
     }
-    
     function addAnimationStyles() {
         const style = document.createElement('style');
         style.textContent = `
@@ -154,7 +132,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     opacity: 1;
                 }
             }
-            
             @keyframes slideOut {
                 from {
                     transform: translateX(0);
@@ -165,20 +142,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     opacity: 0;
                 }
             }
-            
             @keyframes pulse {
                 0% { transform: scale(1); }
                 50% { transform: scale(1.05); }
                 100% { transform: scale(1); }
             }
-            
             .level-card.completed {
                 animation: pulse 2s infinite;
             }
         `;
         document.head.appendChild(style);
     }
-    
     function init() {
         initLevelCards();
         initCardsAnimation();
@@ -188,9 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
         addAnimationStyles();
         animateProgressBar();
     }
-    
     init();
-    
     window.addEventListener('resize', function() {
         if (window.innerWidth <= 768) {
             const mapContainer = document.querySelector('.map-container');

@@ -4,17 +4,14 @@ from django.contrib import messages
 from .models import PrayerRequest
 from .forms import PrayerRequestForm
 from django.utils import timezone
-
 def prayer_list(request):
     """Список публичных молитвенных нужд"""
     prayers = PrayerRequest.objects.filter(is_public=True).order_by('-created_at')
-    
     context = {
         'prayers': prayers,
         'title': 'Молитвенная стена'
     }
     return render(request, 'prayer_list.html', context)
-
 @login_required
 def prayer_add(request):
     """Добавление новой молитвенной нужды"""
@@ -31,9 +28,7 @@ def prayer_add(request):
             return redirect('prayer_list')
     else:
         form = PrayerRequestForm()
-
     return render(request, 'prayer_add.html', {'title': 'Добавить нужду', 'form': form})
-
 @login_required
 def prayer_support(request, prayer_id):
     """Поддержать в молитве (+1) — с защитой от повторного голосования"""
@@ -48,18 +43,15 @@ def prayer_support(request, prayer_id):
             request.session[supported_key] = True
             messages.success(request, f'Вы присоединились к молитве за: {prayer.title}')
     return redirect('prayer_list')
-
 @login_required
 def my_prayers(request):
     """Личные нужды пользователя"""
     prayers = PrayerRequest.objects.filter(user=request.user).order_by('-created_at')
-    
     context = {
         'prayers': prayers,
         'title': 'Мои молитвы'
     }
     return render(request, 'my_prayers.html', context)
-
 @login_required
 def prayer_toggle_answered(request, prayer_id):
     """Отметить как отвеченную"""
@@ -71,4 +63,3 @@ def prayer_toggle_answered(request, prayer_id):
         status = 'отвечена' if prayer.is_answered else 'активна'
         messages.success(request, f'Нужда отмечена как {status}.')
     return redirect('my_prayers')
-

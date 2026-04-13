@@ -1,13 +1,10 @@
 {% extends 'library/base_library.html' %}
-
 {% block title %}{{ category.name }}{% endblock %}
-
 {% block library_content %}
 <div class="library-header">
     <h1><i class="fas fa-calendar-alt"></i> {{ category.name }}</h1>
     <p>{{ category.description }}</p>
 </div>
-
 <div class="card-grid">
     {% for event in events %}
     <a href="{% url 'event_detail' event.id %}" class="content-card">

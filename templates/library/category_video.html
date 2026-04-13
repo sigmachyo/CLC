@@ -1,13 +1,10 @@
 {% extends 'library/base_library.html' %}
-
 {% block title %}{{ category.name }}{% endblock %}
-
 {% block library_content %}
 <div class="library-header">
     <h1><i class="fas {{ category.icon }}"></i> {{ category.name }}</h1>
     <p>{{ category.description }}</p>
 </div>
-
 <div class="card-grid">
     {% for video in videos %}
     <a href="{% url 'video_detail' video.id %}" class="content-card">

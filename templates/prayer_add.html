@@ -1,17 +1,11 @@
 {% extends 'base.html' %}
-
 {% block title %}Добавить нужду{% endblock %}
-
 {% block main_class %}flex-grow relative bg-background-light{% endblock %}
-
 {% block content %}
 <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pb-24">
-    
     <div class="bg-white rounded-[2rem] p-8 sm:p-12 shadow-[0_12px_40px_rgba(0,0,0,0.06)] border border-navy/5 relative overflow-hidden">
-        <!-- Decoration graphic -->
         <div class="absolute -top-16 -right-16 w-40 h-40 bg-primary/10 rounded-full blur-2xl"></div>
         <div class="absolute -bottom-16 -left-16 w-48 h-48 bg-navy/5 rounded-full blur-2xl"></div>
-
         <div class="relative z-10">
             <div class="text-center mb-10">
                 <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 text-primary mb-4">
@@ -20,29 +14,24 @@
                 <h1 class="text-3xl sm:text-4xl font-display font-bold text-navy mb-3">Оставить нужду</h1>
                 <p class="text-txt-sub italic font-medium">"Много может усиленная молитва праведного" <br/><span class="text-xs text-gray-400 not-italic">(Иакова 5:16)</span></p>
             </div>
-
             <form method="post" class="space-y-6 max-w-xl mx-auto">
                 {% csrf_token %}
-                
                 <div class="space-y-2">
                     <label for="title" class="block text-sm font-bold text-navy uppercase tracking-wide">Тема молитвы</label>
                     <input type="text" id="title" name="title" required placeholder="Кратко суть просьбы (напр. О здоровье бабушки)" 
                            class="w-full bg-gray-50 border border-gray-200 text-navy text-base rounded-xl focus:ring-4 focus:ring-primary/10 focus:border-primary block p-4 transition-all outline-none">
                 </div>
-                
                 <div class="space-y-2">
                     <label for="description" class="block text-sm font-bold text-navy uppercase tracking-wide">Описание подробностей</label>
                     <textarea id="description" name="description" required placeholder="Опишите ситуацию подробнее..." rows="5"
                               class="w-full bg-gray-50 border border-gray-200 text-navy text-base rounded-xl focus:ring-4 focus:ring-primary/10 focus:border-primary block p-4 transition-all outline-none resize-y"></textarea>
                 </div>
-
                 <div class="flex items-center gap-3 bg-navy/5 p-4 rounded-xl border border-navy/10 mt-2">
                     <input type="checkbox" id="is_public" name="is_public" checked class="w-5 h-5 rounded border-gray-300 text-primary border-2 focus:ring-primary/30 accent-primary cursor-pointer shrink-0">
                     <label for="is_public" class="text-sm font-medium text-navy/80 cursor-pointer select-none">
                         Разместить на публичной стене (будет видно всем участникам)
                     </label>
                 </div>
-
                 <div class="pt-4 flex flex-col sm:flex-row gap-4 items-center">
                     <button type="submit" class="w-full sm:w-auto flex-1 bg-navy hover:bg-navy-light text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5 active:scale-95 text-center">
                         Опубликовать просьбу

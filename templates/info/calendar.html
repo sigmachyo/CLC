@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Календарь событий{% endblock %}
+{% block content %}
+<div class="max-w-[1200px] mx-auto px-6 py-16">
+    <div class="text-center mb-16">
+        <h1 class="text-4xl md:text-5xl font-black text-navy mb-4 uppercase tracking-tighter">События</h1>
+        <p class="text-lg text-navy/60 max-w-2xl mx-auto">Расписание регулярных богослужений и важных мероприятий нашей церкви.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+        <div class="bg-white p-8 rounded-3xl shadow-sm border border-navy/5">
+            <h2 class="text-3xl font-bold text-navy mb-8 border-b pb-4">Воскресные богослужения</h2>
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-xl font-bold text-primary mb-1">Основное собрание</h3>
+                    <p class="text-navy/80 font-medium mb-1">Каждое воскресенье в 11:00</p>
+                    <p class="text-sm text-navy/60"><span class="material-symbols-outlined text-[14px] align-middle mr-1">location_on</span>ДК «Комбайностроителей» (ул. Бограда, 134)</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-primary mb-1">Левобережный филиал</h3>
+                    <p class="text-navy/80 font-medium mb-1">Каждое воскресенье в 10:30</p>
+                    <p class="text-sm text-navy/60"><span class="material-symbols-outlined text-[14px] align-middle mr-1">location_on</span>ул. 8 Марта, 24г, 2 этаж</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-primary mb-1">Правобережный филиал</h3>
+                    <p class="text-navy/80 font-medium mb-1">Каждое воскресенье в 15:00</p>
+                    <p class="text-sm text-navy/60"><span class="material-symbols-outlined text-[14px] align-middle mr-1">location_on</span>ул. Свердловская, 3а, цокольный этаж</p>
+                </div>
+            </div>
+        </div>
+        <div class="bg-navy p-8 rounded-3xl shadow-sm border border-navy/5 text-white">
+            <h2 class="text-3xl font-bold text-white mb-8 border-b border-white/20 pb-4">Другие собрания</h2>
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-xl font-bold text-primary mb-1">Молодежное собрание</h3>
+                    <p class="text-white/80 font-medium mb-1">Каждое воскресенье в 17:00</p>
+                    <p class="text-sm text-white/50"><span class="material-symbols-outlined text-[14px] align-middle mr-1">location_on</span>ул. Робеспьера, 29 (цоколь)</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-primary mb-1">Ночная молитва</h3>
+                    <p class="text-white/80 font-medium mb-1">Первая пятница месяца, 22:00</p>
+                    <p class="text-sm text-white/50"><span class="material-symbols-outlined text-[14px] align-middle mr-1">location_on</span>ул. 8 Марта, 24г</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-primary mb-1">Альфа-курс</h3>
+                    <p class="text-white/80 font-medium mb-1">Среда / Четверг (уточняйте актуальный сезон)</p>
+                    <p class="text-sm text-white/50"><a href="{% url 'alpha' %}" class="underline">Подробнее об Альфе</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

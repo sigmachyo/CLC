@@ -1,19 +1,14 @@
 {% extends 'base.html' %}
-
 {% block title %}Ошибка оплаты{% endblock %}
-
 {% block content %}
 <div style="max-width: 500px; margin: 100px auto 120px; padding: 40px; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center;">
-    
     <div style="width: 80px; height: 80px; border-radius: 50%; background: rgba(231,76,60,0.1); color: #e74c3c; font-size: 2.5rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
         <i class="fa-solid fa-xmark"></i>
     </div>
-
     <h2 style="color: var(--navy); font-size: 1.8rem; margin-bottom: 15px;">Произошла ошибка</h2>
     <p style="color: var(--txt-sub); margin-bottom: 30px; line-height: 1.6;">
         Оплата не прошла или была отклонена банком. Пожалуйста, попробуйте еще раз.
     </p>
-
     <div style="display: flex; gap: 15px; justify-content: center;">
         <a href="{% url 'donate' %}" style="padding: 12px 25px; background: var(--primary); color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">
             Попробовать снова

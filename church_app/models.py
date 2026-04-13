@@ -3,68 +3,6 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 import uuid
 
-class SpiritualLevel(models.Model):
-    """Уровень на духовном пути - здание в городе"""
-    LEVEL_TYPES = [
-        ('basic', 'Основы веры'),
-        ('growth', 'Духовный рост'),
-        ('service', 'Служение'),
-        ('leadership', 'Лидерство'),
-        ('worship', 'Поклонение'),
-        ('prayer', 'Молитва'),
-        ('study', 'Изучение'),
-        ('fellowship', 'Общение'),
-    ]
-    
-    BUILDING_STYLES = [
-        ('church', 'Церковь'),
-        ('chapel', 'Часовня'),
-        ('cathedral', 'Собор'),
-        ('monastery', 'Монастырь'),
-        ('temple', 'Храм'),
-        ('house', 'Дом'),
-        ('library', 'Библиотека'),
-        ('school', 'Школа'),
-    ]
-    
-    title = models.CharField(max_length=200, verbose_name="Название уровня")
-    description = models.TextField(verbose_name="Описание")
-    level_type = models.CharField(max_length=50, choices=LEVEL_TYPES, default='basic')
-    building_style = models.CharField(max_length=50, choices=BUILDING_STYLES, default='church')
-    order = models.IntegerField(verbose_name="Порядковый номер")
-    image = models.ImageField(upload_to='levels/', blank=True, null=True, verbose_name="Изображение")
-    is_available = models.BooleanField(default=True, verbose_name="Доступен")
-    position_x = models.IntegerField(default=0, verbose_name="Позиция X")
-    position_y = models.IntegerField(default=0, verbose_name="Позиция Y")
-    height = models.IntegerField(default=3, verbose_name="Высота здания")
-    color = models.CharField(max_length=20, default='#3498db', verbose_name="Цвет здания")
-    created_at = models.DateTimeField(auto_now_add=True)
-    
-    def __str__(self):
-        return f"{self.order}. {self.title}"
-    
-    class Meta:
-        ordering = ['order']
-        verbose_name = "Уровень духовного пути"
-        verbose_name_plural = "Уровни духовного пути"
-
-
-class UserProgress(models.Model):
-    """Прогресс пользователя"""
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='progress')
-    level = models.ForeignKey(SpiritualLevel, on_delete=models.CASCADE)
-    is_completed = models.BooleanField(default=False, verbose_name="Пройден")
-    completed_at = models.DateTimeField(null=True, blank=True)
-    progress_percentage = models.IntegerField(default=0, verbose_name="Процент выполнения")
-    
-    class Meta:
-        unique_together = ['user', 'level']
-        verbose_name = "Прогресс пользователя"
-        verbose_name_plural = "Прогресс пользователей"
-    
-    def __str__(self):
-        return f"{self.user.username} - {self.level.title}"
-
 
 class Announcement(models.Model):
     """Главное уведомление на весь экран"""
@@ -76,17 +14,34 @@ class Announcement(models.Model):
     is_active = models.BooleanField(default=True, verbose_name="Активно")
     created_at = models.DateTimeField(auto_now_add=True)
     expires_at = models.DateTimeField(null=True, blank=True, verbose_name="Истекает")
-    
+
     def __str__(self):
         return self.title
-    
+
     class Meta:
         ordering = ['-created_at']
         verbose_name = "Объявление"
         verbose_name_plural = "Объявления"
 
 
-# Модели для библиотеки
+class HeroBackground(models.Model):
+    """Фон для главной страницы (Слайдер)"""
+    title = models.CharField(max_length=150, blank=True, verbose_name="Название (для админки)")
+    image = models.ImageField(upload_to='hero_backgrounds/', verbose_name="Изображение")
+    link_url = models.CharField(max_length=500, blank=True, verbose_name="Ссылка для регистрации", help_text="Например: /news/ или https://...")
+    order = models.IntegerField(default=0, verbose_name="Порядок")
+    is_active = models.BooleanField(default=True, verbose_name="Активен")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['order', '-created_at']
+        verbose_name = "Фон главной страницы"
+        verbose_name_plural = "Фоны главной страницы"
+
+    def __str__(self):
+        return self.title or f"Фон #{self.id}"
+
+
 class Category(models.Model):
     """Категория контента в библиотеке"""
     CATEGORY_TYPES = [
@@ -96,7 +51,7 @@ class Category(models.Model):
         ('calendar', 'Календарь'),
         ('kids', 'Детский раздел'),
     ]
-    
+
     name = models.CharField(max_length=100, verbose_name="Название")
     slug = models.SlugField(unique=True, verbose_name="URL")
     category_type = models.CharField(max_length=20, choices=CATEGORY_TYPES, verbose_name="Тип")
@@ -106,12 +61,12 @@ class Category(models.Model):
     order = models.IntegerField(default=0, verbose_name="Порядок")
     is_active = models.BooleanField(default=True, verbose_name="Активна")
     created_at = models.DateTimeField(auto_now_add=True)
-    
+
     class Meta:
         ordering = ['order', 'name']
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
-    
+
     def __str__(self):
         return self.name
 
@@ -131,20 +86,20 @@ class Video(models.Model):
     is_active = models.BooleanField(default=True, verbose_name="Активно")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     class Meta:
         ordering = ['-is_featured', 'order', '-created_at']
         verbose_name = "Видео"
         verbose_name_plural = "Видео"
-    
+
     def __str__(self):
         return self.title
-    
+
     def get_video_url(self):
         if self.video_file:
             return self.video_file.url
         return self.youtube_url
-    
+
     def increment_views(self):
         self.views_count += 1
         self.save(update_fields=['views_count'])
@@ -159,12 +114,12 @@ class BiblePlan(models.Model):
     is_active = models.BooleanField(default=True, verbose_name="Активен")
     order = models.IntegerField(default=0, verbose_name="Порядок")
     created_at = models.DateTimeField(auto_now_add=True)
-    
+
     class Meta:
         ordering = ['order', 'title']
         verbose_name = "План чтения"
         verbose_name_plural = "Планы чтения"
-    
+
     def __str__(self):
         return self.title
 
@@ -178,13 +133,13 @@ class BibleReading(models.Model):
     start_chapter = models.CharField(max_length=50, verbose_name="Начало", help_text="Книга Глава:Стих")
     end_chapter = models.CharField(max_length=50, blank=True, null=True, verbose_name="Конец")
     content = models.TextField(blank=True, verbose_name="Дополнительный текст")
-    
+
     class Meta:
         ordering = ['plan', 'day_number']
         unique_together = ['plan', 'day_number']
         verbose_name = "День чтения"
         verbose_name_plural = "Дни чтения"
-    
+
     def __str__(self):
         return f"{self.plan.title} - День {self.day_number}: {self.title}"
 
@@ -194,26 +149,26 @@ class UserBibleProgress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bible_progress')
     plan = models.ForeignKey(BiblePlan, on_delete=models.CASCADE)
     current_day = models.IntegerField(default=0)
-    completed_days = models.JSONField(default=list, blank=True)  # Список завершенных дней
+    completed_days = models.JSONField(default=list, blank=True)
     started_at = models.DateTimeField(auto_now_add=True)
     completed_at = models.DateTimeField(null=True, blank=True)
     last_read_at = models.DateTimeField(auto_now=True)
-    
+
     class Meta:
         unique_together = ['user', 'plan']
         verbose_name = "Прогресс чтения"
         verbose_name_plural = "Прогресс чтения"
-    
+
     def __str__(self):
         return f"{self.user.username} - {self.plan.title} ({self.current_day}/{self.plan.days_count})"
-    
+
     def mark_day_completed(self, day_number):
         if day_number not in self.completed_days:
             self.completed_days.append(day_number)
             if day_number > self.current_day:
                 self.current_day = day_number
             self.save()
-    
+
     def get_progress_percentage(self):
         if self.plan and self.plan.days_count > 0:
             return int((len(self.completed_days) / self.plan.days_count) * 100)
@@ -241,18 +196,18 @@ class Event(models.Model):
     is_active = models.BooleanField(default=True, verbose_name="Активно")
     is_featured = models.BooleanField(default=False, verbose_name="Рекомендуемое")
     created_at = models.DateTimeField(auto_now_add=True)
-    
+
     class Meta:
         ordering = ['start_date']
         verbose_name = "Событие"
         verbose_name_plural = "События"
-    
+
     def __str__(self):
         return f"{self.title} - {self.start_date.strftime('%d.%m.%Y')}"
-    
+
     def is_past(self):
         return self.end_date < timezone.now()
-    
+
     def days_until(self):
         if self.start_date > timezone.now():
             return (self.start_date - timezone.now()).days
@@ -266,12 +221,12 @@ class EventRegistration(models.Model):
     registered_at = models.DateTimeField(auto_now_add=True)
     is_confirmed = models.BooleanField(default=False)
     attended = models.BooleanField(default=False)
-    
+
     class Meta:
         unique_together = ['event', 'user']
         verbose_name = "Регистрация"
         verbose_name_plural = "Регистрации"
-    
+
     def __str__(self):
         return f"{self.user.username} - {self.event.title}"
 
@@ -285,14 +240,14 @@ class KidsContent(models.Model):
         ('craft', 'Поделка'),
         ('song', 'Песня'),
     ]
-    
+
     AGE_GROUPS = [
         ('3-5', '3-5 лет'),
         ('6-8', '6-8 лет'),
         ('9-12', '9-12 лет'),
         ('all', 'Все возрасты'),
     ]
-    
+
     title = models.CharField(max_length=200, verbose_name="Название")
     description = models.TextField(verbose_name="Описание")
     content_type = models.CharField(max_length=20, choices=CONTENT_TYPES, verbose_name="Тип контента")
@@ -301,22 +256,22 @@ class KidsContent(models.Model):
     youtube_url = models.URLField(blank=True, null=True, verbose_name="YouTube ссылка")
     thumbnail = models.ImageField(upload_to='kids_thumbnails/', blank=True, null=True, verbose_name="Превью")
     bible_verse = models.CharField(max_length=200, blank=True, verbose_name="Библейский стих")
-    game_data = models.JSONField(default=dict, blank=True, verbose_name="Данные игры")  # Для интерактивных игр
+    game_data = models.JSONField(default=dict, blank=True, verbose_name="Данные игры")
     printable_material = models.FileField(upload_to='kids_printables/', blank=True, null=True, verbose_name="Материал для печати")
     is_featured = models.BooleanField(default=False, verbose_name="Рекомендуемое")
     views_count = models.IntegerField(default=0, verbose_name="Просмотры")
     order = models.IntegerField(default=0, verbose_name="Порядок")
     is_active = models.BooleanField(default=True, verbose_name="Активно")
     created_at = models.DateTimeField(auto_now_add=True)
-    
+
     class Meta:
         ordering = ['-is_featured', 'order', '-created_at']
         verbose_name = "Детский контент"
         verbose_name_plural = "Детский контент"
-    
+
     def __str__(self):
         return f"{self.get_content_type_display()}: {self.title}"
-    
+
     def increment_views(self):
         self.views_count += 1
         self.save(update_fields=['views_count'])
@@ -330,14 +285,15 @@ class KidsProgress(models.Model):
     completed_at = models.DateTimeField(null=True, blank=True)
     score = models.IntegerField(default=0, help_text="Для игр - очки", verbose_name="Результат")
     last_accessed = models.DateTimeField(auto_now=True)
-    
+
     class Meta:
         unique_together = ['user', 'content']
         verbose_name = "Прогресс ребенка"
         verbose_name_plural = "Прогресс детей"
-    
+
     def __str__(self):
         return f"{self.user.username} - {self.content.title}"
+
 
 class DailyVerse(models.Model):
     """Стих дня на главной странице"""
@@ -353,8 +309,9 @@ class DailyVerse(models.Model):
     def __str__(self):
         return f"{self.date} - {self.reference}"
 
+
 class PrayerRequest(models.Model):
-    """Молитвенная нужда (Молитвенный трекер)"""
+    """Молитвенная нужда"""
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
     title = models.CharField(max_length=200, verbose_name="Тема молитвы")
     description = models.TextField(verbose_name="Описание нужды")
@@ -371,34 +328,6 @@ class PrayerRequest(models.Model):
     def __str__(self):
         return f"{self.title} - {self.user.username}"
 
-class ChatRoom(models.Model):
-    """Комната чата (группа, форум)"""
-    name = models.CharField(max_length=150, verbose_name="Название чата")
-    description = models.TextField(blank=True, null=True, verbose_name="Описание")
-    icon = models.CharField(max_length=50, default="forum", verbose_name="Иконка (Material Symbols)")
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Создана")
-
-    class Meta:
-        verbose_name = "Комната чата"
-        verbose_name_plural = "Комнаты чатов"
-
-    def __str__(self):
-        return self.name
-
-class ChatMessage(models.Model):
-    """Сообщение в чате"""
-    room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, related_name='messages', verbose_name="Чат")
-    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Автор")
-    text = models.TextField(verbose_name="Текст сообщения")
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Время отправки")
-
-    class Meta:
-        verbose_name = "Сообщение чата"
-        verbose_name_plural = "Сообщения чата"
-        ordering = ['created_at']
-
-    def __str__(self):
-        return f"{self.author.username} ({self.created_at.strftime('%d.%m %H:%M')})"
 
 class PushSubscription(models.Model):
     """Подписка на Web Push уведомления"""
@@ -415,6 +344,7 @@ class PushSubscription(models.Model):
     def __str__(self):
         username = self.user.username if self.user else "Аноним"
         return f"Подписка ({username})"
+
 
 class Donation(models.Model):
     """Пожертвования"""

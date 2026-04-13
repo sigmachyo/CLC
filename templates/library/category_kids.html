@@ -1,13 +1,10 @@
 {% extends 'library/base_library.html' %}
-
 {% block title %}{{ category.name }}{% endblock %}
-
 {% block library_content %}
 <div class="library-header">
     <h1><i class="fas fa-child"></i> {{ category.name }}</h1>
     <p>{{ category.description }}</p>
 </div>
-
 <div class="card-grid">
     {% for item in kids_content %}
     <a href="{% url 'kids_content_detail' item.id %}" class="content-card">

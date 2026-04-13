@@ -1,8 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-
-
 class RegisterForm(forms.Form):
     """Форма регистрации пользователя"""
     username = forms.CharField(
@@ -37,19 +35,16 @@ class RegisterForm(forms.Form):
             'autocomplete': 'new-password',
         }),
     )
-
     def clean_username(self):
         username = self.cleaned_data['username']
         if User.objects.filter(username=username).exists():
             raise ValidationError('Имя пользователя уже занято')
         return username
-
     def clean_email(self):
         email = self.cleaned_data['email']
         if User.objects.filter(email=email).exists():
             raise ValidationError('Email уже используется')
         return email
-
     def clean(self):
         cleaned = super().clean()
         p1 = cleaned.get('password1')
@@ -57,8 +52,6 @@ class RegisterForm(forms.Form):
         if p1 and p2 and p1 != p2:
             raise ValidationError('Пароли не совпадают')
         return cleaned
-
-
 class LoginForm(forms.Form):
     """Форма входа"""
     username = forms.CharField(
@@ -76,8 +69,6 @@ class LoginForm(forms.Form):
             'autocomplete': 'current-password',
         }),
     )
-
-
 class ProfileEditForm(forms.Form):
     """Форма редактирования профиля"""
     first_name = forms.CharField(
@@ -92,8 +83,6 @@ class ProfileEditForm(forms.Form):
         label='Email',
         widget=forms.EmailInput(attrs={'placeholder': 'Email'}),
     )
-
-
 class ChangePasswordForm(forms.Form):
     """Форма смены пароля"""
     old_password = forms.CharField(
@@ -110,7 +99,6 @@ class ChangePasswordForm(forms.Form):
         label='Повторите новый пароль',
         widget=forms.PasswordInput(attrs={'placeholder': 'Повторите новый пароль'}),
     )
-
     def clean(self):
         cleaned = super().clean()
         p1 = cleaned.get('new_password1')
@@ -118,8 +106,6 @@ class ChangePasswordForm(forms.Form):
         if p1 and p2 and p1 != p2:
             raise ValidationError('Новые пароли не совпадают')
         return cleaned
-
-
 class PrayerRequestForm(forms.Form):
     """Форма добавления молитвенной нужды"""
     title = forms.CharField(

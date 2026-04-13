@@ -1,0 +1,66 @@
+{% load static %}
+<section class="snap-sec relative flex-grow h-full w-full overflow-hidden group" id="sec-hero"
+  aria-label="Главная">
+  <div class="snap-sec-inner flex flex-col justify-center">
+  <div class="absolute inset-0 w-full h-full rounded-3xl overflow-hidden" id="hero-slider">
+    {% if hero_backgrounds %}
+      {% for slide in hero_backgrounds %}
+        <div class="hero-slide-bg absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-[3000ms] ease-in-out {% if forloop.first %}opacity-100 scale-[1.02]{% else %}opacity-0 scale-105{% endif %}"
+             style="background-image: url('{{ slide.image.url }}');">
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="hero-slide-bg absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-[3000ms] ease-in-out opacity-100 scale-[1.02]"
+           style="background-image: url('https://kclc.ru/wp-content/uploads/2025/11/photo_2025-10-28_19-12-17-1024x768.jpg');">
+      </div>
+    {% endif %}
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-background-light/90 via-background-light/40 to-transparent md:from-background-light/95 md:via-background-light/60 z-10 pointer-events-none">
+    </div>
+  </div>
+  <div class="relative z-20 h-full flex flex-col justify-center px-6 md:px-20 max-w-4xl">
+    <div
+      class="inline-flex items-center gap-2 bg-primary/10 backdrop-blur-sm border border-primary/20 rounded-full py-1.5 px-4 w-fit mb-6">
+      <span class="material-symbols-outlined text-primary text-sm">location_on</span>
+      <span class="text-navy font-semibold text-sm tracking-wide uppercase">Красноярск · Бограда 134</span>
+    </div>
+    <h1 class="text-5xl xs:text-6xl md:text-8xl font-black text-navy leading-tight xs:leading-[0.9] tracking-tighter mb-6 drop-shadow-sm">
+      ЦЕРКОВЬ<br />
+      <span class="text-transparent bg-clip-text bg-gradient-to-r from-navy via-navy-light to-primary">ЖИЗНИ</span>
+    </h1>
+    <p class="text-navy/70 text-lg md:text-xl font-medium max-w-lg mb-10 leading-relaxed">
+      Место, где каждый находит смысл, поддержку и настоящую жизнь. Присоединяйтесь к нам в это воскресенье.
+    </p>
+    <div
+      class="hidden md:flex items-center gap-6 bg-navy text-background-light p-1 pr-8 rounded-2xl w-fit shadow-xl border border-navy-light/50">
+      <div class="bg-primary w-12 h-12 flex items-center justify-center rounded-xl text-navy shadow-inner">
+        <span class="material-symbols-outlined fill-current">favorite</span>
+      </div>
+      <div class="flex flex-col">
+        <span class="text-xs text-primary uppercase font-bold tracking-wider opacity-80">Наша миссия</span>
+        <span class="text-lg font-bold leading-tight">Любить Бога, любить людей</span>
+      </div>
+      <div class="h-8 w-px bg-white/10 mx-2"></div>
+      <button
+        class="text-sm font-bold text-primary hover:text-white flex items-center gap-1 transition-colors group/btn">
+        Подробнее
+        <span
+          class="material-symbols-outlined text-lg group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+      </button>
+    </div>
+  </div>
+  <div class="md:hidden mt-auto mb-10 px-6">
+    <div class="bg-navy text-white p-5 rounded-2xl shadow-lg border border-primary/20">
+      <div class="flex items-center gap-4">
+        <div class="bg-primary/20 p-2.5 rounded-xl text-primary">
+          <span class="material-symbols-outlined fill-current">favorite</span>
+        </div>
+        <div>
+          <h3 class="font-bold text-lg leading-tight uppercase tracking-wide">Наша Миссия</h3>
+          <p class="text-white/60 text-[13px] mt-0.5 leading-snug">Любить Бога, любить людей</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>

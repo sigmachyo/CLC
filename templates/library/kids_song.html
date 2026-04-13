@@ -1,17 +1,13 @@
 {% extends 'library/base_library.html' %}
-
 {% block title %}{{ content.title }}{% endblock %}
-
 {% block library_content %}
 <div style="max-width: 800px; margin: 0 auto;">
     <h1 style="color: white; font-size: 2rem; margin-bottom: 20px;">🎵 {{ content.title }}</h1>
-
     {% if content.bible_verse %}
     <div style="background: rgba(241,196,15,0.1); border-left: 4px solid #f1c40f; padding: 15px 20px; border-radius: 0 10px 10px 0; margin-bottom: 25px;">
         <p style="color: #f1c40f; font-style: italic;">{{ content.bible_verse }}</p>
     </div>
     {% endif %}
-
     {% if content.youtube_url or content.video_file %}
     <div style="border-radius: 15px; overflow: hidden; margin-bottom: 30px; aspect-ratio: 16/9; background: #000;">
         {% if content.youtube_url %}
@@ -23,11 +19,9 @@
         {% endif %}
     </div>
     {% endif %}
-
     <div style="color: rgba(255,255,255,0.9); line-height: 1.8; margin-bottom: 30px;">
         {{ content.description|linebreaks }}
     </div>
-
     {% if user.is_authenticated and progress and not progress.completed %}
     <form method="post" style="margin-top: 20px; text-align: center;">
         {% csrf_token %}

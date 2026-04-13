@@ -1,15 +1,11 @@
 {% extends 'library/base_library.html' %}
 {% load static %}
-
 {% block title %}Чтение Библии{% endblock %}
-
 {% block library_content %}
 <div class="library-header">
     <h1><i class="fas fa-bible"></i> Чтение Библии</h1>
     <p>Выберите план чтения или читайте Библию самостоятельно</p>
 </div>
-
-<!-- Популярные планы -->
 {% if popular_plans %}
 <div class="section-title">
     <i class="fas fa-fire"></i>
@@ -44,8 +40,6 @@
     {% endfor %}
 </div>
 {% endif %}
-
-<!-- Все планы -->
 <div class="section-title">
     <i class="fas fa-list"></i>
     <h2>Все планы чтения</h2>

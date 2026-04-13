@@ -1,13 +1,10 @@
 {% extends 'library/base_library.html' %}
-
 {% block title %}{{ category.name }}{% endblock %}
-
 {% block library_content %}
 <div class="library-header">
     <h1><i class="fas fa-bible"></i> {{ category.name }}</h1>
     <p>{{ category.description }}</p>
 </div>
-
 <div class="card-grid">
     {% for plan in plans %}
     <a href="{% url 'bible_plan_detail' plan.id %}" class="content-card">

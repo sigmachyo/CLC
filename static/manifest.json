@@ -1,10 +1,10 @@
 {
-  "name": "FaithTogether - ЦХЖ Красноярск",
-  "short_name": "CLC App",
-  "description": "Интерактивное духовное пространство для роста, общения и поддержки.",
+  "name": "KCLC — Церковь Христианской Жизни",
+  "short_name": "KCLC",
+  "description": "Местная религиозная организация Церковь «Христианской Жизни» г. Красноярска",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f5f0e8",
+  "background_color": "#1a1f36",
   "theme_color": "#1a1f36",
   "icons": [
     {

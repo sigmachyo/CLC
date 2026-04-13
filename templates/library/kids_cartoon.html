@@ -1,8 +1,6 @@
 {% extends 'library/base_library.html' %}
 {% load static %}
-
 {% block title %}{{ content.title }}{% endblock %}
-
 {% block extra_css %}
 <style>
     .kids-video-container {
@@ -11,7 +9,6 @@
         padding: 30px;
         margin-bottom: 30px;
     }
-    
     .kids-video-player {
         background: #000;
         border-radius: 20px;
@@ -19,14 +16,12 @@
         aspect-ratio: 16/9;
         margin-bottom: 20px;
     }
-    
     .kids-video-player video,
     .kids-video-player iframe {
         width: 100%;
         height: 100%;
         border: none;
     }
-    
     .kids-video-title {
         font-size: 2rem;
         color: white;
@@ -35,12 +30,10 @@
         align-items: center;
         gap: 15px;
     }
-    
     .kids-video-title i {
         color: #f1c40f;
         font-size: 2.5rem;
     }
-    
     .bible-verse-box {
         background: rgba(255,255,255,0.2);
         border-radius: 20px;
@@ -51,12 +44,10 @@
         text-align: center;
         border-left: 5px solid #f1c40f;
     }
-    
     .bible-verse-box i {
         color: #f1c40f;
         margin-right: 10px;
     }
-    
     .completion-btn {
         background: #2ecc71;
         color: white;
@@ -72,30 +63,25 @@
         gap: 10px;
         box-shadow: 0 5px 0 #27ae60;
     }
-    
     .completion-btn:hover {
         transform: translateY(-3px);
         box-shadow: 0 8px 0 #27ae60;
     }
-    
     .completion-btn:active {
         transform: translateY(2px);
         box-shadow: 0 3px 0 #27ae60;
     }
-    
     .completion-btn.completed {
         background: #95a5a6;
         box-shadow: 0 5px 0 #7f8c8d;
         pointer-events: none;
     }
-    
     .printable-section {
         background: rgba(255,255,255,0.1);
         border-radius: 20px;
         padding: 25px;
         margin-top: 30px;
     }
-    
     .printable-link {
         display: inline-flex;
         align-items: center;
@@ -108,23 +94,18 @@
         font-weight: 600;
         transition: all 0.3s ease;
     }
-    
     .printable-link:hover {
         transform: translateY(-3px);
         box-shadow: 0 10px 20px rgba(241,196,15,0.3);
     }
 </style>
 {% endblock %}
-
 {% block library_content %}
 <div class="kids-video-container">
-    <!-- Заголовок -->
     <div class="kids-video-title">
         <i class="fas fa-child"></i>
         <h1>{{ content.title }}</h1>
     </div>
-    
-    <!-- Видео плеер -->
     <div class="kids-video-player">
         {% if content.video_file %}
         <video controls poster="{{ content.thumbnail.url|default:'' }}">
@@ -135,21 +116,15 @@
         <iframe src="{{ content.youtube_url }}" allowfullscreen></iframe>
         {% endif %}
     </div>
-    
-    <!-- Библейский стих -->
     {% if content.bible_verse %}
     <div class="bible-verse-box">
         <i class="fas fa-bible"></i>
         {{ content.bible_verse }}
     </div>
     {% endif %}
-    
-    <!-- Описание -->
     <div style="color: white; font-size: 1.2rem; line-height: 1.8; margin: 30px 0;">
         {{ content.description|linebreaks }}
     </div>
-    
-    <!-- Кнопка "Я посмотрел(а)" -->
     {% if user.is_authenticated %}
     <form method="post" style="text-align: center;">
         {% csrf_token %}
@@ -168,8 +143,6 @@
         <a href="{% url 'login' %}" style="color: #f1c40f;">Войди в аккаунт, чтобы отмечать просмотренное</a>
     </div>
     {% endif %}
-    
-    <!-- Материалы для печати -->
     {% if content.printable_material %}
     <div class="printable-section">
         <h3 style="color: white; margin-bottom: 15px;">
@@ -182,8 +155,6 @@
     </div>
     {% endif %}
 </div>
-
-<!-- Похожий контент -->
 {% if similar %}
 <div class="section-title">
     <i class="fas fa-thumbs-up"></i>
