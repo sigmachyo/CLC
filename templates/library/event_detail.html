@@ -43,7 +43,7 @@
             <p style="color: #2ecc71; margin-top: 8px;">Вы зарегистрированы на это событие</p>
         </div>
         {% else %}
-        <form method="post" action="{% url 'event_register' event.id %}" style="text-align: center;">
+        <form method="post" action="{% url 'event_register' event.slug %}" style="text-align: center;">
             {% csrf_token %}
             <button type="submit" style="background: linear-gradient(145deg, #f1c40f, #f39c12); color: #2c3e50; border: none; padding: 15px 40px; border-radius: 30px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: transform 0.3s;">
                 <i class="fas fa-user-plus"></i> Зарегистрироваться
@@ -62,7 +62,7 @@
         <h2 class="section-title"><i class="fas fa-calendar-alt"></i> Похожие события</h2>
         <div class="card-grid">
             {% for ev in similar_events %}
-            <a href="{% url 'event_detail' ev.id %}" class="content-card">
+            <a href="{% url 'event_detail' slug=ev.slug %}" class="content-card">
                 <div class="card-image" style="background: linear-gradient(145deg, #8e44ad, #9b59b6);">
                     {% if ev.image %}
                     <img src="{{ ev.image.url }}" alt="{{ ev.title }}">

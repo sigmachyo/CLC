@@ -1,52 +1,61 @@
 {% load static %}
-<section
-  class="snap-sec py-20 px-4 md:px-8 bg-background-light flex flex-col items-center justify-center min-h-screen"
-  id="sec-news" aria-label="Новости">
-  <div class="max-w-[1200px] mx-auto w-full">
-    <div class="mb-10 text-center md:text-left md:border-l-4 md:border-primary md:pl-6">
-      <h2 class="text-navy text-3xl md:text-4xl font-black leading-tight tracking-tight">Новости церкви</h2>
-      <p class="text-navy/60 text-base md:text-lg mt-2 max-w-2xl mx-auto md:mx-0">События, обновления и свидетельства
-        нашей общины. Будьте в курсе жизни церкви.</p>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6" id="news-grid">
-      <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-primary/10 flex flex-col animate-pulse">
-        <div class="p-6 flex flex-col flex-1">
-          <div class="h-3 w-32 bg-navy/10 rounded mb-4"></div>
-          <div class="h-5 w-full bg-navy/10 rounded mb-2"></div>
-          <div class="h-5 w-4/5 bg-navy/10 rounded mb-6"></div>
-          <div class="mt-auto pt-4 border-t border-navy/5 flex justify-between items-center">
-            <div class="h-4 w-24 bg-navy/10 rounded"></div>
+<section class="snap-sec" id="sec-news" aria-label="Новости">
+  <div class="snap-sec-inner">
+    <div class="section-content section-content--news">
+
+      <!-- Заголовок -->
+      <div class="news-header">
+        <div class="news-header-accent"></div>
+        <div class="news-header-text">
+          <h2 class="section-heading">Новости церкви</h2>
+          <p class="news-header-sub">
+            События, обновления и свидетельства нашей общины. Будьте в курсе жизни церкви.
+          </p>
+        </div>
+      </div>
+
+      <!-- Сетка новостей (skeleton-заглушки) -->
+      <div class="news-cards-grid" id="news-grid">
+        <div class="news-skeleton-card">
+          <div class="news-skeleton-inner">
+            <div class="news-skeleton-line news-skeleton-line--short"></div>
+            <div class="news-skeleton-line news-skeleton-line--full"></div>
+            <div class="news-skeleton-line news-skeleton-line--medium"></div>
+            <div class="news-skeleton-footer">
+              <div class="news-skeleton-line news-skeleton-line--tag"></div>
+            </div>
+          </div>
+        </div>
+        <div class="news-skeleton-card">
+          <div class="news-skeleton-inner">
+            <div class="news-skeleton-line news-skeleton-line--short"></div>
+            <div class="news-skeleton-line news-skeleton-line--full"></div>
+            <div class="news-skeleton-line news-skeleton-line--medium"></div>
+            <div class="news-skeleton-footer">
+              <div class="news-skeleton-line news-skeleton-line--tag"></div>
+            </div>
+          </div>
+        </div>
+        <div class="news-skeleton-card">
+          <div class="news-skeleton-inner">
+            <div class="news-skeleton-line news-skeleton-line--short"></div>
+            <div class="news-skeleton-line news-skeleton-line--full"></div>
+            <div class="news-skeleton-line news-skeleton-line--medium"></div>
+            <div class="news-skeleton-footer">
+              <div class="news-skeleton-line news-skeleton-line--tag"></div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-primary/10 flex flex-col animate-pulse">
-        <div class="p-6 flex flex-col flex-1">
-          <div class="h-3 w-32 bg-navy/10 rounded mb-4"></div>
-          <div class="h-5 w-full bg-navy/10 rounded mb-2"></div>
-          <div class="h-5 w-4/5 bg-navy/10 rounded mb-6"></div>
-          <div class="mt-auto pt-4 border-t border-navy/5 flex justify-between items-center">
-            <div class="h-4 w-24 bg-navy/10 rounded"></div>
-          </div>
-        </div>
+
+      <!-- Кнопка "Все новости" -->
+      <div class="news-action">
+        <a href="{% url 'news_list' %}" class="news-all-btn" aria-label="Все новости">
+          Все новости
+          <span class="material-symbols-outlined news-all-btn-icon">open_in_new</span>
+        </a>
       </div>
-      <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-primary/10 flex flex-col animate-pulse">
-        <div class="p-6 flex flex-col flex-1">
-          <div class="h-3 w-32 bg-navy/10 rounded mb-4"></div>
-          <div class="h-5 w-full bg-navy/10 rounded mb-2"></div>
-          <div class="h-5 w-4/5 bg-navy/10 rounded mb-6"></div>
-          <div class="mt-auto pt-4 border-t border-navy/5 flex justify-between items-center">
-            <div class="h-4 w-24 bg-navy/10 rounded"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="flex justify-center md:justify-end mt-10 w-full">
-      <a href="{% url 'news_list' %}"
-        class="inline-flex items-center justify-center gap-2 bg-navy text-white px-8 py-3.5 rounded-full text-xs font-bold tracking-widest uppercase hover:bg-primary transition-all shadow-md active:scale-95 w-full sm:w-auto"
-        aria-label="Все новости">
-        Все новости
-        <span class="material-symbols-outlined text-[18px]">open_in_new</span>
-      </a>
+
     </div>
   </div>
 </section>

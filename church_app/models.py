@@ -78,6 +78,7 @@ class Video(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='videos', limit_choices_to={'category_type': 'video'})
     video_file = models.FileField(upload_to='videos/', blank=True, null=True, verbose_name="Видео файл")
     youtube_url = models.URLField(blank=True, null=True, verbose_name="YouTube ссылка")
+    rutube_url = models.URLField(blank=True, null=True, verbose_name="Rutube ссылка")
     thumbnail = models.ImageField(upload_to='video_thumbnails/', blank=True, null=True, verbose_name="Превью")
     duration = models.IntegerField(default=0, help_text="Длительность в секундах", verbose_name="Длительность")
     views_count = models.IntegerField(default=0, verbose_name="Просмотры")
@@ -178,6 +179,7 @@ class UserBibleProgress(models.Model):
 class Event(models.Model):
     """События"""
     title = models.CharField(max_length=200, verbose_name="Название")
+    slug = models.SlugField(max_length=200, unique=True, null=True, blank=True, verbose_name="URL")
     description = models.TextField(verbose_name="Описание")
     event_type = models.CharField(max_length=50, choices=[
         ('service', 'Богослужение'),

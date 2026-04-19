@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import Announcement, DailyVerse, HeroBackground
+from .models import Announcement, DailyVerse, HeroBackground, Event, Video, Category
 from .forms import RegisterForm, LoginForm, ProfileEditForm, ChangePasswordForm
 from django.http import JsonResponse
 from django.utils import timezone
@@ -166,18 +166,25 @@ def rutube_stream_api(request):
             {'video_id': None, 'error': 'Видео не найдены', 'platform': 'rutube'},
             status=404
         )
+    all_valid_entries = []
     stream_entries = []
-    all_entries = []
+    
     for item in results:
+        # Проверка на модерацию и доступность
+        if item.get('is_moderation', False): continue
+        if not item.get('is_active', True): continue
+        
         title = item.get('title', '').strip()
         video_id = None
         embed_url = item.get('embed_url', '')
         if embed_url:
             video_id = embed_url.rstrip('/').split('/')[-1]
-        if not video_id:
-            continue
+        
+        if not video_id: continue
+        
         is_stream = any(kw.upper() in title.upper() for kw in STREAM_KEYWORDS)
         published = item.get('created_at', '')
+        
         entry = {
             'video_id': str(video_id),
             'title': title,
@@ -185,15 +192,36 @@ def rutube_stream_api(request):
             'published': published,
             'thumbnail': item.get('thumbnail_url', ''),
         }
-        all_entries.append(entry)
+        all_valid_entries.append(entry)
         if is_stream:
             stream_entries.append(entry)
-    if not all_entries:
+
+    if not all_valid_entries:
         return JsonResponse(
-            {'video_id': None, 'error': 'Видео не найдены', 'platform': 'rutube'},
+            {'video_id': None, 'error': 'Доступные видео не найдены', 'platform': 'rutube'},
             status=404
         )
-    best = stream_entries[0] if stream_entries else all_entries[0]
+
+    best = stream_entries[0] if stream_entries else all_valid_entries[0]
+    
+    # [LOGIC] Синхронизация с библиотекой (авто-добавление)
+    try:
+        video_full_url = f"https://rutube.ru/video/{best['video_id']}/"
+        if not Video.objects.filter(rutube_url=video_full_url).exists():
+            # Находим категорию Видео
+            cat = Category.objects.filter(category_type='video').first()
+            if cat:
+                Video.objects.create(
+                    title=best['title'],
+                    description=f"Автоматически добавлено из трансляции. Дата: {best['published']}",
+                    category=cat,
+                    rutube_url=video_full_url,
+                    thumbnail=best['thumbnail'] if best['thumbnail'].startswith('http') else None,
+                    is_active=True
+                )
+    except Exception as e:
+        logger.warning(f"Ошибка авто-записи трансляции в БД: {e}")
+
     is_live = is_stream_live()
     return JsonResponse({
         'video_id': best['video_id'],
@@ -203,7 +231,7 @@ def rutube_stream_api(request):
         'platform': 'rutube',
         'channel_id': RUTUBE_CHANNEL_ID,
         'all_streams': stream_entries[:5],
-        'latest_video': all_entries[0] if all_entries else None,
+        'latest_video': all_valid_entries[0],
     })
 
 def _parse_streams_page(html):
@@ -325,7 +353,7 @@ def home(request):
         models.Q(expires_at__isnull=True) | models.Q(expires_at__gt=timezone.now())
     ).first()
     time_info = get_time_until_service()
-    hero_backgrounds = HeroBackground.objects.filter(is_active=True).order_by('order')[:3]
+    featured_events = Event.objects.filter(is_active=True, is_featured=True).order_by('start_date')[:10]
     
     context = {
         'announcement': current_announcement,
@@ -334,7 +362,8 @@ def home(request):
         'time_until_service': time_info,
         'is_live': time_info['is_live'],
         'service_schedule': SCHEDULE,
-        'hero_backgrounds': hero_backgrounds,
+        'featured_events': featured_events,
+        'server_now_ms': int(timezone.now().timestamp() * 1000),
     }
     return render(request, 'home.html', context)
 

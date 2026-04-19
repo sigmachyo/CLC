@@ -40,8 +40,8 @@ urlpatterns = [
     path('library/bible/complete/<int:plan_id>/<int:day>/', views_library.complete_bible_day, name='complete_bible_day'),
 
     path('library/events/', views_library.events_list, name='events_list'),
-    path('library/event/<int:event_id>/', views_library.event_detail, name='event_detail'),
-    path('library/event/<int:event_id>/register/', views_library.event_register, name='event_register'),
+    path('events/<slug:slug>/', views_library.event_detail, name='event_detail'),
+    path('events/<slug:slug>/register/', views_library.event_register, name='event_register'),
 
     path('library/kids/', views_library.kids_home, name='kids_home'),
     path('library/kids/<int:content_id>/', views_library.kids_content_detail, name='kids_content_detail'),

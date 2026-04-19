@@ -1,46 +1,35 @@
 {% load static %}
-<section class="snap-sec py-20 px-4 md:px-8 bg-background-light" id="sec-video" aria-label="Прошедшее служение">
-  <div class="max-w-[920px] mx-auto w-full flex flex-col gap-8 animate-fade-in-up">
-    <h2 class="text-2xl md:text-3xl font-bold text-navy tracking-tight">Прошедшее служение</h2>
-    <div
-      class="group relative w-full overflow-hidden rounded-2xl bg-white shadow-lg ring-1 ring-black/5 transition-all hover:shadow-xl">
-      <div class="relative w-full aspect-video bg-navy overflow-hidden" id="prev-player" aria-label="Плеер записи">
-        <div
-          class="absolute inset-0 bg-cover bg-center opacity-60 transition-transform duration-700 group-hover:scale-105"
-          style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAjb3GqtLB9noWTRMfv0abZ8_eJhzOuf-jOekdWlRF9DYcePvK8wS2o22pok7r1Yw3auQjhi6P25QyHKDXIOhTKxvkB3NWeiAefQWG3S30S9rWONcqqD8fymiJB_qW8esT92j3OaMGQoFUAiMjnPeESZSlDANZ6b_zL8njfuHTfDdKhrklXR3jw3bhpM-QdJ0-JqTSc059NS6YFFCcByMl6Qm97zcEurIKXqwsw08fYlG1s4-c6OajvhlsZ2kCd_vv66qFdhbgpB3U');">
-        </div>
-        <div class="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/20 to-transparent"></div>
-        <div class="absolute inset-0 flex flex-col items-center justify-center text-center gap-4 p-4 z-10"
-          id="prev-fallback" aria-live="polite">
-          <span class="material-symbols-outlined text-primary text-[48px] animate-pulse">hourglass_empty</span>
-          <span class="text-white/80 text-sm font-medium relative top-2">Загружаем запись богослужения…</span>
-        </div>
-      </div>
-      <div
-        class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-5 md:px-8 md:py-6 bg-white shrink-0">
-        <div class="flex items-center gap-4 w-full md:w-auto">
-          <div class="flex flex-col">
-            <h3 class="font-bold text-navy text-xl" id="prev-date" aria-live="polite">Воскресное служение</h3>
-            <p class="text-sm text-navy/60 font-medium mt-1">KCLC Красноярск</p>
+<section class="snap-sec" id="sec-video" aria-label="Прошедшее служение">
+  <div class="snap-sec-inner">
+    <div class="section-content section-content--video">
+      <h2 class="section-heading">Прошедшее служение</h2>
+      <div class="up-card">
+        <div class="up-video-wrap" id="prev-player" aria-label="Плеер записи">
+          <div class="vid-player-poster" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAjb3GqtLB9noWTRMfv0abZ8_eJhzOuf-jOekdWlRF9DYcePvK8wS2o22pok7r1Yw3auQjhi6P25QyHKDXIOhTKxvkB3NWeiAefQWG3S30S9rWONcqqD8fymiJB_qW8esT92j3OaMGQoFUAiMjnPeESZSlDANZ6b_zL8njfuHTfDdKhrklXR3jw3bhpM-QdJ0-JqTSc059NS6YFFCcByMl6Qm97zcEurIKXqwsw08fYlG1s4-c6OajvhlsZ2kCd_vv66qFdhbgpB3U');"></div>
+          <div class="vid-player-gradient"></div>
+          <div class="vid-player-loading" id="prev-fallback" aria-live="polite">
+            <span class="material-symbols-outlined vid-loading-icon">hourglass_empty</span>
+            <span class="vid-loading-text">Загружаем запись богослужения…</span>
           </div>
         </div>
-        <div
-          class="flex w-full md:w-auto items-center justify-end gap-3 pt-4 border-t border-gray-100 md:border-t-0 md:pt-0">
-          <span class="text-xs font-bold text-navy/40 uppercase tracking-widest mr-2 hidden md:block">Смотреть на
-            платформе:</span>
-          <a href="https://rutube.ru/channel/39733690/"
-            class="flex items-center gap-2 rounded-full bg-navy/5 px-5 py-2.5 text-sm font-bold text-navy transition-all hover:bg-primary hover:text-white"
-            id="prev-ru-btn" target="_blank" rel="noopener">
-            <span
-              class="material-symbols-outlined text-[20px] font-variation-settings: 'FILL' 1;">smart_display</span>
-            <span>Rutube</span>
-          </a>
-          <a href="https://www.youtube.com/@kclcfamily/videos"
-            class="flex items-center gap-2 rounded-full bg-navy/5 px-5 py-2.5 text-sm font-bold text-navy transition-all hover:bg-red-500 hover:text-white"
-            id="prev-yt-btn" target="_blank" rel="noopener">
-            <span class="material-symbols-outlined text-[20px] font-variation-settings: 'FILL' 1;">play_circle</span>
-            <span>YouTube</span>
-          </a>
+        <div class="up-meta">
+          <div class="up-info">
+            <h3 class="up-title" id="prev-date" aria-live="polite">Воскресное служение</h3>
+            <div class="up-status">
+              KCLC Красноярск &nbsp;&middot;&nbsp; Запись
+            </div>
+          </div>
+          <div class="up-actions">
+            <a href="https://rutube.ru/channel/39733690/" class="up-btn up-btn--ru" id="prev-ru-btn" target="_blank" rel="noopener" title="Смотреть на Rutube">
+              <span class="material-symbols-outlined fill-icon">smart_display</span>
+            </a>
+            <a href="https://www.youtube.com/@kclcfamily/videos" class="up-btn up-btn--yt" id="prev-yt-btn" target="_blank" rel="noopener" title="Смотреть на YouTube">
+              <span class="material-symbols-outlined fill-icon">play_circle</span>
+            </a>
+            <button class="up-btn up-btn--share" aria-label="Поделиться">
+              <span class="material-symbols-outlined">share</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>

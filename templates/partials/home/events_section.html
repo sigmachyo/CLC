@@ -1,0 +1,50 @@
+{% load static %}
+<section class="snap-sec" id="sec-events" aria-label="События">
+  <div class="snap-sec-inner events-inner">
+    <div class="events-container">
+      <div class="events-slider" id="eventsSlider">
+        {% if featured_events %}
+          {% for event in featured_events %}
+          <div class="event-slide">
+              <a href="{% if event.slug %}{% url 'event_detail' slug=event.slug %}{% else %}#{% endif %}">
+                  {% if event.slug == 'siberian-alpha-conference' %}
+                    <img src="https://kclc.ru/wp-content/uploads/2026/03/Сибирская-Альфа-конференция-2026-на-сайт.jpg" alt="{{ event.title }}">
+                  {% elif event.slug == 'reboot' %}
+                    <img src="https://kclc.ru/wp-content/uploads/2026/02/Перезагрузка-2026.jpg" alt="{{ event.title }}">
+                  {% elif event.slug == 'go' %}
+                    <img src="https://kclc.ru/wp-content/uploads/2026/04/FCj8S39nKv27LRPj1ssnUP1YYINeUZKyxaJ1JNnD6aN6SRsQDdjT1zRZpbIR1ztQQJ4woCegZ4DtyymaXaXl2Lp4-1.jpg" alt="{{ event.title }}">
+                  {% elif event.image %}
+                    <img src="{{ event.image.url }}" alt="{{ event.title }}">
+                  {% else %}
+                    <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#fff; background:#2c3e50;">
+                        <h3>{{ event.title }}</h3>
+                    </div>
+                  {% endif %}
+              </a>
+          </div>
+          {% endfor %}
+        {% else %}
+          <div class="event-slide">
+              <a href="#" target="_blank" rel="noopener">
+                  <img src="https://kclc.ru/wp-content/uploads/2026/03/Сибирская-Альфа-конференция-2026-на-сайт.jpg" alt="Альфа конференция">
+              </a>
+          </div>
+          <div class="event-slide">
+              <a href="#" target="_blank" rel="noopener">
+                  <img src="https://kclc.ru/wp-content/uploads/2026/02/Перезагрузка-2026.jpg" alt="Перезагрузка">
+              </a>
+          </div>
+          <div class="event-slide">
+              <a href="#" target="_blank" rel="noopener">
+                  <img src="https://kclc.ru/wp-content/uploads/2026/04/FCj8S39nKv27LRPj1ssnUP1YYINeUZKyxaJ1JNnD6aN6SRsQDdjT1zRZpbIR1ztQQJ4woCegZ4DtyymaXaXl2Lp4-1.jpg" alt="ИДТИ">
+              </a>
+          </div>
+        {% endif %}
+      </div>
+      
+      <!-- Dots indicator -->
+      <div class="events-dots" id="eventsDots" aria-hidden="true"></div>
+      
+    </div>
+  </div>
+</section>

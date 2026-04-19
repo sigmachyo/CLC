@@ -48,3 +48,7 @@ venv.bak/
 
 # Media folder - ALL subfolders
 media/
+db.sqlite3
+*.html
+!templates/**/*.html
+!church_app/**/*.html

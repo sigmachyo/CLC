@@ -76,14 +76,15 @@ class UserBibleProgressAdmin(admin.ModelAdmin):
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('title', 'event_type', 'start_date', 'location', 'is_featured', 'is_active')
+    list_display = ('title', 'slug', 'event_type', 'start_date', 'location', 'is_featured', 'is_active')
     list_filter = ('event_type', 'is_featured', 'is_active')
     search_fields = ('title', 'description', 'location')
     date_hierarchy = 'start_date'
     ordering = ('start_date',)
+    prepopulated_fields = {'slug': ('title',)}
     fieldsets = (
         ('Основная информация', {
-            'fields': ('title', 'description', 'event_type', 'image')
+            'fields': ('title', 'slug', 'description', 'event_type', 'image')
         }),
         ('Дата и время', {
             'fields': ('start_date', 'end_date')

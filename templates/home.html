@@ -25,8 +25,8 @@
 {% include "partials/home/scroll_top.html" %}
 <div id="snap-root">
   {% include "partials/home/hero_section.html" %}
+  {% include "partials/home/events_section.html" %}
   {% include "partials/home/timer_section.html" %}
-  {% include "partials/home/video_section.html" %}
   {% include "partials/home/podcast_section.html" %}
   {% include "partials/home/news_section.html" %}
   <section class="snap-sec" id="sec-footer" aria-label="Контакты" role="contentinfo">
@@ -36,5 +36,6 @@
 {% endblock %}
 {% block site_footer %}{% endblock %}
 {% block extra_js %}
+<script>window.SERVER_NOW_MS = {{ server_now_ms|default:"Date.now()" }};</script>
 <script src="{% static 'js/pages/home.js' %}"></script>
 {% endblock %}

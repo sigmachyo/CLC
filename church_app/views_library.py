@@ -165,9 +165,9 @@ def events_list(request):
         }
     }
     return render(request, 'library/events_list.html', context)
-def event_detail(request, event_id):
+def event_detail(request, slug):
     """Детали события"""
-    event = get_object_or_404(Event, id=event_id, is_active=True)
+    event = get_object_or_404(Event, slug=slug, is_active=True)
     user_registration = None
     if request.user.is_authenticated:
         user_registration = EventRegistration.objects.filter(event=event, user=request.user).first()
@@ -182,13 +182,13 @@ def event_detail(request, event_id):
     }
     return render(request, 'library/event_detail.html', context)
 @login_required
-def event_register(request, event_id):
+def event_register(request, slug):
     """Регистрация на событие"""
-    event = get_object_or_404(Event, id=event_id, is_active=True)
+    event = get_object_or_404(Event, slug=slug, is_active=True)
     if request.method == 'POST':
         if event.max_participants > 0 and event.registrations.count() >= event.max_participants:
             messages.error(request, 'Достигнут лимит участников')
-            return redirect('event_detail', event_id=event.id)
+            return redirect('event_detail', slug=event.slug)
         registration, created = EventRegistration.objects.get_or_create(
             event=event,
             user=request.user
@@ -197,8 +197,8 @@ def event_register(request, event_id):
             messages.success(request, f'Вы зарегистрированы на "{event.title}"')
         else:
             messages.info(request, 'Вы уже зарегистрированы на это событие')
-        return redirect('event_detail', event_id=event.id)
-    return redirect('event_detail', event_id=event.id)
+        return redirect('event_detail', slug=event.slug)
+    return redirect('event_detail', slug=event.slug)
 def kids_home(request):
     """Детская страница"""
     content_type = request.GET.get('type', '')

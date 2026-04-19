@@ -1,118 +1,17 @@
 {% load static %}
-<section class="snap-sec py-20 px-4 md:px-8 bg-white" id="sec-podcast" aria-label="Аудиоподкаст">
-  <div class="max-w-[1280px] mx-auto w-full flex flex-col gap-12">
-    <div class="flex items-center justify-between border-b border-navy/10 pb-6">
-      <div class="flex items-center gap-3">
-        <span class="material-symbols-outlined text-primary text-3xl shrink-0">headset_mic</span>
-        <h2 class="text-2xl md:text-3xl font-bold text-navy tracking-tight">Аудиоподкаст</h2>
+<section class="snap-sec" id="sec-podcast" aria-label="Аудиоподкаст">
+  <div class="snap-sec-inner">
+    <div class="podcast-container">
+      
+      <div class="podcast-header-basic">
+        <h2 class="kclc-section-title">АУДИОПОДКАСТ ПРОПОВЕДЕЙ</h2>
+        <div class="podcast-header-accent"></div>
       </div>
-      <div
-        class="bg-navy/5 text-navy px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase hidden md:block"
-        id="ep-count">224 эпизода</div>
-    </div>
-    <div class="bg-background-light rounded-3xl p-6 md:p-8 border border-navy/5 shadow-sm relative overflow-hidden">
-      <div
-        class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3">
+
+      <div class="podcast-embed-wrap">
+        <iframe class="podcast-iframe" loading="lazy" src="https://podster.fm/new/player/large?episode=&modalPage=podcast&podcast=46787&playerType=podcast&showList=true&order=new&episodesCount=5&collection=undefined&theme=dark&showPlayerCode=hide&showAuditions=hide&showDownload=hide&iframeStyles=%7B%22borderRadius%22%3A%2215px%22%2C%22width%22%3A%22100%25%22%7D&page=1" width="100%" style="border: unset; outline: 0; background: transparent; border-radius: 15px"></iframe>
       </div>
-      <div class="relative z-10">
-        <div class="grid grid-cols-3 gap-4 mb-8 text-sm max-w-sm">
-          <div>
-            <span class="text-navy/50 font-bold tracking-widest uppercase block text-[10px] mb-1">Сезон</span>
-            <span class="font-medium text-navy">7</span>
-          </div>
-          <div>
-            <span class="text-navy/50 font-bold tracking-widest uppercase block text-[10px] mb-1">Эпизод</span>
-            <span class="font-medium text-navy">5</span>
-          </div>
-          <div>
-            <span class="text-navy/50 font-bold tracking-widest uppercase block text-[10px] mb-1">Дата</span>
-            <span class="font-medium text-navy">1 февраля</span>
-          </div>
-        </div>
-        <div class="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8" id="curr-ep">
-          <button
-            class="size-20 shrink-0 bg-primary rounded-full shadow-lg shadow-primary/20 flex items-center justify-center text-white hover:scale-105 active:scale-95 transition-all outline-none focus:ring-4 focus:ring-primary/30"
-            id="play-btn" aria-label="Воспроизвести" aria-pressed="false">
-            <span class="material-symbols-outlined text-4xl ml-1 font-variation-settings: 'FILL' 1;"
-              id="play-icon">play_arrow</span>
-          </button>
-          <div class="flex-1 text-center md:text-left space-y-2 mt-2 md:mt-0">
-            <h3 class="text-xl md:text-2xl font-bold text-navy leading-tight" id="ep-cur-title">ПОКЛОНЕНИЕ ГОСПОДУ:
-              БОЛЬШЕ, ЧЕМ ПЕНИЕ</h3>
-            <div class="flex items-center justify-center md:justify-start gap-3">
-              <span class="text-primary font-medium" id="ep-cur-speaker">Максим Притчин</span>
-              <span class="w-1.5 h-1.5 bg-navy/20 rounded-full"></span>
-              <span class="text-navy/50 font-medium tabular-nums" id="ep-cur-dur">26:07</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="flex flex-col gap-2 relative mt-4">
-      <h4 class="text-navy font-bold text-lg mb-2">Недавние записи</h4>
-      <div id="ep-announce" class="sr-only" aria-live="polite" aria-atomic="true"></div>
-      <div class="ep-list flex flex-col gap-1" role="group" aria-label="Список эпизодов">
-        <div
-          class="ep-row group flex items-center justify-between p-4 rounded-2xl hover:bg-navy/5 transition-all cursor-pointer border border-transparent hover:border-navy/10 ep-row--active"
-          role="button" tabindex="0" aria-label="Воспроизвести: ИСЦЕЛЕНИЕ ИСТОЧНИКА — Владимир Ашаев"
-          data-title="ИСЦЕЛЕНИЕ ИСТОЧНИКА" data-speaker="Владимир Ашаев" data-dur="38:47">
-          <div class="flex items-center gap-4">
-            <div
-              class="size-10 rounded-full bg-navy/5 flex items-center justify-center text-navy/40 group-hover:bg-primary group-hover:text-white transition-colors shrink-0">
-              <span class="material-symbols-outlined font-variation-settings: 'FILL' 1;">play_arrow</span>
-            </div>
-            <span
-              class="font-bold text-navy group-hover:text-primary transition-colors ep-row-title text-sm md:text-base leading-snug">ИСЦЕЛЕНИЕ
-              ИСТОЧНИКА — Владимир Ашаев</span>
-          </div>
-          <span class="text-sm font-medium text-navy/50 tabular-nums ep-row-dur hidden sm:block">38:47</span>
-        </div>
-        <div
-          class="ep-row group flex items-center justify-between p-4 rounded-2xl hover:bg-navy/5 transition-all cursor-pointer border border-transparent hover:border-navy/10"
-          role="button" tabindex="0" aria-label="Воспроизвести: СИЛА КРОВИ ХРИСТА — Максим Притчин"
-          data-title="СИЛА КРОВИ ХРИСТА" data-speaker="Максим Притчин" data-dur="25:46">
-          <div class="flex items-center gap-4">
-            <div
-              class="size-10 rounded-full bg-navy/5 flex items-center justify-center text-navy/40 group-hover:bg-primary group-hover:text-white transition-colors shrink-0">
-              <span class="material-symbols-outlined font-variation-settings: 'FILL' 1;">play_arrow</span>
-            </div>
-            <span
-              class="font-bold text-navy group-hover:text-primary transition-colors ep-row-title text-sm md:text-base leading-snug">СИЛА
-              КРОВИ ХРИСТА — Максим Притчин</span>
-          </div>
-          <span class="text-sm font-medium text-navy/50 tabular-nums ep-row-dur hidden sm:block">25:46</span>
-        </div>
-        <div
-          class="ep-row group flex items-center justify-between p-4 rounded-2xl hover:bg-navy/5 transition-all cursor-pointer border border-transparent hover:border-navy/10"
-          role="button" tabindex="0" aria-label="Воспроизвести: ОСТАВЬ СОЛЕНЫЙ СЛЕД В ИСТОРИИ — Владимир Ашаев"
-          data-title="ОСТАВЬ СОЛЕНЫЙ СЛЕД В ИСТОРИИ" data-speaker="Владимир Ашаев" data-dur="45:27">
-          <div class="flex items-center gap-4">
-            <div
-              class="size-10 rounded-full bg-navy/5 flex items-center justify-center text-navy/40 group-hover:bg-primary group-hover:text-white transition-colors shrink-0">
-              <span class="material-symbols-outlined font-variation-settings: 'FILL' 1;">play_arrow</span>
-            </div>
-            <span
-              class="font-bold text-navy group-hover:text-primary transition-colors ep-row-title text-sm md:text-base leading-snug">ОСТАВЬ
-              СОЛЕНЫЙ СЛЕД В ИСТОРИИ — Владимир Ашаев</span>
-          </div>
-          <span class="text-sm font-medium text-navy/50 tabular-nums ep-row-dur hidden sm:block">45:27</span>
-        </div>
-      </div>
-    </div>
-    <div
-      class="flex flex-col flex-col-reverse sm:flex-row items-center justify-between gap-6 pt-6 mt-4 border-t border-navy/10 relative z-10 w-full">
-      <div class="flex items-center gap-2 text-navy/50">
-        <span class="material-symbols-outlined text-[18px]">rss_feed</span>
-        <span class="text-xs font-bold tracking-widest uppercase">Podster.fm</span>
-        <span class="mx-2">·</span>
-        <span class="text-xs font-bold tabular-nums tracking-wider uppercase">0:00 / 1.0x</span>
-      </div>
-      <a href="https://podster.fm/album/124814"
-        class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-navy/5 hover:bg-navy hover:text-white text-navy font-bold rounded-full text-xs tracking-wide uppercase transition-all shadow-sm w-full sm:w-auto text-center"
-        target="_blank" rel="noopener" aria-label="Все эпизоды подкаста на Podster.fm">
-        Все эпизоды
-        <span class="material-symbols-outlined text-[16px]">open_in_new</span>
-      </a>
+
     </div>
   </div>
 </section>
