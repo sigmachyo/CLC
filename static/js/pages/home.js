@@ -32,7 +32,6 @@ motionMQ.addEventListener('change', e => { REDUCED_MOTION = e.matches; });
 let _realTimeOffset = 0;
 if (window.SERVER_NOW_MS) {
   _realTimeOffset = window.SERVER_NOW_MS - Date.now();
-  console.log('[TIME] Смещение часов устройства скорректировано сервером:', _realTimeOffset, 'ms');
 }
 
 /**
@@ -381,8 +380,6 @@ const detectState = async () => {
   const m = kra.minutes;
   const inWindow = day === 0 && h >= CFG.BCAST_H && h < CFG.BCAST_END;
   const isBefore = day === 0 && h < CFG.BCAST_H;
-
-  console.log(`[STATE] KRA: день=${day} час=${h}:${pad(m)} окно=${inWindow} до=${isBefore}`);
 
   if (inWindow) {
     showTimerState('live');

@@ -14,7 +14,21 @@ document.addEventListener('DOMContentLoaded', function () {
     if ('Notification' in window && navigator.serviceWorker) {
         initPushNotifications();
     }
+    // ── Защита форм от повторной отправки
+    initFormProtection();
 });
+
+/**
+ * Глобальный обработчик ошибок
+ */
+window.addEventListener('error', function(event) {
+    console.error('JS Runtime Error:', event.error || event.message);
+    // Можно отправлять на сервер или выводить тост в режиме отладки
+});
+window.addEventListener('unhandledrejection', function(event) {
+    console.error('Unhandled Promise Rejection:', event.reason);
+});
+
 /**
  * Модальные окна
  */
@@ -84,15 +98,105 @@ function initLevelInteractions() {
  */
 function initPushNotifications() {
     if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
-    // Только если пользователь авторизован (но это проверяется на сервере)
-    const applicationServerKey = 'BPWzM8Sg21koEirpUOKjfqqqUeOL6c4PrF3KwT32QYT9pQP6R1Da9u8jSS0UMTkx4DL_75iOadzTAPNSOJVGlpo';
+    
+    const applicationServerKey = urlB64ToUint8Array('BPWzM8Sg21koEirpUOKjfqqqUeOL6c4PrF3KwT32QYT9pQP6R1Da9u8jSS0UMTkx4DL_75iOadzTAPNSOJVGlpo');
+    
     navigator.serviceWorker.ready.then(reg => {
         reg.pushManager.getSubscription().then(sub => {
-            if (sub) return; // Уже подписан
-            // Если нужно - подписываем (можно добавить кнопку специальную)
-            // reg.pushManager.subscribe({ ... });
+            if (sub) {
+                // Если уже подписан - синхронизируем с сервером
+                sendSubscriptionToBackend(sub);
+            } else if (Notification.permission === 'granted') {
+                // Если разрешение есть, но подписки нет (например, устарела)
+                reg.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: applicationServerKey
+                })
+                .then(newSub => sendSubscriptionToBackend(newSub))
+                .catch(e => console.error('Push subscription failed:', e));
+            }
         });
     });
+}
+
+// Вызывается вручную по клику на кнопку в профиле
+window.subscribeToPush = function() {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+        showNotification('Уведомления не поддерживаются вашим браузером', 'error');
+        return;
+    }
+    return Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+            const applicationServerKey = urlB64ToUint8Array('BPWzM8Sg21koEirpUOKjfqqqUeOL6c4PrF3KwT32QYT9pQP6R1Da9u8jSS0UMTkx4DL_75iOadzTAPNSOJVGlpo');
+            return navigator.serviceWorker.ready.then(reg => {
+                return reg.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: applicationServerKey
+                })
+                .then(newSub => {
+                    sendSubscriptionToBackend(newSub);
+                    showNotification('Уведомления успешно включены', 'success');
+                    return true;
+                })
+                .catch(e => {
+                    console.error('Push subscription error:', e);
+                    showNotification('Ошибка при подписке на уведомления', 'error');
+                    return false;
+                });
+            });
+        } else {
+            showNotification('Вы запретили показ уведомлений', 'error');
+            return false;
+        }
+    });
+};
+
+window.unsubscribeFromPush = function() {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) return Promise.resolve(false);
+    
+    return navigator.serviceWorker.ready.then(reg => {
+        return reg.pushManager.getSubscription().then(subscription => {
+            if (subscription) {
+                return subscription.unsubscribe().then(successful => {
+                    if (successful) {
+                        // Можно также отправить запрос на бэкенд для удаления подписки из БД
+                        showNotification('Уведомления отключены', 'success');
+                        return true;
+                    }
+                    return false;
+                });
+            }
+            return true;
+        });
+    });
+};
+
+function urlB64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+}
+
+function sendSubscriptionToBackend(subscription) {
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+    if (!csrfToken) return;
+
+    fetch('/api/push/subscribe/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify(subscription)
+    })
+    .then(res => res.json())
+    .then(data => console.log('Push subscription saved'))
+    .catch(err => console.error('Push save err:', err));
 }
 /**
  * Системные уведомления (Toast)
@@ -114,4 +218,35 @@ function showNotification(message, type = 'success') {
         toast.classList.add('translate-x-[150%]');
         setTimeout(() => toast.remove(), 300);
     }, 4000);
+}
+
+/**
+ * Защита от повторной отправки форм
+ */
+function initFormProtection() {
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            if (this.dataset.submitting === 'true') {
+                e.preventDefault();
+                return;
+            }
+            this.dataset.submitting = 'true';
+            const submitBtn = this.querySelector('button[type="submit"], input[type="submit"]');
+            if (submitBtn) {
+                // Небольшая задержка, чтобы submit прошел
+                setTimeout(() => {
+                    submitBtn.disabled = true;
+                    submitBtn.style.opacity = '0.7';
+                    submitBtn.style.cursor = 'not-allowed';
+                    if (submitBtn.tagName === 'BUTTON') {
+                        submitBtn.dataset.originalText = submitBtn.innerHTML;
+                        submitBtn.innerHTML = 'Обработка...';
+                    } else if (submitBtn.tagName === 'INPUT') {
+                        submitBtn.dataset.originalValue = submitBtn.value;
+                        submitBtn.value = 'Обработка...';
+                    }
+                }, 0);
+            }
+        });
+    });
 }

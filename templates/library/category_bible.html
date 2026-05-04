@@ -1,37 +1,70 @@
 {% extends 'library/base_library.html' %}
 {% block title %}{{ category.name }}{% endblock %}
+
 {% block library_content %}
-<div class="library-header">
-    <h1><i class="fas fa-bible"></i> {{ category.name }}</h1>
-    <p>{{ category.description }}</p>
-</div>
-<div class="card-grid">
-    {% for plan in plans %}
-    <a href="{% url 'bible_plan_detail' plan.id %}" class="content-card">
-        <div class="card-image" style="background: linear-gradient(145deg, #27ae60, #2ecc71);">
-            {% if plan.image %}
-            <img src="{{ plan.image.url }}" alt="{{ plan.title }}">
-            {% else %}
-            <i class="fas fa-book-open"></i>
-            {% endif %}
-        </div>
-        <div class="card-content">
-            <div class="card-title">{{ plan.title }}</div>
-            <p style="color: var(--txt-sub); font-size: 0.9rem; margin-top:5px; line-height:1.4;">{{ plan.description|truncatewords:20 }}</p>
-            <div class="card-meta">
-                <span><i class="fas fa-calendar-day"></i> {{ plan.days_count }} дней</span>
+<div class="mb-12">
+    <!-- Header -->
+    <div class="bg-navy rounded-[2.5rem] p-8 sm:p-12 shadow-2xl mb-10 relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
+        <div class="absolute -top-24 -right-24 w-64 h-64 bg-primary rounded-full blur-[80px] opacity-20 z-0"></div>
+        
+        <div class="relative z-10 flex flex-col sm:flex-row items-center gap-6">
+            <div class="w-20 h-20 rounded-[1.5rem] bg-white/10 flex items-center justify-center backdrop-blur-md border border-white/20 shrink-0">
+                <span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
             </div>
-            {% if plan.user_progress %}
-            <div class="progress-bar">
-                <div class="progress-fill" style="width: {{ plan.progress_percentage|default:0 }}%"></div>
+            <div>
+                <h1 class="text-4xl sm:text-5xl font-display font-bold text-white mb-3">{{ category.name }}</h1>
+                <p class="text-white/70 text-lg max-w-2xl">{{ category.description }}</p>
             </div>
-            {% endif %}
         </div>
-    </a>
-    {% empty %}
-    <p style="color: var(--txt-sub); grid-column: 1/-1; text-align: center; padding: 40px;">
-        Планы чтения скоро появятся!
-    </p>
-    {% endfor %}
+    </div>
+
+    <!-- Plans Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {% for plan in plans %}
+        <a href="{% url 'bible_plan_detail' plan.id %}" class="group bg-white rounded-3xl overflow-hidden border border-navy/5 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col h-full">
+            <div class="relative aspect-[16/10] overflow-hidden bg-navy/5 flex items-center justify-center">
+                {% if plan.image %}
+                    <img src="{{ plan.image.url }}" alt="{{ plan.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                {% else %}
+                    <span class="material-symbols-outlined text-primary text-5xl opacity-40">menu_book</span>
+                {% endif %}
+                <div class="absolute top-4 right-4 px-3 py-1 bg-white/90 backdrop-blur-md rounded-full text-navy text-xs font-bold shadow-sm uppercase tracking-wider">
+                    {{ plan.days_count }} дней
+                </div>
+            </div>
+            
+            <div class="p-8 flex flex-col flex-grow">
+                <h3 class="text-xl font-bold text-navy mb-3 group-hover:text-primary transition-colors leading-snug">{{ plan.title }}</h3>
+                <p class="text-txt-sub text-sm leading-relaxed mb-6 line-clamp-3">{{ plan.description }}</p>
+                
+                {% if plan.user_progress %}
+                <div class="mt-auto space-y-3 pt-6 border-t border-gray-50">
+                    <div class="flex items-center justify-between text-xs font-bold">
+                        <span class="text-txt-sub uppercase tracking-widest">Прогресс</span>
+                        <span class="text-primary">{{ plan.progress_percentage|default:0 }}%</span>
+                    </div>
+                    <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+                        <div class="bg-primary h-2 rounded-full transition-all duration-1000" style="width: {{ plan.progress_percentage|default:0 }}%"></div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="mt-auto pt-6 border-t border-gray-50 flex items-center text-primary text-sm font-bold">
+                    <span>Начать план</span>
+                    <span class="material-symbols-outlined ml-1 text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </div>
+                {% endif %}
+            </div>
+        </a>
+        {% empty %}
+        <div class="col-span-full bg-white rounded-3xl p-16 text-center border border-navy/5 shadow-sm">
+            <div class="w-20 h-20 mx-auto bg-gray-50 rounded-full flex items-center justify-center mb-6">
+                <span class="material-symbols-outlined text-gray-400 text-4xl">book</span>
+            </div>
+            <h3 class="text-xl font-bold text-navy mb-2">Планы чтения скоро появятся</h3>
+            <p class="text-txt-sub">Следите за обновлениями нашей библиотеки.</p>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}

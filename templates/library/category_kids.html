@@ -1,33 +1,68 @@
 {% extends 'library/base_library.html' %}
 {% block title %}{{ category.name }}{% endblock %}
+
 {% block library_content %}
-<div class="library-header">
-    <h1><i class="fas fa-child"></i> {{ category.name }}</h1>
-    <p>{{ category.description }}</p>
-</div>
-<div class="card-grid">
-    {% for item in kids_content %}
-    <a href="{% url 'kids_content_detail' item.id %}" class="content-card">
-        <div class="card-image" style="background: linear-gradient(145deg, #e74c3c, #f39c12);">
-            {% if item.thumbnail %}
-            <img src="{{ item.thumbnail.url }}" alt="{{ item.title }}">
-            {% else %}
-            <i class="fas fa-star"></i>
-            {% endif %}
-            <span class="card-badge">{{ item.get_content_type_display }}</span>
-        </div>
-        <div class="card-content">
-            <div class="card-title">{{ item.title }}</div>
-            <div class="card-meta">
-                <span><i class="fas fa-users"></i> {{ item.get_age_group_display }}</span>
-                <span><i class="fas fa-eye"></i> {{ item.views_count }}</span>
+<div class="mb-12">
+    <!-- Header -->
+    <div class="bg-gradient-to-br from-navy to-[#252a41] rounded-[2.5rem] p-8 sm:p-12 shadow-2xl mb-10 relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
+        
+        <!-- Decorative bubbles for kids section -->
+        <div class="absolute -top-10 -right-10 w-40 h-40 bg-primary rounded-full blur-[60px] opacity-20"></div>
+        <div class="absolute bottom-10 left-20 w-20 h-20 bg-pink-500 rounded-full blur-[40px] opacity-10"></div>
+        
+        <div class="relative z-10 flex flex-col sm:flex-row items-center gap-6">
+            <div class="w-20 h-20 rounded-[1.5rem] bg-white/10 flex items-center justify-center backdrop-blur-md border border-white/20 shrink-0">
+                <span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">child_care</span>
+            </div>
+            <div>
+                <h1 class="text-4xl sm:text-5xl font-display font-bold text-white mb-3">{{ category.name }}</h1>
+                <p class="text-white/70 text-lg max-w-2xl">{{ category.description }}</p>
             </div>
         </div>
-    </a>
-    {% empty %}
-    <p style="color: rgba(255,255,255,0.7); grid-column: 1/-1; text-align: center; padding: 40px;">
-        Детский контент скоро появится! 🌟
-    </p>
-    {% endfor %}
+    </div>
+
+    <!-- Kids Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+        {% for item in kids_content %}
+        <a href="{% url 'kids_content_detail' item.id %}" class="group bg-white rounded-3xl overflow-hidden border border-navy/5 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col h-full">
+            <div class="relative aspect-[4/3] overflow-hidden bg-navy/5">
+                {% if item.thumbnail %}
+                    <img src="{{ item.thumbnail.url }}" alt="{{ item.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                {% else %}
+                    <div class="w-full h-full flex items-center justify-center text-primary opacity-30">
+                        <span class="material-symbols-outlined text-5xl">toys</span>
+                    </div>
+                {% endif %}
+                
+                <div class="absolute top-3 right-3 px-3 py-1 bg-gradient-to-r from-pink-400 to-primary text-navy text-[10px] font-black rounded-full shadow-sm uppercase tracking-widest">
+                    {{ item.get_content_type_display }}
+                </div>
+            </div>
+            
+            <div class="p-6 flex flex-col flex-grow">
+                <h3 class="text-navy font-bold text-lg mb-4 line-clamp-2 group-hover:text-primary transition-colors leading-snug">{{ item.title }}</h3>
+                <div class="mt-auto flex items-center justify-between text-xs text-txt-sub font-semibold">
+                    <span class="flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[14px] text-primary">face</span>
+                        {{ item.get_age_group_display }}
+                    </span>
+                    <span class="flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[14px]">visibility</span>
+                        {{ item.views_count }}
+                    </span>
+                </div>
+            </div>
+        </a>
+        {% empty %}
+        <div class="col-span-full bg-white rounded-3xl p-16 text-center border border-navy/5 shadow-sm">
+            <div class="w-20 h-20 mx-auto bg-gray-50 rounded-full flex items-center justify-center mb-6">
+                <span class="material-symbols-outlined text-gray-400 text-4xl">face</span>
+            </div>
+            <h3 class="text-xl font-bold text-navy mb-2">Детский контент скоро появится</h3>
+            <p class="text-txt-sub">Мы готовим много интересного для детей! 🌟</p>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}

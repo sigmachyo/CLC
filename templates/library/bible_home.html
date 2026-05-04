@@ -1,79 +1,135 @@
 {% extends 'library/base_library.html' %}
 {% load static %}
 {% block title %}Чтение Библии{% endblock %}
+
 {% block library_content %}
-<div class="library-header">
-    <h1><i class="fas fa-bible"></i> Чтение Библии</h1>
-    <p>Выберите план чтения или читайте Библию самостоятельно</p>
-</div>
-{% if popular_plans %}
-<div class="section-title">
-    <i class="fas fa-fire"></i>
-    <h2>Популярные планы</h2>
-</div>
-<div class="card-grid">
-    {% for plan in popular_plans %}
-    <a href="{% url 'bible_plan_detail' plan.id %}" class="content-card">
-        <div class="card-image">
-            {% if plan.image %}
-                <img src="{{ plan.image.url }}" alt="{{ plan.title }}">
-            {% else %}
-                <i class="fas fa-book"></i>
-            {% endif %}
-            <div class="card-badge">{{ plan.days_count }} дней</div>
-        </div>
-        <div class="card-content">
-            <div class="card-title">{{ plan.title }}</div>
-            <div class="card-meta">
-                <span><i class="fas fa-users"></i> {{ plan.userbibleprogress_set.count }} читают</span>
-            </div>
-            {% if plan.user_progress %}
-            <div class="progress-bar">
-                <div class="progress-fill" style="width: {{ plan.user_progress.get_progress_percentage }}%;"></div>
-            </div>
-            <div style="color: #f1c40f; font-size: 0.9rem; margin-top: 10px;">
-                {{ plan.user_progress.get_progress_percentage }}% завершено
-            </div>
-            {% endif %}
-        </div>
-    </a>
-    {% endfor %}
-</div>
-{% endif %}
-<div class="section-title">
-    <i class="fas fa-list"></i>
-    <h2>Все планы чтения</h2>
-</div>
-<div class="card-grid">
-    {% for plan in plans %}
-    <a href="{% url 'bible_plan_detail' plan.id %}" class="content-card">
-        <div class="card-image">
-            {% if plan.image %}
-                <img src="{{ plan.image.url }}" alt="{{ plan.title }}">
-            {% else %}
-                <i class="fas fa-book-open"></i>
-            {% endif %}
-            <div class="card-badge">{{ plan.days_count }} дней</div>
-        </div>
-        <div class="card-content">
-            <div class="card-title">{{ plan.title }}</div>
-            <div class="card-meta">
-                <span><i class="fas fa-calendar"></i> {{ plan.days_count }} дней</span>
-            </div>
-            {% if plan.user_progress %}
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: {{ plan.user_progress.get_progress_percentage }}%;"></div>
+<div class="mb-12">
+    <!-- Header -->
+    <div class="bg-navy rounded-[2.5rem] p-8 sm:p-12 shadow-2xl mb-10 relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
+        <div class="absolute -top-24 -right-24 w-64 h-64 bg-primary rounded-full blur-[80px] opacity-20 z-0"></div>
+        
+        <div class="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+            <div>
+                <div class="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center backdrop-blur-md mb-6 border border-white/20">
+                    <span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
                 </div>
-                <div style="color: #f1c40f; font-size: 0.9rem; margin-top: 10px;">
-                    {{ plan.user_progress.get_progress_percentage }}% завершено
-                </div>
+                <h1 class="text-4xl sm:text-5xl font-display font-bold text-white mb-4">Чтение Библии</h1>
+                <p class="text-white/70 text-lg sm:text-xl max-w-2xl">Выберите план чтения или читайте Библию самостоятельно для духовного роста.</p>
+            </div>
+            
+            {% if request.user.is_authenticated %}
+            <div class="shrink-0 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 text-center">
+                <span class="block text-white/70 text-sm font-bold uppercase tracking-wider mb-2">Ваш прогресс</span>
+                <span class="block text-3xl font-display font-bold text-primary">{{ plans|length }} планов</span>
+            </div>
             {% endif %}
         </div>
-    </a>
-    {% empty %}
-    <p style="grid-column: 1/-1; color: rgba(255,255,255,0.7); text-align: center; padding: 40px;">
-        Планы чтения пока не добавлены
-    </p>
-    {% endfor %}
+    </div>
+
+    <!-- Popular Plans -->
+    {% if popular_plans %}
+    <div class="flex items-center gap-3 mb-8">
+        <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+            <span class="material-symbols-outlined text-[24px]">local_fire_department</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-display font-bold text-navy">Популярные планы</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+        {% for plan in popular_plans %}
+        <a href="{% url 'bible_plan_detail' plan.id %}" class="group bg-white rounded-3xl p-6 border border-navy/5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] transition-all duration-300 hover:-translate-y-2 flex flex-col h-full relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full -z-10 transition-transform group-hover:scale-110"></div>
+            
+            <div class="flex items-start gap-4 mb-6">
+                <div class="w-16 h-16 rounded-2xl bg-navy flex items-center justify-center shrink-0 shadow-lg">
+                    {% if plan.image %}
+                        <img src="{{ plan.image.url }}" alt="{{ plan.title }}" class="w-full h-full object-cover rounded-2xl">
+                    {% else %}
+                        <span class="material-symbols-outlined text-primary text-3xl">menu_book</span>
+                    {% endif %}
+                </div>
+                <div>
+                    <span class="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-2">{{ plan.days_count }} дней</span>
+                    <h3 class="text-lg font-bold text-navy leading-snug group-hover:text-primary transition-colors line-clamp-2">{{ plan.title }}</h3>
+                </div>
+            </div>
+            
+            <div class="mt-auto">
+                <div class="flex items-center justify-between text-sm text-txt-sub font-semibold mb-3">
+                    <div class="flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[16px]">group</span>
+                        <span>{{ plan.userbibleprogress_set.count }} читают</span>
+                    </div>
+                </div>
+                
+                {% if plan.user_progress %}
+                <div class="space-y-2">
+                    <div class="flex justify-between text-xs font-bold text-navy">
+                        <span>Прогресс</span>
+                        <span class="text-primary">{{ plan.user_progress.get_progress_percentage }}%</span>
+                    </div>
+                    <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+                        <div class="bg-primary h-2 rounded-full transition-all duration-1000" style="width: {{ plan.user_progress.get_progress_percentage }}%"></div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- All Plans -->
+    <div class="flex items-center gap-3 mb-8">
+        <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+            <span class="material-symbols-outlined text-[24px]">list_alt</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-display font-bold text-navy">Все планы чтения</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {% for plan in plans %}
+        <a href="{% url 'bible_plan_detail' plan.id %}" class="group bg-white rounded-3xl overflow-hidden border border-navy/5 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col h-full">
+            <div class="relative h-40 overflow-hidden bg-navy/5 flex items-center justify-center">
+                {% if plan.image %}
+                    <img src="{{ plan.image.url }}" alt="{{ plan.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                {% else %}
+                    <span class="material-symbols-outlined text-primary text-5xl opacity-50">book</span>
+                {% endif %}
+                <div class="absolute top-3 left-3 px-2 py-1 bg-white/90 backdrop-blur-md rounded-md text-navy text-[10px] font-bold shadow-sm">
+                    {{ plan.days_count }} дней
+                </div>
+            </div>
+            
+            <div class="p-6 flex flex-col flex-grow">
+                <h3 class="text-lg font-bold text-navy mb-4 leading-snug group-hover:text-primary transition-colors">{{ plan.title }}</h3>
+                
+                <div class="mt-auto">
+                    {% if plan.user_progress %}
+                    <div class="space-y-2 border-t border-gray-50 pt-4 mt-4">
+                        <div class="flex justify-between text-xs font-bold text-navy">
+                            <span>Прогресс</span>
+                            <span class="text-primary">{{ plan.user_progress.get_progress_percentage }}%</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
+                            <div class="bg-primary h-1.5 rounded-full" style="width: {{ plan.user_progress.get_progress_percentage }}%"></div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </a>
+        {% empty %}
+        <div class="col-span-full bg-white rounded-3xl p-12 text-center shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-navy/5">
+            <div class="w-20 h-20 mx-auto bg-gray-50 rounded-full flex items-center justify-center mb-6">
+                <span class="material-symbols-outlined text-gray-400 text-4xl">menu_book</span>
+            </div>
+            <h3 class="text-xl font-bold text-navy mb-2">Планы пока не добавлены</h3>
+            <p class="text-txt-sub">Возвращайтесь позже, скоро здесь появятся новые планы чтения.</p>
+        </div>
+        {% endfor %}
+    </div>
+
 </div>
 {% endblock %}

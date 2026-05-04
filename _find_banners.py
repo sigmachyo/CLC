@@ -9,20 +9,13 @@ try:
 except Exception as e:
     print(f"Error fetching: {e}")
     exit(1)
-
-# Look for image URLs in the slider/header area
-# Often church sites use Revolution Slider (revapi or rs-layer) or similar
-# Let's search for large images in wp-content/uploads
 imgs = re.findall(r'https?://kclc\.ru/wp-content/uploads/[^"\'>\s]+\.(?:jpg|png|jpeg)', html)
-
-# Also look for links around them
-# Patterns like <a href="..."><img src="..."></a>
 links_with_imgs = re.findall(r'<a[^>]+href="([^"]+)"[^>]*>.*?<img[^>]+src="([^"]+)"', html, re.DOTALL)
 
 print("--- Potential Banners ---")
 seen_imgs = set()
 for link, img in links_with_imgs:
-    if "logo" not in img.lower() and "favicon" not in img.lowж0er():
+    if "logo" not in img.lower() and "favicon" not in img.lower():
         if img not in seen_imgs:
             print(f"LINK: {link} | IMG: {img}")
             seen_imgs.add(img)

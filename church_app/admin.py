@@ -15,6 +15,23 @@ class AnnouncementAdmin(admin.ModelAdmin):
             'fields': ('button_text', 'button_link', 'is_active', 'expires_at')
         }),
     )
+    actions = ['broadcast_push']
+
+    def broadcast_push(self, request, queryset):
+        from .utils_push import broadcast_push_notification
+        count = 0
+        success_total = 0
+        for announcement in queryset:
+            payload = {
+                'title': 'Новое объявление CLC',
+                'body': announcement.title,
+                'url': '/'
+            }
+            s, f = broadcast_push_notification(payload)
+            success_total += s
+            count += 1
+        self.message_user(request, f'Отправлено пушей для {count} объявлений. Успешно: {success_total}.')
+    broadcast_push.short_description = "Разослать Push-уведомление"
 
 from .models import HeroBackground
 

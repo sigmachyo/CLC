@@ -1,6 +1,9 @@
 import os
 import ipaddress
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,10 +31,10 @@ ALLOWED_HOSTS.extend([str(ip) for ip in ipaddress.IPv4Network('192.168.0.0/23')]
 
 # Application definition
 
-# Web Push
-VAPID_PUBLIC_KEY = 'BPWzM8Sg21koEirpUOKjfqqqUeOL6c4PrF3KwT32QYT9pQP6R1Da9u8jSS0UMTkx4DL_75iOadzTAPNSOJVGlpo'
-VAPID_PRIVATE_KEY = 'a4IVr9jA_SyFG-cohYOfztaM0Ul3xrXZI8qgl6a_KKk'
-VAPID_ADMIN_EMAIL = 'mailto:webmaster@localhost'
+# Web Push — ключи из .env
+VAPID_PUBLIC_KEY = os.environ.get('VAPID_PUBLIC_KEY', '')
+VAPID_PRIVATE_KEY = os.environ.get('VAPID_PRIVATE_KEY', '')
+VAPID_ADMIN_EMAIL = os.environ.get('VAPID_ADMIN_EMAIL', 'mailto:webmaster@localhost')
 
 INSTALLED_APPS = [
     'jazzmin',
@@ -120,12 +123,36 @@ LOGIN_URL = '/login/'  # URL для входа
 LOGIN_REDIRECT_URL = '/profile/'  # Куда перенаправлять после входа
 LOGOUT_REDIRECT_URL = '/'  # Куда перенаправлять после выхода
 
-# Security
+# -------------------------------------------------------
+# Кастомные страницы ошибок
+# -------------------------------------------------------
+handler404 = 'church_app.views.custom_404'
+handler500 = 'church_app.views.custom_500'
+
+# -------------------------------------------------------
+# Безопасность
+# -------------------------------------------------------
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = True
+X_FRAME_OPTIONS = 'DENY'
 
-# Session Persistence (Account stays saved for 1 year)
+# CSRF trusted origins (добавь свой домен в .env и здесь в production)
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1',
+    'http://localhost',
+]
+_extra_origins = os.environ.get('CSRF_TRUSTED_ORIGINS', '')
+if _extra_origins:
+    CSRF_TRUSTED_ORIGINS += [o.strip() for o in _extra_origins.split(',') if o.strip()]
+
+# CSP отключён — подключается позже после стабилизации через django-csp
+# (при необходимости раскомментировать и добавить 'csp.middleware.CSPMiddleware' в MIDDLEWARE)
+
+# -------------------------------------------------------
+# Session
+# -------------------------------------------------------
 SESSION_COOKIE_AGE = 31536000  # 365 days
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_SAVE_EVERY_REQUEST = True

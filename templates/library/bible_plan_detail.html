@@ -1,61 +1,99 @@
 {% extends 'library/base_library.html' %}
 {% load static %}
 {% block title %}{{ plan.title }}{% endblock %}
+
 {% block library_content %}
-<div class="plan-header" style="margin-bottom: 40px;">
-    <h1 style="color: white; font-size: 2.2rem; margin-bottom: 15px;">{{ plan.title }}</h1>
-    <p style="color: rgba(255,255,255,0.8); font-size: 1.2rem; margin-bottom: 20px;">{{ plan.description }}</p>
-    {% if progress %}
-    <div style="background: rgba(255,255,255,0.1); border-radius: 20px; padding: 20px; margin-top: 20px;">
-        <div style="display: flex; justify-content: space-between; color: white; margin-bottom: 10px;">
-            <span><i class="fas fa-book-open"></i> День {{ progress.current_day }} из {{ plan.days_count }}</span>
-            <span style="color: #f1c40f;">{{ progress.get_progress_percentage }}%</span>
-        </div>
-        <div class="progress-bar" style="height: 10px;">
-            <div class="progress-fill" style="width: {{ progress.get_progress_percentage }}%;"></div>
+<div class="mb-12">
+    <!-- Breadcrumbs / Back Link -->
+    <a href="{% url 'bible_home' %}" class="inline-flex items-center gap-2 text-txt-sub hover:text-primary font-bold mb-8 transition-colors group">
+        <span class="material-symbols-outlined text-[20px] group-hover:-translate-x-1 transition-transform">arrow_back</span>
+        <span>Ко всем планам чтения</span>
+    </a>
+
+    <!-- Plan Header Card -->
+    <div class="bg-white rounded-[2.5rem] p-8 sm:p-12 shadow-[0_8px_40px_rgba(0,0,0,0.04)] border border-navy/5 mb-10 overflow-hidden relative">
+        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary to-primary-hover"></div>
+        <div class="relative z-10 flex flex-col md:flex-row justify-between items-start gap-8">
+            <div class="flex-grow">
+                <h1 class="text-3xl sm:text-5xl font-display font-bold text-navy mb-4 leading-tight">{{ plan.title }}</h1>
+                <p class="text-txt-sub text-lg sm:text-xl leading-relaxed max-w-3xl mb-8">
+                    {{ plan.description }}
+                </p>
+                
+                {% if progress %}
+                <div class="bg-background-light/50 backdrop-blur-sm rounded-2xl p-6 border border-navy/5 max-w-xl">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex items-center gap-2 text-navy font-bold">
+                            <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+                            <span>День {{ progress.current_day }} из {{ plan.days_count }}</span>
+                        </div>
+                        <span class="text-primary font-black text-lg">{{ progress.get_progress_percentage }}%</span>
+                    </div>
+                    <div class="h-3 w-full bg-navy/10 rounded-full overflow-hidden">
+                        <div class="h-full bg-gradient-to-r from-primary to-primary-hover transition-all duration-1000 ease-out shadow-[0_0_15px_rgba(201,168,76,0.3)]"
+                             style="width: {{ progress.get_progress_percentage }}%;"></div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="w-full md:w-auto flex flex-col gap-4 shrink-0">
+                <div class="flex items-center gap-3 px-6 py-4 bg-navy text-white rounded-2xl shadow-lg">
+                    <span class="material-symbols-outlined text-primary">calendar_month</span>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] uppercase tracking-widest text-white/50 font-bold">Длительность</span>
+                        <span class="font-bold">{{ plan.days_count }} дней</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    {% endif %}
-</div>
-<div class="days-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
-    {% for reading in readings %}
-    <a href="{% url 'bible_read_day' plan.id reading.day_number %}" class="day-card" style="
-        background: rgba(255,255,255,0.05);
-        border-radius: 15px;
-        padding: 20px;
-        text-decoration: none;
-        color: white;
-        transition: all 0.3s ease;
-        border: 2px solid {% if reading.day_number in progress.completed_days %}#2ecc71{% else %}transparent{% endif %};
-        position: relative;
-        overflow: hidden;
-    ">
-        {% if reading.day_number in progress.completed_days %}
-        <div style="position: absolute; top: 10px; right: 10px; color: #2ecc71;">
-            <i class="fas fa-check-circle"></i>
+
+    <!-- Days Grid -->
+    <div class="flex items-center gap-3 mb-8">
+        <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+            <span class="material-symbols-outlined text-[24px]">checklist_rtl</span>
         </div>
-        {% endif %}
-        <div style="font-size: 0.9rem; color: #f1c40f; margin-bottom: 10px;">День {{ reading.day_number }}</div>
-        <h3 style="margin-bottom: 10px;">{{ reading.title }}</h3>
-        <div style="color: rgba(255,255,255,0.7); margin-bottom: 15px;">{{ reading.bible_passage }}</div>
-        {% if reading.day_number == progress.current_day|add:1 and reading.day_number not in progress.completed_days %}
-        <div style="background: #f1c40f; color: #2c3e50; padding: 8px; border-radius: 10px; text-align: center; font-weight: 600;">
-            Текущее чтение
-        </div>
-        {% endif %}
-    </a>
-    {% endfor %}
+        <h2 class="text-2xl font-display font-bold text-navy uppercase tracking-wide">Этапы чтения</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for reading in readings %}
+        <a href="{% url 'bible_read_day' plan.id reading.day_number %}" 
+           class="group relative bg-white rounded-3xl p-8 border-2 transition-all duration-300 hover:shadow-xl hover:-translate-y-2
+                  {% if reading.day_number in progress.completed_days %}
+                    border-green-100 bg-green-50/30
+                  {% elif reading.day_number == progress.current_day|add:1 %}
+                    border-primary/30 bg-primary/5
+                  {% else %}
+                    border-navy/5 hover:border-primary/20
+                  {% endif %}">
+            
+            {% if reading.day_number in progress.completed_days %}
+            <div class="absolute top-6 right-6 text-green-500">
+                <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+            </div>
+            {% endif %}
+
+            <div class="flex items-center gap-3 mb-4">
+                <span class="text-xs font-bold uppercase tracking-widest text-primary">День {{ reading.day_number }}</span>
+                {% if reading.day_number == progress.current_day|add:1 and reading.day_number not in progress.completed_days %}
+                <span class="px-2 py-0.5 rounded-full bg-primary text-navy text-[10px] font-black uppercase tracking-tight">Текущий</span>
+                {% endif %}
+            </div>
+
+            <h3 class="text-xl font-bold text-navy mb-2 group-hover:text-primary transition-colors leading-tight">{{ reading.title }}</h3>
+            <p class="text-txt-sub text-sm font-semibold flex items-center gap-1.5 opacity-70">
+                <span class="material-symbols-outlined text-sm">book</span>
+                {{ reading.bible_passage }}
+            </p>
+
+            <div class="mt-6 flex items-center text-sm font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                <span>Читать далее</span>
+                <span class="material-symbols-outlined ml-1 text-base">chevron_right</span>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
 </div>
-<div style="text-align: center; margin-top: 40px;">
-    <a href="{% url 'bible_home' %}" style="display: inline-block; padding: 12px 30px; background: rgba(255,255,255,0.1); color: white; text-decoration: none; border-radius: 30px;">
-        <i class="fas fa-arrow-left"></i> К списку планов
-    </a>
-</div>
-<style>
-    .day-card:hover {
-        transform: translateY(-5px);
-        background: rgba(255,255,255,0.1);
-        border-color: #f1c40f !important;
-    }
-</style>
 {% endblock %}

@@ -124,9 +124,7 @@
     {% if upcoming_events %}
     <div class="flex items-center justify-between gap-4 mb-8 flex-wrap">
         <div class="flex items-center gap-3">
-            <svg class="w-7 h-7 text-primary fill-current shrink-0" viewBox="0 0 24 24">
-                <path d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/>
-            </svg>
+            <span class="material-symbols-outlined text-primary text-3xl">calendar_month</span>
             <h2 class="text-2xl sm:text-3xl font-bold text-navy uppercase tracking-wide">Ближайшие события</h2>
         </div>
         <a href="{% url 'events_list' %}" class="text-primary font-bold uppercase tracking-wider text-sm hover:text-primary-hover transition-colors">
@@ -135,14 +133,12 @@
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-16">
         {% for event in upcoming_events %}
-        <a href="{% url 'event_detail' event.id %}" class="group bg-white rounded-3xl overflow-hidden border border-navy/5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:-translate-y-1.5 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:border-primary transition-all duration-300">
+        <a href="{% url 'event_detail' slug=event.slug %}" class="group bg-white rounded-3xl overflow-hidden border border-navy/5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:-translate-y-1.5 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:border-primary transition-all duration-300">
             <div class="relative h-48 bg-navy/5 flex items-center justify-center overflow-hidden">
                 {% if event.image %}
                 <img src="{{ event.image.url }}" alt="{{ event.title }}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                 {% else %}
-                <svg class="w-12 h-12 text-primary opacity-50" viewBox="0 0 24 24">
-                    <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V9h14v10zM7 11h5v5H7v-5z"/>
-                </svg>
+                <span class="material-symbols-outlined text-primary text-5xl opacity-50">event</span>
                 {% endif %}
                 <div class="absolute top-3 right-3 bg-primary/95 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-sm shadow-md">
                     {{ event.get_event_type_display }}

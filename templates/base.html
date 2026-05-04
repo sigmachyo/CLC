@@ -7,8 +7,6 @@
     {% load static %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" as="style">
-    <link rel="preload" href="https://cdn.tailwindcss.com?plugins=forms,container-queries" as="script">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
@@ -19,10 +17,9 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'icons/favicon-16x16.png' %}">
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'icons/apple-touch-icon.png' %}">
     <meta name="theme-color" content="#1a1f36">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="KCLC Красноярск">
-    <div style="display: none;">{% csrf_token %}</div>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script id="tailwind-config">
       tailwind.config = {
@@ -62,6 +59,7 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
 </head>
 <body>
+    <div style="display: none;">{% csrf_token %}</div>
     {% block site_header %}
     <header class="site-header" id="site-header">
         <div class="hdr-container">
@@ -115,9 +113,6 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js')
-                    .then(registration => {
-                        console.log('SW registered with scope:', registration.scope);
-                    })
                     .catch(err => {
                         console.error('SW registration failed:', err);
                     });
@@ -125,6 +120,7 @@
         }
     </script>
     <script src="{% static 'js/base.js' %}"></script>
+    <script src="{% static 'js/pwa-install.js' %}" defer></script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

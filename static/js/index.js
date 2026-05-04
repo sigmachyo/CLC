@@ -76,17 +76,27 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     function initParallax() {
         const mapContainer = document.querySelector('.map-container');
-        window.addEventListener('mousemove', (e) => {
+        if (!mapContainer) return;
+        let controller = null;
+        function attachParallax() {
             if (window.innerWidth > 768) {
-                const x = e.clientX / window.innerWidth;
-                const y = e.clientY / window.innerHeight;
-                const moveX = (x - 0.5) * 20;
-                const moveY = (y - 0.5) * 20;
-                if (mapContainer) {
-                    mapContainer.style.backgroundPosition = `${50 + moveX}% ${30 + moveY}%`;
+                if (controller) return; // уже подключено
+                controller = new AbortController();
+                window.addEventListener('mousemove', function(e) {
+                    const x = e.clientX / window.innerWidth;
+                    const y = e.clientY / window.innerHeight;
+                    mapContainer.style.backgroundPosition = `${50 + (x - 0.5) * 20}% ${30 + (y - 0.5) * 20}%`;
+                }, { signal: controller.signal, passive: true });
+            } else {
+                if (controller) {
+                    controller.abort();
+                    controller = null;
+                    mapContainer.style.backgroundPosition = '';
                 }
             }
-        });
+        }
+        attachParallax();
+        window.addEventListener('resize', attachParallax, { passive: true });
     }
     function initSmoothScroll() {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -163,12 +173,4 @@ document.addEventListener('DOMContentLoaded', function() {
         animateProgressBar();
     }
     init();
-    window.addEventListener('resize', function() {
-        if (window.innerWidth <= 768) {
-            const mapContainer = document.querySelector('.map-container');
-            if (mapContainer) {
-                mapContainer.style.backgroundPosition = '';
-            }
-        }
-    });
 });

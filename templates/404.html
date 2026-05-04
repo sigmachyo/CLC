@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Страница не найдена{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-20 text-center">
+    <h1 class="text-6xl font-bold text-primary mb-6">404</h1>
+    <h2 class="text-2xl font-semibold text-navy dark:text-white mb-4">Страница не найдена</h2>
+    <p class="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
+        Возможно, страница была удалена, переименована, или вы ввели неверный адрес.
+    </p>
+    <a href="{% url 'home' %}" class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-xl font-medium hover:bg-primary-hover transition-colors shadow-lg">
+        <span class="material-symbols-outlined">home</span>
+        На главную
+    </a>
+</div>
+{% endblock %}

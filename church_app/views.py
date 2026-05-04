@@ -3,13 +3,13 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import Announcement, DailyVerse, HeroBackground, Event, Video, Category
+from .models import Announcement, DailyVerse, HeroBackground, Event, Video, Category, PrayerRequest, UserBibleProgress, EventRegistration
 from .forms import RegisterForm, LoginForm, ProfileEditForm, ChangePasswordForm
 from django.http import JsonResponse
 from django.utils import timezone
 from django.db import models
 from django.views.decorators.cache import cache_page
-from django.views.decorators.http import require_GET
+from django.views.decorators.http import require_GET, require_POST
 import datetime
 import requests
 import re
@@ -414,8 +414,9 @@ def login_view(request):
         form = LoginForm()
     return render(request, 'login.html', {'form': form})
 
+@require_POST
 def logout_view(request):
-    """Выход пользователя"""
+    """Выход пользователя — только POST для защиты от CSRF"""
     logout(request)
     messages.success(request, 'Вы успешно вышли из системы')
     return redirect('home')
@@ -424,8 +425,28 @@ def logout_view(request):
 def profile_view(request):
     """Страница профиля"""
     user = request.user
+    
+    # Молитвы
+    prayers = PrayerRequest.objects.filter(user=user).order_by('-created_at')
+    prayers_count = prayers.count()
+    recent_prayers = prayers[:3]
+    
+    # Изучено (планы)
+    plans_count = UserBibleProgress.objects.filter(user=user, completed_at__isnull=False).count()
+    
+    # События
+    events_count = EventRegistration.objects.filter(user=user).count()
+    
+    # Текущее обучение
+    current_progress = UserBibleProgress.objects.filter(user=user, completed_at__isnull=True).order_by('-last_read_at').first()
+    
     context = {
         'user': user,
+        'prayers_count': prayers_count,
+        'recent_prayers': recent_prayers,
+        'plans_count': plans_count,
+        'events_count': events_count,
+        'current_progress': current_progress,
     }
     return render(request, 'profile.html', context)
 
@@ -472,15 +493,17 @@ def change_password_view(request):
         form = ChangePasswordForm()
     return render(request, 'change_password.html', {'form': form})
 
+@require_POST
 def dismiss_announcement(request):
-    """Закрытие объявления"""
-    if request.method == 'POST':
-        announcement_id = request.POST.get('announcement_id')
-        dismissed = request.session.get('dismissed_announcements', [])
-        if announcement_id not in dismissed:
-            dismissed.append(announcement_id)
-            request.session['dismissed_announcements'] = dismissed
-        return JsonResponse({'success': True})
+    """Закрытие объявления — только POST"""
+    announcement_id = request.POST.get('announcement_id')
+    if not announcement_id:
+        return JsonResponse({'success': False, 'error': 'No ID provided'}, status=400)
+    dismissed = request.session.get('dismissed_announcements', [])
+    if announcement_id not in dismissed:
+        dismissed.append(announcement_id)
+        request.session['dismissed_announcements'] = dismissed
+    return JsonResponse({'success': True})
 
 @require_GET
 def service_worker(request):
@@ -491,3 +514,13 @@ def service_worker(request):
             return HttpResponse(f.read(), content_type='application/javascript')
     except IOError:
         return HttpResponse(status=404)
+
+
+def custom_404(request, exception=None):
+    """Кастомная страница 404"""
+    return render(request, '404.html', status=404)
+
+
+def custom_500(request):
+    """Кастомная страница 500"""
+    return render(request, '500.html', status=500)

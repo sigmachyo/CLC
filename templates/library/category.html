@@ -1,11 +1,36 @@
 {% extends 'library/base_library.html' %}
 {% block title %}{{ category.name }}{% endblock %}
+
 {% block library_content %}
-<div class="library-header">
-    <h1><i class="fas {{ category.icon }}"></i> {{ category.name }}</h1>
-    <p>{{ category.description }}</p>
+<div class="mb-12">
+    <!-- Header -->
+    <div class="bg-navy rounded-[2.5rem] p-8 sm:p-12 shadow-2xl mb-10 relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
+        <div class="absolute -top-24 -right-24 w-64 h-64 bg-primary rounded-full blur-[80px] opacity-20 z-0"></div>
+        
+        <div class="relative z-10 flex flex-col sm:flex-row items-center gap-6">
+            <div class="w-20 h-20 rounded-[1.5rem] bg-white/10 flex items-center justify-center backdrop-blur-md border border-white/20 shrink-0">
+                <span class="material-symbols-outlined text-primary text-4xl">category</span>
+            </div>
+            <div>
+                <h1 class="text-4xl sm:text-5xl font-display font-bold text-white mb-3">{{ category.name }}</h1>
+                <p class="text-white/70 text-lg max-w-2xl">{{ category.description }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="bg-white rounded-[2.5rem] p-16 sm:p-24 text-center border border-navy/5 shadow-sm mt-12 max-w-3xl mx-auto">
+        <div class="w-24 h-24 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-8 relative">
+            <div class="absolute inset-0 border-2 border-primary border-dashed rounded-full animate-[spin_10s_linear_infinite] opacity-50"></div>
+            <span class="material-symbols-outlined text-primary text-5xl">construction</span>
+        </div>
+        <h3 class="text-2xl font-bold text-navy mb-4">Раздел находится в разработке</h3>
+        <p class="text-txt-sub text-lg mb-8 max-w-md mx-auto">Скоро здесь появится интересный контент. Возвращайтесь немного позже!</p>
+        <a href="{% url 'library_home' %}" class="inline-flex items-center gap-2 bg-navy hover:bg-navy-light text-white font-bold px-8 py-4 rounded-xl transition-all shadow-md">
+            <span class="material-symbols-outlined text-xl">arrow_back</span>
+            Вернуться в библиотеку
+        </a>
+    </div>
 </div>
-<p style="color: rgba(255,255,255,0.7); text-align: center; padding: 60px 20px; font-size: 1.1rem;">
-    Этот раздел находится в разработке. Скоро здесь появится контент!
-</p>
 {% endblock %}

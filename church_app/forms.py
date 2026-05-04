@@ -45,6 +45,16 @@ class RegisterForm(forms.Form):
         if User.objects.filter(email=email).exists():
             raise ValidationError('Email уже используется')
         return email
+    def clean_password1(self):
+        import re
+        password = self.cleaned_data.get('password1', '')
+        if not re.search(r'[A-ZА-Я]', password):
+            raise ValidationError('Пароль должен содержать хотя бы одну заглавную букву')
+        if not re.search(r'[0-9]', password):
+            raise ValidationError('Пароль должен содержать хотя бы одну цифру')
+        if not re.search(r'[!@#$%^&*()\-_=+\[\]{};:,.<>?/\\|`~]', password):
+            raise ValidationError('Пароль должен содержать хотя бы один спецсимвол (!@#$% и т.д.)')
+        return password
     def clean(self):
         cleaned = super().clean()
         p1 = cleaned.get('password1')
@@ -99,6 +109,16 @@ class ChangePasswordForm(forms.Form):
         label='Повторите новый пароль',
         widget=forms.PasswordInput(attrs={'placeholder': 'Повторите новый пароль'}),
     )
+    def clean_new_password1(self):
+        import re
+        password = self.cleaned_data.get('new_password1', '')
+        if not re.search(r'[A-ZА-Я]', password):
+            raise ValidationError('Пароль должен содержать хотя бы одну заглавную букву')
+        if not re.search(r'[0-9]', password):
+            raise ValidationError('Пароль должен содержать хотя бы одну цифру')
+        if not re.search(r'[!@#$%^&*()\-_=+\[\]{};:,.<>?/\\|`~]', password):
+            raise ValidationError('Пароль должен содержать хотя бы один спецсимвол')
+        return password
     def clean(self):
         cleaned = super().clean()
         p1 = cleaned.get('new_password1')
