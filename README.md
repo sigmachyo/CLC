@@ -69,41 +69,6 @@
 
 ---
 
-## 🏗 Архитектура проекта
-CLC/
-├── kclc/ # Конфигурация Django-проекта
-│ ├── settings.py
-│ ├── urls.py
-│ └── wsgi.py / asgi.py
-│
-├── church_app/ # Основное приложение
-│ ├── models.py # 16+ моделей данных
-│ ├── views.py # Главные views + Video API
-│ ├── views_library.py # Библиотека, Библия, события, дети
-│ ├── views_prayer.py # Молитвенный центр
-│ ├── views_donate.py # Пожертвования
-│ ├── views_push.py # Push-уведомления
-│ ├── urls.py # 30+ URL-паттернов
-│ ├── admin.py # Администрирование
-│ └── bible_api.py # Интеграция с API.Bible
-│
-├── templates/ # HTML-шаблоны
-│ ├── base.html
-│ ├── home.html
-│ ├── library/ # 14 файлов
-│ ├── info/ # Информационные страницы
-│ └── auth/ # Вход/регистрация
-│
-├── static/ # Статика (CSS, JS, иконки)
-├── manage.py
-├── requirements.txt
-├── .env
-└── db.sqlite3
-
-text
-
----
-
 ## 📊 Модели данных
 
 | Модель | Назначение |
