@@ -13,19 +13,33 @@
     <!-- Video Player Section -->
     <div class="relative rounded-[2rem] overflow-hidden bg-navy shadow-2xl mb-10 aspect-video group">
         {% if video.video_file %}
-        <video class="w-full h-full object-cover" controls poster="{{ video.thumbnail.url|default:'' }}">
+        <video class="w-full h-full object-cover" controls poster="{% if video.thumbnail %}{{ video.thumbnail.url }}{% endif %}">
             <source src="{{ video.video_file.url }}" type="video/mp4">
             Ваш браузер не поддерживает видео.
         </video>
-        {% elif video.youtube_url %}
-        {% with video_id=video.youtube_url|cut:"https://www.youtube.com/watch?v="|cut:"https://youtu.be/"|cut:"https://youtube.com/embed/" %}
-        <iframe class="w-full h-full" 
-                src="https://www.youtube.com/embed/{{ video_id }}"
+        {% elif video.get_youtube_embed_url %}
+        <iframe class="w-full h-full"
+                src="{{ video.get_youtube_embed_url }}"
                 frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                title="{{ video.title }}">
         </iframe>
-        {% endwith %}
+        {% elif video.get_rutube_embed_url %}
+        <iframe class="w-full h-full"
+                src="{{ video.get_rutube_embed_url }}"
+                frameborder="0"
+                allow="autoplay; encrypted-media; fullscreen"
+                allowfullscreen
+                title="{{ video.title }}">
+        </iframe>
+        {% else %}
+        <div class="w-full h-full flex items-center justify-center bg-navy/90">
+            <div class="text-center">
+                <span class="material-symbols-outlined text-primary text-6xl opacity-50 mb-4 block">video_off</span>
+                <p class="text-white/60">Видео недоступно</p>
+            </div>
+        </div>
         {% endif %}
     </div>
 
@@ -39,10 +53,12 @@
                         <span class="material-symbols-outlined text-primary text-[20px]">visibility</span>
                         <span>{{ video.views_count }} просмотров</span>
                     </div>
+                    {% if video.duration %}
                     <div class="flex items-center gap-2">
                         <span class="material-symbols-outlined text-primary text-[20px]">schedule</span>
-                        <span>{{ video.duration }} мин</span>
+                        <span>{{ video.get_duration_display }}</span>
                     </div>
+                    {% endif %}
                     <div class="flex items-center gap-2">
                         <span class="material-symbols-outlined text-primary text-[20px]">calendar_today</span>
                         <span>{{ video.created_at|date:"d M Y" }}</span>
@@ -103,7 +119,7 @@
                     </div>
                 {% endif %}
                 <div class="absolute bottom-3 right-3 px-2 py-1 rounded bg-black/70 text-white text-[10px] font-bold backdrop-blur-sm">
-                    {{ rec.duration }} мин
+                    {{ rec.get_duration_display }}
                 </div>
                 <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <div class="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center text-primary transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
@@ -120,7 +136,7 @@
                     </span>
                     <span class="flex items-center gap-1">
                         <span class="material-symbols-outlined text-[14px]">schedule</span>
-                        {{ rec.duration }} мин
+                        {{ rec.get_duration_display }}
                     </span>
                 </div>
             </div>

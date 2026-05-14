@@ -46,7 +46,7 @@ if (window.SERVER_NOW_MS) {
 const getKraComponents = () => {
   const nowMs = Date.now() + _realTimeOffset;
   const dateUTC = new Date(nowMs);
-  
+
   // Получаем компоненты в UTC
   let year = dateUTC.getUTCFullYear();
   let month = dateUTC.getUTCMonth();  // 0-11
@@ -55,10 +55,10 @@ const getKraComponents = () => {
   let minutes = dateUTC.getUTCMinutes();
   let seconds = dateUTC.getUTCSeconds();
   let dayOfWeek = dateUTC.getUTCDay();  // 0=Sunday
-  
+
   // Добавляем смещение Красноярска (+7 часов)
   hours += CFG.KRA_OFFSET;
-  
+
   // Обрабатываем переход дней
   while (hours >= 24) {
     hours -= 24;
@@ -68,7 +68,7 @@ const getKraComponents = () => {
     hours += 24;
     day -= 1;
   }
-  
+
   // Обрабатываем переход месяцев
   const daysInMonth = (m, y) => [31, (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][m];
   while (day > daysInMonth(month, year)) {
@@ -83,13 +83,13 @@ const getKraComponents = () => {
     }
     day += daysInMonth(month, year);
   }
-  
+
   // Обновляем dayOfWeek для нового дня (если он изменился)
   if (hours !== dateUTC.getUTCHours() || day !== dateUTC.getUTCDate()) {
     const tempDate = new Date(Date.UTC(year, month, day, 12, 0, 0));
     dayOfWeek = tempDate.getUTCDay();
   }
-  
+
   return {
     year, month, day, hours, minutes, seconds, dayOfWeek
   };
@@ -217,7 +217,7 @@ const updateCountdown = () => {
   // Отладка каждую минуту
   if (kra.minutes % 10 === 0 && kra.seconds < 2) {
     console.log('[TIMER] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    console.log('[TIMER] Current KRA time:', `${kra.year}-${String(kra.month+1).padStart(2, '0')}-${String(kra.day).padStart(2, '0')} ${String(kra.hours).padStart(2, '0')}:${String(kra.minutes).padStart(2, '0')}:${String(kra.seconds).padStart(2, '0')}`);
+    console.log('[TIMER] Current KRA time:', `${kra.year}-${String(kra.month + 1).padStart(2, '0')}-${String(kra.day).padStart(2, '0')} ${String(kra.hours).padStart(2, '0')}:${String(kra.minutes).padStart(2, '0')}:${String(kra.seconds).padStart(2, '0')}`);
     console.log('[TIMER] Day of week:', day, '(0=Sun, 6=Sat) - isSunday:', day === 0);
     console.log('[TIMER] isSundayBeforeBcast:', isSundayBeforeBcast, 'isSundayLive:', isSundayLive);
     console.log('[TIMER] BCAST_H:', CFG.BCAST_H, 'BCAST_END:', CFG.BCAST_END);
@@ -265,7 +265,7 @@ const updateCountdown = () => {
       el.classList.add('num-pop');
     }
   };
-  
+
   setT('days', pad(Math.floor(diff / 86400000)));
   setT('hours', pad(Math.floor((diff % 86400000) / 3600000)));
   setT('minutes', pad(Math.floor((diff % 3600000) / 60000)));
@@ -438,7 +438,7 @@ const detectState = async () => {
   const m = kra.minutes;
   const inWindow = day === 0 && h >= CFG.BCAST_H && h < CFG.BCAST_END;
   const isBefore = day === 0 && h < CFG.BCAST_H;
-  
+
   const currentState = inWindow ? 'LIVE' : (isBefore ? 'SOON' : 'WAIT');
   if (currentState !== _lastDetectState) {
     console.log(`[TIMER] State changed: ${_lastDetectState || 'INIT'} -> ${currentState}`);
@@ -501,7 +501,7 @@ const initEventsSlider = () => {
   if (!slider || !dotsWrap) return;
   const slides = Array.from(slider.querySelectorAll('.event-slide'));
   if (slides.length <= 1) return;
-  
+
   slides.forEach((_, i) => {
     const d = document.createElement('button');
     d.className = 'hero-dot' + (i === 0 ? ' active' : '');
@@ -533,7 +533,7 @@ const initEventsSlider = () => {
 // ── ЗАПУСК ИНТЕРВАЛОВ ────────────────────────────────────────────────────────
 const startIntervals = () => {
   clearAllIntervals();
-  addInterval('clock', updateClock, 30000);
+  addInterval('clock', updateClock, 10000);
   addInterval('countdown', updateCountdown, 1000);
   const kra = getKraComponents();
   const inWindow = kra.dayOfWeek === 0 && kra.hours >= CFG.BCAST_H && kra.hours < CFG.BCAST_END;

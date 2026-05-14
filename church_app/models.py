@@ -99,7 +99,53 @@ class Video(models.Model):
     def get_video_url(self):
         if self.video_file:
             return self.video_file.url
-        return self.youtube_url
+        return self.youtube_url or self.rutube_url
+
+    def get_youtube_embed_url(self):
+        """Converts any YouTube URL format to embed URL"""
+        import re
+        if not self.youtube_url:
+            return None
+        # Extract video ID from various URL formats
+        patterns = [
+            r'(?:youtube\.com/watch\?v=|youtu\.be/|youtube\.com/embed/|youtube\.com/v/)([a-zA-Z0-9_-]{11})',
+        ]
+        for pattern in patterns:
+            match = re.search(pattern, self.youtube_url)
+            if match:
+                return f'https://www.youtube.com/embed/{match.group(1)}?rel=0&modestbranding=1'
+        return None
+
+    def get_rutube_embed_url(self):
+        """Converts Rutube video URL to embed URL"""
+        import re
+        if not self.rutube_url:
+            return None
+        match = re.search(r'rutube\.ru/video/([a-zA-Z0-9_-]+)', self.rutube_url)
+        if match:
+            return f'https://rutube.ru/play/embed/{match.group(1)}'
+        return None
+
+    def get_duration_display(self):
+        """Returns duration in human-readable format (MM:SS or Xч YYмин)"""
+        if not self.duration:
+            return ''
+        total = int(self.duration)
+        hours = total // 3600
+        minutes = (total % 3600) // 60
+        seconds = total % 60
+        if hours > 0:
+            return f'{hours}ч {minutes:02d}мин'
+        elif minutes > 0:
+            return f'{minutes}:{seconds:02d}'
+        else:
+            return f'0:{seconds:02d}'
+
+    def get_duration_minutes(self):
+        """Returns duration in minutes (rounded)"""
+        if not self.duration:
+            return 0
+        return max(1, round(self.duration / 60))
 
     def increment_views(self):
         self.views_count += 1
@@ -273,6 +319,20 @@ class KidsContent(models.Model):
 
     def __str__(self):
         return f"{self.get_content_type_display()}: {self.title}"
+
+    def get_youtube_embed_url(self):
+        """Converts any YouTube URL format to embed URL"""
+        import re
+        if not self.youtube_url:
+            return None
+        patterns = [
+            r'(?:youtube\.com/watch\?v=|youtu\.be/|youtube\.com/embed/|youtube\.com/v/)([a-zA-Z0-9_-]{11})',
+        ]
+        for pattern in patterns:
+            match = re.search(pattern, self.youtube_url)
+            if match:
+                return f'https://www.youtube.com/embed/{match.group(1)}?rel=0&modestbranding=1'
+        return None
 
     def increment_views(self):
         self.views_count += 1

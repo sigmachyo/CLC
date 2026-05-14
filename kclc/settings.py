@@ -5,16 +5,13 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get(
     'DJANGO_SECRET_KEY',
     'django-insecure-your-secret-key-here-changeme-in-production'
 )
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True').lower() in ('true', '1', 'yes')
 
 ALLOWED_HOSTS = [
@@ -24,12 +21,10 @@ ALLOWED_HOSTS = [
     '0.0.0.0',
     '172.18.0.1',
     '10.30.225.3',
+    '10.3.224.146',
 ]
 
-# Добавляем диапазон 192.168.0.0/23 (от 192.168.0.0 до 192.168.1.255)
 ALLOWED_HOSTS.extend([str(ip) for ip in ipaddress.IPv4Network('192.168.0.0/23')])
-
-# Application definition
 
 # Web Push — ключи из .env
 VAPID_PUBLIC_KEY = os.environ.get('VAPID_PUBLIC_KEY', '')

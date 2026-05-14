@@ -229,12 +229,14 @@ def rutube_stream_api(request):
             # Находим категорию Видео
             cat = Category.objects.filter(category_type='video').first()
             if cat:
+                desc = f"Автоматически добавлено из трансляции. Дата: {best['published']}"
+                if best.get('thumbnail'):
+                    desc += f"\nПревью: {best['thumbnail']}"
                 Video.objects.create(
                     title=best['title'],
-                    description=f"Автоматически добавлено из трансляции. Дата: {best['published']}",
+                    description=desc,
                     category=cat,
                     rutube_url=video_full_url,
-                    thumbnail=best['thumbnail'] if best['thumbnail'].startswith('http') else None,
                     is_active=True
                 )
     except Exception as e:

@@ -5,11 +5,13 @@
 <div class="mb-12">
     <!-- Header -->
     <div class="bg-navy rounded-[2.5rem] p-8 sm:p-12 shadow-2xl mb-10 relative overflow-hidden">
-        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20">
+        </div>
         <div class="absolute -top-24 -right-24 w-64 h-64 bg-primary rounded-full blur-[80px] opacity-20 z-0"></div>
-        
+
         <div class="relative z-10 flex flex-col sm:flex-row items-center gap-6">
-            <div class="w-20 h-20 rounded-[1.5rem] bg-white/10 flex items-center justify-center backdrop-blur-md border border-white/20 shrink-0">
+            <div
+                class="w-20 h-20 rounded-[1.5rem] bg-white/10 flex items-center justify-center backdrop-blur-md border border-white/20 shrink-0">
                 <span class="material-symbols-outlined text-primary text-4xl">play_circle</span>
             </div>
             <div>
@@ -22,31 +24,39 @@
     <!-- Video Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
         {% for video in videos %}
-        <a href="{% url 'video_detail' video.id %}" class="group bg-white rounded-3xl overflow-hidden border border-navy/5 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col h-full">
+        <a href="{% url 'video_detail' video.id %}"
+            class="group bg-white rounded-3xl overflow-hidden border border-navy/5 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col h-full">
             <div class="relative aspect-video overflow-hidden bg-navy/5">
                 {% if video.thumbnail %}
-                    <img src="{{ video.thumbnail.url }}" alt="{{ video.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                <img src="{{ video.thumbnail.url }}" alt="{{ video.title }}"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                 {% else %}
-                    <div class="w-full h-full flex items-center justify-center text-primary opacity-30">
-                        <span class="material-symbols-outlined text-5xl">play_circle</span>
-                    </div>
+                <div class="w-full h-full flex items-center justify-center text-primary opacity-30">
+                    <span class="material-symbols-outlined text-5xl">play_circle</span>
+                </div>
                 {% endif %}
-                
+
                 {% if video.is_featured %}
-                <div class="absolute top-3 left-3 px-3 py-1 bg-primary text-navy text-[10px] font-black rounded-full shadow-sm uppercase tracking-widest">
+                <div
+                    class="absolute top-3 left-3 px-3 py-1 bg-primary text-navy text-[10px] font-black rounded-full shadow-sm uppercase tracking-widest">
                     Рекомендуем
                 </div>
                 {% endif %}
 
-                <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <div class="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center text-primary transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                        <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                <div
+                    class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <div
+                        class="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center text-primary transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                        <span class="material-symbols-outlined text-2xl"
+                            style="font-variation-settings: 'FILL' 1;">play_arrow</span>
                     </div>
                 </div>
             </div>
-            
+
             <div class="p-6 flex flex-col flex-grow">
-                <h3 class="text-navy font-bold text-lg mb-4 line-clamp-2 group-hover:text-primary transition-colors leading-snug">{{ video.title }}</h3>
+                <h3
+                    class="text-navy font-bold text-lg mb-4 line-clamp-2 group-hover:text-primary transition-colors leading-snug">
+                    {{ video.title }}</h3>
                 <div class="mt-auto flex items-center gap-4 text-xs text-txt-sub font-semibold">
                     <span class="flex items-center gap-1.5">
                         <span class="material-symbols-outlined text-[14px]">visibility</span>
@@ -54,7 +64,7 @@
                     </span>
                     <span class="flex items-center gap-1.5">
                         <span class="material-symbols-outlined text-[14px]">schedule</span>
-                        {{ video.duration|floatformat:0 }} мин
+                        {{ video.get_duration_display }}
                     </span>
                 </div>
             </div>

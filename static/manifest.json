@@ -7,10 +7,13 @@
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "orientation": "portrait",
+  "orientation": "any",
   "background_color": "#1a1f36",
   "theme_color": "#c9a84c",
-  "categories": ["lifestyle", "social"],
+  "categories": [
+    "lifestyle",
+    "social"
+  ],
   "icons": [
     {
       "src": "/static/icons/icon-192x192.png",
@@ -43,14 +46,24 @@
       "short_name": "Молитва",
       "description": "Перейти к молитвенным нуждам",
       "url": "/prayer/",
-      "icons": [{ "src": "/static/icons/icon-192x192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "/static/icons/icon-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Библиотека",
       "short_name": "Библиотека",
       "description": "Видео и материалы",
       "url": "/library/",
-      "icons": [{ "src": "/static/icons/icon-192x192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "/static/icons/icon-192x192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }

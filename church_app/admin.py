@@ -43,7 +43,7 @@ class HeroBackgroundAdmin(admin.ModelAdmin):
     search_fields = ('title',)
     ordering = ('order', '-created_at')
 
-from .models import Category, Video, BiblePlan, BibleReading, UserBibleProgress, Event, EventRegistration, KidsContent, KidsProgress, DailyVerse, PrayerRequest, PushSubscription
+from .models import Category, Video, BiblePlan, BibleReading, UserBibleProgress, Event, EventRegistration, KidsContent, KidsProgress, DailyVerse, PrayerRequest, PushSubscription, Donation
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -64,7 +64,8 @@ class VideoAdmin(admin.ModelAdmin):
             'fields': ('title', 'description', 'category', 'thumbnail')
         }),
         ('Видео', {
-            'fields': ('video_file', 'youtube_url', 'duration')
+            'fields': ('video_file', 'youtube_url', 'rutube_url', 'duration'),
+            'description': 'Длительность указывается в секундах (напр. 3600 = 1 час)',
         }),
         ('Настройки', {
             'fields': ('is_featured', 'order', 'is_active')
@@ -170,3 +171,13 @@ class PushSubscriptionAdmin(admin.ModelAdmin):
 
     def endpoint_snippet(self, obj):
         return obj.endpoint[:40] + '...' if len(obj.endpoint) > 40 else obj.endpoint
+
+
+@admin.register(Donation)
+class DonationAdmin(admin.ModelAdmin):
+    list_display = ('amount', 'status', 'user', 'payment_id', 'created_at')
+    list_filter = ('status', 'created_at')
+    search_fields = ('user__username', 'payment_id')
+    date_hierarchy = 'created_at'
+    ordering = ('-created_at',)
+    readonly_fields = ('payment_id', 'created_at')
