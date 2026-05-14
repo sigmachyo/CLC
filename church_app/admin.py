@@ -181,3 +181,32 @@ class DonationAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
     ordering = ('-created_at',)
     readonly_fields = ('payment_id', 'created_at')
+
+from .models import News
+
+@admin.register(News)
+class NewsAdmin(admin.ModelAdmin):
+    list_display = (
+        'title',
+        'is_featured',
+        'is_active',
+        'created_at',
+    )
+
+    list_filter = (
+        'is_featured',
+        'is_active',
+        'created_at',
+    )
+
+    search_fields = (
+        'title',
+        'short_description',
+        'content',
+    )
+
+    prepopulated_fields = {
+        'slug': ('title',)
+    }
+
+    ordering = ('-created_at',)

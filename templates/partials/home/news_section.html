@@ -1,4 +1,5 @@
 {% load static %}
+
 <section class="snap-sec" id="sec-news" aria-label="Новости">
   <div class="snap-sec-inner">
     <div class="section-content section-content--news">
@@ -9,53 +10,317 @@
         <div class="news-header-text">
           <h2 class="section-heading">Новости церкви</h2>
           <p class="news-header-sub">
-            События, обновления и свидетельства нашей общины. Будьте в курсе жизни церкви.
+            События, обновления и свидетельства нашей общины
           </p>
         </div>
       </div>
 
-      <!-- Сетка новостей (skeleton-заглушки) -->
+      <!-- Сетка новостей -->
       <div class="news-cards-grid" id="news-grid">
-        <div class="news-skeleton-card">
-          <div class="news-skeleton-inner">
-            <div class="news-skeleton-line news-skeleton-line--short"></div>
-            <div class="news-skeleton-line news-skeleton-line--full"></div>
-            <div class="news-skeleton-line news-skeleton-line--medium"></div>
-            <div class="news-skeleton-footer">
-              <div class="news-skeleton-line news-skeleton-line--tag"></div>
-            </div>
+
+        {% if news %}
+          {% for item in news %}
+          <div class="news-card-link">
+            <article class="news-card">
+              {% if item.image %}
+              <div class="news-card-image">
+                <img src="{{ item.image.url }}" alt="{{ item.title }}" loading="lazy">
+              </div>
+              {% else %}
+              <div class="news-card-image news-card-image-placeholder">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 8h-4v4h-4v-4H6V9h4V5h4v4h4v2z"/>
+                </svg>
+              </div>
+              {% endif %}
+
+              <div class="news-card-content">
+                <div class="news-card-date">
+                  <i class="far fa-calendar-alt"></i>
+                  {{ item.created_at|date:"d.m.Y" }}
+                </div>
+                <h3 class="news-card-title">{{ item.title }}</h3>
+                <p class="news-card-description">
+                  {{ item.short_description|truncatechars:140 }}
+                </p>
+                <a href="{% url 'news_detail' item.slug %}" class="news-card-read-more">
+                  Читать далее
+                  <span class="read-more-arrow">→</span>
+                </a>
+              </div>
+            </article>
           </div>
-        </div>
-        <div class="news-skeleton-card">
-          <div class="news-skeleton-inner">
-            <div class="news-skeleton-line news-skeleton-line--short"></div>
-            <div class="news-skeleton-line news-skeleton-line--full"></div>
-            <div class="news-skeleton-line news-skeleton-line--medium"></div>
-            <div class="news-skeleton-footer">
-              <div class="news-skeleton-line news-skeleton-line--tag"></div>
-            </div>
+          {% endfor %}
+        {% else %}
+          <div class="news-empty">
+            <p>Новостей пока нет</p>
           </div>
-        </div>
-        <div class="news-skeleton-card">
-          <div class="news-skeleton-inner">
-            <div class="news-skeleton-line news-skeleton-line--short"></div>
-            <div class="news-skeleton-line news-skeleton-line--full"></div>
-            <div class="news-skeleton-line news-skeleton-line--medium"></div>
-            <div class="news-skeleton-footer">
-              <div class="news-skeleton-line news-skeleton-line--tag"></div>
-            </div>
-          </div>
-        </div>
+        {% endif %}
+
       </div>
 
       <!-- Кнопка "Все новости" -->
+      {% if news %}
       <div class="news-action">
         <a href="{% url 'news_list' %}" class="news-all-btn" aria-label="Все новости">
           Все новости
-          <span class="material-symbols-outlined news-all-btn-icon">open_in_new</span>
+          <span class="news-all-btn-icon">→</span>
         </a>
       </div>
+      {% endif %}
 
     </div>
   </div>
 </section>
+
+<style>
+/* ===== НОВОСТИ ===== */
+.section-content--news {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+.news-header {
+  text-align: center;
+  margin-bottom: 48px;
+  position: relative;
+}
+
+.news-header-accent {
+  width: 80px;
+  height: 3px;
+  background: var(--gold, #c9a84c);
+  margin: 0 auto 20px;
+  border-radius: 3px;
+}
+
+.section-heading {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--txt, #1a1f36);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.news-header-sub {
+  color: var(--txt-sub, #3d4260);
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Сетка новостей */
+.news-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+/* Карточка новости */
+.news-card-link {
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+.news-card-link:hover {
+  transform: translateY(-5px);
+}
+
+.news-card {
+  background: var(--card2, #ffffff);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(26,31,54,0.08);
+  transition: box-shadow 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--b, rgba(26,31,54,0.08));
+}
+
+.news-card:hover {
+  box-shadow: 0 16px 48px rgba(26,31,54,0.12);
+}
+
+/* Изображение */
+.news-card-image {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #2c3e50, #3498db);
+}
+
+.news-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.news-card:hover .news-card-image img {
+  transform: scale(1.05);
+}
+
+.news-card-image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a1f36, #2c3e50);
+}
+
+.news-card-image-placeholder svg {
+  width: 60px;
+  height: 60px;
+  opacity: 0.5;
+  color: white;
+}
+
+/* Контент */
+.news-card-content {
+  padding: 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.news-card-date {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--gold, #c9a84c);
+  margin-bottom: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.news-card-date i {
+  font-size: 0.9rem;
+}
+
+.news-card-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--txt, #1a1f36);
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.news-card-description {
+  color: var(--txt-sub, #3d4260);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  flex: 1;
+}
+
+/* Кнопка "Читать далее" */
+.news-card-read-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--gold, #c9a84c);
+  text-decoration: none;
+  transition: gap 0.3s ease;
+  margin-top: auto;
+}
+
+.news-card-read-more:hover {
+  gap: 12px;
+}
+
+.read-more-arrow {
+  font-size: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.news-card-read-more:hover .read-more-arrow {
+  transform: translateX(4px);
+}
+
+/* Кнопка "Все новости" */
+.news-action {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.news-all-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--navy, #1a1f36);
+  color: white;
+  padding: 12px 32px;
+  border-radius: 40px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.news-all-btn:hover {
+  background: var(--navy-h, #252b48);
+  transform: translateY(-2px);
+  gap: 16px;
+}
+
+.news-all-btn-icon {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.news-all-btn:hover .news-all-btn-icon {
+  transform: translateX(4px);
+}
+
+/* Пустое состояние */
+.news-empty {
+  text-align: center;
+  padding: 60px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px;
+  color: var(--txt-sub, #3d4260);
+  font-size: 1.1rem;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .section-heading {
+    font-size: 1.8rem;
+  }
+  
+  .news-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .news-card-image {
+    height: 180px;
+  }
+  
+  .news-card-content {
+    padding: 20px;
+  }
+  
+  .news-card-title {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-content--news {
+    padding: 40px 16px;
+  }
+  
+  .news-card-description {
+    font-size: 0.9rem;
+  }
+}
+</style>

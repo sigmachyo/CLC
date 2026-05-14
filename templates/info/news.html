@@ -1,90 +1,94 @@
-{% extends "base.html" %}
-{% block title %}Новости церкви{% endblock %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ news.title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+  .news-detail-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 120px 20px 80px;
+  }
+  
+  .news-detail-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .news-detail-date {
+    color: var(--gold, #c9a84c);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+  
+  .news-detail-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--txt, #1a1f36);
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+  
+  .news-detail-image {
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 30px;
+  }
+  
+  .news-detail-image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  
+  .news-detail-content {
+    color: var(--txt-sub, #3d4260);
+    font-size: 1.1rem;
+    line-height: 1.8;
+  }
+  
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 40px;
+    color: var(--gold, #c9a84c);
+    text-decoration: none;
+  }
+  
+  @media (max-width: 768px) {
+    .news-detail-title {
+      font-size: 1.8rem;
+    }
+  }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="max-w-[1200px] mx-auto px-6 py-16">
-    <div class="text-center mb-16">
-        <h1 class="text-4xl md:text-5xl font-black text-navy mb-4 uppercase tracking-tighter">Новости церкви</h1>
-        <p class="text-lg text-navy/60 max-w-2xl mx-auto">Последние события, обновления и свидетельства нашей общины.</p>
+<div class="news-detail-container">
+  <div class="news-detail-header">
+    <div class="news-detail-date">
+      <i class="far fa-calendar-alt"></i> {{ news.created_at|date:"d.m.Y" }}
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:-translate-y-1 transition-transform border border-navy/5 flex flex-col h-full">
-            <div class="h-48 bg-background-light flex items-center justify-center p-6 text-center">
-                <span class="material-symbols-outlined text-primary text-5xl">diversity_3</span>
-            </div>
-            <div class="p-6 flex flex-col flex-grow">
-                <span class="text-xs font-bold text-primary mb-2 uppercase tracking-wider">Новость</span>
-                <h3 class="text-lg font-bold text-navy leading-tight mb-3">Встреча с новым митрополитом Красноярским и Ачинским</h3>
-                <p class="text-navy/60 text-sm mb-6 flex-grow">27 октября в епархиальном управлении РПЦ состоялась встреча с новым митрополитом Красноярским и Ачинским, Никитой.</p>
-                <div class="mt-auto border-t border-navy/5 pt-4">
-                    <span class="text-xs text-navy/40">Октябрь 2023</span>
-                </div>
-            </div>
-        </article>
-        <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:-translate-y-1 transition-transform border border-navy/5 flex flex-col h-full">
-            <div class="h-48 bg-background-light flex items-center justify-center p-6 text-center">
-                <span class="material-symbols-outlined text-primary text-5xl">school</span>
-            </div>
-            <div class="p-6 flex flex-col flex-grow">
-                <span class="text-xs font-bold text-primary mb-2 uppercase tracking-wider">Обучение</span>
-                <h3 class="text-lg font-bold text-navy leading-tight mb-3">Пророческие курсы 2 ступень</h3>
-                <p class="text-navy/60 text-sm mb-6 flex-grow">В церкви состоялись Пророческие курсы для тех, кто хочет глубже познавать Бога и слышать Его голос.</p>
-                <div class="mt-auto border-t border-navy/5 pt-4">
-                    <span class="text-xs text-navy/40">Осень 2023</span>
-                </div>
-            </div>
-        </article>
-        <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:-translate-y-1 transition-transform border border-navy/5 flex flex-col h-full">
-            <div class="h-48 bg-background-light flex items-center justify-center p-6 text-center">
-                <span class="material-symbols-outlined text-primary text-5xl">group</span>
-            </div>
-            <div class="p-6 flex flex-col flex-grow">
-                <span class="text-xs font-bold text-primary mb-2 uppercase tracking-wider">Событие</span>
-                <h3 class="text-lg font-bold text-navy leading-tight mb-3">Мужская конференция «Сила братства»</h3>
-                <p class="text-navy/60 text-sm mb-6 flex-grow">Мужская конференция с Дмитрием Тычинским. Время для ободрения, наставления и укрепления в вере.</p>
-                <div class="mt-auto border-t border-navy/5 pt-4">
-                    <span class="text-xs text-navy/40">Лето 2023</span>
-                </div>
-            </div>
-        </article>
-        <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:-translate-y-1 transition-transform border border-navy/5 flex flex-col h-full">
-            <div class="h-48 bg-background-light flex items-center justify-center p-6 text-center">
-                <span class="material-symbols-outlined text-primary text-5xl">family_restroom</span>
-            </div>
-            <div class="p-6 flex flex-col flex-grow">
-                <span class="text-xs font-bold text-primary mb-2 uppercase tracking-wider">Семья</span>
-                <h3 class="text-lg font-bold text-navy leading-tight mb-3">Обновление заветных отношений / Супружеский курс</h3>
-                <p class="text-navy/60 text-sm mb-6 flex-grow">Курс для семейных пар, желающих укрепить свои отношения и построить крепкую семью на библейском основании.</p>
-                <div class="mt-auto border-t border-navy/5 pt-4">
-                    <span class="text-xs text-navy/40">Запись открыта</span>
-                </div>
-            </div>
-        </article>
-        <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:-translate-y-1 transition-transform border border-navy/5 flex flex-col h-full">
-            <div class="h-48 bg-background-light flex items-center justify-center p-6 text-center">
-                <span class="material-symbols-outlined text-primary text-5xl">celebration</span>
-            </div>
-            <div class="p-6 flex flex-col flex-grow">
-                <span class="text-xs font-bold text-primary mb-2 uppercase tracking-wider">Праздник</span>
-                <h3 class="text-lg font-bold text-navy leading-tight mb-3">Рождественский квартирник</h3>
-                <p class="text-navy/60 text-sm mb-6 flex-grow">Теплое время общения, прославления и празднования Рождества Христова в семейной атмосфере.</p>
-                <div class="mt-auto border-t border-navy/5 pt-4">
-                    <span class="text-xs text-navy/40">Декабрь</span>
-                </div>
-            </div>
-        </article>
-        <article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:-translate-y-1 transition-transform border border-navy/5 flex flex-col h-full">
-            <div class="h-48 bg-background-light flex items-center justify-center p-6 text-center">
-                <span class="material-symbols-outlined text-primary text-5xl">water_drop</span>
-            </div>
-            <div class="p-6 flex flex-col flex-grow">
-                <span class="text-xs font-bold text-primary mb-2 uppercase tracking-wider">Служение</span>
-                <h3 class="text-lg font-bold text-navy leading-tight mb-3">Новая жизнь через заключение завета</h3>
-                <p class="text-navy/60 text-sm mb-6 flex-grow">Водное крещение — это важный шаг веры и посвящения своей жизни Господу Иисусу Христу.</p>
-                <div class="mt-auto border-t border-navy/5 pt-4">
-                    <span class="text-xs text-navy/40">Недавно</span>
-                </div>
-            </div>
-        </article>
-    </div>
+    <h1 class="news-detail-title">{{ news.title }}</h1>
+  </div>
+  
+  {% if news.image %}
+  <div class="news-detail-image">
+    <img src="{{ news.image.url }}" alt="{{ news.title }}">
+  </div>
+  {% endif %}
+  
+  <div class="news-detail-content">
+    {{ news.content|linebreaks }}
+  </div>
+  
+  <a href="{% url 'news_list' %}" class="back-link">
+    ← Назад к новостям
+  </a>
 </div>
 {% endblock %}

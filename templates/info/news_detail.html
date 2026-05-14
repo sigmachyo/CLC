@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ news.title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+  .news-detail-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 120px 20px 80px;
+  }
+  
+  .news-detail-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .news-detail-date {
+    color: var(--gold, #c9a84c);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+  
+  .news-detail-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--txt, #1a1f36);
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+  
+  .news-detail-image {
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 30px;
+  }
+  
+  .news-detail-image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  
+  .news-detail-content {
+    color: var(--txt-sub, #3d4260);
+    font-size: 1.1rem;
+    line-height: 1.8;
+  }
+  
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 40px;
+    color: var(--gold, #c9a84c);
+    text-decoration: none;
+  }
+  
+  .back-link:hover {
+    gap: 12px;
+  }
+  
+  /* Related news */
+  .related-news {
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 1px solid var(--b, rgba(26,31,54,0.1));
+  }
+  
+  .related-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--txt, #1a1f36);
+    margin-bottom: 30px;
+  }
+  
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+  }
+  
+  .related-card {
+    background: var(--card, #ffffff);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(26,31,54,0.08);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    border: 1px solid var(--b, rgba(26,31,54,0.08));
+  }
+  
+  .related-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(26,31,54,0.12);
+  }
+  
+  .related-card-image {
+    height: 140px;
+    background: linear-gradient(135deg, #2c3e50, #3498db);
+    overflow: hidden;
+  }
+  
+  .related-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .related-card-content {
+    padding: 15px;
+  }
+  
+  .related-card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--txt, #1a1f36);
+    line-height: 1.4;
+  }
+  
+  @media (max-width: 768px) {
+    .news-detail-title {
+      font-size: 1.8rem;
+    }
+    
+    .related-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="news-detail-container">
+  <div class="news-detail-header">
+    <div class="news-detail-date">
+      <i class="far fa-calendar-alt"></i> {{ news.created_at|date:"d.m.Y" }}
+    </div>
+    <h1 class="news-detail-title">{{ news.title }}</h1>
+  </div>
+  
+  {% if news.image %}
+  <div class="news-detail-image">
+    <img src="{{ news.image.url }}" alt="{{ news.title }}">
+  </div>
+  {% endif %}
+  
+  <div class="news-detail-content">
+    {{ news.content|linebreaks }}
+  </div>
+  
+  <a href="{% url 'news_list' %}" class="back-link">
+    <span>←</span> Назад к новостям
+  </a>
+  
+  <!-- Похожие новости -->
+  {% if related_news %}
+  <div class="related-news">
+    <h3 class="related-title">Читайте также</h3>
+    <div class="related-grid">
+      {% for item in related_news %}
+      <a href="{% url 'news_detail' item.slug %}" class="related-card">
+        {% if item.image %}
+        <div class="related-card-image">
+          <img src="{{ item.image.url }}" alt="{{ item.title }}" loading="lazy">
+        </div>
+        {% else %}
+        <div class="related-card-image" style="display: flex; align-items: center; justify-content: center;">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="white" opacity="0.5">
+            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 8h-4v4h-4v-4H6V9h4V5h4v4h4v2z"/>
+          </svg>
+        </div>
+        {% endif %}
+        <div class="related-card-content">
+          <div class="related-card-title">{{ item.title|truncatechars:70 }}</div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -428,3 +428,62 @@ class Donation(models.Model):
 
     def __str__(self):
         return f"{self.amount} ₽ - {self.get_status_display()}"
+    
+class News(models.Model):
+    """Новости для главной страницы"""
+
+    title = models.CharField(
+        max_length=200,
+        verbose_name="Заголовок"
+    )
+
+    slug = models.SlugField(
+        unique=True,
+        verbose_name="URL"
+    )
+
+    short_description = models.TextField(
+        verbose_name="Краткое описание"
+    )
+
+    content = models.TextField(
+        verbose_name="Полный текст"
+    )
+
+    image = models.ImageField(
+        upload_to='news/',
+        blank=True,
+        null=True,
+        verbose_name="Изображение"
+    )
+
+    is_featured = models.BooleanField(
+        default=False,
+        verbose_name="Главная новость"
+    )
+
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name="Опубликовано"
+    )
+
+    views_count = models.IntegerField(
+        default=0,
+        verbose_name="Просмотры"
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
+
+    class Meta:
+        ordering = ['-is_featured', '-created_at']
+        verbose_name = "Новость"
+        verbose_name_plural = "Новости"
+
+    def __str__(self):
+        return self.title

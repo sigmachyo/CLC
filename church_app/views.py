@@ -387,6 +387,8 @@ def debug_stream_status(request):
         'schedule': SCHEDULE,
     })
 
+from .models import News
+
 def home(request):
     """Главная страница с таймером воскресной трансляции"""
     current_announcement = Announcement.objects.filter(
@@ -400,6 +402,10 @@ def home(request):
     # Получаем текущее UTC время в миллисекундах
     # Это критично - должны быть миллисекунды от эпохи в UTC
     server_now_ms = int(timezone.now().timestamp() * 1000)
+
+    news = News.objects.filter(
+        is_active=True
+    )[:6]
     
     context = {
         'announcement': current_announcement,
@@ -410,7 +416,8 @@ def home(request):
         'service_schedule': SCHEDULE,
         'featured_events': featured_events,
         'server_now_ms': server_now_ms,
-        'server_now_kra': _kra_now().isoformat(),  # Для отладки
+        'server_now_kra': _kra_now().isoformat(),
+        'news': news,
     }
     return render(request, 'home.html', context)
 
@@ -588,3 +595,39 @@ def custom_404(request, exception=None):
 def custom_500(request):
     """Кастомная страница 500"""
     return render(request, '500.html', status=500)
+
+from .models import News
+from django.shortcuts import render, get_object_or_404
+
+
+def news_detail(request, slug):
+    """Детальная страница новости"""
+    news_item = get_object_or_404(News, slug=slug, is_active=True)
+    news_item.views_count += 1
+    news_item.save(update_fields=['views_count'])
+    
+    # Похожие новости
+    related_news = News.objects.filter(is_active=True).exclude(id=news_item.id).order_by('-created_at')[:3]
+    
+    context = {
+        'news': news_item,
+        'related_news': related_news,
+    }
+    return render(request, 'info/news_detail.html', context)  # ← изменили путь
+def news_list(request):
+    """Страница со списком всех новостей"""
+    news_items = News.objects.filter(is_active=True).order_by('-is_featured', '-created_at')
+    
+    from django.core.paginator import Paginator
+    paginator = Paginator(news_items, 12)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+    
+    recent_news = news_items[:5]
+    
+    context = {
+        'page_obj': page_obj,
+        'recent_news': recent_news,
+        'total_count': news_items.count(),
+    }
+    return render(request, 'info/news_list.html', context)

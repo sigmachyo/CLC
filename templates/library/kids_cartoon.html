@@ -1,6 +1,8 @@
 {% extends 'library/base_library.html' %}
 {% load static %}
+
 {% block title %}{{ content.title }}{% endblock %}
+
 {% block extra_css %}
 <style>
     .kids-video-container {
@@ -19,10 +21,12 @@
     }
 
     .kids-video-player video,
-    .kids-video-player iframe {
+    .kids-video-player iframe,
+    .kids-video-player img {
         width: 100%;
         height: 100%;
         border: none;
+        object-fit: cover;
     }
 
     .kids-video-title {
@@ -55,153 +59,119 @@
         margin-right: 10px;
     }
 
-    .completion-btn {
-        background: #2ecc71;
+    .content-text {
         color: white;
-        border: none;
-        padding: 15px 40px;
-        border-radius: 30px;
         font-size: 1.2rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        box-shadow: 0 5px 0 #27ae60;
-    }
-
-    .completion-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 0 #27ae60;
-    }
-
-    .completion-btn:active {
-        transform: translateY(2px);
-        box-shadow: 0 3px 0 #27ae60;
-    }
-
-    .completion-btn.completed {
-        background: #95a5a6;
-        box-shadow: 0 5px 0 #7f8c8d;
-        pointer-events: none;
-    }
-
-    .printable-section {
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 20px;
-        padding: 25px;
+        line-height: 1.8;
         margin-top: 30px;
-    }
-
-    .printable-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 15px;
-        background: #f1c40f;
-        color: #2c3e50;
-        text-decoration: none;
-        padding: 15px 30px;
-        border-radius: 30px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-
-    .printable-link:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 20px rgba(241, 196, 15, 0.3);
     }
 </style>
 {% endblock %}
+
 {% block library_content %}
+
 <div class="kids-video-container">
+
     <div class="kids-video-title">
         <i class="fas fa-child"></i>
         <h1>{{ content.title }}</h1>
     </div>
+
     <div class="kids-video-player">
+
         {% if content.video_file %}
+
         <video controls {% if content.thumbnail %}poster="{{ content.thumbnail.url }}" {% endif %}>
             <source src="{{ content.video_file.url }}" type="video/mp4">
             Твой браузер не поддерживает видео
         </video>
+
         {% elif content.get_youtube_embed_url %}
-        <iframe src="{{ content.get_youtube_embed_url }}" allowfullscreen
+
+        <iframe
+            src="{{ content.get_youtube_embed_url }}"
+            allowfullscreen
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            title="{{ content.title }}"></iframe>
+            title="{{ content.title }}">
+        </iframe>
+
         {% elif content.youtube_url %}
+
         <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#1a1f36;">
-            <a href="{{ content.youtube_url }}" target="_blank" rel="noopener"
-                style="color:#f1c40f;font-weight:bold;text-decoration:none;font-size:1.2rem;">
+            <a href="{{ content.youtube_url }}"
+               target="_blank"
+               rel="noopener"
+               style="color:#f1c40f;font-weight:bold;text-decoration:none;font-size:1.2rem;">
                 ▶ Смотреть на YouTube
             </a>
         </div>
+
+        {% elif content.thumbnail %}
+
+        <img src="{{ content.thumbnail.url }}" alt="{{ content.title }}">
+
         {% endif %}
+
     </div>
+
     {% if content.bible_verse %}
     <div class="bible-verse-box">
         <i class="fas fa-bible"></i>
         {{ content.bible_verse }}
     </div>
     {% endif %}
-    <div style="color: white; font-size: 1.2rem; line-height: 1.8; margin: 30px 0;">
+
+    <div class="content-text">
         {{ content.description|linebreaks }}
     </div>
-    {% if user.is_authenticated %}
-    <form method="post" style="text-align: center;">
-        {% csrf_token %}
-        <button type="submit" name="complete" class="completion-btn {% if progress.completed %}completed{% endif %}" {%
-            if progress.completed %}disabled{% endif %}>
-            <i class="fas fa-{% if progress.completed %}check-circle{% else %}smile{% endif %}"></i>
-            {% if progress.completed %}
-            Уже посмотрено! ✓
-            {% else %}
-            Я посмотрел(а)! 🌟
-            {% endif %}
-        </button>
-    </form>
-    {% else %}
-    <div style="text-align: center; margin-top: 30px;">
-        <a href="{% url 'login' %}" style="color: #f1c40f;">Войди в аккаунт, чтобы отмечать просмотренное</a>
-    </div>
-    {% endif %}
-    {% if content.printable_material %}
-    <div class="printable-section">
-        <h3 style="color: white; margin-bottom: 15px;">
-            <i class="fas fa-download"></i> Материалы для печати
-        </h3>
-        <a href="{{ content.printable_material.url }}" download class="printable-link">
-            <i class="fas fa-file-pdf"></i>
-            Скачать раскраску/задания
-        </a>
-    </div>
-    {% endif %}
+
 </div>
+
 {% if similar %}
 <div class="section-title">
     <i class="fas fa-thumbs-up"></i>
     <h2>Ещё для тебя</h2>
 </div>
+
 <div class="card-grid">
+
     {% for item in similar %}
-    <a href="{% url 'kids_content_detail' item.id %}" class="content-card {{ item.content_type }}-card">
+
+    <a href="{% url 'kids_content_detail' item.id %}"
+       class="content-card {{ item.content_type }}-card">
+
         <div class="card-image">
+
             {% if item.thumbnail %}
-            <img src="{{ item.thumbnail.url }}" alt="{{ item.title }}">
+                <img src="{{ item.thumbnail.url }}" alt="{{ item.title }}">
             {% else %}
-            <i
-                class="fas fa-{% if item.content_type == 'cartoon' %}film{% elif item.content_type == 'game' %}gamepad{% else %}child{% endif %}"></i>
+                <i class="fas fa-film"></i>
             {% endif %}
-            <div class="card-badge">{{ item.get_content_type_display }}</div>
+
+            <div class="card-badge">
+                {{ item.get_content_type_display }}
+            </div>
+
         </div>
+
         <div class="card-content">
-            <div class="card-title">{{ item.title }}</div>
+            <div class="card-title">
+                {{ item.title }}
+            </div>
+
             <div class="card-meta">
-                <span><i class="fas fa-users"></i> {{ item.get_age_group_display }}</span>
+                <span>
+                    <i class="fas fa-users"></i>
+                    {{ item.get_age_group_display }}
+                </span>
             </div>
         </div>
+
     </a>
+
     {% endfor %}
+
 </div>
 {% endif %}
+
 {% endblock %}
