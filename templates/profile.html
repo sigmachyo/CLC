@@ -201,13 +201,10 @@
                     <div class="text-center sm:text-left">
                         {% if current_progress %}
                         <h2 class="text-2xl font-display font-bold text-white mb-2">Продолжите обучение</h2>
-                        <p class="text-white/70 max-w-md">Вы остановились на плане: <strong>«{{
-                                current_progress.plan.title }}»</strong>. Ваш прогресс: {{ current_progress.current_day
-                            }} день.</p>
+                        <p class="text-white/70 max-w-md">Вы остановились на плане: <strong>«{{ current_progress.plan.title }}»</strong>. Ваш прогресс: {{ current_progress.current_day }} день.</p>
                         {% else %}
                         <h2 class="text-2xl font-display font-bold text-white mb-2">Начните свой путь</h2>
-                        <p class="text-white/70 max-w-md">В нашей библиотеке вы найдете сотни видео, планов чтения
-                            Библии и материалов для духовного роста.</p>
+                        <p class="text-white/70 max-w-md">В нашей библиотеке вы найдете сотни видео, планов чтения Библии и материалов для духовного роста.</p>
                         {% endif %}
                     </div>
                     <a href="{% if current_progress %}{% url 'bible_plan_detail' current_progress.plan.id %}{% else %}{% url 'library_home' %}{% endif %}"

@@ -475,32 +475,49 @@ def logout_view(request):
     messages.success(request, 'Вы успешно вышли из системы')
     return redirect('home')
 
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.db.models import Count
+from .models import UserBibleProgress, PrayerRequest, EventRegistration, BiblePlan, User
+import json
+
 @login_required
 def profile_view(request):
-    """Страница профиля"""
+    """Личный кабинет пользователя"""
     user = request.user
     
-    # Молитвы
-    prayers = PrayerRequest.objects.filter(user=user).order_by('-created_at')
-    prayers_count = prayers.count()
-    recent_prayers = prayers[:3]
+    # Получаем прогресс по Библии
+    bible_progress = UserBibleProgress.objects.filter(user=user).select_related('plan')
     
-    # Изучено (планы)
-    plans_count = UserBibleProgress.objects.filter(user=user, completed_at__isnull=False).count()
-    
-    # События
+    # Считаем количество
+    prayers_count = PrayerRequest.objects.filter(user=user).count()
     events_count = EventRegistration.objects.filter(user=user).count()
+    plans_count = bible_progress.count()
     
-    # Текущее обучение
-    current_progress = UserBibleProgress.objects.filter(user=user, completed_at__isnull=True).order_by('-last_read_at').first()
+    # Текущий план (последний активный - у которого не заполнены все дни)
+    current_progress = None
+    for progress in bible_progress.order_by('-last_read_at'):
+        if len(progress.completed_days) < progress.plan.days_count:
+            current_progress = progress
+            break
+    
+    # Недавние молитвенные нужды (последние 3)
+    recent_prayers = PrayerRequest.objects.filter(user=user).order_by('-created_at')[:3]
+    
+    # Для отладки - выводим в консоль
+    print(f"DEBUG - prayers_count: {prayers_count}")
+    print(f"DEBUG - plans_count: {plans_count}")
+    print(f"DEBUG - events_count: {events_count}")
+    print(f"DEBUG - recent_prayers count: {recent_prayers.count()}")
     
     context = {
         'user': user,
         'prayers_count': prayers_count,
-        'recent_prayers': recent_prayers,
         'plans_count': plans_count,
         'events_count': events_count,
         'current_progress': current_progress,
+        'recent_prayers': recent_prayers,
     }
     return render(request, 'profile.html', context)
 
