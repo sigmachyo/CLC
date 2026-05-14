@@ -18,6 +18,7 @@ urlpatterns = [
     path('api/live-stream/', views.live_stream_api, name='live_stream_api'),
     path('api/rutube-stream/', views.rutube_stream_api, name='rutube_stream_api'),
     path('api/video/', views.video_api, name='video_api'),
+    path('api/debug/stream-status/', views.debug_stream_status, name='debug_stream_status'),
 
     path('prayer/', views_prayer.prayer_list, name='prayer_list'),
     path('prayer/add/', views_prayer.prayer_add, name='prayer_add'),

@@ -68,7 +68,8 @@ def get_current_service_start():
         return None
     service_start_kra = _service_time_today_kra()
     service_end_kra = service_start_kra + timedelta(hours=3)
-    if service_start_kra <= kra <= service_end_kra:
+    # Трансляция идёт в диапазоне [11:00, 14:00), то есть 14:00 это уже конец
+    if service_start_kra <= kra < service_end_kra:
         return service_start_kra.astimezone(ZoneInfo('UTC'))
     return None
 
@@ -84,10 +85,13 @@ def get_next_sunday_service():
     if days_ahead < 0:
         days_ahead += 7
     if days_ahead == 0:
+        # Если сегодня воскресенье, проверяем, прошло ли время служения
         if kra >= service_today:
+            # Служение уже прошло, берём следующее воскресенье
             days_ahead = 7
+        # Иначе служение ещё впереди сегодня, days_ahead остаётся 0
     next_service_kra = service_today + timedelta(days=days_ahead)
-    return next_service_kra.astimezone(pytz.utc)
+    return next_service_kra.astimezone(ZoneInfo('UTC'))
 
 def is_stream_live():
     """Проверяет, идёт ли сейчас прямая трансляция (окно 3 часа от начала)"""
@@ -110,28 +114,42 @@ def get_time_until_service():
             'is_live': True,
             'until_next_week': False
         }
+    
+    # Получаем время следующего служения в UTC
     next_service = get_next_sunday_service()
+    
+    # Убеждаемся, что обе даты в UTC для корректного сравнения
+    if now.tzinfo is None:
+        now = pytz.utc.localize(now)
+    
     delta = next_service - now
-    if delta.total_seconds() <= 0:
-        return {
-            'days': 0,
-            'hours': 0,
-            'minutes': 0,
-            'seconds': 0,
-            'is_live': False,
-            'until_next_week': True
-        }
+    
+    # Если время уже прошло, значит ошибка в расчётах
+    if delta.total_seconds() < 0:
+        # Пересчитываем следующее воскресенье
+        kra = _kra_now()
+        service_kra = _service_time_today_kra()
+        # Принудительно ищем СЛЕДУЮЩЕЕ воскресенье
+        next_service = (service_kra + timedelta(days=7)).astimezone(ZoneInfo('UTC'))
+        delta = next_service - now
+    
+    total_seconds = max(0, delta.total_seconds())
+    days = int(total_seconds // 86400)
+    hours = int((total_seconds % 86400) // 3600)
+    minutes = int((total_seconds % 3600) // 60)
+    seconds = int(total_seconds % 60)
+    
     return {
-        'days': delta.days,
-        'hours': delta.seconds // 3600,
-        'minutes': (delta.seconds % 3600) // 60,
-        'seconds': delta.seconds % 60,
+        'days': days,
+        'hours': hours,
+        'minutes': minutes,
+        'seconds': seconds,
         'is_live': False,
         'until_next_week': False
     }
 
 @require_GET
-@cache_page(60)
+@cache_page(5)  # Короткий кеш для быстрого переключения состояний LIVE/TIMER
 def rutube_stream_api(request):
     """
     Запрашивает API Rutube канала.
@@ -276,7 +294,7 @@ def _parse_streams_page(html):
     return results
 
 @require_GET
-@cache_page(20)
+@cache_page(5)  # Короткий кеш для быстрого переключения состояний LIVE/TIMER
 def live_stream_api(request):
     """Резервный API для YouTube"""
     try:
@@ -320,7 +338,7 @@ def live_stream_api(request):
     })
 
 @require_GET
-@cache_page(30)
+@cache_page(5)  # Короткий кеш для быстрого переключения состояний LIVE/TIMER
 def video_api(request):
     """
     Единый API для получения видео.
@@ -345,6 +363,27 @@ def video_api(request):
         'time_until_service': get_time_until_service()
     }, status=404)
 
+@require_GET
+def debug_stream_status(request):
+    """Debug API - показывает текущее состояние трансляции"""
+    kra = _kra_now()
+    service_today = _service_time_today_kra()
+    next_service = get_next_sunday_service()
+    
+    return JsonResponse({
+        'server_time_kra': kra.isoformat(),
+        'server_time_utc': timezone.now().isoformat(),
+        'day_of_week': kra.weekday(),  # 0=Monday, 6=Sunday
+        'hour': kra.hour,
+        'minute': kra.minute,
+        'is_sunday': kra.weekday() == SCHEDULE['weekday'],
+        'service_start_today_kra': service_today.isoformat(),
+        'is_stream_live': is_stream_live(),
+        'time_until_service': get_time_until_service(),
+        'next_service_utc': next_service.isoformat(),
+        'schedule': SCHEDULE,
+    })
+
 def home(request):
     """Главная страница с таймером воскресной трансляции"""
     current_announcement = Announcement.objects.filter(
@@ -355,6 +394,10 @@ def home(request):
     time_info = get_time_until_service()
     featured_events = Event.objects.filter(is_active=True, is_featured=True).order_by('start_date')[:10]
     
+    # Получаем текущее UTC время в миллисекундах
+    # Это критично - должны быть миллисекунды от эпохи в UTC
+    server_now_ms = int(timezone.now().timestamp() * 1000)
+    
     context = {
         'announcement': current_announcement,
         'show_announcement': current_announcement is not None,
@@ -363,7 +406,8 @@ def home(request):
         'is_live': time_info['is_live'],
         'service_schedule': SCHEDULE,
         'featured_events': featured_events,
-        'server_now_ms': int(timezone.now().timestamp() * 1000),
+        'server_now_ms': server_now_ms,
+        'server_now_kra': _kra_now().isoformat(),  # Для отладки
     }
     return render(request, 'home.html', context)
 

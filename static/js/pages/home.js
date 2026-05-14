@@ -32,6 +32,11 @@ motionMQ.addEventListener('change', e => { REDUCED_MOTION = e.matches; });
 let _realTimeOffset = 0;
 if (window.SERVER_NOW_MS) {
   _realTimeOffset = window.SERVER_NOW_MS - Date.now();
+  console.log('[TIMER] Server time offset:', _realTimeOffset, 'ms');
+  console.log('[TIMER] Server time:', new Date(window.SERVER_NOW_MS).toISOString());
+  console.log('[TIMER] Client time:', new Date().toISOString());
+} else {
+  console.warn('[TIMER] SERVER_NOW_MS not provided - using client time!');
 }
 
 /**
@@ -40,16 +45,53 @@ if (window.SERVER_NOW_MS) {
  */
 const getKraComponents = () => {
   const nowMs = Date.now() + _realTimeOffset;
-  const kraMs = nowMs + (CFG.KRA_OFFSET * 3600000);
-  const kra = new Date(kraMs);
+  const dateUTC = new Date(nowMs);
+  
+  // Получаем компоненты в UTC
+  let year = dateUTC.getUTCFullYear();
+  let month = dateUTC.getUTCMonth();  // 0-11
+  let day = dateUTC.getUTCDate();
+  let hours = dateUTC.getUTCHours();
+  let minutes = dateUTC.getUTCMinutes();
+  let seconds = dateUTC.getUTCSeconds();
+  let dayOfWeek = dateUTC.getUTCDay();  // 0=Sunday
+  
+  // Добавляем смещение Красноярска (+7 часов)
+  hours += CFG.KRA_OFFSET;
+  
+  // Обрабатываем переход дней
+  while (hours >= 24) {
+    hours -= 24;
+    day += 1;
+  }
+  while (hours < 0) {
+    hours += 24;
+    day -= 1;
+  }
+  
+  // Обрабатываем переход месяцев
+  const daysInMonth = (m, y) => [31, (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][m];
+  while (day > daysInMonth(month, year)) {
+    day -= daysInMonth(month, year);
+    month += 1;
+  }
+  while (day < 1) {
+    month -= 1;
+    if (month < 0) {
+      month = 11;
+      year -= 1;
+    }
+    day += daysInMonth(month, year);
+  }
+  
+  // Обновляем dayOfWeek для нового дня (если он изменился)
+  if (hours !== dateUTC.getUTCHours() || day !== dateUTC.getUTCDate()) {
+    const tempDate = new Date(Date.UTC(year, month, day, 12, 0, 0));
+    dayOfWeek = tempDate.getUTCDay();
+  }
+  
   return {
-    year: kra.getUTCFullYear(),
-    month: kra.getUTCMonth(),
-    day: kra.getUTCDate(),
-    hours: kra.getUTCHours(),
-    minutes: kra.getUTCMinutes(),
-    seconds: kra.getUTCSeconds(),
-    dayOfWeek: kra.getUTCDay(),
+    year, month, day, hours, minutes, seconds, dayOfWeek
   };
 };
 
@@ -172,6 +214,15 @@ const updateCountdown = () => {
   const isSundayBeforeBcast = day === 0 && hour < CFG.BCAST_H;
   const isSundayLive = day === 0 && hour >= CFG.BCAST_H && hour < CFG.BCAST_END;
 
+  // Отладка каждую минуту
+  if (kra.minutes % 10 === 0 && kra.seconds < 2) {
+    console.log('[TIMER] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    console.log('[TIMER] Current KRA time:', `${kra.year}-${String(kra.month+1).padStart(2, '0')}-${String(kra.day).padStart(2, '0')} ${String(kra.hours).padStart(2, '0')}:${String(kra.minutes).padStart(2, '0')}:${String(kra.seconds).padStart(2, '0')}`);
+    console.log('[TIMER] Day of week:', day, '(0=Sun, 6=Sat) - isSunday:', day === 0);
+    console.log('[TIMER] isSundayBeforeBcast:', isSundayBeforeBcast, 'isSundayLive:', isSundayLive);
+    console.log('[TIMER] BCAST_H:', CFG.BCAST_H, 'BCAST_END:', CFG.BCAST_END);
+  }
+
   // Если это воскресное утро, включаем красную мигающую метку у таймера
   const presoonBadge = $('timer-presoon-badge');
   const normalBadge = $('timer-normal-badge');
@@ -196,6 +247,12 @@ const updateCountdown = () => {
 
   const nextSunUTC = kraToUTC(nextYear, nextMonth, nextDay, CFG.BCAST_H);
   const diff = Math.max(0, nextSunUTC - nowUTC);
+
+  if (kra.minutes % 10 === 0 && kra.seconds < 2) {
+    console.log('[TIMER] Target: воскресенье', nextDay, 'в', CFG.BCAST_H, ':00 (Красноярск)');
+    console.log('[TIMER] nextSunUTC:', nextSunUTC, 'nowUTC:', nowUTC, 'diff:', diff, 'ms');
+    console.log('[TIMER] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  }
 
   // Класс для анимации изменения цифр
   const setT = (id, v) => {
@@ -358,6 +415,7 @@ const _tryRutubeFallback = async (container, btnEl, context) => {
 // ── DETECT STATE ─────────────────────────────────────────────────────────────
 let _liveVideoId = null;
 let _liveIframeSet = false;
+let _lastDetectState = null;
 
 const _showLiveFallback = () => {
   const lp = $('live-player');
@@ -380,6 +438,12 @@ const detectState = async () => {
   const m = kra.minutes;
   const inWindow = day === 0 && h >= CFG.BCAST_H && h < CFG.BCAST_END;
   const isBefore = day === 0 && h < CFG.BCAST_H;
+  
+  const currentState = inWindow ? 'LIVE' : (isBefore ? 'SOON' : 'WAIT');
+  if (currentState !== _lastDetectState) {
+    console.log(`[TIMER] State changed: ${_lastDetectState || 'INIT'} -> ${currentState}`);
+    _lastDetectState = currentState;
+  }
 
   if (inWindow) {
     showTimerState('live');
@@ -401,6 +465,7 @@ const detectState = async () => {
       });
       const ruBtn = $('live-ru-btn');
       if (ruBtn) ruBtn.href = `https://rutube.ru/video/${encodeURIComponent(ruLiveTarget.video_id)}/`;
+      console.log('[TIMER] Loaded Rutube stream:', ruLiveTarget.video_id);
       return;
     }
 
@@ -414,6 +479,7 @@ const detectState = async () => {
       if (ld) ld.textContent = new Date().toLocaleString('ru-RU', {
         timeZone: CFG.TZ, hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'long',
       });
+      console.log('[TIMER] Loaded YouTube stream:', vid);
     }
     return;
   }
@@ -422,6 +488,7 @@ const detectState = async () => {
     _liveIframeSet = false; _liveVideoId = null;
     const lp = $('live-player');
     if (lp) lp.innerHTML = '';
+    console.log('[TIMER] Cleared live player');
   }
   showTimerState('timer');
 };
