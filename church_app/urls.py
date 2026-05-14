@@ -1,5 +1,5 @@
 from django.urls import path
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, RedirectView
 from . import views, views_library, views_prayer, views_donate, views_push
 
 urlpatterns = [
@@ -51,6 +51,8 @@ urlpatterns = [
 
     path('offline/', views.offline_view, name='offline'),
     path('sw.js', views.service_worker, name='service_worker'),
+    path('favicon.ico', RedirectView.as_view(url='/static/icons/favicon.ico')),
+    path('.well-known/appspecific/com.chrome.devtools.json', views.chrome_devtools_json),
 
     path('about/', TemplateView.as_view(template_name='info/about.html'), name='about'),
     path('alpha/', TemplateView.as_view(template_name='info/alpha.html'), name='alpha'),

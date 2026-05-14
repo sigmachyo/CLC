@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
+from pathlib import Path
 from .models import Announcement, DailyVerse, HeroBackground, Event, Video, Category, PrayerRequest, UserBibleProgress, EventRegistration
 from .forms import RegisterForm, LoginForm, ProfileEditForm, ChangePasswordForm
 from django.http import JsonResponse
@@ -156,7 +157,7 @@ def rutube_stream_api(request):
     Возвращает JSON с video_id последнего воскресного служения.
     """
     try:
-        resp = requests.get(RUTUBE_API_URL, timeout=10, headers={
+        resp = requests.get(RUTUBE_API_URL, timeout=20, headers={
             'User-Agent': _YT_HEADERS['User-Agent'],
         })
         resp.raise_for_status()
@@ -173,7 +174,7 @@ def rutube_stream_api(request):
     try:
         data = resp.json()
     except Exception as e:
-        logger.exception('Ошибка парсинга ответа Rutube API')
+        logger.error(f'Ошибка парсинга ответа Rutube API: {e}. Тело ответа: {resp.text[:500]}')
         return JsonResponse(
             {'video_id': None, 'error': f'parse error: {e}', 'platform': 'rutube'},
             status=500
@@ -554,12 +555,29 @@ def dismiss_announcement(request):
 @require_GET
 def service_worker(request):
     """Служит sw.js из корня для корректной области видимости (scope)"""
-    sw_path = os.path.join(settings.BASE_DIR, 'static', 'sw.js')
+    # Пробуем найти sw.js в STATICFILES_DIRS или BASE_DIR/static
+    sw_path = settings.BASE_DIR / 'static' / 'sw.js'
+    
+    if not sw_path.exists():
+        # Резервный поиск в STATIC_ROOT, если мы в production
+        sw_path = Path(settings.STATIC_ROOT) / 'sw.js'
+
+    if not sw_path.exists():
+        logger.error(f"Service worker not found at {sw_path}")
+        return HttpResponse("Service Worker not found", status=404)
+
     try:
         with open(sw_path, 'rb') as f:
             return HttpResponse(f.read(), content_type='application/javascript')
-    except IOError:
+    except IOError as e:
+        logger.error(f"Error reading service worker: {e}")
         return HttpResponse(status=404)
+
+
+@require_GET
+def chrome_devtools_json(request):
+    """Силим 404 для Chrome DevTools расширения"""
+    return JsonResponse({}, status=200)
 
 
 def custom_404(request, exception=None):
