@@ -12,7 +12,6 @@ const STATIC_ASSETS = [
     '/static/icons/icon-512x512.png',
 ];
 
-// Install: pre-cache critical assets (отказоустойчиво — один упавший файл не ломает всё)
 self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
@@ -27,7 +26,6 @@ self.addEventListener('install', event => {
     self.skipWaiting();
 });
 
-// Activate: clean up old caches
 self.addEventListener('activate', event => {
     event.waitUntil(
         caches.keys().then(cacheNames => {
@@ -44,18 +42,14 @@ self.addEventListener('activate', event => {
     self.clients.claim();
 });
 
-// Intercept fetch requests
 self.addEventListener('fetch', event => {
     const request = event.request;
     const url = new URL(request.url);
 
-    // Only handle GET requests
     if (request.method !== 'GET') return;
 
-    // Skip admin, API requests, and cross-origin non-font requests
     if (url.pathname.startsWith('/admin/') || url.pathname.startsWith('/api/')) return;
 
-    // 1. Fonts: Stale-While-Revalidate
     if (url.origin.includes('fonts.googleapis.com') || url.origin.includes('fonts.gstatic.com')) {
         event.respondWith(
             caches.open(CACHE_NAME).then(cache => {
@@ -76,7 +70,6 @@ self.addEventListener('fetch', event => {
         return;
     }
 
-    // 2. Static assets: Cache-First
     if (url.pathname.startsWith('/static/')) {
         event.respondWith(
             caches.match(request).then(cachedResponse => {
@@ -97,7 +90,6 @@ self.addEventListener('fetch', event => {
         return;
     }
 
-    // 3. HTML Pages: Network-First with Offline Fallback
     const acceptHeader = request.headers.get('Accept') || '';
     if (acceptHeader.includes('text/html')) {
         event.respondWith(
@@ -120,7 +112,6 @@ self.addEventListener('fetch', event => {
         return;
     }
 
-    // 4. Other requests: Network with fallback to cache
     event.respondWith(
         fetch(request).catch(() => {
             return caches.match(request).then(cachedResponse => {
@@ -130,7 +121,6 @@ self.addEventListener('fetch', event => {
     );
 });
 
-// Push Notifications
 self.addEventListener('push', function(event) {
     if (event.data) {
         let data = { title: 'CLC', body: 'Новое уведомление' };
@@ -150,7 +140,6 @@ self.addEventListener('push', function(event) {
     }
 });
 
-// Notification Click
 self.addEventListener('notificationclick', function(event) {
     event.notification.close();
     event.waitUntil(

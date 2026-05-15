@@ -86,11 +86,8 @@ def get_next_sunday_service():
     if days_ahead < 0:
         days_ahead += 7
     if days_ahead == 0:
-        # Если сегодня воскресенье, проверяем, прошло ли время служения
         if kra >= service_today:
-            # Служение уже прошло, берём следующее воскресенье
             days_ahead = 7
-        # Иначе служение ещё впереди сегодня, days_ahead остаётся 0
     next_service_kra = service_today + timedelta(days=days_ahead)
     return next_service_kra.astimezone(ZoneInfo('UTC'))
 
@@ -116,21 +113,16 @@ def get_time_until_service():
             'until_next_week': False
         }
     
-    # Получаем время следующего служения в UTC
     next_service = get_next_sunday_service()
     
-    # Убеждаемся, что обе даты в UTC для корректного сравнения
     if now.tzinfo is None:
         now = pytz.utc.localize(now)
     
     delta = next_service - now
     
-    # Если время уже прошло, значит ошибка в расчётах
     if delta.total_seconds() < 0:
-        # Пересчитываем следующее воскресенье
         kra = _kra_now()
         service_kra = _service_time_today_kra()
-        # Принудительно ищем СЛЕДУЮЩЕЕ воскресенье
         next_service = (service_kra + timedelta(days=7)).astimezone(ZoneInfo('UTC'))
         delta = next_service - now
     
@@ -150,7 +142,7 @@ def get_time_until_service():
     }
 
 @require_GET
-@cache_page(5)  # Короткий кеш для быстрого переключения состояний LIVE/TIMER
+@cache_page(5)
 def rutube_stream_api(request):
     """
     Запрашивает API Rutube канала.
@@ -189,7 +181,6 @@ def rutube_stream_api(request):
     stream_entries = []
     
     for item in results:
-        # Проверка на модерацию и доступность
         if item.get('is_moderation', False): continue
         if not item.get('is_active', True): continue
         
@@ -223,11 +214,9 @@ def rutube_stream_api(request):
 
     best = stream_entries[0] if stream_entries else all_valid_entries[0]
     
-    # [LOGIC] Синхронизация с библиотекой (авто-добавление)
     try:
         video_full_url = f"https://rutube.ru/video/{best['video_id']}/"
         if not Video.objects.filter(rutube_url=video_full_url).exists():
-            # Находим категорию Видео
             cat = Category.objects.filter(category_type='video').first()
             if cat:
                 desc = f"Автоматически добавлено из трансляции. Дата: {best['published']}"
@@ -297,7 +286,7 @@ def _parse_streams_page(html):
     return results
 
 @require_GET
-@cache_page(5)  # Короткий кеш для быстрого переключения состояний LIVE/TIMER
+@cache_page(5)
 def live_stream_api(request):
     """Резервный API для YouTube"""
     try:
@@ -398,9 +387,7 @@ def home(request):
     ).first()
     time_info = get_time_until_service()
     featured_events = Event.objects.filter(is_active=True, is_featured=True).order_by('start_date')[:10]
-    
-    # Получаем текущее UTC время в миллисекундах
-    # Это критично - должны быть миллисекунды от эпохи в UTC
+
     server_now_ms = int(timezone.now().timestamp() * 1000)
 
     news = News.objects.filter(
@@ -487,25 +474,20 @@ def profile_view(request):
     """Личный кабинет пользователя"""
     user = request.user
     
-    # Получаем прогресс по Библии
     bible_progress = UserBibleProgress.objects.filter(user=user).select_related('plan')
     
-    # Считаем количество
     prayers_count = PrayerRequest.objects.filter(user=user).count()
     events_count = EventRegistration.objects.filter(user=user).count()
     plans_count = bible_progress.count()
     
-    # Текущий план (последний активный - у которого не заполнены все дни)
     current_progress = None
     for progress in bible_progress.order_by('-last_read_at'):
         if len(progress.completed_days) < progress.plan.days_count:
             current_progress = progress
             break
     
-    # Недавние молитвенные нужды (последние 3)
     recent_prayers = PrayerRequest.objects.filter(user=user).order_by('-created_at')[:3]
     
-    # Для отладки - выводим в консоль
     print(f"DEBUG - prayers_count: {prayers_count}")
     print(f"DEBUG - plans_count: {plans_count}")
     print(f"DEBUG - events_count: {events_count}")
@@ -579,11 +561,9 @@ def dismiss_announcement(request):
 @require_GET
 def service_worker(request):
     """Служит sw.js из корня для корректной области видимости (scope)"""
-    # Пробуем найти sw.js в STATICFILES_DIRS или BASE_DIR/static
     sw_path = settings.BASE_DIR / 'static' / 'sw.js'
     
     if not sw_path.exists():
-        # Резервный поиск в STATIC_ROOT, если мы в production
         sw_path = Path(settings.STATIC_ROOT) / 'sw.js'
 
     if not sw_path.exists():
@@ -630,7 +610,7 @@ def news_detail(request, slug):
         'news': news_item,
         'related_news': related_news,
     }
-    return render(request, 'info/news_detail.html', context)  # ← изменили путь
+    return render(request, 'info/news_detail.html', context)
 def news_list(request):
     """Страница со списком всех новостей"""
     news_items = News.objects.filter(is_active=True).order_by('-is_featured', '-created_at')

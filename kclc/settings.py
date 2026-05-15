@@ -12,7 +12,7 @@ SECRET_KEY = os.environ.get(
     'django-insecure-your-secret-key-here-changeme-in-production'
 )
 
-DEBUG = os.environ.get('DJANGO_DEBUG', 'True').lower() in ('true', '1', 'yes')
+DEBUG = False#os.environ.get('DJANGO_DEBUG', 'True').lower() in ('true', '1', 'yes')
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
