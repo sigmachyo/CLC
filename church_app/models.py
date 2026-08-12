@@ -214,6 +214,7 @@ class UserBibleProgress(models.Model):
             self.completed_days.append(day_number)
             if day_number > self.current_day:
                 self.current_day = day_number
+            self.completed_days = list(self.completed_days)  # Явное переназначение для JSONField
             self.save()
 
     def get_progress_percentage(self):
