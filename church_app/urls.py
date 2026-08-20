@@ -54,7 +54,7 @@ urlpatterns = [
     path('favicon.ico', RedirectView.as_view(url='/static/icons/favicon.ico')),
     path('.well-known/appspecific/com.chrome.devtools.json', views.chrome_devtools_json),
 
-    path('about/', TemplateView.as_view(template_name='info/about.html'), name='about'),
+    path('about/', views.about_view, name='about'),
     path('alpha/', TemplateView.as_view(template_name='info/alpha.html'), name='alpha'),
     path('ministries/', TemplateView.as_view(template_name='info/ministries.html'), name='ministries'),
     path('news/', views.news_list, name='news_list'),
@@ -63,4 +63,5 @@ urlpatterns = [
     path('home-meet/', TemplateView.as_view(template_name='info/home_meet.html'), name='home_meet'),
     path('regional-churches/', TemplateView.as_view(template_name='info/regional_churches.html'), name='regional_churches'),
     path('privacy-policy/', TemplateView.as_view(template_name='info/privacy.html'), name='privacy'),
+    path('api/upload-pastor-photo/', views.upload_pastor_photo, name='upload_pastor_photo'),
 ]

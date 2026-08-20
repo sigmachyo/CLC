@@ -488,3 +488,15 @@ class News(models.Model):
 
     def __str__(self):
         return self.title
+
+class PastorPhoto(models.Model):
+    slug = models.SlugField(unique=True, verbose_name="Идентификатор пастора")
+    image = models.ImageField(upload_to='pastors/', verbose_name="Фото", blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name = "Фото пастора"
+        verbose_name_plural = "Фото пасторов"
+    
+    def __str__(self):
+        return self.slug

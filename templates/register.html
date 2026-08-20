@@ -220,12 +220,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const password1Input = document.getElementById('password1');
     const password2Input = document.getElementById('password2');
     const submitBtn = document.getElementById('submit-btn');
+    const agreement = document.getElementById('agreement');
 
-    // Если есть ошибки от Django, восстанавливаем кнопку
-    if (hasDjangoErrors()) {
+    // Функция для сброса кнопки в обычное состояние
+    function resetSubmitButton() {
         submitBtn.innerHTML = 'Создать аккаунт';
         submitBtn.classList.remove('opacity-90', 'cursor-not-allowed');
         submitBtn.disabled = false;
+    }
+
+    // Если есть ошибки от Django, восстанавливаем кнопку
+    if (hasDjangoErrors()) {
+        resetSubmitButton();
     }
 
     // Функция для отображения/скрытия ошибки
@@ -242,21 +248,18 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             // Скрываем ошибку
             errorDiv.classList.add('hidden');
-            errorText.textContent = ''; // Очищаем текст ошибки
+            errorText.textContent = '';
             input.classList.remove('border-red-400', 'bg-red-50/50');
             
             // Проверяем, заполнено ли поле и валидно ли оно
             const value = input.value.trim();
             if (value && input.checkValidity()) {
-                // Если поле заполнено и валидно - зеленая рамка
                 input.classList.add('border-green-400');
                 input.classList.remove('border-transparent');
             } else if (value) {
-                // Если поле заполнено, но не валидно - серая рамка
                 input.classList.remove('border-green-400');
                 input.classList.add('border-gray-200');
             } else {
-                // Если поле пустое - без подсветки
                 input.classList.remove('border-green-400', 'border-gray-200');
                 input.classList.add('border-transparent');
             }
@@ -295,12 +298,24 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Слушатель изменения чекбокса согласия - сбрасываем кнопку и удаляем сообщение об ошибке
+    agreement.addEventListener('change', function() {
+        // Сбрасываем кнопку, если она была заблокирована
+        resetSubmitButton();
+        
+        // Удаляем сообщение об ошибке согласия, если оно есть
+        const parent = this.closest('.flex');
+        const existingMsg = parent.querySelector('.text-red-500');
+        if (existingMsg) {
+            existingMsg.remove();
+        }
+    });
+
     // ===== Валидация Имени пользователя =====
     usernameInput.addEventListener('input', function() {
         const value = this.value.trim();
         let error = null;
 
-        // Проверяем только если поле не пустое
         if (value) {
             if (value.length < 3) {
                 error = 'Имя пользователя должно содержать минимум 3 символа.';
@@ -317,11 +332,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        // Если значение пустое - скрываем ошибку
-        if (!value) {
-            error = null;
-        }
-
         showError(this, error);
     });
 
@@ -330,7 +340,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const value = this.value.trim();
         let error = null;
 
-        // Проверяем только если поле не пустое
         if (value) {
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
                 error = 'Пожалуйста, введите корректный email-адрес.';
@@ -353,7 +362,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const value = this.value;
         let error = null;
 
-        // Проверяем только если поле не пустое
         if (value) {
             if (value.length < 8) {
                 error = 'Пароль должен содержать минимум 8 символов.';
@@ -367,7 +375,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 error = 'Пароль должен содержать хотя бы один спецсимвол (!@#$% и т.д.).';
             }
 
-            // Проверка на общие пароли (только если нет других ошибок)
             if (!error) {
                 const commonPasswords = ['123456', 'password', '12345678', 'qwerty', '123456789', '12345', '1234', '111111', '1234567', 'dragon', '123123', 'baseball', 'abc123', 'football', 'monkey', 'letmein', 'shadow', 'master', '666666', 'qwertyuiop', '123321', 'mustang', '1234567890', 'michael', '654321', 'superman', '1qaz2wsx', '7777777', '121212', '000000', 'qazwsx', '123qwe', 'killer', 'trustno1'];
                 if (commonPasswords.includes(value.toLowerCase())) {
@@ -379,7 +386,6 @@ document.addEventListener('DOMContentLoaded', function() {
         showError(this, error);
         updatePasswordRequirements(value);
 
-        // Также проверяем поле password2, если оно заполнено
         if (password2Input.value) {
             password2Input.dispatchEvent(new Event('input'));
         }
@@ -391,14 +397,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const p1 = password1Input.value;
         let error = null;
 
-        // Проверяем только если поле не пустое
         if (value) {
             if (!p1) {
                 error = 'Сначала введите пароль.';
             } else if (value !== p1) {
                 error = 'Пароли не совпадают.';
             }
-            // Если value === p1, то ошибки нет (error = null)
         }
 
         showError(this, error);
@@ -407,7 +411,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // ===== Обработка фокуса и потери фокуса =====
     [usernameInput, emailInput, password1Input, password2Input].forEach(input => {
         input.addEventListener('blur', function() {
-            // При потере фокуса проверяем поле (если оно не пустое)
             if (this.value.trim()) {
                 this.dispatchEvent(new Event('input'));
             }
@@ -428,11 +431,11 @@ document.addEventListener('DOMContentLoaded', function() {
         password1Input.dispatchEvent(new Event('input'));
         password2Input.dispatchEvent(new Event('input'));
 
-        // Проверяем, есть ли ошибки
+        // Проверяем, есть ли ошибки в полях
         const errors = document.querySelectorAll('.error-message:not(.hidden)');
         if (errors.length > 0) {
             e.preventDefault();
-            // Прокручиваем к первому полю с ошибкой
+            resetSubmitButton(); // Сбрасываем кнопку
             const firstError = errors[0];
             const input = firstError.closest('.relative').querySelector('input');
             if (input) {
@@ -443,11 +446,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Проверяем соглашение
-        const agreement = document.getElementById('agreement');
         if (!agreement.checked) {
             e.preventDefault();
+            resetSubmitButton(); // Сбрасываем кнопку
+            
             agreement.focus();
             agreement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Показываем сообщение об ошибке
             const msg = document.createElement('div');
             msg.className = 'text-red-500 text-sm font-medium mt-2 flex items-center gap-1.5';
             msg.innerHTML = '<span class="material-symbols-outlined text-[18px]">error</span> Пожалуйста, примите условия использования.';
@@ -455,7 +461,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const existing = parent.querySelector('.text-red-500');
             if (existing) existing.remove();
             parent.appendChild(msg);
-            setTimeout(() => { if (msg.parentNode) msg.remove(); }, 5000);
+            
+            // Автоматически скрываем сообщение через 5 секунд
+            setTimeout(() => { 
+                if (msg.parentNode) msg.remove(); 
+            }, 5000);
             return;
         }
 
@@ -464,14 +474,14 @@ document.addEventListener('DOMContentLoaded', function() {
         submitBtn.classList.add('opacity-90', 'cursor-not-allowed');
         submitBtn.disabled = true;
     });
-});
 
-// ============================================
-// 4. Дополнительная валидация при вставке текста
-// ============================================
-document.querySelectorAll('input').forEach(input => {
-    input.addEventListener('paste', function() {
-        setTimeout(() => this.dispatchEvent(new Event('input')), 50);
+    // ============================================
+    // 4. Дополнительная валидация при вставке текста
+    // ============================================
+    document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('paste', function() {
+            setTimeout(() => this.dispatchEvent(new Event('input')), 50);
+        });
     });
 });
 </script>

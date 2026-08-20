@@ -21,6 +21,10 @@ from datetime import datetime as dt, timedelta
 from zoneinfo import ZoneInfo
 from django.http import HttpResponse
 from django.conf import settings
+from django.http import JsonResponse
+from django.contrib.admin.views.decorators import staff_member_required
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 import os
 
 logger = logging.getLogger(__name__)
@@ -648,3 +652,47 @@ def news_list(request):
         'total_count': news_items.count(),
     }
     return render(request, 'info/news_list.html', context)
+
+@staff_member_required
+def upload_pastor_photo(request):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
+    
+    photo = request.FILES.get('photo')
+    pastor = request.POST.get('pastor')
+    
+    if not photo or not pastor:
+        return JsonResponse({'error': 'Missing data'}, status=400)
+    
+    # Сохраняем файл
+    ext = os.path.splitext(photo.name)[1]
+    filename = f'pastors/{pastor}{ext}'
+    path = default_storage.save(filename, ContentFile(photo.read()))
+    
+    # Возвращаем URL
+    return JsonResponse({
+        'success': True,
+        'photo_url': default_storage.url(path)
+    })
+
+from django.shortcuts import render
+from .models import PastorPhoto
+
+def about_view(request):
+    pastor_photos = {}
+    pastor_slugs = ['ashaev', 'zyryanov', 'yunyushkin', 'pritchin', 'kononov', 'schmidt', 'plotnikov', 'buchenik']
+    
+    # Получаем фото из базы данных
+    for slug in pastor_slugs:
+        try:
+            pastor = PastorPhoto.objects.get(slug=slug)
+            if pastor.image:  # Проверяем, что фото существует
+                pastor_photos[slug] = pastor.image.url
+                print(f'✅ Найдено фото для {slug}: {pastor.image.url}')
+            else:
+                print(f'⚠️ Фото не загружено для {slug}')
+        except PastorPhoto.DoesNotExist:
+            print(f'❌ Нет записи для {slug}')
+    
+    print('Все фото:', pastor_photos)
+    return render(request, 'info/about.html', {'pastor_photos': pastor_photos})

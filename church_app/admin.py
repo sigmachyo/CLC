@@ -210,3 +210,10 @@ class NewsAdmin(admin.ModelAdmin):
     }
 
     ordering = ('-created_at',)
+
+from .models import PastorPhoto
+
+@admin.register(PastorPhoto)
+class PastorPhotoAdmin(admin.ModelAdmin):
+    list_display = ('slug', 'updated_at')
+    search_fields = ('slug',)

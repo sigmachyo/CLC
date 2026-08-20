@@ -1,87 +1,496 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}О церкви «Христианской Жизни»{% endblock %}
+{% block extra_css %}
+<style>
+    .pastors-wrapper {
+        max-width: 1050px;
+        margin: 30px auto 0;
+    }
+    .pastors-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+    }
+    /* Последний ряд — отдельный контейнер для центрирования */
+    .pastors-grid-last {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-top: 30px;
+        max-width: 1050px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .pastors-grid-last .pastor-card {
+        flex: 0 0 calc((100% - 30px) / 3);
+        max-width: calc((100% - 30px) / 3);
+    }
+    .pastor-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        transition: all 0.3s ease;
+        border: 1px solid rgba(26,31,54,0.06);
+        text-align: center;
+    }
+    .pastor-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+    }
+    .pastor-photo {
+        width: 100%;
+        height: 280px;
+        object-fit: cover;
+        background: linear-gradient(135deg, #1a1f36, #2c3e50);
+    }
+    .pastor-photo-placeholder {
+        width: 100%;
+        height: 280px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #1a1f36, #2c3e50);
+        color: rgba(255,255,255,0.3);
+        font-size: 4rem;
+    }
+    .pastor-info {
+        padding: 20px 24px 24px;
+    }
+    .pastor-name {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #1a1f36;
+        margin-bottom: 6px;
+        text-align: center;
+    }
+    .pastor-role {
+        font-size: 0.85rem;
+        color: #c9a84c;
+        font-weight: 600;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+    .pastor-desc {
+        font-size: 0.9rem;
+        color: #5a5f7a;
+        line-height: 1.5;
+        text-align: center;
+    }
+    .section-title {
+        text-align: center;
+        margin-top: 3rem;
+        margin-bottom: 1.5rem;
+    }
+    .section-title h2 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #1a1f36;
+        display: inline-block;
+        border-bottom: 3px solid #c9a84c;
+        padding-bottom: 8px;
+    }
+    .section-title h3 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1a1f36;
+        text-align: center;
+    }
+    .section-title p {
+        text-align: center;
+    }
+    .content-block {
+        text-align: justify;
+        line-height: 1.8;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    .content-block p {
+        text-align: justify;
+    }
+    .service-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin-top: 30px;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .service-item {
+        background: #f5f0e8;
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+    }
+    .service-item h4 {
+        font-weight: 700;
+        color: #c9a84c;
+        margin-bottom: 8px;
+    }
+    .service-item p {
+        font-size: 0.9rem;
+        color: #5a5f7a;
+        margin: 0;
+    }
+    .vision-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+        margin-top: 24px;
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .vision-card {
+        background: white;
+        padding: 24px;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        border: 1px solid rgba(26,31,54,0.06);
+    }
+    .vision-card h3 {
+        font-weight: 700;
+        color: #1a1f36;
+        margin-bottom: 8px;
+        text-align: center;
+        font-size: 1.1rem;
+    }
+    .vision-card .subtitle {
+        font-weight: 600;
+        color: #c9a84c;
+        margin-bottom: 12px;
+        text-align: center;
+        font-size: 0.85rem;
+    }
+    .vision-card ul {
+        list-style: disc;
+        padding-left: 20px;
+        margin: 0;
+    }
+    .vision-card ul li {
+        color: #5a5f7a;
+        line-height: 1.6;
+        font-size: 0.9rem;
+        text-align: left;
+    }
+    @media (max-width: 992px) {
+        .pastors-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .pastors-grid-last {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .pastors-grid-last .pastor-card {
+            flex: none;
+            max-width: 100%;
+        }
+    }
+    @media (max-width: 768px) {
+        .pastors-grid {
+            grid-template-columns: 1fr;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .pastors-grid-last {
+            grid-template-columns: 1fr;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .vision-grid {
+            grid-template-columns: 1fr;
+            max-width: 400px;
+        }
+        .service-grid {
+            grid-template-columns: 1fr;
+            max-width: 400px;
+        }
+        .pastor-photo,
+        .pastor-photo-placeholder {
+            height: 220px;
+        }
+        .section-title h2 {
+            font-size: 1.4rem;
+        }
+        .section-title h3 {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+{% endblock %}
 {% block content %}
 <div class="max-w-[1200px] mx-auto px-6 py-16">
-    <h1 class="text-4xl md:text-5xl font-black text-navy mb-8 uppercase tracking-tighter">О церкви «Христианской Жизни»</h1>
-    <div class="prose prose-lg max-w-none text-navy/80">
-        <p class="lead text-xl mb-8 border-l-4 border-primary pl-6">
-            Церковь Христианской Жизни была основана в 1995 году, старшим пастором стал Владимир Ашаев.
-            Название церкви отражает нашу жизненную позицию – жить христианской жизнью, исполняя и делая то, что делал и чему учил Иисус Христос.
+    <!-- Заголовок страницы по центру -->
+    <h1 class="text-4xl md:text-5xl font-black text-navy mb-8 text-center uppercase tracking-tighter">О церкви «Христианской Жизни»</h1>
+    
+    <!-- Вступление -->
+    <div class="content-block max-w-4xl mx-auto">
+        <p class="text-xl text-navy/80 mb-8 border-l-4 border-primary pl-6">
+            Церковь Христианской Жизни была основана в 1995 году, старшим пастором стал Владимир Ашаев. Название церкви отражает нашу жизненную позицию – жить христианской жизнью, исполняя и делая то, что делал и чему учил Иисус Христос.
         </p>
-        <h2 class="text-2xl font-bold text-navy mt-12 mb-6">Видение церкви «Христианской Жизни»</h2>
+    </div>
+    
+    <!-- Пасторы -->
+    <div class="section-title">
+        <h2>Наши пасторы</h2>
+        <p class="text-navy/60 mt-2">Команда служителей, которые ведут церковь в видении и заботятся о каждой душе.</p>
+    </div>
+    
+    <div class="pastors-wrapper">
+        <!-- Первые 6 пасторов — 2 ряда по 3 -->
+        <div class="pastors-grid">
+            <!-- 1. Владимир Ашаев -->
+            <div class="pastor-card">
+                <div class="pastor-photo-container">
+                    {% if pastor_photos.ashaev %}
+                        <img src="{{ pastor_photos.ashaev }}" alt="Владимир Ашаев" class="pastor-photo">
+                    {% else %}
+                        <div class="pastor-photo-placeholder">
+                            <span class="material-symbols-outlined">person</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="pastor-info">
+                    <div class="pastor-name">Владимир Анатольевич Ашаев</div>
+                    <div class="pastor-role">Старший пастор</div>
+                    <div class="pastor-desc">Пастор Церкви «Христианской Жизни», епископ, Заместитель Начальствующего епископа РОСХВЕ(п) в Сибирском федеральном округе.</div>
+                </div>
+            </div>
+
+            <!-- 2. Михаил Зырянов -->
+            <div class="pastor-card">
+                <div class="pastor-photo-container">
+                    {% if pastor_photos.zyryanov %}
+                        <img src="{{ pastor_photos.zyryanov }}" alt="Михаил Зырянов" class="pastor-photo">
+                    {% else %}
+                        <div class="pastor-photo-placeholder">
+                            <span class="material-symbols-outlined">person</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="pastor-info">
+                    <div class="pastor-name">Михаил Зырянов</div>
+                    <div class="pastor-role">Пастор Левобережного филиала</div>
+                    <div class="pastor-desc">Пастор Левобережного филиала Церкви «Христианской Жизни», полномочный представитель начальствующего епископа РОСХВЕ(п) по Красноярскому краю.</div>
+                </div>
+            </div>
+
+            <!-- 3. Юрий Юнюшкин -->
+            <div class="pastor-card">
+                <div class="pastor-photo-container">
+                    {% if pastor_photos.yunyushkin %}
+                        <img src="{{ pastor_photos.yunyushkin }}" alt="Юрий Юнюшкин" class="pastor-photo">
+                    {% else %}
+                        <div class="pastor-photo-placeholder">
+                            <span class="material-symbols-outlined">person</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="pastor-info">
+                    <div class="pastor-name">Юрий Юнюшкин</div>
+                    <div class="pastor-role">Пастор Правобережного филиала</div>
+                    <div class="pastor-desc">Пастор Правобережного филиала Церкви «Христианской Жизни».</div>
+                </div>
+            </div>
+
+            <!-- 4. Максим Притчин -->
+            <div class="pastor-card">
+                <div class="pastor-photo-container">
+                    {% if pastor_photos.pritchin %}
+                        <img src="{{ pastor_photos.pritchin }}" alt="Максим Притчин" class="pastor-photo">
+                    {% else %}
+                        <div class="pastor-photo-placeholder">
+                            <span class="material-symbols-outlined">person</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="pastor-info">
+                    <div class="pastor-name">Максим Притчин</div>
+                    <div class="pastor-role">Пастор прославления</div>
+                    <div class="pastor-desc">Пастор Церкви «Христианской Жизни», лидер служения прославления.</div>
+                </div>
+            </div>
+
+            <!-- 5. Данил Кононов -->
+            <div class="pastor-card">
+                <div class="pastor-photo-container">
+                    {% if pastor_photos.kononov %}
+                        <img src="{{ pastor_photos.kononov }}" alt="Данил Кононов" class="pastor-photo">
+                    {% else %}
+                        <div class="pastor-photo-placeholder">
+                            <span class="material-symbols-outlined">person</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="pastor-info">
+                    <div class="pastor-name">Данил Кононов</div>
+                    <div class="pastor-role">Пастор миссионерского служения</div>
+                    <div class="pastor-desc">Пастор Церкви «Христианской Жизни», лидер миссионерского и семейного служений.</div>
+                </div>
+            </div>
+
+            <!-- 6. Андрей Шмидт -->
+            <div class="pastor-card">
+                <div class="pastor-photo-container">
+                    {% if pastor_photos.schmidt %}
+                        <img src="{{ pastor_photos.schmidt }}" alt="Андрей Шмидт" class="pastor-photo">
+                    {% else %}
+                        <div class="pastor-photo-placeholder">
+                            <span class="material-symbols-outlined">person</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="pastor-info">
+                    <div class="pastor-name">Андрей Шмидт</div>
+                    <div class="pastor-role">Пастор социального служения</div>
+                    <div class="pastor-desc">Пастор социального служения Церкви «Христианской Жизни».</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Последние 2 пастора — центрированы -->
+        <div class="pastors-grid-last">
+            <!-- 7. Владимир Плотников -->
+            <div class="pastor-card">
+                <div class="pastor-photo-container">
+                    {% if pastor_photos.plotnikov %}
+                        <img src="{{ pastor_photos.plotnikov }}" alt="Владимир Плотников" class="pastor-photo">
+                    {% else %}
+                        <div class="pastor-photo-placeholder">
+                            <span class="material-symbols-outlined">person</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="pastor-info">
+                    <div class="pastor-name">Владимир Плотников</div>
+                    <div class="pastor-role">Молодежный пастор</div>
+                    <div class="pastor-desc">Молодежный пастор Церкви «Христианской Жизни».</div>
+                </div>
+            </div>
+
+            <!-- 8. Сергей Бученик -->
+            <div class="pastor-card">
+                <div class="pastor-photo-container">
+                    {% if pastor_photos.buchenik %}
+                        <img src="{{ pastor_photos.buchenik }}" alt="Сергей Бученик" class="pastor-photo">
+                    {% else %}
+                        <div class="pastor-photo-placeholder">
+                            <span class="material-symbols-outlined">person</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="pastor-info">
+                    <div class="pastor-name">Сергей Бученик</div>
+                    <div class="pastor-role">Пастор пророческого служения</div>
+                    <div class="pastor-desc">Пастор Церкви «Христианской Жизни», лидер пророческого служения.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Видение -->
+    <div class="section-title">
+        <h2>Видение церкви</h2>
+    </div>
+    <div class="content-block">
         <p>Церковь «Христианской Жизни» призвана быть местом проявления Божьего Царства, где каждый человек является частью большой семьи в которой главенствует Бог (Отец, Сын, Дух).</p>
-        <h2 class="text-2xl font-bold text-navy mt-12 mb-6">Способы реализации видения</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-navy/5">
-                <h3 class="text-xl font-bold text-navy mb-3">КУЛЬТУРА ПОЧТЕНИЯ</h3>
-                <p class="font-semibold text-primary mb-2">ОТНОШЕНИЕ</p>
-                <ul class="list-disc pl-5 space-y-2">
-                    <li>Почтение к Богу</li>
-                    <li>Почтение между родителями и детьми, лидерами и последователями, наставниками и учениками, братьями и сёстрами, мужьями и женами</li>
-                    <li>Почтение ко всем людям, невзирая на их религиозную принадлежность и социальный статус</li>
-                </ul>
-            </div>
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-navy/5">
-                <h3 class="text-xl font-bold text-navy mb-3">БЕЗОПАСНОСТЬ</h3>
-                <p class="font-semibold text-primary mb-2">ЗАЩИЩЕННОСТЬ</p>
-                <ul class="list-disc pl-5 space-y-2">
-                    <li>Атмосфера радости</li>
-                    <li>Покровительство, подотчетность</li>
-                </ul>
-            </div>
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-navy/5">
-                <h3 class="text-xl font-bold text-navy mb-3">СНАРЯЖЕНИЕ ИЛИ НАДЕЛЕНИЕ</h3>
-                <p class="font-semibold text-primary mb-2">ДУХОВНО-ОБРАЗОВАТЕЛЬНЫЙ ПРОЦЕСС</p>
-                <ul class="list-disc pl-5 space-y-2">
-                    <li>Курсы и семинары для разных категорий людей и духовных возрастов — для новообращенных, лидеров, жаждущих познания истины</li>
-                    <li>Конференции</li>
-                </ul>
-            </div>
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-navy/5">
-                <h3 class="text-xl font-bold text-navy mb-3">ПРОДУКТИВНОЕ УМНОЖЕНИЕ И ВЛИЯНИЕ</h3>
-                <p class="font-semibold text-primary mb-2">МНОГОДЕТНАЯ СЕМЬЯ</p>
-                <ul class="list-disc pl-5 space-y-2">
-                    <li>Рождение свыше через благовестие, создание новых домашних групп</li>
-                    <li>Рождение церквей через движение благовестия</li>
-                </ul>
-            </div>
+    </div>
+
+    <!-- Способы реализации -->
+    <div class="section-title">
+        <h2>Способы реализации видения</h2>
+    </div>
+    <div class="vision-grid">
+        <div class="vision-card">
+            <h3>КУЛЬТУРА ПОЧТЕНИЯ</h3>
+            <div class="subtitle">ОТНОШЕНИЕ</div>
+            <ul>
+                <li>Почтение к Богу</li>
+                <li>Почтение между родителями и детьми, лидерами и последователями, наставниками и учениками, братьями и сёстрами, мужьями и женами</li>
+                <li>Почтение ко всем людям, невзирая на их религиозную принадлежность и социальный статус</li>
+            </ul>
         </div>
-        <div class="mt-16 space-y-12">
-            <section>
-                <h3 class="text-2xl font-bold text-navy mb-4 border-b pb-2">Бог и его присутствие</h3>
-                <p>Мы признаем поклонение Богу и отношения с Ним самой большой ценностью в нашей жизни. Личная молитва является приоритетом в жизни каждого христианина. Церковь Христианской жизни была основана и умножилась сверхъестественно. Поэтому мы верим, что призвание церкви — нести в общество культуру сверхъестественного, являть на земле славу Царства Божьего. Мы верим в то, что Бог благ всегда, поэтому независимо от жизненных обстоятельств, мы не изменяем то, во что верим.</p>
-            </section>
-            <section>
-                <h3 class="text-2xl font-bold text-navy mb-4 border-b pb-2">Авторитет Библии</h3>
-                <p>Мы признаем ценность и непоколебимый авторитет Библии, как записанного Слова Божьего, поэтому изучение Писания является приоритетом нашей жизни. Мы стремимся к тому, чтобы познавая Писание, познавать его Автора — Бога. Мы верим в искупительную жертву Христа и храним личную святость, чтобы быть светом в мире, привлекая людей к Богу. При этом мы убеждены, что святость является нашей новой природой во Христе Иисусе!</p>
-            </section>
-            <section>
-                <h3 class="text-2xl font-bold text-navy mb-4 border-b pb-2">Человек</h3>
-                <p>Мы считаем ценностью спасение человека для вечной жизни через покаяние. Поэтому мы посвящаем себя проповеди Евангелия по всему лицу земли. Мы верим, что призваны распространять культуру почтения на всяком месте. Это означает признание ценности каждого человека вне зависимости от его вероисповедания, принадлежности к церкви, возраста или социального статуса. Мы убеждены, что каждый из нас ценен в глазах Бога, нужен Ему и важен для Него.</p>
-            </section>
-            <section>
-                <h3 class="text-2xl font-bold text-navy mb-4 border-b pb-2">Церковь — это семья</h3>
-                <p>Мы верим в то, что Бог создал церковь на земле по образу семейных отношений. Поэтому нам важно любить, защищать, вдохновлять каждого человека в церкви. Мы стремимся к открытым и доверительным взаимоотношениям друг с другом и стараемся помогать каждому человеку открыть дары, таланты и призвания, заложенные Богом, и двигаться в них с Божьей властью. Мы ценим семью как союз между мужчиной и женщиной, благословенный Богом и зарегистрированный государством. Мы стремимся созидать крепкие семьи.</p>
-            </section>
+        <div class="vision-card">
+            <h3>БЕЗОПАСНОСТЬ</h3>
+            <div class="subtitle">ЗАЩИЩЕННОСТЬ</div>
+            <ul>
+                <li>Атмосфера радости</li>
+                <li>Покровительство, подотчетность</li>
+            </ul>
         </div>
-        <h2 class="text-3xl font-bold text-navy mt-16 mb-8 text-center">ВОСКРЕСНЫЕ БОГОСЛУЖЕНИЯ</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
-            <div class="bg-background-light p-6 rounded-xl">
-                <h4 class="font-bold text-primary mb-2">ОСНОВНОЕ СЛУЖЕНИЕ 11:00</h4>
-                <p class="text-sm">ДК «Комбайностроителей»<br>ул. Бограда, 134 (основной зал)</p>
-            </div>
-            <div class="bg-background-light p-6 rounded-xl">
-                <h4 class="font-bold text-primary mb-2">ЛЕВОБЕРЕЖНЫЙ ФИЛИАЛ 10:30</h4>
-                <p class="text-sm">ул. 8 Марта, 24г, 2 этаж</p>
-            </div>
-            <div class="bg-background-light p-6 rounded-xl">
-                <h4 class="font-bold text-primary mb-2">ПРАВОБЕРЕЖНЫЙ ФИЛИАЛ 15:00</h4>
-                <p class="text-sm">ул. Свердловская, 3а, цокольный этаж</p>
-            </div>
-            <div class="bg-background-light p-6 rounded-xl">
-                <h4 class="font-bold text-primary mb-2">МОЛОДЕЖНОЕ СЛУЖЕНИЕ 17:00</h4>
-                <p class="text-sm">ул. Робеспьера, 29 (цоколь)</p>
-            </div>
+        <div class="vision-card">
+            <h3>СНАРЯЖЕНИЕ ИЛИ НАДЕЛЕНИЕ</h3>
+            <div class="subtitle">ДУХОВНО-ОБРАЗОВАТЕЛЬНЫЙ ПРОЦЕСС</div>
+            <ul>
+                <li>Курсы и семинары для разных категорий людей и духовных возрастов — для новообращенных, лидеров, жаждущих познания истины</li>
+                <li>Конференции</li>
+            </ul>
+        </div>
+        <div class="vision-card">
+            <h3>ПРОДУКТИВНОЕ УМНОЖЕНИЕ И ВЛИЯНИЕ</h3>
+            <div class="subtitle">МНОГОДЕТНАЯ СЕМЬЯ</div>
+            <ul>
+                <li>Рождение свыше через благовестие, создание новых домашних групп</li>
+                <li>Рождение церквей через движение благовестия</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Разделы веры -->
+    <div class="section-title">
+        <h3>Бог и его присутствие</h3>
+    </div>
+    <div class="content-block">
+        <p>Мы признаем поклонение Богу и отношения с Ним самой большой ценностью в нашей жизни. Личная молитва является приоритетом в жизни каждого христианина. Церковь Христианской жизни была основана и умножилась сверхъестественно. Поэтому мы верим, что призвание церкви — нести в общество культуру сверхъестественного, являть на земле славу Царства Божьего. Мы верим в то, что Бог благ всегда, поэтому независимо от жизненных обстоятельств, мы не изменяем то, во что верим.</p>
+    </div>
+
+    <div class="section-title">
+        <h3>Авторитет Библии</h3>
+    </div>
+    <div class="content-block">
+        <p>Мы признаем ценность и непоколебимый авторитет Библии, как записанного Слова Божьего, поэтому изучение Писания является приоритетом нашей жизни. Мы стремимся к тому, чтобы познавая Писание, познавать его Автора — Бога. Мы верим в искупительную жертву Христа и храним личную святость, чтобы быть светом в мире, привлекая людей к Богу. При этом мы убеждены, что святость является нашей новой природой во Христе Иисусе!</p>
+    </div>
+
+    <div class="section-title">
+        <h3>Человек</h3>
+    </div>
+    <div class="content-block">
+        <p>Мы считаем ценностью спасение человека для вечной жизни через покаяние. Поэтому мы посвящаем себя проповеди Евангелия по всему лицу земли. Мы верим, что призваны распространять культуру почтения на всяком месте. Это означает признание ценности каждого человека вне зависимости от его вероисповедания, принадлежности к церкви, возраста или социального статуса. Мы убеждены, что каждый из нас ценен в глазах Бога, нужен Ему и важен для Него.</p>
+    </div>
+
+    <div class="section-title">
+        <h3>Церковь — это семья</h3>
+    </div>
+    <div class="content-block">
+        <p>Мы верим в то, что Бог создал церковь на земле по образу семейных отношений. Поэтому нам важно любить, защищать, вдохновлять каждого человека в церкви. Мы стремимся к открытым и доверительным взаимоотношениям друг с другом и стараемся помогать каждому человеку открыть дары, таланты и призвания, заложенные Богом, и двигаться в них с Божьей властью. Мы ценим семью как союз между мужчиной и женщиной, благословенный Богом и зарегистрированный государством. Мы стремимся созидать крепкие семьи.</p>
+    </div>
+
+    <!-- Воскресные богослужения -->
+    <div class="section-title">
+        <h2>Воскресные богослужения</h2>
+    </div>
+    <div class="service-grid">
+        <div class="service-item">
+            <h4>ОСНОВНОЕ СЛУЖЕНИЕ 11:00</h4>
+            <p>ДК «Комбайностроителей»<br>ул. Бограда, 134 (основной зал)</p>
+        </div>
+        <div class="service-item">
+            <h4>ЛЕВОБЕРЕЖНЫЙ ФИЛИАЛ 10:30</h4>
+            <p>ул. 8 Марта, 24г, 2 этаж</p>
+        </div>
+        <div class="service-item">
+            <h4>ПРАВОБЕРЕЖНЫЙ ФИЛИАЛ 15:00</h4>
+            <p>ул. Свердловская, 3а, цокольный этаж</p>
+        </div>
+        <div class="service-item">
+            <h4>МОЛОДЕЖНОЕ СЛУЖЕНИЕ 17:00</h4>
+            <p>ул. Робеспьера, 29 (цоколь)</p>
         </div>
     </div>
 </div>
