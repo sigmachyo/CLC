@@ -428,7 +428,7 @@ def offline_view(request):
 def register_view(request):
     """Регистрация пользователя"""
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
+        form = RegisterForm(request.POST, request=request)
         if form.is_valid():
             user = User.objects.create_user(
                 username=form.cleaned_data['username'],
