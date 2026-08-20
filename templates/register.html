@@ -4,6 +4,7 @@
 {% block main_class %}flex-grow flex flex-col w-full p-0 m-0{% endblock %}
 {% block content %}
 <div class="flex-grow flex flex-col lg:flex-row min-h-[calc(100vh-72px)] w-full relative">
+    <!-- Левая колонка: Информационная -->
     <div class="hidden lg:flex lg:w-1/2 relative bg-navy items-center justify-center overflow-hidden order-2 lg:order-1">
         <div class="absolute inset-0">
             <div class="absolute inset-0 bg-gradient-to-tr from-navy via-[#1e2540] to-black opacity-90 z-10"></div>
@@ -36,12 +37,16 @@
             </div>
         </div>
     </div>
+
+    <!-- Правая колонка: Форма регистрации -->
     <div class="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 relative z-10 bg-background-light order-1 lg:order-2">
         <div class="w-full max-w-md bg-white/80 backdrop-blur-xl p-8 sm:p-10 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/40">
             <div class="mb-10 text-center lg:text-left">
                 <h1 class="text-3xl font-display font-bold text-navy mb-3">Создать аккаунт</h1>
                 <p class="text-txt-sub">Добро пожаловать в нашу общину!</p>
             </div>
+
+            <!-- Сообщения от Django -->
             {% if messages %}
             <div class="space-y-3 mb-6">
                 {% for message in messages %}
@@ -53,33 +58,51 @@
                 {% endfor %}
             </div>
             {% endif %}
-            <form method="post" class="space-y-5">
+
+            <!-- Форма с валидацией в реальном времени -->
+            <form method="post" class="space-y-5" id="register-form" novalidate>
                 {% csrf_token %}
+
+                <!-- Поле: Имя пользователя -->
                 <div class="relative group">
                     <input type="text" id="username" name="username" required placeholder=" "
                         class="peer w-full px-5 pb-3 pt-7 bg-gray-50 border-2 border-transparent rounded-xl text-navy focus:bg-white focus:border-primary focus:ring-0 outline-none transition-all"
-                        autocomplete="username">
+                        autocomplete="username"
+                        value="{{ form.username.value|default:'' }}">
                     <label for="username" 
                         class="absolute left-5 top-5 text-gray-400 text-base transition-all duration-200 pointer-events-none 
                         peer-focus:text-xs peer-focus:top-2 peer-focus:font-semibold peer-focus:text-primary 
                         peer-valid:text-xs peer-valid:top-2 peer-valid:font-semibold peer-valid:text-gray-500">
                         Имя пользователя
                     </label>
+                    <div class="error-message text-xs text-red-500 mt-1 hidden" data-for="username">
+                        <span class="material-symbols-outlined text-[14px] align-middle mr-0.5">error</span>
+                        <span class="error-text"></span>
+                    </div>
                 </div>
+
+                <!-- Поле: Email -->
                 <div class="relative group">
                     <input type="email" id="email" name="email" required placeholder=" "
                         class="peer w-full px-5 pb-3 pt-7 bg-gray-50 border-2 border-transparent rounded-xl text-navy focus:bg-white focus:border-primary focus:ring-0 outline-none transition-all"
-                        autocomplete="email">
+                        autocomplete="email"
+                        value="{{ form.email.value|default:'' }}">
                     <label for="email" 
                         class="absolute left-5 top-5 text-gray-400 text-base transition-all duration-200 pointer-events-none 
                         peer-focus:text-xs peer-focus:top-2 peer-focus:font-semibold peer-focus:text-primary 
                         peer-valid:text-xs peer-valid:top-2 peer-valid:font-semibold peer-valid:text-gray-500">
                         Электронная почта
                     </label>
+                    <div class="error-message text-xs text-red-500 mt-1 hidden" data-for="email">
+                        <span class="material-symbols-outlined text-[14px] align-middle mr-0.5">error</span>
+                        <span class="error-text"></span>
+                    </div>
                 </div>
+
+                <!-- Поле: Пароль -->
                 <div class="relative group">
                     <input type="password" id="password1" name="password1" required placeholder=" "
-                        class="peer w-full px-5 pb-3 pt-7 bg-gray-50 border-2 border-transparent rounded-xl text-navy focus:bg-white focus:border-primary focus:ring-0 outline-none transition-all"
+                        class="peer w-full px-5 pb-3 pt-7 bg-gray-50 border-2 border-transparent rounded-xl text-navy focus:bg-white focus:border-primary focus:ring-0 outline-none transition-all pr-12"
                         autocomplete="new-password">
                     <label for="password1" 
                         class="absolute left-5 top-5 text-gray-400 text-base transition-all duration-200 pointer-events-none 
@@ -87,10 +110,41 @@
                         peer-valid:text-xs peer-valid:top-2 peer-valid:font-semibold peer-valid:text-gray-500">
                         Придумайте пароль
                     </label>
+                    <button type="button" onclick="togglePassword('password1', 'eye-icon-1')" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors focus:outline-none">
+                        <span class="material-symbols-outlined" id="eye-icon-1">visibility</span>
+                    </button>
+                    <div class="error-message text-xs text-red-500 mt-1 hidden" data-for="password1">
+                        <span class="material-symbols-outlined text-[14px] align-middle mr-0.5">error</span>
+                        <span class="error-text"></span>
+                    </div>
+                    <div class="password-requirements mt-2 text-xs space-y-1 hidden" id="password-requirements">
+                        <div class="req-item flex items-center gap-1.5 text-gray-400" data-req="length">
+                            <span class="material-symbols-outlined text-[16px]">circle</span>
+                            <span>Минимум 8 символов</span>
+                        </div>
+                        <div class="req-item flex items-center gap-1.5 text-gray-400" data-req="uppercase">
+                            <span class="material-symbols-outlined text-[16px]">circle</span>
+                            <span>Хотя бы одна заглавная буква (A-Z)</span>
+                        </div>
+                        <div class="req-item flex items-center gap-1.5 text-gray-400" data-req="lowercase">
+                            <span class="material-symbols-outlined text-[16px]">circle</span>
+                            <span>Хотя бы одна строчная буква (a-z)</span>
+                        </div>
+                        <div class="req-item flex items-center gap-1.5 text-gray-400" data-req="digit">
+                            <span class="material-symbols-outlined text-[16px]">circle</span>
+                            <span>Хотя бы одна цифра (0-9)</span>
+                        </div>
+                        <div class="req-item flex items-center gap-1.5 text-gray-400" data-req="special">
+                            <span class="material-symbols-outlined text-[16px]">circle</span>
+                            <span>Хотя бы один спецсимвол (!@#$%...)</span>
+                        </div>
+                    </div>
                 </div>
+
+                <!-- Поле: Повторите пароль -->
                 <div class="relative group">
                     <input type="password" id="password2" name="password2" required placeholder=" "
-                        class="peer w-full px-5 pb-3 pt-7 bg-gray-50 border-2 border-transparent rounded-xl text-navy focus:bg-white focus:border-primary focus:ring-0 outline-none transition-all"
+                        class="peer w-full px-5 pb-3 pt-7 bg-gray-50 border-2 border-transparent rounded-xl text-navy focus:bg-white focus:border-primary focus:ring-0 outline-none transition-all pr-12"
                         autocomplete="new-password">
                     <label for="password2" 
                         class="absolute left-5 top-5 text-gray-400 text-base transition-all duration-200 pointer-events-none 
@@ -98,16 +152,29 @@
                         peer-valid:text-xs peer-valid:top-2 peer-valid:font-semibold peer-valid:text-gray-500">
                         Повторите пароль
                     </label>
+                    <button type="button" onclick="togglePassword('password2', 'eye-icon-2')" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors focus:outline-none">
+                        <span class="material-symbols-outlined" id="eye-icon-2">visibility</span>
+                    </button>
+                    <div class="error-message text-xs text-red-500 mt-1 hidden" data-for="password2">
+                        <span class="material-symbols-outlined text-[14px] align-middle mr-0.5">error</span>
+                        <span class="error-text"></span>
+                    </div>
                 </div>
+
+                <!-- Соглашение -->
                 <div class="flex items-start gap-3 mt-4">
                     <input type="checkbox" name="agreement" required id="agreement" class="mt-1 w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/20 transition-all cursor-pointer">
                     <label for="agreement" class="text-sm text-txt-sub leading-tight cursor-pointer">
-                        Я соглашаюсь с <a href="#" class="text-primary font-semibold hover:underline">условиями использования</a> и обработкой моих персональных данных
+                        Я соглашаюсь с <a href="{% url 'privacy' %}" class="text-primary font-semibold hover:underline">условиями использования</a> и обработкой моих персональных данных
                     </label>
                 </div>
-                <button type="submit" id="submit-btn" class="w-full mt-2 bg-primary hover:bg-primary-hover text-white font-bold py-4 px-6 rounded-xl transition-all transform hover:-translate-y-1 shadow-[0_8px_20px_rgba(201,168,76,0.3)] flex justify-center items-center gap-2">
+
+                <!-- Кнопка отправки -->
+                <button type="submit" id="submit-btn" class="w-full mt-2 bg-primary hover:bg-primary-hover text-navy font-bold py-4 px-6 rounded-xl transition-all transform hover:-translate-y-1 shadow-[0_8px_20px_rgba(201,168,76,0.3)] flex justify-center items-center gap-2">
                     Создать аккаунт
                 </button>
+
+                <!-- Ссылка на вход -->
                 <div class="text-center pt-6 lg:text-left">
                     <p class="text-txt-sub font-medium">
                         Уже есть аккаунт? 
@@ -118,16 +185,352 @@
         </div>
     </div>
 </div>
+
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('form');
-    const btn = document.getElementById('submit-btn');
-    if(form) {
-        form.addEventListener('submit', () => {
-            btn.innerHTML = '<span class="material-symbols-outlined animate-spin">progress_activity</span> Создание...';
-            btn.classList.add('opacity-90', 'cursor-not-allowed');
+// ============================================
+// 1. Показать/скрыть пароль
+// ============================================
+function togglePassword(inputId, iconId) {
+    const input = document.getElementById(inputId);
+    const icon = document.getElementById(iconId);
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.textContent = 'visibility_off';
+    } else {
+        input.type = 'password';
+        icon.textContent = 'visibility';
+    }
+}
+
+// ============================================
+// 2. Проверка наличия ошибок формы от Django
+// ============================================
+function hasDjangoErrors() {
+    const errorMessages = document.querySelectorAll('.bg-red-50');
+    return errorMessages.length > 0;
+}
+
+// ============================================
+// 3. Валидация в реальном времени
+// ============================================
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('register-form');
+    const usernameInput = document.getElementById('username');
+    const emailInput = document.getElementById('email');
+    const password1Input = document.getElementById('password1');
+    const password2Input = document.getElementById('password2');
+    const submitBtn = document.getElementById('submit-btn');
+
+    // Если есть ошибки от Django, восстанавливаем кнопку
+    if (hasDjangoErrors()) {
+        submitBtn.innerHTML = 'Создать аккаунт';
+        submitBtn.classList.remove('opacity-90', 'cursor-not-allowed');
+        submitBtn.disabled = false;
+    }
+
+    // Функция для отображения/скрытия ошибки
+    function showError(input, message) {
+        const errorDiv = input.parentElement.querySelector('.error-message');
+        const errorText = errorDiv.querySelector('.error-text');
+        
+        if (message) {
+            // Показываем ошибку
+            errorText.textContent = message;
+            errorDiv.classList.remove('hidden');
+            input.classList.remove('border-transparent', 'border-primary/30', 'border-green-400');
+            input.classList.add('border-red-400', 'bg-red-50/50');
+        } else {
+            // Скрываем ошибку
+            errorDiv.classList.add('hidden');
+            errorText.textContent = ''; // Очищаем текст ошибки
+            input.classList.remove('border-red-400', 'bg-red-50/50');
+            
+            // Проверяем, заполнено ли поле и валидно ли оно
+            const value = input.value.trim();
+            if (value && input.checkValidity()) {
+                // Если поле заполнено и валидно - зеленая рамка
+                input.classList.add('border-green-400');
+                input.classList.remove('border-transparent');
+            } else if (value) {
+                // Если поле заполнено, но не валидно - серая рамка
+                input.classList.remove('border-green-400');
+                input.classList.add('border-gray-200');
+            } else {
+                // Если поле пустое - без подсветки
+                input.classList.remove('border-green-400', 'border-gray-200');
+                input.classList.add('border-transparent');
+            }
+        }
+    }
+
+    // Функция обновления требований к паролю
+    function updatePasswordRequirements(password) {
+        const reqContainer = document.getElementById('password-requirements');
+        if (!password) {
+            reqContainer.classList.add('hidden');
+            return;
+        }
+        reqContainer.classList.remove('hidden');
+
+        const checks = {
+            length: password.length >= 8,
+            uppercase: /[A-ZА-Я]/.test(password),
+            lowercase: /[a-zа-я]/.test(password),
+            digit: /[0-9]/.test(password),
+            special: /[!@#$%^&*()\-_=+\[\]{};:,.<>?/\\|`~]/.test(password)
+        };
+
+        document.querySelectorAll('.req-item').forEach(item => {
+            const req = item.dataset.req;
+            const icon = item.querySelector('.material-symbols-outlined');
+            if (checks[req]) {
+                icon.textContent = 'check_circle';
+                item.classList.remove('text-gray-400');
+                item.classList.add('text-green-500');
+            } else {
+                icon.textContent = 'circle';
+                item.classList.remove('text-green-500');
+                item.classList.add('text-gray-400');
+            }
         });
     }
+
+    // ===== Валидация Имени пользователя =====
+    usernameInput.addEventListener('input', function() {
+        const value = this.value.trim();
+        let error = null;
+
+        // Проверяем только если поле не пустое
+        if (value) {
+            if (value.length < 3) {
+                error = 'Имя пользователя должно содержать минимум 3 символа.';
+            } else if (value.length > 150) {
+                error = 'Имя пользователя слишком длинное (максимум 150 символов).';
+            } else if (/^\d+$/.test(value)) {
+                error = 'Имя пользователя не может состоять только из цифр.';
+            } else if (/\d{4,}/.test(value)) {
+                error = 'Имя пользователя содержит слишком много цифр подряд.';
+            } else if (/^(.)\1{4,}$/.test(value)) {
+                error = 'Имя пользователя не может состоять из повторяющихся символов.';
+            } else if (/[^a-zA-Z0-9а-яА-Я_]/.test(value)) {
+                error = 'Имя пользователя содержит недопустимые символы.';
+            }
+        }
+
+        // Если значение пустое - скрываем ошибку
+        if (!value) {
+            error = null;
+        }
+
+        showError(this, error);
+    });
+
+    // ===== Валидация Email =====
+    emailInput.addEventListener('input', function() {
+        const value = this.value.trim();
+        let error = null;
+
+        // Проверяем только если поле не пустое
+        if (value) {
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+                error = 'Пожалуйста, введите корректный email-адрес.';
+            } else {
+                const domain = value.split('@')[1]?.toLowerCase();
+                const tempDomains = ['mailinator.com', 'guerrillamail.com', 'tempmail.com', '10minutemail.com', 'throwawaymail.com', 'trashmail.com', 'dispostable.com', 'spamgourmet.com', 'guerrillamail.info', 'guerrillamail.biz', 'guerrillamail.net', 'maildrop.cc', 'mailnator.com', 'tempemail.net', 'fakeinbox.com', 'temp-mail.org', 'yopmail.com', 'getnada.com', 'inboxkitten.com', 'mail.tm', 'spambox.us', 'mailinator.net', 'tempinbox.com', 'spamspot.com'];
+                if (tempDomains.includes(domain)) {
+                    error = 'Использование временных или одноразовых email-адресов запрещено.';
+                } else if (value.split('@')[0] && /\d{5,}/.test(value.split('@')[0])) {
+                    error = 'Адрес электронной почты выглядит подозрительно.';
+                }
+            }
+        }
+
+        showError(this, error);
+    });
+
+    // ===== Валидация Пароля =====
+    password1Input.addEventListener('input', function() {
+        const value = this.value;
+        let error = null;
+
+        // Проверяем только если поле не пустое
+        if (value) {
+            if (value.length < 8) {
+                error = 'Пароль должен содержать минимум 8 символов.';
+            } else if (!/[A-ZА-Я]/.test(value)) {
+                error = 'Пароль должен содержать хотя бы одну заглавную букву.';
+            } else if (!/[a-zа-я]/.test(value)) {
+                error = 'Пароль должен содержать хотя бы одну строчную букву.';
+            } else if (!/[0-9]/.test(value)) {
+                error = 'Пароль должен содержать хотя бы одну цифру.';
+            } else if (!/[!@#$%^&*()\-_=+\[\]{};:,.<>?/\\|`~]/.test(value)) {
+                error = 'Пароль должен содержать хотя бы один спецсимвол (!@#$% и т.д.).';
+            }
+
+            // Проверка на общие пароли (только если нет других ошибок)
+            if (!error) {
+                const commonPasswords = ['123456', 'password', '12345678', 'qwerty', '123456789', '12345', '1234', '111111', '1234567', 'dragon', '123123', 'baseball', 'abc123', 'football', 'monkey', 'letmein', 'shadow', 'master', '666666', 'qwertyuiop', '123321', 'mustang', '1234567890', 'michael', '654321', 'superman', '1qaz2wsx', '7777777', '121212', '000000', 'qazwsx', '123qwe', 'killer', 'trustno1'];
+                if (commonPasswords.includes(value.toLowerCase())) {
+                    error = 'Пароль слишком простой и часто используется.';
+                }
+            }
+        }
+
+        showError(this, error);
+        updatePasswordRequirements(value);
+
+        // Также проверяем поле password2, если оно заполнено
+        if (password2Input.value) {
+            password2Input.dispatchEvent(new Event('input'));
+        }
+    });
+
+    // ===== Валидация подтверждения пароля =====
+    password2Input.addEventListener('input', function() {
+        const value = this.value;
+        const p1 = password1Input.value;
+        let error = null;
+
+        // Проверяем только если поле не пустое
+        if (value) {
+            if (!p1) {
+                error = 'Сначала введите пароль.';
+            } else if (value !== p1) {
+                error = 'Пароли не совпадают.';
+            }
+            // Если value === p1, то ошибки нет (error = null)
+        }
+
+        showError(this, error);
+    });
+
+    // ===== Обработка фокуса и потери фокуса =====
+    [usernameInput, emailInput, password1Input, password2Input].forEach(input => {
+        input.addEventListener('blur', function() {
+            // При потере фокуса проверяем поле (если оно не пустое)
+            if (this.value.trim()) {
+                this.dispatchEvent(new Event('input'));
+            }
+        });
+        
+        input.addEventListener('focus', function() {
+            if (this.id === 'password1' && this.value) {
+                document.getElementById('password-requirements').classList.remove('hidden');
+            }
+        });
+    });
+
+    // ===== Проверка при отправке формы =====
+    form.addEventListener('submit', function(e) {
+        // Принудительно проверяем все поля
+        usernameInput.dispatchEvent(new Event('input'));
+        emailInput.dispatchEvent(new Event('input'));
+        password1Input.dispatchEvent(new Event('input'));
+        password2Input.dispatchEvent(new Event('input'));
+
+        // Проверяем, есть ли ошибки
+        const errors = document.querySelectorAll('.error-message:not(.hidden)');
+        if (errors.length > 0) {
+            e.preventDefault();
+            // Прокручиваем к первому полю с ошибкой
+            const firstError = errors[0];
+            const input = firstError.closest('.relative').querySelector('input');
+            if (input) {
+                input.focus();
+                input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            return;
+        }
+
+        // Проверяем соглашение
+        const agreement = document.getElementById('agreement');
+        if (!agreement.checked) {
+            e.preventDefault();
+            agreement.focus();
+            agreement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            const msg = document.createElement('div');
+            msg.className = 'text-red-500 text-sm font-medium mt-2 flex items-center gap-1.5';
+            msg.innerHTML = '<span class="material-symbols-outlined text-[18px]">error</span> Пожалуйста, примите условия использования.';
+            const parent = agreement.closest('.flex');
+            const existing = parent.querySelector('.text-red-500');
+            if (existing) existing.remove();
+            parent.appendChild(msg);
+            setTimeout(() => { if (msg.parentNode) msg.remove(); }, 5000);
+            return;
+        }
+
+        // Если все ок - показываем индикатор загрузки
+        submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">progress_activity</span> Создание...';
+        submitBtn.classList.add('opacity-90', 'cursor-not-allowed');
+        submitBtn.disabled = true;
+    });
+});
+
+// ============================================
+// 4. Дополнительная валидация при вставке текста
+// ============================================
+document.querySelectorAll('input').forEach(input => {
+    input.addEventListener('paste', function() {
+        setTimeout(() => this.dispatchEvent(new Event('input')), 50);
+    });
 });
 </script>
+
+<style>
+/* Стили для полей с ошибками */
+input.border-red-400 {
+    border-color: #f87171 !important;
+    background-color: #fef2f2 !important;
+}
+input.border-green-400 {
+    border-color: #34d399 !important;
+}
+input.border-gray-200 {
+    border-color: #e5e7eb !important;
+}
+input.border-transparent {
+    border-color: transparent !important;
+}
+.error-message {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+.error-message .material-symbols-outlined {
+    display: none;
+}
+.error-message:not(.hidden) .material-symbols-outlined {
+    display: inline-block;
+}
+/* Анимация для появления ошибок */
+.error-message:not(.hidden) {
+    animation: slideDown 0.2s ease-out;
+}
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* Требования к паролю */
+.req-item {
+    transition: all 0.2s ease;
+}
+.req-item .material-symbols-outlined {
+    font-size: 16px;
+    transition: all 0.2s ease;
+}
+/* Стили для чекбокса соглашения */
+#agreement:checked {
+    background-color: #c9a84c;
+    border-color: #c9a84c;
+}
+#agreement:focus {
+    ring-color: rgba(201, 168, 76, 0.2);
+}
+</style>
 {% endblock %}
