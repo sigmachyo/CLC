@@ -217,3 +217,24 @@ from .models import PastorPhoto
 class PastorPhotoAdmin(admin.ModelAdmin):
     list_display = ('slug', 'updated_at')
     search_fields = ('slug',)
+
+from .models import HomeGroup
+
+@admin.register(HomeGroup)
+class HomeGroupAdmin(admin.ModelAdmin):
+    list_display = ('district', 'address', 'get_type_display', 'get_day_display', 'time', 'get_age_display', 'is_active', 'order')
+    list_filter = ('district', 'group_type', 'day', 'is_active')
+    search_fields = ('district', 'address')
+    list_editable = ('order', 'is_active')
+    ordering = ('order', 'district')
+    fieldsets = (
+        ('Основная информация', {
+            'fields': ('district', 'address', 'group_type', 'is_active', 'order')
+        }),
+        ('Время проведения', {
+            'fields': ('day', 'time')
+        }),
+        ('Возраст', {
+            'fields': ('age_min', 'age_max', 'age_display')
+        }),
+    )

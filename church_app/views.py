@@ -696,3 +696,24 @@ def about_view(request):
     
     print('Все фото:', pastor_photos)
     return render(request, 'info/about.html', {'pastor_photos': pastor_photos})
+
+from .models import HomeGroup
+
+def home_meet_view(request):
+    """Страница домашних встреч"""
+    # Группируем по районам
+    districts = HomeGroup.objects.filter(is_active=True).values_list('district', flat=True).distinct()
+    
+    groups_by_district = {}
+    for district in districts:
+        groups_by_district[district] = HomeGroup.objects.filter(
+            is_active=True,
+            district=district
+        ).order_by('order')
+    
+    context = {
+        'groups_by_district': groups_by_district,
+        'districts': districts,
+        'title': 'Домашние встречи',
+    }
+    return render(request, 'info/home_meet.html', context)

@@ -1,48 +1,605 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Домашние встречи{% endblock %}
+
+{% block extra_css %}
+<style>
+    .home-meet-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 120px 20px 100px;
+    }
+    
+    .home-meet-header {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+    
+    .home-meet-header h1 {
+        font-size: 3rem;
+        font-weight: 800;
+        color: #1a1f36;
+        margin-bottom: 16px;
+        letter-spacing: -0.02em;
+    }
+    
+    .home-meet-header p {
+        color: #6b7088;
+        font-size: 1.1rem;
+        max-width: 700px;
+        margin: 0 auto 20px;
+        line-height: 1.7;
+    }
+    
+    .home-meet-header .verse {
+        background: rgba(201, 168, 76, 0.08);
+        border-left: 4px solid #c9a84c;
+        padding: 16px 24px;
+        border-radius: 0 12px 12px 0;
+        max-width: 700px;
+        margin: 20px auto;
+        font-style: italic;
+        color: #1a1f36;
+        font-size: 1.05rem;
+    }
+    
+    .home-meet-header .verse strong {
+        color: #c9a84c;
+    }
+    
+    .action-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 30px;
+    }
+    
+    .btn-primary-custom {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #c9a84c;
+        color: #1a1f36;
+        padding: 14px 32px;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+    
+    .btn-primary-custom:hover {
+        background: #b08e35;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(201, 168, 76, 0.35);
+        color: #1a1f36;
+    }
+    
+    .btn-outline-custom {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: transparent;
+        color: #1a1f36;
+        padding: 14px 32px;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 2px solid #c9a84c;
+        cursor: pointer;
+    }
+    
+    .btn-outline-custom:hover {
+        background: #c9a84c;
+        color: #1a1f36;
+        transform: translateY(-2px);
+    }
+    
+    .district-section {
+        margin-bottom: 48px;
+    }
+    
+    .district-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #1a1f36;
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+        border-bottom: 3px solid rgba(201, 168, 76, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    .district-title .badge-count {
+        font-size: 0.8rem;
+        background: rgba(201, 168, 76, 0.15);
+        color: #c9a84c;
+        padding: 2px 12px;
+        border-radius: 20px;
+        font-weight: 600;
+    }
+    
+    .groups-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 16px;
+    }
+    
+    .group-card {
+        background: white;
+        border-radius: 16px;
+        padding: 20px 24px;
+        box-shadow: 0 4px 20px rgba(26, 31, 54, 0.04);
+        border: 1px solid rgba(26, 31, 54, 0.06);
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+    
+    .group-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 40px rgba(26, 31, 54, 0.08);
+    }
+    
+    .group-address {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #1a1f36;
+    }
+    
+    .group-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 10px;
+        font-size: 0.85rem;
+        color: #6b7088;
+    }
+    
+    .group-meta .tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 3px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: #3d4260;
+        background: #f5f0e8;
+    }
+    
+    .group-meta .tag.type-mixed {
+        background: #e8f0fe;
+        color: #1a5a9e;
+    }
+    .group-meta .tag.type-male {
+        background: #e3f0e8;
+        color: #1a7a4a;
+    }
+    .group-meta .tag.type-female {
+        background: #fde8e8;
+        color: #9e1a1a;
+    }
+    .group-meta .tag.type-youth {
+        background: #f0e8f8;
+        color: #6a1a9e;
+    }
+    .group-meta .tag.type-teen {
+        background: #f8f0e8;
+        color: #9e6a1a;
+    }
+    
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(26, 31, 54, 0.6);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        z-index: 2000;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        overflow-y: auto;
+    }
+    
+    .modal-overlay.active {
+        display: flex;
+    }
+    
+    .modal-content {
+        background: white;
+        border-radius: 32px;
+        max-width: 560px;
+        width: 100%;
+        padding: 40px 36px;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+        animation: modalFadeIn 0.3s ease;
+    }
+    
+    @keyframes modalFadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.95) translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    }
+    
+    .modal-close {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #f5f0e8;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #1a1f36;
+        transition: all 0.3s ease;
+    }
+    
+    .modal-close:hover {
+        background: #e8e0d4;
+        transform: rotate(90deg);
+    }
+    
+    .modal-title {
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: #1a1f36;
+        margin-bottom: 8px;
+        text-align: center;
+    }
+    
+    .modal-subtitle {
+        text-align: center;
+        color: #6b7088;
+        margin-bottom: 24px;
+        font-size: 0.95rem;
+    }
+    
+    .form-group {
+        margin-bottom: 16px;
+    }
+    
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        color: #1a1f36;
+        margin-bottom: 4px;
+        font-size: 0.9rem;
+    }
+    
+    .form-group label .required {
+        color: #e74c3c;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #e8e4dc;
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+        background: #faf8f5;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #c9a84c;
+        background: white;
+    }
+    
+    .form-group .help-text {
+        font-size: 0.8rem;
+        color: #8b8fa8;
+        margin-top: 4px;
+    }
+    
+    .checkbox-group {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin: 16px 0;
+        padding: 16px;
+        background: #faf8f5;
+        border-radius: 12px;
+        border: 1px solid #e8e4dc;
+    }
+    
+    .checkbox-group input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-top: 2px;
+        accent-color: #c9a84c;
+        flex-shrink: 0;
+        cursor: pointer;
+    }
+    
+    .checkbox-group label {
+        font-size: 0.9rem;
+        color: #3d4260;
+        line-height: 1.5;
+        cursor: pointer;
+    }
+    
+    .checkbox-group label strong {
+        color: #1a1f36;
+    }
+    
+    .btn-submit {
+        width: 100%;
+        padding: 16px;
+        background: #c9a84c;
+        color: #1a1f36;
+        border: none;
+        border-radius: 14px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 8px;
+    }
+    
+    .btn-submit:hover {
+        background: #b08e35;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(201, 168, 76, 0.3);
+    }
+    
+    .btn-submit:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+    
+    @media (max-width: 768px) {
+        .home-meet-container {
+            padding: 100px 16px 80px;
+        }
+        
+        .home-meet-header h1 {
+            font-size: 2rem;
+        }
+        
+        .district-title {
+            font-size: 1.4rem;
+        }
+        
+        .groups-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .modal-content {
+            padding: 28px 20px;
+        }
+        
+        .modal-title {
+            font-size: 1.4rem;
+        }
+        
+        .action-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .action-buttons .btn-primary-custom,
+        .action-buttons .btn-outline-custom {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .home-meet-header h1 {
+            font-size: 1.6rem;
+        }
+        
+        .group-card {
+            padding: 16px;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="max-w-[1000px] mx-auto px-6 py-16">
-    <div class="text-center mb-12">
-        <h1 class="text-4xl md:text-5xl font-black text-navy mb-4 uppercase tracking-tighter">Домашние встречи</h1>
-        <p class="text-lg text-primary font-bold max-w-2xl mx-auto">Церковь в твоем доме</p>
+<div class="home-meet-container">
+    <div class="home-meet-header">
+        <h1>Домашние встречи</h1>
+        
+        <div class="verse">
+            <span style="font-size:24px; vertical-align:middle; color:#c9a84c;">"</span>
+            <span>Господь говорит: <strong>«Где двое или трое собраны во имя Мое, там Я посреди них»</strong> (Мф. 18:19,20)</span>
+        </div>
+        
+        <p>
+            Очень важно иметь общение с верующими, молиться вместе, общаться на духовные темы, 
+            собираться во имя Его и вне церкви. Для этого и существуют домашние встречи.
+        </p>
+        <p>
+            Такие встречи формируются по месту жительства, по интересам, по роду занятий и т.д. 
+            Каждый может найти удобную и подходящую именно ему. Встречи обычно проходят вечером один раз в неделю.
+        </p>
+        
+        <div class="action-buttons">
+            <button class="btn-primary-custom" onclick="openModal()">
+                Заполнить анкету
+            </button>
+            <a href="https://t.me/Fishkaoil" target="_blank" class="btn-outline-custom">
+                Задать вопрос в Telegram
+            </a>
+        </div>
     </div>
-    <div class="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-navy/5 mb-12">
-        <div class="flex flex-col md:flex-row gap-8 items-center mb-8">
-            <div class="md:w-1/3 flex justify-center">
-                <div class="w-32 h-32 md:w-48 md:h-48 bg-primary/10 rounded-full flex items-center justify-center">
-                    <span class="material-symbols-outlined text-[80px] text-primary">diversity_1</span>
+    
+    {% for district, groups in groups_by_district.items %}
+    <div class="district-section">
+        <div class="district-title">
+            {{ district }}
+            <span class="badge-count">{{ groups|length }}</span>
+        </div>
+        <div class="groups-grid">
+            {% for group in groups %}
+            <div class="group-card">
+                <div class="group-address">{{ group.address }}</div>
+                <div class="group-meta">
+                    <span class="tag type-{{ group.group_type }}">
+                        {{ group.get_type_display }}
+                    </span>
+                    <span class="tag">
+                        {{ group.get_day_display }}
+                    </span>
+                    {% if group.time %}
+                    <span class="tag">
+                        {{ group.time }}
+                    </span>
+                    {% endif %}
+                    {% if group.get_age_display %}
+                    <span class="tag">
+                        {{ group.get_age_display }}
+                    </span>
+                    {% endif %}
                 </div>
             </div>
-            <div class="md:w-2/3 prose prose-lg text-navy/80">
-                <p>Домашняя группа — это небольшая группа людей (обычно 5-12 человек), которые регулярно собираются вместе в неформальной домашней обстановке.</p>
-                <p>Цель таких встреч — вместе изучать Библию, молиться друг за друга, общаться, делиться переживаниями и ответами от Бога на молитвы.</p>
-            </div>
+            {% empty %}
+            <p style="color:#6b7088;">Нет активных групп в этом районе</p>
+            {% endfor %}
         </div>
-        <h3 class="text-2xl font-bold text-navy mb-6">Почему важно быть частью домашней группы?</h3>
-        <ul class="space-y-4">
-            <li class="flex items-start gap-3">
-                <span class="material-symbols-outlined text-primary mt-1">check_circle</span>
-                <span><strong class="text-navy">Личный рост:</strong> Возможность задавать вопросы, обсуждать проповеди и глубже понимать Слово Божье.</span>
-            </li>
-            <li class="flex items-start gap-3">
-                <span class="material-symbols-outlined text-primary mt-1">check_circle</span>
-                <span><strong class="text-navy">Поддержка:</strong> В сложных ситуациях группа молится и практически помогает.</span>
-            </li>
-            <li class="flex items-start gap-3">
-                <span class="material-symbols-outlined text-primary mt-1">check_circle</span>
-                <span><strong class="text-navy">Общение:</strong> Знакомство с новыми людьми, построение крепких дружеских отношений.</span>
-            </li>
-        </ul>
     </div>
-    <div class="bg-navy text-white rounded-3xl p-8 md:p-12 text-center relative overflow-hidden">
-        <div class="absolute -right-20 -bottom-20 w-64 h-64 bg-primary/20 rounded-full blur-3xl"></div>
-        <div class="absolute -left-20 -top-20 w-64 h-64 bg-primary/20 rounded-full blur-3xl"></div>
-        <h2 class="text-3xl font-bold mb-6 relative z-10">Хотите присоединиться?</h2>
-        <p class="text-lg opacity-80 max-w-2xl mx-auto mb-8 relative z-10">Мы поможем вам подобрать домашнюю группу, которая подходит вам по возрасту, интересам и находится недалеко от вашего дома.</p>
-        <a href="https://t.me/kclcfamily" target="_blank" class="inline-flex items-center gap-2 bg-primary text-navy px-8 py-4 rounded-full font-bold hover:bg-white transition-colors relative z-10">
-            Написать нам в Telegram
-            <span class="material-symbols-outlined">send</span>
-        </a>
+    {% empty %}
+    <div style="text-align:center; padding:40px; background:white; border-radius:20px;">
+        <span style="font-size:48px; color:#c9a84c;">+</span>
+        <h3 style="margin-top:12px;">Группы пока не добавлены</h3>
+        <p style="color:#6b7088;">Скоро здесь появится список домашних встреч.</p>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="modal-overlay" id="modalForm">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        
+        <h2 class="modal-title">Анкета для поиска домашней встречи</h2>
+        <p class="modal-subtitle">Заполните форму, и мы подберем для вас подходящую группу</p>
+        
+        <form id="homeMeetForm" onsubmit="handleSubmit(event)">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label>Фамилия <span class="required">*</span></label>
+                <input type="text" name="last_name" required placeholder="Ваша фамилия">
+            </div>
+            
+            <div class="form-group">
+                <label>Имя <span class="required">*</span></label>
+                <input type="text" name="first_name" required placeholder="Ваше имя">
+            </div>
+            
+            <div class="form-group">
+                <label>Предпочтительный адрес проведения домашних встреч <span class="required">*</span></label>
+                <input type="text" name="preferred_address" required placeholder="Например: ул. Бограда, 134">
+                <div class="help-text">Актуальные адреса находятся в таблице на этой странице</div>
+            </div>
+            
+            <div class="form-group">
+                <label>Дата рождения <span class="required">*</span></label>
+                <input type="date" name="birth_date" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Телефон</label>
+                <input type="tel" name="phone" placeholder="+7 (999) 123-45-67">
+            </div>
+            
+            <div class="form-group">
+                <label>Откуда вы узнали о церкви?</label>
+                <input type="text" name="how_know" placeholder="Например: от друзей, интернет, соцсети">
+            </div>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="consent" name="consent" required>
+                <label for="consent">
+                    <strong>Даю согласие</strong> на обработку своих персональных данных в соответствии с 
+                    <a href="{% url 'privacy' %}" target="_blank" style="color:#c9a84c; text-decoration:underline;">Политикой конфиденциальности</a>
+                </label>
+            </div>
+            
+            <div style="font-size:0.75rem; color:#8b8fa8; text-align:center; margin-bottom:16px; line-height:1.6;">
+                МЕСТНАЯ РЕЛИГИОЗНАЯ ОРГАНИЗАЦИЯ ЦЕРКОВЬ «ХРИСТИАНСКОЙ ЖИЗНИ»<br>
+                ХРИСТИАН ВЕРЫ ЕВАНГЕЛЬСКОЙ (ПЯТИДЕСЯТНИКОВ) Г. КРАСНОЯРСКА<br>
+                ОГРН 1022400010698, ИНН 2460024300
+            </div>
+            
+            <button type="submit" class="btn-submit" id="submitBtn">
+                Отправить заявку
+            </button>
+        </form>
     </div>
 </div>
+
+<script>
+    function openModal() {
+        document.getElementById('modalForm').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeModal() {
+        document.getElementById('modalForm').classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    document.getElementById('modalForm').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeModal();
+        }
+    });
+    
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
+    
+    function handleSubmit(event) {
+        event.preventDefault();
+        
+        const form = document.getElementById('homeMeetForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const formData = new FormData(form);
+        
+        if (!formData.get('consent')) {
+            alert('Пожалуйста, дайте согласие на обработку персональных данных');
+            return;
+        }
+        
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Отправка...';
+        
+        setTimeout(function() {
+            alert('Ваша заявка отправлена! С вами свяжутся в ближайшее время.');
+            closeModal();
+            form.reset();
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Отправить заявку';
+        }, 1000);
+    }
+</script>
 {% endblock %}

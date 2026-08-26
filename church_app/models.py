@@ -500,3 +500,76 @@ class PastorPhoto(models.Model):
     
     def __str__(self):
         return self.slug
+
+class HomeGroup(models.Model):
+    """Домашняя группа / встреча"""
+    
+    DAYS_OF_WEEK = [
+        ('monday', 'Понедельник'),
+        ('tuesday', 'Вторник'),
+        ('wednesday', 'Среда'),
+        ('thursday', 'Четверг'),
+        ('friday', 'Пятница'),
+        ('saturday', 'Суббота'),
+        ('sunday', 'Воскресенье'),
+        ('negotiable', 'По договоренности'),
+    ]
+    
+    GROUP_TYPES = [
+        ('mixed', 'Смешанная'),
+        ('male', 'Мужская'),
+        ('female', 'Женская'),
+        ('youth', 'Молодежная'),
+        ('teen', 'Подростковая'),
+    ]
+    
+    # Основная информация
+    district = models.CharField(max_length=100, verbose_name="Район")
+    address = models.CharField(max_length=255, verbose_name="Адрес")
+    group_type = models.CharField(max_length=20, choices=GROUP_TYPES, default='mixed', verbose_name="Тип группы")
+    
+    # Время
+    day = models.CharField(max_length=20, choices=DAYS_OF_WEEK, default='negotiable', verbose_name="День недели")
+    time = models.CharField(max_length=20, blank=True, null=True, verbose_name="Время (например: 19:00)")
+    
+    # Возраст
+    age_min = models.IntegerField(default=0, blank=True, null=True, verbose_name="Минимальный возраст")
+    age_max = models.IntegerField(default=0, blank=True, null=True, verbose_name="Максимальный возраст")
+    age_display = models.CharField(max_length=50, blank=True, null=True, verbose_name="Возраст (текстом, если диапазон)")
+    
+    # Статус
+    is_active = models.BooleanField(default=True, verbose_name="Активна")
+    order = models.IntegerField(default=0, verbose_name="Порядок сортировки")
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['order', 'district', 'day']
+        verbose_name = "Домашняя группа"
+        verbose_name_plural = "Домашние группы"
+    
+    def __str__(self):
+        return f"{self.district} - {self.address}"
+    
+    def get_age_display(self):
+        """Возвращает строку с возрастом"""
+        if self.age_display:
+            return self.age_display
+        if self.age_min and self.age_max:
+            if self.age_min == self.age_max:
+                return f"{self.age_min} лет"
+            return f"{self.age_min}-{self.age_max} лет"
+        if self.age_min:
+            return f"от {self.age_min} лет"
+        if self.age_max:
+            return f"до {self.age_max} лет"
+        return "Все возрасты"
+    
+    def get_day_display(self):
+        """Возвращает день недели на русском"""
+        return dict(self.DAYS_OF_WEEK).get(self.day, self.day)
+    
+    def get_type_display(self):
+        """Возвращает тип группы на русском"""
+        return dict(self.GROUP_TYPES).get(self.group_type, self.group_type)

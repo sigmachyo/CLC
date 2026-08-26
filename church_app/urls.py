@@ -60,7 +60,7 @@ urlpatterns = [
     path('news/', views.news_list, name='news_list'),
     path('news/<slug:slug>/', views.news_detail, name='news_detail'),
     path('calendar/', TemplateView.as_view(template_name='info/calendar.html'), name='calendar'),
-    path('home-meet/', TemplateView.as_view(template_name='info/home_meet.html'), name='home_meet'),
+    path('home-meet/', views.home_meet_view, name='home_meet'),
     path('regional-churches/', TemplateView.as_view(template_name='info/regional_churches.html'), name='regional_churches'),
     path('privacy-policy/', TemplateView.as_view(template_name='info/privacy.html'), name='privacy'),
     path('api/upload-pastor-photo/', views.upload_pastor_photo, name='upload_pastor_photo'),
