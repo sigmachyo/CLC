@@ -1,6 +1,28 @@
 from django.contrib import admin
-from .models import Announcement
+from .models import (
+    Announcement, 
+    HeroBackground, 
+    Category, 
+    Video, 
+    BiblePlan, 
+    BibleReading, 
+    UserBibleProgress, 
+    Event, 
+    EventRegistration, 
+    KidsContent, 
+    KidsProgress, 
+    DailyVerse, 
+    PrayerRequest, 
+    PushSubscription, 
+    Donation, 
+    News,
+    PastorPhoto,
+    HomeGroup
+)
 
+# ============================================
+# Announcement Admin
+# ============================================
 @admin.register(Announcement)
 class AnnouncementAdmin(admin.ModelAdmin):
     list_display = ('title', 'is_active', 'created_at', 'expires_at')
@@ -33,8 +55,10 @@ class AnnouncementAdmin(admin.ModelAdmin):
         self.message_user(request, f'Отправлено пушей для {count} объявлений. Успешно: {success_total}.')
     broadcast_push.short_description = "Разослать Push-уведомление"
 
-from .models import HeroBackground
 
+# ============================================
+# HeroBackground Admin
+# ============================================
 @admin.register(HeroBackground)
 class HeroBackgroundAdmin(admin.ModelAdmin):
     list_display = ('title', 'is_active', 'order', 'link_url', 'created_at')
@@ -43,8 +67,10 @@ class HeroBackgroundAdmin(admin.ModelAdmin):
     search_fields = ('title',)
     ordering = ('order', '-created_at')
 
-from .models import Category, Video, BiblePlan, BibleReading, UserBibleProgress, Event, EventRegistration, KidsContent, KidsProgress, DailyVerse, PrayerRequest, PushSubscription, Donation
 
+# ============================================
+# Category Admin
+# ============================================
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'category_type', 'order', 'is_active')
@@ -53,6 +79,10 @@ class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
     ordering = ('order', 'name')
 
+
+# ============================================
+# Video Admin
+# ============================================
 @admin.register(Video)
 class VideoAdmin(admin.ModelAdmin):
     list_display = ('title', 'category', 'duration', 'views_count', 'is_featured', 'is_active')
@@ -72,6 +102,10 @@ class VideoAdmin(admin.ModelAdmin):
         }),
     )
 
+
+# ============================================
+# BiblePlan Admin
+# ============================================
 @admin.register(BiblePlan)
 class BiblePlanAdmin(admin.ModelAdmin):
     list_display = ('title', 'days_count', 'order', 'is_active')
@@ -79,6 +113,10 @@ class BiblePlanAdmin(admin.ModelAdmin):
     search_fields = ('title', 'description')
     ordering = ('order', 'title')
 
+
+# ============================================
+# BibleReading Admin
+# ============================================
 @admin.register(BibleReading)
 class BibleReadingAdmin(admin.ModelAdmin):
     list_display = ('plan', 'day_number', 'title', 'bible_passage')
@@ -86,12 +124,20 @@ class BibleReadingAdmin(admin.ModelAdmin):
     search_fields = ('title', 'bible_passage')
     ordering = ('plan', 'day_number')
 
+
+# ============================================
+# UserBibleProgress Admin
+# ============================================
 @admin.register(UserBibleProgress)
 class UserBibleProgressAdmin(admin.ModelAdmin):
     list_display = ('user', 'plan', 'current_day', 'get_progress_percentage', 'last_read_at')
     list_filter = ('plan',)
     search_fields = ('user__username', 'plan__title')
 
+
+# ============================================
+# Event Admin
+# ============================================
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     list_display = ('title', 'slug', 'event_type', 'start_date', 'location', 'is_featured', 'is_active')
@@ -115,6 +161,10 @@ class EventAdmin(admin.ModelAdmin):
         }),
     )
 
+
+# ============================================
+# EventRegistration Admin
+# ============================================
 @admin.register(EventRegistration)
 class EventRegistrationAdmin(admin.ModelAdmin):
     list_display = ('user', 'event', 'registered_at', 'is_confirmed', 'attended')
@@ -122,6 +172,10 @@ class EventRegistrationAdmin(admin.ModelAdmin):
     search_fields = ('user__username', 'event__title')
     date_hierarchy = 'registered_at'
 
+
+# ============================================
+# KidsContent Admin
+# ============================================
 @admin.register(KidsContent)
 class KidsContentAdmin(admin.ModelAdmin):
     list_display = ('title', 'content_type', 'age_group', 'views_count', 'is_featured', 'is_active')
@@ -143,12 +197,20 @@ class KidsContentAdmin(admin.ModelAdmin):
         }),
     )
 
+
+# ============================================
+# KidsProgress Admin
+# ============================================
 @admin.register(KidsProgress)
 class KidsProgressAdmin(admin.ModelAdmin):
     list_display = ('user', 'content', 'completed', 'score', 'last_accessed')
     list_filter = ('completed', 'content__content_type')
     search_fields = ('user__username', 'content__title')
 
+
+# ============================================
+# DailyVerse Admin
+# ============================================
 @admin.register(DailyVerse)
 class DailyVerseAdmin(admin.ModelAdmin):
     list_display = ('date', 'reference', 'verse_text')
@@ -156,23 +218,49 @@ class DailyVerseAdmin(admin.ModelAdmin):
     search_fields = ('verse_text', 'reference')
     ordering = ('-date',)
 
+
+# ============================================
+# PrayerRequest Admin (ОБНОВЛЁННЫЙ)
+# ============================================
 @admin.register(PrayerRequest)
 class PrayerRequestAdmin(admin.ModelAdmin):
-    list_display = ('title', 'user', 'is_answered', 'prayer_count', 'is_public', 'created_at')
+    list_display = ('title', 'user', 'is_answered', 'answered_at', 'prayer_count', 'is_public', 'created_at')
     list_filter = ('is_answered', 'is_public', 'created_at')
     search_fields = ('title', 'description', 'user__username')
     date_hierarchy = 'created_at'
     ordering = ('-created_at',)
+    readonly_fields = ('answered_at',)
+    fieldsets = (
+        ('Основная информация', {
+            'fields': ('title', 'description', 'user')
+        }),
+        ('Статус', {
+            'fields': ('is_answered', 'answered_at', 'prayer_count', 'is_public')
+        }),
+        ('Даты', {
+            'fields': ('created_at',)
+        }),
+    )
 
+
+# ============================================
+# PushSubscription Admin
+# ============================================
 @admin.register(PushSubscription)
 class PushSubscriptionAdmin(admin.ModelAdmin):
     list_display = ('user', 'endpoint_snippet', 'created_at')
     list_filter = ('created_at',)
+    search_fields = ('user__username', 'endpoint')
+    readonly_fields = ('endpoint', 'p256dh', 'auth', 'created_at')
 
     def endpoint_snippet(self, obj):
         return obj.endpoint[:40] + '...' if len(obj.endpoint) > 40 else obj.endpoint
+    endpoint_snippet.short_description = 'Endpoint'
 
 
+# ============================================
+# Donation Admin
+# ============================================
 @admin.register(Donation)
 class DonationAdmin(admin.ModelAdmin):
     list_display = ('amount', 'status', 'user', 'payment_id', 'created_at')
@@ -182,8 +270,10 @@ class DonationAdmin(admin.ModelAdmin):
     ordering = ('-created_at',)
     readonly_fields = ('payment_id', 'created_at')
 
-from .models import News
 
+# ============================================
+# News Admin
+# ============================================
 @admin.register(News)
 class NewsAdmin(admin.ModelAdmin):
     list_display = (
@@ -192,34 +282,34 @@ class NewsAdmin(admin.ModelAdmin):
         'is_active',
         'created_at',
     )
-
     list_filter = (
         'is_featured',
         'is_active',
         'created_at',
     )
-
     search_fields = (
         'title',
         'short_description',
         'content',
     )
-
     prepopulated_fields = {
         'slug': ('title',)
     }
-
     ordering = ('-created_at',)
 
-from .models import PastorPhoto
 
+# ============================================
+# PastorPhoto Admin
+# ============================================
 @admin.register(PastorPhoto)
 class PastorPhotoAdmin(admin.ModelAdmin):
     list_display = ('slug', 'updated_at')
     search_fields = ('slug',)
 
-from .models import HomeGroup
 
+# ============================================
+# HomeGroup Admin
+# ============================================
 @admin.register(HomeGroup)
 class HomeGroupAdmin(admin.ModelAdmin):
     list_display = ('district', 'address', 'get_type_display', 'get_day_display', 'time', 'get_age_display', 'is_active', 'order')

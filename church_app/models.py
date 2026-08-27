@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 import uuid
 
-
 class Announcement(models.Model):
     """Главное уведомление на весь экран"""
     title = models.CharField(max_length=200, verbose_name="Заголовок")
@@ -23,7 +22,6 @@ class Announcement(models.Model):
         verbose_name = "Объявление"
         verbose_name_plural = "Объявления"
 
-
 class HeroBackground(models.Model):
     """Фон для главной страницы (Слайдер)"""
     title = models.CharField(max_length=150, blank=True, verbose_name="Название (для админки)")
@@ -40,7 +38,6 @@ class HeroBackground(models.Model):
 
     def __str__(self):
         return self.title or f"Фон #{self.id}"
-
 
 class Category(models.Model):
     """Категория контента в библиотеке"""
@@ -69,7 +66,6 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
-
 
 class Video(models.Model):
     """Видео материалы"""
@@ -106,7 +102,6 @@ class Video(models.Model):
         import re
         if not self.youtube_url:
             return None
-        # Extract video ID from various URL formats
         patterns = [
             r'(?:youtube\.com/watch\?v=|youtu\.be/|youtube\.com/embed/|youtube\.com/v/)([a-zA-Z0-9_-]{11})',
         ]
@@ -151,7 +146,6 @@ class Video(models.Model):
         self.views_count += 1
         self.save(update_fields=['views_count'])
 
-
 class BiblePlan(models.Model):
     """Планы чтения Библии"""
     title = models.CharField(max_length=200, verbose_name="Название")
@@ -169,7 +163,6 @@ class BiblePlan(models.Model):
 
     def __str__(self):
         return self.title
-
 
 class BibleReading(models.Model):
     """День чтения в плане"""
@@ -189,7 +182,6 @@ class BibleReading(models.Model):
 
     def __str__(self):
         return f"{self.plan.title} - День {self.day_number}: {self.title}"
-
 
 class UserBibleProgress(models.Model):
     """Прогресс пользователя в чтении Библии"""
@@ -214,14 +206,13 @@ class UserBibleProgress(models.Model):
             self.completed_days.append(day_number)
             if day_number > self.current_day:
                 self.current_day = day_number
-            self.completed_days = list(self.completed_days)  # Явное переназначение для JSONField
+            self.completed_days = list(self.completed_days)
             self.save()
 
     def get_progress_percentage(self):
         if self.plan and self.plan.days_count > 0:
             return int((len(self.completed_days) / self.plan.days_count) * 100)
         return 0
-
 
 class Event(models.Model):
     """События"""
@@ -262,7 +253,6 @@ class Event(models.Model):
             return (self.start_date - timezone.now()).days
         return 0
 
-
 class EventRegistration(models.Model):
     """Регистрация на события"""
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='registrations')
@@ -279,7 +269,6 @@ class EventRegistration(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.event.title}"
 
-
 class KidsContent(models.Model):
     """Детский контент"""
     CONTENT_TYPES = [
@@ -289,7 +278,6 @@ class KidsContent(models.Model):
         ('craft', 'Поделка'),
         ('song', 'Песня'),
     ]
-
     AGE_GROUPS = [
         ('3-5', '3-5 лет'),
         ('6-8', '6-8 лет'),
@@ -322,7 +310,6 @@ class KidsContent(models.Model):
         return f"{self.get_content_type_display()}: {self.title}"
 
     def get_youtube_embed_url(self):
-        """Converts any YouTube URL format to embed URL"""
         import re
         if not self.youtube_url:
             return None
@@ -338,7 +325,6 @@ class KidsContent(models.Model):
     def increment_views(self):
         self.views_count += 1
         self.save(update_fields=['views_count'])
-
 
 class KidsProgress(models.Model):
     """Прогресс ребенка"""
@@ -357,7 +343,6 @@ class KidsProgress(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.content.title}"
 
-
 class DailyVerse(models.Model):
     """Стих дня на главной странице"""
     verse_text = models.TextField(verbose_name="Текст стиха")
@@ -372,6 +357,15 @@ class DailyVerse(models.Model):
     def __str__(self):
         return f"{self.date} - {self.reference}"
 
+class PrayerRequestManager(models.Manager):
+    """Менеджер для фильтрации молитвенных нужд"""
+    def active(self):
+        """Только активные (не отвеченные) молитвы"""
+        return self.filter(is_answered=False)
+    
+    def answered(self):
+        """Только отвеченные молитвы"""
+        return self.filter(is_answered=True)
 
 class PrayerRequest(models.Model):
     """Молитвенная нужда"""
@@ -383,6 +377,9 @@ class PrayerRequest(models.Model):
     is_public = models.BooleanField(default=True, verbose_name="Публичная просьба")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Создана")
     answered_at = models.DateTimeField(null=True, blank=True, verbose_name="Дата ответа")
+    
+    # Используем кастомный менеджер
+    objects = PrayerRequestManager()
 
     class Meta:
         verbose_name = "Молитвенная нужда"
@@ -390,7 +387,6 @@ class PrayerRequest(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.user.username}"
-
 
 class PushSubscription(models.Model):
     """Подписка на Web Push уведомления"""
@@ -408,7 +404,6 @@ class PushSubscription(models.Model):
         username = self.user.username if self.user else "Аноним"
         return f"Подписка ({username})"
 
-
 class Donation(models.Model):
     """Пожертвования"""
     STATUS_CHOICES = [
@@ -416,6 +411,7 @@ class Donation(models.Model):
         ('success', 'Успешно'),
         ('failed', 'Ошибка'),
     ]
+
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Пользователь")
     amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Сумма")
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending', verbose_name="Статус")
@@ -429,54 +425,44 @@ class Donation(models.Model):
 
     def __str__(self):
         return f"{self.amount} ₽ - {self.get_status_display()}"
-    
+
 class News(models.Model):
     """Новости для главной страницы"""
-
     title = models.CharField(
         max_length=200,
         verbose_name="Заголовок"
     )
-
     slug = models.SlugField(
         unique=True,
         verbose_name="URL"
     )
-
     short_description = models.TextField(
         verbose_name="Краткое описание"
     )
-
     content = models.TextField(
         verbose_name="Полный текст"
     )
-
     image = models.ImageField(
         upload_to='news/',
         blank=True,
         null=True,
         verbose_name="Изображение"
     )
-
     is_featured = models.BooleanField(
         default=False,
         verbose_name="Главная новость"
     )
-
     is_active = models.BooleanField(
         default=True,
         verbose_name="Опубликовано"
     )
-
     views_count = models.IntegerField(
         default=0,
         verbose_name="Просмотры"
     )
-
     created_at = models.DateTimeField(
         auto_now_add=True
     )
-
     updated_at = models.DateTimeField(
         auto_now=True
     )
@@ -493,17 +479,16 @@ class PastorPhoto(models.Model):
     slug = models.SlugField(unique=True, verbose_name="Идентификатор пастора")
     image = models.ImageField(upload_to='pastors/', verbose_name="Фото", blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     class Meta:
         verbose_name = "Фото пастора"
         verbose_name_plural = "Фото пасторов"
-    
+
     def __str__(self):
         return self.slug
 
 class HomeGroup(models.Model):
     """Домашняя группа / встреча"""
-    
     DAYS_OF_WEEK = [
         ('monday', 'Понедельник'),
         ('tuesday', 'Вторник'),
@@ -514,7 +499,6 @@ class HomeGroup(models.Model):
         ('sunday', 'Воскресенье'),
         ('negotiable', 'По договоренности'),
     ]
-    
     GROUP_TYPES = [
         ('mixed', 'Смешанная'),
         ('male', 'Мужская'),
@@ -522,38 +506,29 @@ class HomeGroup(models.Model):
         ('youth', 'Молодежная'),
         ('teen', 'Подростковая'),
     ]
-    
-    # Основная информация
+
     district = models.CharField(max_length=100, verbose_name="Район")
     address = models.CharField(max_length=255, verbose_name="Адрес")
     group_type = models.CharField(max_length=20, choices=GROUP_TYPES, default='mixed', verbose_name="Тип группы")
-    
-    # Время
     day = models.CharField(max_length=20, choices=DAYS_OF_WEEK, default='negotiable', verbose_name="День недели")
     time = models.CharField(max_length=20, blank=True, null=True, verbose_name="Время (например: 19:00)")
-    
-    # Возраст
     age_min = models.IntegerField(default=0, blank=True, null=True, verbose_name="Минимальный возраст")
     age_max = models.IntegerField(default=0, blank=True, null=True, verbose_name="Максимальный возраст")
     age_display = models.CharField(max_length=50, blank=True, null=True, verbose_name="Возраст (текстом, если диапазон)")
-    
-    # Статус
     is_active = models.BooleanField(default=True, verbose_name="Активна")
     order = models.IntegerField(default=0, verbose_name="Порядок сортировки")
-    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     class Meta:
         ordering = ['order', 'district', 'day']
         verbose_name = "Домашняя группа"
         verbose_name_plural = "Домашние группы"
-    
+
     def __str__(self):
         return f"{self.district} - {self.address}"
-    
+
     def get_age_display(self):
-        """Возвращает строку с возрастом"""
         if self.age_display:
             return self.age_display
         if self.age_min and self.age_max:
@@ -565,11 +540,9 @@ class HomeGroup(models.Model):
         if self.age_max:
             return f"до {self.age_max} лет"
         return "Все возрасты"
-    
+
     def get_day_display(self):
-        """Возвращает день недели на русском"""
         return dict(self.DAYS_OF_WEEK).get(self.day, self.day)
-    
+
     def get_type_display(self):
-        """Возвращает тип группы на русском"""
         return dict(self.GROUP_TYPES).get(self.group_type, self.group_type)

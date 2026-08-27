@@ -4,6 +4,7 @@ from django.contrib import messages
 from .models import PrayerRequest
 from .forms import PrayerRequestForm
 from django.utils import timezone
+
 def prayer_list(request):
     """Список публичных молитвенных нужд"""
     prayers = PrayerRequest.objects.filter(is_public=True).order_by('-created_at')
@@ -12,6 +13,7 @@ def prayer_list(request):
         'title': 'Молитвенная стена'
     }
     return render(request, 'prayer_list.html', context)
+
 @login_required
 def prayer_add(request):
     """Добавление новой молитвенной нужды"""
@@ -29,6 +31,7 @@ def prayer_add(request):
     else:
         form = PrayerRequestForm()
     return render(request, 'prayer_add.html', {'title': 'Добавить нужду', 'form': form})
+
 @login_required
 def prayer_support(request, prayer_id):
     """Поддержать в молитве (+1) — с защитой от повторного голосования"""
@@ -43,18 +46,25 @@ def prayer_support(request, prayer_id):
             request.session[supported_key] = True
             messages.success(request, f'Вы присоединились к молитве за: {prayer.title}')
     return redirect('prayer_list')
+
 @login_required
 def my_prayers(request):
-    """Личные нужды пользователя"""
-    prayers = PrayerRequest.objects.filter(user=request.user).order_by('-created_at')
+    """
+    Личные нужды пользователя — разделены на активные и отвеченные.
+    Использует кастомный менеджер PrayerRequest.objects.active() и .answered()
+    """
+    user_prayers = PrayerRequest.objects.filter(user=request.user)
+    
     context = {
-        'prayers': prayers,
+        'active_prayers': user_prayers.filter(is_answered=False).order_by('-created_at'),
+        'answered_prayers': user_prayers.filter(is_answered=True).order_by('-answered_at'),
         'title': 'Мои молитвы'
     }
     return render(request, 'my_prayers.html', context)
+
 @login_required
 def prayer_toggle_answered(request, prayer_id):
-    """Отметить как отвеченную"""
+    """Отметить как отвеченную / снять отметку"""
     prayer = get_object_or_404(PrayerRequest, id=prayer_id, user=request.user)
     if request.method == 'POST':
         prayer.is_answered = not prayer.is_answered

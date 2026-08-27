@@ -1,0 +1,440 @@
+/* ============================================================
+   БАЗОВЫЕ СТИЛИ ДЛЯ ВСЕГО САЙТА
+   ============================================================ */
+
+:root {
+    --navy: #1a1f36;
+    --navy-light: #252b48;
+    --navy-hover: #2c335a;
+    --gold: #c9a84c;
+    --gold-hover: #b08e35;
+    --bg: #f5f0e8;
+    --txt: #1a1f36;
+    --txt-sub: #3d4260;
+    --txt-muted: #8b8fa8;
+    --white: #ffffff;
+    --success: #27ae60;
+    --error: #e74c3c;
+    
+    --header-height: 72px;
+    --bottom-nav-height: 72px;
+    --max-width: 1200px;
+    --radius: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+}
+
+/* ============================================================
+   ОБЩИЕ СТИЛИ
+   ============================================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--txt);
+    line-height: 1.6;
+    overflow-x: hidden;
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh; /* Для современных браузеров */
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    color: var(--gold);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--gold-hover);
+}
+
+/* ============================================================
+   ШАПКА САЙТА (HEADER)
+   ============================================================ */
+
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: var(--header-height);
+    background: rgba(26, 31, 54, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.hdr-container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 20px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.hdr-logo {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.hdr-logo img {
+    height: 40px;
+    width: auto;
+    display: block;
+}
+
+/* Десктопная навигация */
+.hdr-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 auto;
+}
+
+.hdr-nav-link {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.hdr-nav-link:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.hdr-nav-link.active {
+    color: var(--gold);
+    background: rgba(201, 168, 76, 0.12);
+}
+
+.hdr-nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 2px;
+    background: var(--gold);
+    border-radius: 2px;
+}
+
+.hdr-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.hdr-btn-account {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s ease;
+}
+
+.hdr-btn-account:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.hdr-btn-account .material-symbols-outlined {
+    font-size: 28px;
+}
+
+/* Мобильное меню (гамбургер) - добавляем позже при необходимости */
+
+/* ============================================================
+   НИЖНЯЯ НАВИГАЦИЯ (МОБИЛЬНАЯ)
+   ============================================================ */
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    height: var(--bottom-nav-height);
+    background: rgba(26, 31, 54, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    display: none; /* Скрываем на десктопе */
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 8px;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.bottom-nav .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    min-width: 60px;
+    color: rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+    position: relative;
+    border: none;
+    background: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.bottom-nav .nav-item span {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+.bottom-nav .nav-svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+.bottom-nav .nav-item.active {
+    color: var(--gold);
+}
+
+.bottom-nav .nav-item.active::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 2px;
+    background: var(--gold);
+    border-radius: 2px;
+}
+
+.bottom-nav .nav-item:hover {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* ============================================================
+   ОСНОВНОЙ КОНТЕНТ
+   ============================================================ */
+
+.main-content {
+    flex: 1;
+    padding-top: var(--header-height);
+    padding-bottom: 0;
+    min-height: calc(100vh - var(--header-height));
+    min-height: calc(100dvh - var(--header-height));
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Для страниц с bottom-nav */
+.with-bottom-nav .main-content {
+    padding-bottom: var(--bottom-nav-height);
+}
+
+/* ============================================================
+   МОБИЛЬНЫЕ СТИЛИ (<= 768px)
+   ============================================================ */
+
+@media (max-width: 768px) {
+    :root {
+        --header-height: 64px;
+        --bottom-nav-height: 64px;
+    }
+    
+    .hdr-container {
+        padding: 0 12px;
+    }
+    
+    .hdr-logo img {
+        height: 32px;
+    }
+    
+    /* Скрываем десктопную навигацию */
+    .hdr-nav {
+        display: none !important;
+    }
+    
+    /* Показываем нижнюю навигацию */
+    .bottom-nav {
+        display: flex !important;
+    }
+    
+    /* Добавляем отступ для контента */
+    .main-content {
+        padding-bottom: var(--bottom-nav-height);
+    }
+    
+    /* Уменьшаем размеры элементов */
+    .hdr-btn-account {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .hdr-btn-account .material-symbols-outlined {
+        font-size: 24px;
+    }
+}
+
+/* ============================================================
+   МЕЛКИЕ МОБИЛЬНЫЕ (<= 480px)
+   ============================================================ */
+
+@media (max-width: 480px) {
+    :root {
+        --header-height: 56px;
+        --bottom-nav-height: 60px;
+    }
+    
+    .hdr-container {
+        padding: 0 10px;
+    }
+    
+    .hdr-logo img {
+        height: 28px;
+    }
+    
+    .bottom-nav .nav-item {
+        padding: 4px 8px;
+        min-width: 50px;
+    }
+    
+    .bottom-nav .nav-svg {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .bottom-nav .nav-item span {
+        font-size: 9px;
+    }
+    
+    /* Исправляем размер шрифта для полей ввода */
+    input, select, textarea, button {
+        font-size: 16px !important;
+    }
+}
+
+/* ============================================================
+   ТАБЛЕТЫ (769px - 1024px)
+   ============================================================ */
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .hdr-nav-link {
+        font-size: 0.85rem;
+        padding: 6px 12px;
+    }
+}
+
+/* ============================================================
+   БОЛЬШИЕ ЭКРАНЫ (> 1200px)
+   ============================================================ */
+
+@media (min-width: 1200px) {
+    .hdr-container {
+        padding: 0 32px;
+    }
+}
+
+/* ============================================================
+   УТИЛИТЫ ДЛЯ МОБИЛЬНЫХ
+   ============================================================ */
+
+/* Скрываем на мобильных */
+.mobile-hide {
+    display: block;
+}
+@media (max-width: 768px) {
+    .mobile-hide {
+        display: none !important;
+    }
+}
+
+/* Показываем только на мобильных */
+.mobile-only {
+    display: none;
+}
+@media (max-width: 768px) {
+    .mobile-only {
+        display: block;
+    }
+}
+
+/* Отступы для безопасной зоны */
+.safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 16px);
+}
+
+/* Улучшенные кнопки для тач-устройств */
+.touch-btn {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+.touch-btn:active {
+    transform: scale(0.97);
+}
+
+/* Карточки с отступами для тач-устройств */
+.touch-card {
+    padding: 16px;
+    border-radius: var(--radius);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.touch-card:active {
+    transform: scale(0.98);
+}
+
+/* Улучшенная читаемость на мобильных */
+@media (max-width: 480px) {
+    .text-responsive {
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+    
+    .heading-responsive {
+        font-size: 1.8rem;
+        line-height: 1.2;
+    }
+}

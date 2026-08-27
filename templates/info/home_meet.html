@@ -9,12 +9,10 @@
         margin: 0 auto;
         padding: 120px 20px 100px;
     }
-    
     .home-meet-header {
         text-align: center;
         margin-bottom: 50px;
     }
-    
     .home-meet-header h1 {
         font-size: 3rem;
         font-weight: 800;
@@ -22,7 +20,6 @@
         margin-bottom: 16px;
         letter-spacing: -0.02em;
     }
-    
     .home-meet-header p {
         color: #6b7088;
         font-size: 1.1rem;
@@ -30,7 +27,6 @@
         margin: 0 auto 20px;
         line-height: 1.7;
     }
-    
     .home-meet-header .verse {
         background: rgba(201, 168, 76, 0.08);
         border-left: 4px solid #c9a84c;
@@ -42,11 +38,9 @@
         color: #1a1f36;
         font-size: 1.05rem;
     }
-    
     .home-meet-header .verse strong {
         color: #c9a84c;
     }
-    
     .action-buttons {
         display: flex;
         flex-wrap: wrap;
@@ -54,7 +48,6 @@
         gap: 12px;
         margin-top: 30px;
     }
-    
     .btn-primary-custom {
         display: inline-flex;
         align-items: center;
@@ -70,14 +63,12 @@
         border: none;
         cursor: pointer;
     }
-    
     .btn-primary-custom:hover {
         background: #b08e35;
         transform: translateY(-2px);
         box-shadow: 0 8px 25px rgba(201, 168, 76, 0.35);
         color: #1a1f36;
     }
-    
     .btn-outline-custom {
         display: inline-flex;
         align-items: center;
@@ -93,17 +84,14 @@
         border: 2px solid #c9a84c;
         cursor: pointer;
     }
-    
     .btn-outline-custom:hover {
         background: #c9a84c;
         color: #1a1f36;
         transform: translateY(-2px);
     }
-    
     .district-section {
         margin-bottom: 48px;
     }
-    
     .district-title {
         font-size: 1.8rem;
         font-weight: 700;
@@ -115,7 +103,6 @@
         align-items: center;
         gap: 12px;
     }
-    
     .district-title .badge-count {
         font-size: 0.8rem;
         background: rgba(201, 168, 76, 0.15);
@@ -124,13 +111,11 @@
         border-radius: 20px;
         font-weight: 600;
     }
-    
     .groups-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         gap: 16px;
     }
-    
     .group-card {
         background: white;
         border-radius: 16px;
@@ -142,18 +127,15 @@
         flex-direction: column;
         gap: 6px;
     }
-    
     .group-card:hover {
         transform: translateY(-3px);
         box-shadow: 0 12px 40px rgba(26, 31, 54, 0.08);
     }
-    
     .group-address {
         font-size: 1.05rem;
         font-weight: 700;
         color: #1a1f36;
     }
-    
     .group-meta {
         display: flex;
         flex-wrap: wrap;
@@ -161,7 +143,6 @@
         font-size: 0.85rem;
         color: #6b7088;
     }
-    
     .group-meta .tag {
         display: inline-flex;
         align-items: center;
@@ -172,7 +153,6 @@
         color: #3d4260;
         background: #f5f0e8;
     }
-    
     .group-meta .tag.type-mixed {
         background: #e8f0fe;
         color: #1a5a9e;
@@ -193,25 +173,21 @@
         background: #f8f0e8;
         color: #9e6a1a;
     }
-    
     .modal-overlay {
         display: none;
         position: fixed;
         inset: 0;
         background: rgba(26, 31, 54, 0.6);
         backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
         z-index: 2000;
         align-items: center;
         justify-content: center;
         padding: 20px;
         overflow-y: auto;
     }
-    
     .modal-overlay.active {
         display: flex;
     }
-    
     .modal-content {
         background: white;
         border-radius: 32px;
@@ -223,18 +199,10 @@
         position: relative;
         animation: modalFadeIn 0.3s ease;
     }
-    
     @keyframes modalFadeIn {
-        from {
-            opacity: 0;
-            transform: scale(0.95) translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: scale(1) translateY(0);
-        }
+        from { opacity: 0; transform: scale(0.95) translateY(20px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
     }
-    
     .modal-close {
         position: absolute;
         top: 16px;
@@ -252,12 +220,10 @@
         color: #1a1f36;
         transition: all 0.3s ease;
     }
-    
     .modal-close:hover {
         background: #e8e0d4;
         transform: rotate(90deg);
     }
-    
     .modal-title {
         font-size: 1.8rem;
         font-weight: 800;
@@ -265,18 +231,15 @@
         margin-bottom: 8px;
         text-align: center;
     }
-    
     .modal-subtitle {
         text-align: center;
         color: #6b7088;
         margin-bottom: 24px;
         font-size: 0.95rem;
     }
-    
     .form-group {
         margin-bottom: 16px;
     }
-    
     .form-group label {
         display: block;
         font-weight: 600;
@@ -284,11 +247,9 @@
         margin-bottom: 4px;
         font-size: 0.9rem;
     }
-    
     .form-group label .required {
         color: #e74c3c;
     }
-    
     .form-group input,
     .form-group select,
     .form-group textarea {
@@ -300,7 +261,6 @@
         transition: border-color 0.3s ease;
         background: #faf8f5;
     }
-    
     .form-group input:focus,
     .form-group select:focus,
     .form-group textarea:focus {
@@ -308,13 +268,11 @@
         border-color: #c9a84c;
         background: white;
     }
-    
     .form-group .help-text {
         font-size: 0.8rem;
         color: #8b8fa8;
         margin-top: 4px;
     }
-    
     .checkbox-group {
         display: flex;
         align-items: flex-start;
@@ -325,7 +283,6 @@
         border-radius: 12px;
         border: 1px solid #e8e4dc;
     }
-    
     .checkbox-group input[type="checkbox"] {
         width: 20px;
         height: 20px;
@@ -334,18 +291,15 @@
         flex-shrink: 0;
         cursor: pointer;
     }
-    
     .checkbox-group label {
         font-size: 0.9rem;
         color: #3d4260;
         line-height: 1.5;
         cursor: pointer;
     }
-    
     .checkbox-group label strong {
         color: #1a1f36;
     }
-    
     .btn-submit {
         width: 100%;
         padding: 16px;
@@ -359,61 +313,49 @@
         transition: all 0.3s ease;
         margin-top: 8px;
     }
-    
     .btn-submit:hover {
         background: #b08e35;
         transform: translateY(-2px);
         box-shadow: 0 8px 25px rgba(201, 168, 76, 0.3);
     }
-    
     .btn-submit:disabled {
         opacity: 0.6;
         cursor: not-allowed;
         transform: none;
     }
-    
     @media (max-width: 768px) {
         .home-meet-container {
             padding: 100px 16px 80px;
         }
-        
         .home-meet-header h1 {
             font-size: 2rem;
         }
-        
         .district-title {
             font-size: 1.4rem;
         }
-        
         .groups-grid {
             grid-template-columns: 1fr;
         }
-        
         .modal-content {
             padding: 28px 20px;
         }
-        
         .modal-title {
             font-size: 1.4rem;
         }
-        
         .action-buttons {
             flex-direction: column;
             align-items: center;
         }
-        
         .action-buttons .btn-primary-custom,
         .action-buttons .btn-outline-custom {
             width: 100%;
             justify-content: center;
         }
     }
-    
     @media (max-width: 480px) {
         .home-meet-header h1 {
             font-size: 1.6rem;
         }
-        
         .group-card {
             padding: 16px;
         }
@@ -425,12 +367,10 @@
 <div class="home-meet-container">
     <div class="home-meet-header">
         <h1>Домашние встречи</h1>
-        
         <div class="verse">
             <span style="font-size:24px; vertical-align:middle; color:#c9a84c;">"</span>
             <span>Господь говорит: <strong>«Где двое или трое собраны во имя Мое, там Я посреди них»</strong> (Мф. 18:19,20)</span>
         </div>
-        
         <p>
             Очень важно иметь общение с верующими, молиться вместе, общаться на духовные темы, 
             собираться во имя Его и вне церкви. Для этого и существуют домашние встречи.
@@ -439,17 +379,12 @@
             Такие встречи формируются по месту жительства, по интересам, по роду занятий и т.д. 
             Каждый может найти удобную и подходящую именно ему. Встречи обычно проходят вечером один раз в неделю.
         </p>
-        
         <div class="action-buttons">
-            <button class="btn-primary-custom" onclick="openModal()">
-                Заполнить анкету
-            </button>
-            <a href="https://t.me/Fishkaoil" target="_blank" class="btn-outline-custom">
-                Задать вопрос в Telegram
-            </a>
+            <button class="btn-primary-custom" onclick="openModal()">Заполнить анкету</button>
+            <a href="https://t.me/Fishkaoil" target="_blank" class="btn-outline-custom">Задать вопрос в Telegram</a>
         </div>
     </div>
-    
+
     {% for district, groups in groups_by_district.items %}
     <div class="district-section">
         <div class="district-title">
@@ -461,22 +396,10 @@
             <div class="group-card">
                 <div class="group-address">{{ group.address }}</div>
                 <div class="group-meta">
-                    <span class="tag type-{{ group.group_type }}">
-                        {{ group.get_type_display }}
-                    </span>
-                    <span class="tag">
-                        {{ group.get_day_display }}
-                    </span>
-                    {% if group.time %}
-                    <span class="tag">
-                        {{ group.time }}
-                    </span>
-                    {% endif %}
-                    {% if group.get_age_display %}
-                    <span class="tag">
-                        {{ group.get_age_display }}
-                    </span>
-                    {% endif %}
+                    <span class="tag type-{{ group.group_type }}">{{ group.get_type_display }}</span>
+                    <span class="tag">{{ group.get_day_display }}</span>
+                    {% if group.time %}<span class="tag">{{ group.time }}</span>{% endif %}
+                    {% if group.get_age_display %}<span class="tag">{{ group.get_age_display }}</span>{% endif %}
                 </div>
             </div>
             {% empty %}
@@ -486,7 +409,6 @@
     </div>
     {% empty %}
     <div style="text-align:center; padding:40px; background:white; border-radius:20px;">
-        <span style="font-size:48px; color:#c9a84c;">+</span>
         <h3 style="margin-top:12px;">Группы пока не добавлены</h3>
         <p style="color:#6b7088;">Скоро здесь появится список домашних встреч.</p>
     </div>
@@ -496,44 +418,35 @@
 <div class="modal-overlay" id="modalForm">
     <div class="modal-content">
         <button class="modal-close" onclick="closeModal()">×</button>
-        
         <h2 class="modal-title">Анкета для поиска домашней встречи</h2>
         <p class="modal-subtitle">Заполните форму, и мы подберем для вас подходящую группу</p>
-        
         <form id="homeMeetForm" onsubmit="handleSubmit(event)">
             {% csrf_token %}
-            
             <div class="form-group">
                 <label>Фамилия <span class="required">*</span></label>
                 <input type="text" name="last_name" required placeholder="Ваша фамилия">
             </div>
-            
             <div class="form-group">
                 <label>Имя <span class="required">*</span></label>
                 <input type="text" name="first_name" required placeholder="Ваше имя">
             </div>
-            
             <div class="form-group">
                 <label>Предпочтительный адрес проведения домашних встреч <span class="required">*</span></label>
                 <input type="text" name="preferred_address" required placeholder="Например: ул. Бограда, 134">
                 <div class="help-text">Актуальные адреса находятся в таблице на этой странице</div>
             </div>
-            
             <div class="form-group">
                 <label>Дата рождения <span class="required">*</span></label>
                 <input type="date" name="birth_date" required>
             </div>
-            
             <div class="form-group">
                 <label>Телефон</label>
                 <input type="tel" name="phone" placeholder="+7 (999) 123-45-67">
             </div>
-            
             <div class="form-group">
                 <label>Откуда вы узнали о церкви?</label>
                 <input type="text" name="how_know" placeholder="Например: от друзей, интернет, соцсети">
             </div>
-            
             <div class="checkbox-group">
                 <input type="checkbox" id="consent" name="consent" required>
                 <label for="consent">
@@ -541,16 +454,12 @@
                     <a href="{% url 'privacy' %}" target="_blank" style="color:#c9a84c; text-decoration:underline;">Политикой конфиденциальности</a>
                 </label>
             </div>
-            
             <div style="font-size:0.75rem; color:#8b8fa8; text-align:center; margin-bottom:16px; line-height:1.6;">
                 МЕСТНАЯ РЕЛИГИОЗНАЯ ОРГАНИЗАЦИЯ ЦЕРКОВЬ «ХРИСТИАНСКОЙ ЖИЗНИ»<br>
                 ХРИСТИАН ВЕРЫ ЕВАНГЕЛЬСКОЙ (ПЯТИДЕСЯТНИКОВ) Г. КРАСНОЯРСКА<br>
                 ОГРН 1022400010698, ИНН 2460024300
             </div>
-            
-            <button type="submit" class="btn-submit" id="submitBtn">
-                Отправить заявку
-            </button>
+            <button type="submit" class="btn-submit" id="submitBtn">Отправить заявку</button>
         </form>
     </div>
 </div>
@@ -560,39 +469,27 @@
         document.getElementById('modalForm').classList.add('active');
         document.body.style.overflow = 'hidden';
     }
-    
     function closeModal() {
         document.getElementById('modalForm').classList.remove('active');
         document.body.style.overflow = '';
     }
-    
     document.getElementById('modalForm').addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeModal();
-        }
+        if (e.target === this) closeModal();
     });
-    
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closeModal();
-        }
+        if (e.key === 'Escape') closeModal();
     });
-    
     function handleSubmit(event) {
         event.preventDefault();
-        
         const form = document.getElementById('homeMeetForm');
         const submitBtn = document.getElementById('submitBtn');
         const formData = new FormData(form);
-        
         if (!formData.get('consent')) {
             alert('Пожалуйста, дайте согласие на обработку персональных данных');
             return;
         }
-        
         submitBtn.disabled = true;
         submitBtn.textContent = 'Отправка...';
-        
         setTimeout(function() {
             alert('Ваша заявка отправлена! С вами свяжутся в ближайшее время.');
             closeModal();

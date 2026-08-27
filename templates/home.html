@@ -37,8 +37,18 @@
 {% block site_footer %}{% endblock %}
 {% block extra_js %}
 <script>
-window.SERVER_NOW_MS = {{ server_now_ms|default:"Date.now()" }};
-window.SERVER_NOW_KRA = "{{ server_now_kra|default:'' }}";
+// Получаем данные от Django
+var serverNowMs = parseInt("{{ server_now_ms|default:'0' }}");
+var serverNowKra = "{{ server_now_kra|default:'' }}";
+
+// Если значение не число или 0, используем текущее время
+if (isNaN(serverNowMs) || serverNowMs === 0) {
+    serverNowMs = Date.now();
+}
+
+window.SERVER_NOW_MS = serverNowMs;
+window.SERVER_NOW_KRA = serverNowKra;
+
 console.log('[INIT] Server time (UTC ms):', window.SERVER_NOW_MS);
 console.log('[INIT] Server time (Kra ISO):', window.SERVER_NOW_KRA);
 console.log('[INIT] Client time (now):', Date.now());
