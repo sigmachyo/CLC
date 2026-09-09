@@ -127,3 +127,21 @@
     {% block extra_js %}{% endblock %}
 </body>
 </html>
+
+<!-- Поместите этот блок в самый низ файла templates/base.html -->
+<style>
+/* Фикс конфликта окружения Tailwind и Material Symbols */
+.material-symbols-outlined {
+    font-family: 'Material Symbols Outlined' !important;
+    font-weight: normal !important;
+    font-style: normal !important;
+    font-size: 24px;
+    display: inline-block !important;
+    line-height: 1 !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    word-wrap: normal !important;
+    white-space: nowrap !important;
+    direction: ltr !important;
+}
+</style>
