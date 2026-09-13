@@ -1,86 +1,199 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Пожертвования{% endblock %}
-{% block extra_css %}
-<style>
-    .donate-container { max-width: 800px; margin: 100px auto 80px; padding: 0 20px; }
-    .header-section { text-align: center; margin-bottom: 50px; }
-    .header-section h1 { font-family: var(--font-display); font-size: 2.5rem; font-weight: 800; color: var(--navy); margin-bottom: 15px; }
-    .header-section p { color: var(--txt-sub); font-size: 1.1rem; line-height: 1.6; max-width: 600px; margin: 0 auto; }
-    .donate-card { background: white; border-radius: 20px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; margin-bottom: 30px; position: relative; overflow: hidden; }
-    .donate-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: linear-gradient(90deg, var(--primary), #e6c86e); }
-    .qr-container { background: #f9f9f9; width: 250px; height: 250px; margin: 0 auto 30px; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px dashed #ddd; }
-    .bank-details { background: rgba(26,31,54,0.02); border-radius: 15px; padding: 25px; text-align: left; margin-bottom: 30px; }
-    .detail-row { display: flex; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid rgba(0,0,0,0.05); }
-    .detail-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-    .detail-label { width: 150px; color: var(--txt-muted); font-weight: 600; font-size: 0.9rem; }
-    .detail-value { color: var(--navy); font-weight: 600; font-family: monospace; font-size: 1.1rem; letter-spacing: 1px; }
-    .verse-box { background: rgba(201,168,76,0.1); border-left: 4px solid var(--primary); padding: 20px; border-radius: 0 10px 10px 0; margin-top: 40px; }
-    .verse-text { color: var(--navy); font-style: italic; font-size: 1.1rem; margin-bottom: 10px; }
-    .verse-ref { color: var(--primary); font-weight: 700; font-size: 0.9rem; }
-</style>
-{% endblock %}
+
 {% block content %}
 <div class="donate-container">
-    <div class="header-section">
-        <h1><i class="fa-solid fa-heart" style="color: #e74c3c;"></i> Участие в служении</h1>
-        <p>Ваши пожертвования помогают церкви нести Евангелие, помогать нуждающимся и развивать проекты, такие как это приложение.</p>
+    <div class="donate-header">
+        <h1>Пожертвования</h1>
+        <p>Поддержите служение церкви "Христианской Жизни". Ваше пожертвование помогает нам нести свет Евангелия.</p>
     </div>
+
+    <!-- Блок с банковскими реквизитами -->
     <div class="donate-card">
-        <h2 style="color: var(--navy); font-size: 1.5rem; margin-bottom: 20px;">Онлайн пожертвование</h2>
-        <form method="POST" action="{% url 'donate' %}">
-            {% csrf_token %}
-            <div style="margin-bottom: 20px;">
-                <label style="display: block; text-align: left; margin-bottom: 8px; color: var(--txt-sub); font-weight: 500;">Сумма (₽)</label>
-                <input type="number" name="amount" min="10" placeholder="1000" required
-                    style="width: 100%; padding: 15px; border: 2px solid #eee; border-radius: 10px; font-size: 1.2rem; outline: none; transition: border-color 0.3s;"
-                    onfocus="this.style.borderColor='var(--primary)'"
-                    onblur="this.style.borderColor='#eee'">
+        <h2 class="donate-card-title">Реквизиты для перевода</h2>
+        <div class="donate-details">
+            <div class="detail-row">
+                <span class="detail-label">Получатель</span>
+                <span class="detail-value">МРО ЦХВЕ "Церковь Христианской Жизни"</span>
             </div>
-            <button type="submit" style="width: 100%; background: var(--primary); color: white; border: none; padding: 16px; border-radius: 10px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;">
-                Перейти к оплате
-            </button>
-        </form>
+            <div class="detail-row">
+                <span class="detail-label">ИНН</span>
+                <span class="detail-value">[PHONE_REDACTED]</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">КПП</span>
+                <span class="detail-value">[PHONE_REDACTED]</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Расчетный счет</span>
+                <span class="detail-value">407038[PHONE_REDACTED]</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Банк</span>
+                <span class="detail-value">Красноярское отделение N 8646 ПАО Сбербанк</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">БИК</span>
+                <span class="detail-value">[PHONE_REDACTED]</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Назначение</span>
+                <span class="detail-value" style="font-size: 0.9rem;">Добровольное пожертвование на уставную деятельность. Без НДС.</span>
+            </div>
+        </div>
     </div>
+
+    <!-- Блок с QR-кодом -->
     <div class="donate-card">
-        <h2 style="color: var(--navy); font-size: 1.5rem; margin-bottom: 30px;">Или перевод по реквизитам</h2>
+        <h2 class="donate-card-title">Быстрая оплата по QR-коду</h2>
+        <p class="donate-text">Наведите камеру телефона на QR-код, чтобы открыть приложение банка для перевода.</p>
         <div class="qr-container">
-        <div class="bank-details">
-            <div class="detail-row">
-                <div class="detail-label">Получатель</div>
-                <div class="detail-value" style="font-family: inherit;">МРО ЦХВЕ "Церковь Христианской Жизни"</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">ИНН</div>
-                <div class="detail-value">2464016625</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">КПП</div>
-                <div class="detail-value">246401001</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">Расчетный счет</div>
-                <div class="detail-value">40703810131280126001</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">Банк</div>
-                <div class="detail-value" style="font-family: inherit;">Красноярское отделение N 8646 ПАО Сбербанк</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">БИК</div>
-                <div class="detail-value">040407627</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">Назначение</div>
-                <div class="detail-value" style="font-family: inherit; font-size: 1rem;">Добровольное пожертвование на уставную деятельность. Без НДС.</div>
-            </div>
+            <img src="https://qr.nspk.ru/AS1A003KDIQAGT8J9TP836SFB4M5TEPQ?type=01&bank=100000000111&crc=E94F" 
+                 alt="QR-код для пожертвования" 
+                 class="qr-image"
+                 loading="lazy">
         </div>
-        <div style="background: rgba(46,204,113,0.1); border: 1px solid rgba(46,204,113,0.3); border-radius: 10px; padding: 15px; color: #27ae60; font-weight: 500;">
-            <i class="fa-solid fa-shield-check"></i> Пожертвования безопасны и полностью идут на служение церкви.
-        </div>
+        <p class="donate-text donate-text-small">Или перейдите по <a href="https://qr.nspk.ru/AS1A003KDIQAGT8J9TP836SFB4M5TEPQ?type=01&bank=100000000111&crc=E94F" target="_blank" rel="noopener noreferrer">ссылке для оплаты</a>.</p>
     </div>
+
+    <!-- Библейский стих -->
     <div class="verse-box">
-        <div class="verse-text">"Каждый уделяй по расположению сердца, не с огорчением и не с принуждением; ибо доброхотно дающего любит Бог."</div>
-        <div class="verse-ref">— 2 Коринфянам 9:7</div>
+        <p class="verse-text">"Каждый уделяй по расположению сердца, не с огорчением и не с принуждением; ибо доброхотно дающего любит Бог."</p>
+        <p class="verse-ref">— 2 Коринфянам 9:7</p>
     </div>
 </div>
+
+<style>
+    /* Стили для страницы пожертвований */
+    .donate-container {
+        max-width: 800px;
+        margin: 120px auto 80px;
+        padding: 0 20px;
+    }
+    .donate-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    .donate-header h1 {
+        font-family: 'Public Sans', sans-serif;
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #1a1f36;
+        margin-bottom: 10px;
+    }
+    .donate-header p {
+        color: #6b7088;
+        font-size: 1.1rem;
+    }
+    .donate-card {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+        border: 1px solid rgba(26,31,54,0.08);
+    }
+    .donate-card-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1a1f36;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #c9a84c;
+    }
+    .donate-details {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .detail-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .detail-label {
+        min-width: 150px;
+        font-weight: 600;
+        color: #6b7088;
+        font-size: 0.9rem;
+    }
+    .detail-value {
+        font-weight: 500;
+        color: #1a1f36;
+        word-break: break-word;
+    }
+    .donate-text {
+        color: #3d4260;
+        font-size: 1rem;
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+    .donate-text-small {
+        font-size: 0.9rem;
+        color: #6b7088;
+        text-align: center;
+        margin-top: 15px;
+    }
+    .donate-text-small a {
+        color: #c9a84c;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .donate-text-small a:hover {
+        text-decoration: underline;
+    }
+    .qr-container {
+        display: flex;
+        justify-content: center;
+        margin: 15px 0;
+    }
+    .qr-image {
+        max-width: 250px;
+        width: 100%;
+        height: auto;
+        border-radius: 15px;
+        border: 1px solid #e8e4dc;
+        padding: 10px;
+        background: white;
+    }
+    .verse-box {
+        background: rgba(201, 168, 76, 0.08);
+        border-left: 4px solid #c9a84c;
+        padding: 25px 30px;
+        border-radius: 0 12px 12px 0;
+        margin-top: 30px;
+    }
+    .verse-text {
+        font-style: italic;
+        font-size: 1.1rem;
+        color: #1a1f36;
+        margin-bottom: 10px;
+        line-height: 1.6;
+    }
+    .verse-ref {
+        font-weight: 700;
+        color: #c9a84c;
+        font-size: 0.95rem;
+    }
+    @media (max-width: 600px) {
+        .donate-container {
+            margin-top: 100px;
+            padding: 0 15px;
+        }
+        .donate-header h1 {
+            font-size: 2rem;
+        }
+        .detail-label {
+            min-width: 120px;
+            font-size: 0.8rem;
+        }
+        .detail-value {
+            font-size: 0.9rem;
+        }
+        .qr-image {
+            max-width: 200px;
+        }
+    }
+</style>
 {% endblock %}
