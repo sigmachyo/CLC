@@ -8,7 +8,7 @@
         <div class="podcast-header-accent"></div>
       </div>
 
-      <!-- Yandex/Apple Music Style Player -->
+      <!-- KCLC Style Player (Apple Music Layout, Theme Colors) -->
       <div class="ym-player-wrap">
         <audio id="customAudioPlayer" preload="metadata">
             <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
@@ -36,7 +36,7 @@
                 </div>
 
                 <div class="ym-playlist-container">
-                    <div class="ym-playlist-header">
+                    <div class="ym-playlist-header desktop-only">
                         <span class="col-track">Проповедь</span>
                         <span class="col-artist">Спикер</span>
                         <span class="col-time"><span class="material-symbols-outlined">schedule</span></span>
@@ -51,9 +51,10 @@
                             <div class="track-status"><span class="material-symbols-outlined">graphic_eq</span></div>
                             <div class="track-info">
                                 <div class="track-title">Воскресное богослужение</div>
+                                <div class="track-artist-mobile mobile-only">Пастор Александр</div>
                             </div>
-                            <div class="track-artist-col">Пастор Александр</div>
-                            <div class="track-duration">45:00</div>
+                            <div class="track-artist-col desktop-only">Пастор Александр</div>
+                            <div class="track-duration desktop-only">45:00</div>
                         </button>
                         
                         <!-- Эпизод 2 -->
@@ -64,9 +65,10 @@
                             <div class="track-status"><span class="material-symbols-outlined">play_arrow</span></div>
                             <div class="track-info">
                                 <div class="track-title">Сила молитвы в семье</div>
+                                <div class="track-artist-mobile mobile-only">Пастор Владимир</div>
                             </div>
-                            <div class="track-artist-col">Пастор Владимир</div>
-                            <div class="track-duration">38:00</div>
+                            <div class="track-artist-col desktop-only">Пастор Владимир</div>
+                            <div class="track-duration desktop-only">38:00</div>
                         </button>
                         
                         <!-- Эпизод 3 -->
@@ -77,9 +79,38 @@
                             <div class="track-status"><span class="material-symbols-outlined">play_arrow</span></div>
                             <div class="track-info">
                                 <div class="track-title">Основы христианской жизни</div>
+                                <div class="track-artist-mobile mobile-only">Пастор Александр</div>
                             </div>
-                            <div class="track-artist-col">Пастор Александр</div>
-                            <div class="track-duration">41:00</div>
+                            <div class="track-artist-col desktop-only">Пастор Александр</div>
+                            <div class="track-duration desktop-only">41:00</div>
+                        </button>
+
+                        <!-- Эпизод 4 -->
+                        <button class="ym-track" 
+                                data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" 
+                                data-title="Встреча с Богом" 
+                                data-artist="Пастор Александр">
+                            <div class="track-status"><span class="material-symbols-outlined">play_arrow</span></div>
+                            <div class="track-info">
+                                <div class="track-title">Встреча с Богом</div>
+                                <div class="track-artist-mobile mobile-only">Пастор Александр</div>
+                            </div>
+                            <div class="track-artist-col desktop-only">Пастор Александр</div>
+                            <div class="track-duration desktop-only">35:00</div>
+                        </button>
+                        
+                        <!-- Эпизод 5 -->
+                        <button class="ym-track" 
+                                data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" 
+                                data-title="Живая вера" 
+                                data-artist="Молодежный пастор">
+                            <div class="track-status"><span class="material-symbols-outlined">play_arrow</span></div>
+                            <div class="track-info">
+                                <div class="track-title">Живая вера</div>
+                                <div class="track-artist-mobile mobile-only">Молодежный пастор</div>
+                            </div>
+                            <div class="track-artist-col desktop-only">Молодежный пастор</div>
+                            <div class="track-duration desktop-only">29:00</div>
                         </button>
                     </div>
                 </div>
@@ -124,9 +155,9 @@
 .ym-player-wrap {
     max-width: 1000px;
     margin: 0 auto;
-    background: rgba(15, 20, 32, 0.4);
+    background: var(--navy);
     border-radius: 24px;
-    border: 1px solid rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -146,8 +177,8 @@
 .ym-cover {
     width: 100%;
     aspect-ratio: 1 / 1;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #1a1f36, #3d4260);
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--gold), #7a652a);
     box-shadow: 0 20px 40px rgba(0,0,0,0.5);
     display: flex; align-items: center; justify-content: center;
     transition: transform 0.4s var(--spring-easing);
@@ -155,7 +186,8 @@
 }
 .placeholder-icon {
     font-size: 80px;
-    color: rgba(255,255,255,0.2);
+    color: var(--navy);
+    opacity: 0.8;
 }
 
 /* Right Column */
@@ -174,21 +206,30 @@
     color: #fff;
     margin-bottom: 8px;
     line-height: 1.2;
+    /* FIX: Жёстко фиксируем 1 строку, чтобы плеер не прыгал по высоте */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 1.2em; 
 }
 .ym-album-meta {
     font-size: 1rem;
     color: rgba(255,255,255,0.6);
     margin-bottom: 24px;
     font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 1.5em;
 }
 .ym-btn-main {
-    background: #ff0033; /* Yandex/Apple red accent */
-    color: #fff;
+    background: var(--gold);
+    color: var(--navy);
     border: none;
     border-radius: 100px;
     padding: 12px 32px;
     font-size: 1rem;
-    font-weight: 700;
+    font-weight: 800;
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -203,6 +244,7 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+    min-height: 0; /* Важно для скролла в flex-контейнере */
 }
 .ym-playlist-header {
     display: flex;
@@ -225,14 +267,14 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
-    /* Ключевое изменение: скролл внутри списка, а не всей страницы */
-    max-height: 350px;
+    max-height: 250px;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: rgba(255,255,255,0.2) transparent;
+    scrollbar-color: var(--gold) transparent;
+    -webkit-overflow-scrolling: touch;
 }
 .ym-playlist::-webkit-scrollbar { width: 6px; }
-.ym-playlist::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+.ym-playlist::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
 
 .ym-track {
     display: flex;
@@ -274,27 +316,35 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.track-artist-mobile {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.4);
+    margin-top: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 .track-duration {
     width: 60px;
     text-align: right;
     font-size: 0.9rem;
     font-variant-numeric: tabular-nums;
 }
+.mobile-only { display: none; }
 
-.ym-track.active .track-status { color: #ff0033; }
-.ym-track.active .track-title { color: #ff0033; font-weight: 600; }
+.ym-track.active .track-status { color: var(--gold); }
+.ym-track.active .track-title { color: var(--gold); font-weight: 600; }
 
 /* Bottom Bar */
 .ym-player-bar {
-    background: rgba(26, 31, 54, 0.95);
-    backdrop-filter: blur(20px);
+    background: var(--navy-hover);
     border-top: 1px solid rgba(255,255,255,0.05);
     position: relative;
     padding: 0 40px;
 }
 .ym-progress-container {
     position: absolute;
-    top: -3px; /* Наплывает на границу */
+    top: -3px; 
     left: 0; right: 0;
     height: 6px;
     background: rgba(255,255,255,0.1);
@@ -303,7 +353,7 @@
 }
 .ym-progress-fill {
     height: 100%;
-    background: #ff0033;
+    background: var(--gold);
     width: 0%;
     will-change: width;
     position: relative;
@@ -366,11 +416,14 @@
     color: rgba(255,255,255,0.5);
 }
 
-/* ── MOBILE ADAPTATION ── */
+/* ── MOBILE ADAPTATION (Horizontal scroll) ── */
 @media (max-width: 768px) {
+    .desktop-only { display: none !important; }
+    .mobile-only { display: block; }
+    
     .ym-layout {
         flex-direction: column;
-        padding: 24px;
+        padding: 24px 24px 0 24px; /* Убрал нижний отступ */
         gap: 24px;
     }
     .ym-cover-col {
@@ -379,8 +432,8 @@
         flex: none;
     }
     .ym-cover {
-        width: 180px;
-        height: 180px;
+        width: 160px;
+        height: 160px;
     }
     .ym-album-title {
         font-size: 1.5rem;
@@ -394,24 +447,48 @@
         width: 100%;
         justify-content: center;
     }
-    .ym-playlist-header {
-        display: none; /* Прячем заголовки колонок на мобильном */
-    }
-    .track-artist-col, .track-duration {
-        display: none; /* Упрощаем вид трека на мобильном */
+    
+    /* FIX: Горизонтальный свайп-слайдер для карточек (влево-вправо) */
+    .ym-playlist-container {
+        margin: 0 -24px; /* Растягиваем за пределы padding контейнера */
     }
     .ym-playlist {
-        max-height: 250px; /* Еще компактнее на мобилках */
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        gap: 12px;
+        padding: 12px 24px 24px 24px; /* Отступы для теней и скролла */
+        max-height: none;
+        scrollbar-width: none; /* Скрываем скроллбар */
     }
+    .ym-playlist::-webkit-scrollbar { display: none; }
+    
+    .ym-track {
+        flex: 0 0 clamp(220px, 70vw, 300px);
+        scroll-snap-align: center;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.05);
+        flex-direction: row;
+        padding: 16px;
+        border-radius: 16px;
+    }
+    .ym-track.active {
+        background: rgba(255,255,255,0.1);
+        border-color: var(--gold);
+    }
+    .track-status {
+        width: 24px;
+    }
+    .track-info {
+        padding-right: 0;
+    }
+
     .ym-player-bar {
         padding: 0 24px;
     }
-    .ym-bar-volume {
-        display: none;
-    }
-    .ym-bar-timing {
-        justify-content: flex-end;
-    }
+    .ym-bar-volume { display: none; }
+    .ym-bar-timing { justify-content: flex-end; }
 }
 </style>
 
