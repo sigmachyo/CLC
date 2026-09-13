@@ -248,6 +248,33 @@ class Event(models.Model):
     def is_past(self):
         return self.end_date < timezone.now()
 
+class EventBlock(models.Model):
+    """Блоки конструктора страниц для сложных лендингов (конференций)"""
+    BLOCK_TYPES = [
+        ('hero', 'Главный экран (Hero)'),
+        ('text', 'Текстовый блок'),
+        ('speakers', 'Сетка спикеров'),
+        ('schedule', 'Расписание'),
+        ('registration', 'Форма регистрации/Билеты'),
+        ('image_gallery', 'Галерея изображений'),
+    ]
+    
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='blocks', verbose_name="Событие")
+    block_type = models.CharField(max_length=50, choices=BLOCK_TYPES, verbose_name="Тип блока")
+    order = models.PositiveIntegerField(default=0, verbose_name="Порядок вывода")
+    is_active = models.BooleanField(default=True, verbose_name="Активен")
+    
+    # JSONField allows us to store arbitrary data based on block_type without changing DB schema
+    content = models.JSONField(default=dict, blank=True, help_text="Данные блока (заполняется через интерфейс админки)", verbose_name="Контент блока")
+    
+    class Meta:
+        ordering = ['order']
+        verbose_name = "Блок лендинга"
+        verbose_name_plural = "Блоки лендингов"
+
+    def __str__(self):
+        return f"{self.get_block_type_display()} ({self.order}) - {self.event.title}"
+
     def days_until(self):
         if self.start_date > timezone.now():
             return (self.start_date - timezone.now()).days

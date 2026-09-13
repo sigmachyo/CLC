@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block title %}Библиотека - Духовный Путь{% endblock %}
-{% block main_class %}flex-grow relative bg-background-light{% endblock %}
+{% block main_class %}main-content flex-grow relative bg-background-light pb-24{% endblock %}
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pb-24">
     <div class="text-center mb-12 sm:mb-16">
@@ -54,13 +54,13 @@
         </svg>
         <h2 class="text-2xl sm:text-3xl font-bold text-navy uppercase tracking-wide">Категории</h2>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-16">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 mb-12 sm:mb-16">
         {% for category in categories %}
         <a href="{% url 'library_category' category.slug %}"
-            class="group bg-white rounded-[2rem] p-8 text-center border border-navy/5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:border-primary transition-all duration-300">
+            class="group bg-white rounded-3xl p-5 sm:p-8 text-center border border-navy/5 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(0,0,0,0.06)] hover:border-primary transition-all duration-300">
             <div
-                class="w-20 h-20 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-6 group-hover:bg-primary transition-colors duration-300">
-                <svg class="w-10 h-10 text-primary fill-current group-hover:text-white transition-colors duration-300"
+                class="w-14 h-14 sm:w-20 sm:h-20 mx-auto bg-primary/10 rounded-full flex items-center justify-center mb-4 sm:mb-6 group-hover:bg-primary transition-colors duration-300">
+                <svg class="w-7 h-7 sm:w-10 sm:h-10 text-primary fill-current group-hover:text-white transition-colors duration-300"
                     viewBox="0 0 24 24">
                     {% if category.icon == 'fa-video' %}
                     <path
@@ -106,13 +106,11 @@
             class="group bg-white rounded-3xl overflow-hidden border border-navy/5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:-translate-y-1.5 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:border-primary transition-all duration-300">
             <div class="relative aspect-video bg-navy/5 flex items-center justify-center overflow-hidden">
                 {% if video.thumbnail %}
-                <img src="{{ video.thumbnail.url }}" alt="{{ video.title }}" loading="lazy"
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                <img src="{{ video.thumbnail.url }}" alt="{{ video.title }}" loading="lazy" class="w-full h-full object-cover bg-gray-100 transition-transform duration-500 group-hover:scale-105" onerror="this.src='{% static "img/placeholder.jpg" %}'">
                 {% else %}
-                <svg class="w-12 h-12 text-primary opacity-50" viewBox="0 0 24 24">
-                    <path
-                        d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z" />
-                </svg>
+                <div class="w-full h-full bg-navy/10 flex items-center justify-center transition-transform duration-500 group-hover:scale-105">
+                    <svg class="w-12 h-12 text-navy/20" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </div>
                 {% endif %}
                 <div
                     class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">

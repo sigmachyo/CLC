@@ -55,58 +55,151 @@
         },
       }
     </script>
+    <style>
+      /* Critical: sidebar hidden by default, burger hidden on mobile */
+      #sidebar-backdrop { display: none; }
+      @media (max-width: 767px) {
+        #burger-wrapper { display: none !important; }
+        #left-sidebar { display: none !important; }
+      }
+    </style>
     {% block extra_css %}{% endblock %}
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <style>
+        /* Фикс конфликта окружения Tailwind и Material Symbols */
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined' !important;
+            font-weight: normal !important;
+            font-style: normal !important;
+            font-size: 24px;
+            display: inline-block !important;
+            line-height: 1 !important;
+            text-transform: none !important;
+            letter-spacing: normal !important;
+            word-wrap: normal !important;
+            white-space: nowrap !important;
+            direction: ltr !important;
+        }
+    </style>
 </head>
 <body>
     <div style="display: none;">{% csrf_token %}</div>
-    {% block site_header %}
-    <header class="site-header" id="site-header">
-        <div class="hdr-container">
-            <a href="{% url 'home' %}" class="hdr-logo">
-                <img src="{% static 'img/logo.png' %}" alt="KCLC — Церковь Христианской Жизни">
-            </a>
-            <nav class="hdr-nav" id="hdr-desktop-nav" aria-label="Основная навигация">
-                <a href="{% url 'home' %}"
-                    class="hdr-nav-link {% if request.path == '/' %}active{% endif %}">Главная</a>
-                <a href="{% url 'library_home' %}"
-                    class="hdr-nav-link {% if '/library' in request.path %}active{% endif %}">Библиотека</a>
-                <a href="{% url 'prayer_list' %}"
-                    class="hdr-nav-link {% if '/prayer' in request.path %}active{% endif %}">Молитва</a>
-            </nav>
-            <div class="hdr-actions">
-                <a href="{% if user.is_authenticated %}{% url 'profile' %}{% else %}{% url 'login' %}{% endif %}"
-                    class="hdr-btn-account" aria-label="Аккаунт">
-                    <span class="material-symbols-outlined">account_circle</span>
-                </a>
-            </div>
+    
+    <!-- Desktop Burger Button (Left) -->
+    <div id="burger-wrapper" style="position:fixed;top:32px;left:32px;z-index:2001;">
+        <button id="desktop-burger" style="width:48px;height:48px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:6px;background:none;border:none;cursor:pointer;padding:0;mix-blend-mode:difference;" aria-label="Меню">
+            <span style="height:3px;width:32px;background:#fff;border-radius:9px;transition:all 0.3s;" id="burger-line-1"></span>
+            <span style="height:3px;width:24px;background:#fff;border-radius:9px;transition:all 0.3s;" id="burger-line-2"></span>
+            <span style="height:3px;width:16px;background:#fff;border-radius:9px;transition:all 0.3s;" id="burger-line-3"></span>
+        </button>
+    </div>
+
+    <!-- Sidebar Backdrop -->
+    <div id="sidebar-backdrop" style="position:fixed;inset:0;background:rgba(26,31,54,0.6);z-index:1999;opacity:0;pointer-events:none;transition:opacity 0.3s;"></div>
+    
+    <!-- Left Sidebar Drawer -->
+    <aside id="left-sidebar" style="position:fixed;top:0;left:0;height:100%;width:300px;background:#1a1f36;border-right:1px solid rgba(255,255,255,0.05);box-shadow:20px 0 40px rgba(0,0,0,0.5);z-index:2000;transform:translateX(-100%);transition:transform 0.5s cubic-bezier(0.19,1,0.22,1);display:flex;flex-direction:column;padding:112px 0 40px;">
+        <div style="padding:0 32px;margin-bottom:40px;opacity:0.8;">
+            <img src="{% static 'img/logo.png' %}" alt="KCLC" style="height:40px;width:auto;filter:brightness(2) drop-shadow(0 2px 8px rgba(0,0,0,0.3));">
         </div>
-    </header>
-    {% endblock %}
-    <main class="{% block main_class %}main-content{% endblock %} flex-grow">
+        <nav style="display:flex;flex-direction:column;gap:8px;padding:0 20px;flex:1;">
+            <a href="{% url 'home' %}" style="display:flex;align-items:center;gap:16px;padding:16px 20px;border-radius:16px;color:{% if request.path == '/' %}#c9a84c{% else %}rgba(255,255,255,0.7){% endif %};{% if request.path == '/' %}background:rgba(255,255,255,0.05);font-weight:700;{% endif %}text-decoration:none;transition:all 0.2s;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                <span style="font-size:17px;letter-spacing:0.02em;">Главная</span>
+            </a>
+            <a href="{% url 'library_home' %}" style="display:flex;align-items:center;gap:16px;padding:16px 20px;border-radius:16px;color:{% if '/library' in request.path %}#c9a84c{% else %}rgba(255,255,255,0.7){% endif %};{% if '/library' in request.path %}background:rgba(255,255,255,0.05);font-weight:700;{% endif %}text-decoration:none;transition:all 0.2s;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5-1.17 0-2.39.15-3.5.5V19c1.11-.35 2.33-.5 3.5-.5 1.95 0 4.05.4 5.5 1.5 1.45-1.1 3.55-1.5 5.5-1.5 1.17 0 2.39.15 3.5.5V5zM13 19V7c1.45-1.1 3.55-1.5 5.5-1.5 1.17 0 2.39.15 3.5.5v12c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5z"/></svg>
+                <span style="font-size:17px;letter-spacing:0.02em;">Библиотека</span>
+            </a>
+            <a href="{% url 'prayer_list' %}" style="display:flex;align-items:center;gap:16px;padding:16px 20px;border-radius:16px;color:{% if '/prayer' in request.path %}#c9a84c{% else %}rgba(255,255,255,0.7){% endif %};{% if '/prayer' in request.path %}background:rgba(255,255,255,0.05);font-weight:700;{% endif %}text-decoration:none;transition:all 0.2s;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-7c-1.1 0-2 .9-2 2v3c0 1.1.9 2 2 2h7l4 4V10c0-1.1-.9-2-2-2zM5 14l-4 4V6c0-1.1.9-2 2-2h12V8H5v6z"/></svg>
+                <span style="font-size:17px;letter-spacing:0.02em;">Молитва</span>
+            </a>
+        </nav>
+        
+        <div style="padding:0 20px;margin-top:auto;">
+            <a href="{% if user.is_authenticated %}{% url 'profile' %}{% else %}{% url 'login' %}{% endif %}" style="display:flex;align-items:center;gap:16px;padding:16px 20px;border-radius:16px;background:rgba(255,255,255,0.05);color:{% if '/profile' in request.path or '/login' in request.path %}#1a1f36;background:#c9a84c;font-weight:700;{% else %}rgba(255,255,255,0.9);{% endif %}text-decoration:none;transition:all 0.2s;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <span style="font-size:17px;font-weight:700;letter-spacing:0.02em;">Профиль</span>
+            </a>
+        </div>
+    </aside>
+
+    <script>
+    (function() {
+        var burger = document.getElementById('desktop-burger');
+        var sidebar = document.getElementById('left-sidebar');
+        var backdrop = document.getElementById('sidebar-backdrop');
+        var line1 = document.getElementById('burger-line-1');
+        var line2 = document.getElementById('burger-line-2');
+        var line3 = document.getElementById('burger-line-3');
+        var open = false;
+
+        function show() {
+            open = true;
+            sidebar.style.transform = 'translateX(0)';
+            backdrop.style.display = 'block';
+            backdrop.style.opacity = '1';
+            backdrop.style.pointerEvents = 'auto';
+            line1.style.transform = 'translateY(9px) rotate(45deg)';
+            line1.style.width = '28px';
+            line2.style.opacity = '0';
+            line3.style.transform = 'translateY(-9px) rotate(-45deg)';
+            line3.style.width = '28px';
+            burger.style.mixBlendMode = 'normal';
+        }
+
+        function hide() {
+            open = false;
+            sidebar.style.transform = 'translateX(-100%)';
+            backdrop.style.opacity = '0';
+            backdrop.style.pointerEvents = 'none';
+            line1.style.transform = 'none';
+            line1.style.width = '32px';
+            line2.style.opacity = '1';
+            line3.style.transform = 'none';
+            line3.style.width = '16px';
+            setTimeout(function() { burger.style.mixBlendMode = 'difference'; }, 300);
+            setTimeout(function() { backdrop.style.display = 'none'; }, 300);
+        }
+
+        if (burger) {
+            burger.addEventListener('click', function() {
+                if (open) hide(); else show();
+            });
+        }
+        if (backdrop) {
+            backdrop.addEventListener('click', hide);
+        }
+    })();
+    </script>
+
+
+    <!-- Main Content -->
+    <main class="{% block main_class %}main-content{% endblock %} flex-grow pb-[120px] lg:pb-0">
+        
         {% block content %}{% endblock %}
     </main>
     {% block site_footer %}
         {% include "partials/footer.html" %}
     {% endblock %}
     {% block bottom_nav %}
-    <nav class="bottom-nav" aria-label="Мобильная навигация">
+    <nav class="bottom-nav" aria-label="Основная навигация">
         <a href="{% url 'home' %}" class="nav-item {% if request.path == '/' %}active{% endif %}" aria-label="Главная">
-            <svg class="nav-svg mb-1" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-4.5v-6a1 1 0 0 0-1-1h-3a1 1 0 0 0-1 1v6H4a1 1 0 0 1-1-1V9.5z"/></svg>
             <span>Главная</span>
         </a>
-        <a href="{% url 'library_home' %}" class="nav-item {% if '/library' in request.path %}active{% endif %}"
-            aria-label="Библиотека">
-            <svg class="nav-svg mb-1" viewBox="0 0 24 24"><path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5-1.17 0-2.39.1
-5-3.5.5V19c1.11-.35 2.33-.5 3.5-.5 1.95 0 4.05.4 5.5 1.5 1.45-1.1 3.55-1.5 5.5-1.5 1.17 0 2.39.15 3.5.5V5zM13 19V7c1.45-1.1 3.55-1.5 5.5-1.5 1.17 0 2.39.15 3.5
-.5v12c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5z"/></svg>
+        <a href="{% url 'library_home' %}" class="nav-item {% if '/library' in request.path %}active{% endif %}" aria-label="Библиотека">
+            <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
             <span>Библиотека</span>
         </a>
-        <a href="{% url 'prayer_list' %}"
-            class="nav-item {% if '/prayer' in request.path %}active{% endif %}" aria-label="Молитва">
-            <svg class="nav-svg mb-1" viewBox="0 0 24 24"><path d="M18 8h-7c-1.1 0-2 .9-2 2v3c0 1.1.9 2 2 2h7l4 4V10c0-1.1-.9-2-2-2zM5 14l-4 4V6c0-1.1.9-2 2-2h
-12V8H5v6z"/></svg>
+        <a href="{% url 'prayer_list' %}" class="nav-item {% if '/prayer' in request.path %}active{% endif %}" aria-label="Молитва">
+            <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             <span>Молитва</span>
+        </a>
+        <a href="{% if user.is_authenticated %}{% url 'profile' %}{% else %}{% url 'login' %}{% endif %}" class="nav-item {% if '/profile' in request.path or '/login' in request.path %}active{% endif %}" aria-label="Профиль">
+            <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Профиль</span>
         </a>
     </nav>
     {% endblock %}
@@ -127,21 +220,3 @@
     {% block extra_js %}{% endblock %}
 </body>
 </html>
-
-<!-- Поместите этот блок в самый низ файла templates/base.html -->
-<style>
-/* Фикс конфликта окружения Tailwind и Material Symbols */
-.material-symbols-outlined {
-    font-family: 'Material Symbols Outlined' !important;
-    font-weight: normal !important;
-    font-style: normal !important;
-    font-size: 24px;
-    display: inline-block !important;
-    line-height: 1 !important;
-    text-transform: none !important;
-    letter-spacing: normal !important;
-    word-wrap: normal !important;
-    white-space: nowrap !important;
-    direction: ltr !important;
-}
-</style>

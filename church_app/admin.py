@@ -138,8 +138,17 @@ class UserBibleProgressAdmin(admin.ModelAdmin):
 # ============================================
 # Event Admin
 # ============================================
+from .models import Event, EventBlock
+
+class EventBlockInline(admin.TabularInline):
+    model = EventBlock
+    extra = 0
+    ordering = ('order',)
+    fields = ('block_type', 'order', 'is_active', 'content')
+
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
+    inlines = [EventBlockInline]
     list_display = ('title', 'slug', 'event_type', 'start_date', 'location', 'is_featured', 'is_active')
     list_filter = ('event_type', 'is_featured', 'is_active')
     search_fields = ('title', 'description', 'location')
