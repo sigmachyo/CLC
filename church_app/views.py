@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
 from pathlib import Path
-from .models import Announcement, DailyVerse, HeroBackground, Event, Video, Category, PrayerRequest, UserBibleProgress, EventRegistration
+from .models import Announcement, DailyVerse, HeroBackground, Event, Video, PodcastEpisode, Category, PrayerRequest, UserBibleProgress, EventRegistration
 from .forms import RegisterForm, LoginForm, ProfileEditForm, ChangePasswordForm
 from django.http import JsonResponse
 from django.utils import timezone
@@ -409,7 +409,9 @@ def home(request):
 
     news = News.objects.filter(
         is_active=True
-    )[:6]
+    ).order_by('-is_featured', '-created_at')[:6]
+
+    podcast_episodes = PodcastEpisode.objects.filter(is_active=True)
     
     context = {
         'announcement': current_announcement,
@@ -422,6 +424,7 @@ def home(request):
         'server_now_ms': server_now_ms,
         'server_now_kra': _kra_now().isoformat(),
         'news': news,
+        'podcast_episodes': podcast_episodes,
     }
     return render(request, 'home.html', context)
 

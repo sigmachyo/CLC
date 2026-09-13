@@ -10,9 +10,7 @@
 
       <!-- KCLC Style Player (Apple Music Layout, Theme Colors) -->
       <div class="ym-player-wrap">
-        <audio id="customAudioPlayer" preload="metadata">
-            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-        </audio>
+        <audio id="customAudioPlayer" preload="metadata"></audio>
 
         <div class="ym-layout">
             <!-- Left Column: Big Cover (Desktop) / Top Cover (Mobile) -->
@@ -25,8 +23,8 @@
             <!-- Right Column: Info & Playlist -->
             <div class="ym-info-col">
                 <div class="ym-album-info">
-                    <h3 class="ym-album-title" id="playerTitle">Воскресное богослужение</h3>
-                    <p class="ym-album-meta" id="playerArtist">Пастор Александр</p>
+                    <h3 class="ym-album-title" id="playerTitle">{% if podcast_episodes %}{{ podcast_episodes.0.title }}{% else %}Подкаст проповедей{% endif %}</h3>
+                    <p class="ym-album-meta" id="playerArtist">{% if podcast_episodes %}{{ podcast_episodes.0.speaker }}{% else %}Церковь Христианской Жизни{% endif %}</p>
                     <div class="ym-album-actions">
                         <button class="ym-btn-main" id="btnMainPlay">
                             <span class="material-symbols-outlined" id="mainPlayIcon" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
@@ -43,75 +41,23 @@
                     </div>
                     
                     <div class="ym-playlist" id="applePlaylist">
-                        <!-- Эпизод 1 -->
-                        <button class="ym-track active" 
-                                data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" 
-                                data-title="Воскресное богослужение" 
-                                data-artist="Пастор Александр">
-                            <div class="track-status"><span class="material-symbols-outlined">graphic_eq</span></div>
+                        {% for episode in podcast_episodes %}
+                        <button class="ym-track{% if forloop.first %} active{% endif %}"
+                                data-src="{{ episode.audio_url }}"
+                                data-episode-url="{{ episode.episode_url }}"
+                                data-title="{{ episode.title }}"
+                                data-artist="{{ episode.speaker }}">
+                            <div class="track-status"><span class="material-symbols-outlined">{% if forloop.first %}graphic_eq{% else %}play_arrow{% endif %}</span></div>
                             <div class="track-info">
-                                <div class="track-title">Воскресное богослужение</div>
-                                <div class="track-artist-mobile mobile-only">Пастор Александр</div>
+                                <div class="track-title">{{ episode.title }}</div>
+                                <div class="track-artist-mobile mobile-only">{{ episode.speaker }}</div>
                             </div>
-                            <div class="track-artist-col desktop-only">Пастор Александр</div>
-                            <div class="track-duration desktop-only">45:00</div>
+                            <div class="track-artist-col desktop-only">{{ episode.speaker }}</div>
+                            <div class="track-duration desktop-only">{{ episode.duration|default:'--:--' }}</div>
                         </button>
-                        
-                        <!-- Эпизод 2 -->
-                        <button class="ym-track" 
-                                data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" 
-                                data-title="Сила молитвы в семье" 
-                                data-artist="Пастор Владимир">
-                            <div class="track-status"><span class="material-symbols-outlined">play_arrow</span></div>
-                            <div class="track-info">
-                                <div class="track-title">Сила молитвы в семье</div>
-                                <div class="track-artist-mobile mobile-only">Пастор Владимир</div>
-                            </div>
-                            <div class="track-artist-col desktop-only">Пастор Владимир</div>
-                            <div class="track-duration desktop-only">38:00</div>
-                        </button>
-                        
-                        <!-- Эпизод 3 -->
-                        <button class="ym-track" 
-                                data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" 
-                                data-title="Основы христианской жизни" 
-                                data-artist="Пастор Александр">
-                            <div class="track-status"><span class="material-symbols-outlined">play_arrow</span></div>
-                            <div class="track-info">
-                                <div class="track-title">Основы христианской жизни</div>
-                                <div class="track-artist-mobile mobile-only">Пастор Александр</div>
-                            </div>
-                            <div class="track-artist-col desktop-only">Пастор Александр</div>
-                            <div class="track-duration desktop-only">41:00</div>
-                        </button>
-
-                        <!-- Эпизод 4 -->
-                        <button class="ym-track" 
-                                data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" 
-                                data-title="Встреча с Богом" 
-                                data-artist="Пастор Александр">
-                            <div class="track-status"><span class="material-symbols-outlined">play_arrow</span></div>
-                            <div class="track-info">
-                                <div class="track-title">Встреча с Богом</div>
-                                <div class="track-artist-mobile mobile-only">Пастор Александр</div>
-                            </div>
-                            <div class="track-artist-col desktop-only">Пастор Александр</div>
-                            <div class="track-duration desktop-only">35:00</div>
-                        </button>
-                        
-                        <!-- Эпизод 5 -->
-                        <button class="ym-track" 
-                                data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" 
-                                data-title="Живая вера" 
-                                data-artist="Молодежный пастор">
-                            <div class="track-status"><span class="material-symbols-outlined">play_arrow</span></div>
-                            <div class="track-info">
-                                <div class="track-title">Живая вера</div>
-                                <div class="track-artist-mobile mobile-only">Молодежный пастор</div>
-                            </div>
-                            <div class="track-artist-col desktop-only">Молодежный пастор</div>
-                            <div class="track-duration desktop-only">29:00</div>
-                        </button>
+                        {% empty %}
+                        <div class="ym-empty">Подкасты пока не загружены.</div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -140,9 +86,10 @@
                     <span id="audioDuration">-:--</span>
                 </div>
                 
-                <div class="ym-bar-volume">
-                    <span class="material-symbols-outlined">volume_up</span>
-                </div>
+                <label class="ym-bar-volume" for="audioVolume">
+                    <span class="material-symbols-outlined" aria-hidden="true">volume_up</span>
+                    <input id="audioVolume" type="range" min="0" max="1" step="0.05" value="1" aria-label="Громкость">
+                </label>
             </div>
         </div>
       </div>
@@ -153,7 +100,9 @@
 
 <style>
 .ym-player-wrap {
+    width: 100%;
     max-width: 1000px;
+    min-width: 0;
     margin: 0 auto;
     background: var(--navy);
     border-radius: 24px;
@@ -168,6 +117,7 @@
     flex-direction: row;
     gap: 40px;
     padding: 40px;
+    min-width: 0;
 }
 
 /* Left Column */
@@ -196,6 +146,7 @@
     display: flex;
     flex-direction: column;
     min-width: 0;
+    overflow: hidden;
 }
 .ym-album-info {
     margin-bottom: 32px;
@@ -334,6 +285,12 @@
 
 .ym-track.active .track-status { color: var(--gold); }
 .ym-track.active .track-title { color: var(--gold); font-weight: 600; }
+.ym-empty {
+    padding: 24px 16px;
+    color: rgba(255,255,255,0.55);
+    text-align: center;
+    font-size: 0.9rem;
+}
 
 /* Bottom Bar */
 .ym-player-bar {
@@ -386,6 +343,7 @@
     background: none; border: none;
     color: #fff;
     display: flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px;
     cursor: pointer;
     transition: transform 0.2s var(--spring-easing), opacity 0.2s;
 }
@@ -412,8 +370,15 @@
 .ym-bar-volume {
     flex: 1;
     display: flex;
+    align-items: center;
+    gap: 10px;
     justify-content: flex-end;
     color: rgba(255,255,255,0.5);
+}
+.ym-bar-volume input {
+    width: 84px;
+    accent-color: var(--gold);
+    cursor: pointer;
 }
 
 /* ── MOBILE ADAPTATION (Horizontal scroll) ── */
@@ -513,6 +478,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const titleEl = document.getElementById('playerTitle');
     const artistEl = document.getElementById('playerArtist');
     const coverEl = document.getElementById('playerCover');
+    const volumeEl = document.getElementById('audioVolume');
     
     const playlistItems = document.querySelectorAll('.ym-track');
 
@@ -533,6 +499,22 @@ document.addEventListener('DOMContentLoaded', () => {
             coverEl.style.transform = 'scale(0.95)';
         }
     };
+
+    const setEpisode = (item, autoplay = false) => {
+        titleEl.textContent = item.dataset.title;
+        artistEl.textContent = item.dataset.artist;
+        audio.src = item.dataset.src || '';
+        progressFill.style.width = '0%';
+        timeCurrent.textContent = '0:00';
+        timeTotal.textContent = '-:--';
+        btnMainPlay.disabled = !item.dataset.src;
+        btnPlay.disabled = !item.dataset.src;
+        if (autoplay && item.dataset.src) {
+            audio.play().catch(e => console.warn('Auto-play prevented', e));
+        }
+    };
+
+    if (playlistItems.length) setEpisode(playlistItems[0]);
 
     audio.addEventListener('loadedmetadata', () => {
         timeTotal.textContent = formatTime(audio.duration);
@@ -562,6 +544,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     audio.addEventListener('play', () => updatePlayState(true));
     audio.addEventListener('pause', () => updatePlayState(false));
+    volumeEl?.addEventListener('input', () => {
+        audio.volume = Number(volumeEl.value);
+    });
 
     btnSkipFwd.addEventListener('click', () => { audio.currentTime = Math.min(audio.currentTime + 15, audio.duration); });
     btnSkipBack.addEventListener('click', () => { audio.currentTime = Math.max(audio.currentTime - 15, 0); });
@@ -606,6 +591,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     playlistItems.forEach(item => {
         item.addEventListener('click', () => {
+            if (!item.dataset.src) {
+                if (item.dataset.episodeUrl) window.open(item.dataset.episodeUrl, '_blank', 'noopener');
+                return;
+            }
             playlistItems.forEach(el => {
                 el.classList.remove('active');
                 el.querySelector('.track-status .material-symbols-outlined').textContent = 'play_arrow';
@@ -613,15 +602,7 @@ document.addEventListener('DOMContentLoaded', () => {
             item.classList.add('active');
             item.querySelector('.track-status .material-symbols-outlined').textContent = 'graphic_eq';
 
-            titleEl.textContent = item.dataset.title;
-            artistEl.textContent = item.dataset.artist;
-            audio.src = item.dataset.src;
-            
-            progressFill.style.width = '0%';
-            timeCurrent.textContent = '0:00';
-            timeTotal.textContent = '-:--';
-            
-            audio.play().catch(e => console.warn('Auto-play prevented', e));
+            setEpisode(item, true);
         });
     });
 });

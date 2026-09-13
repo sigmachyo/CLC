@@ -20,11 +20,11 @@
 
         {% if news %}
           {% for item in news %}
-          <div class="news-card-link">
+          <a href="{% url 'news_detail' item.slug %}" class="news-card-link">
             <article class="news-card">
               {% if item.image %}
               <div class="news-card-image">
-                <img src="{{ item.image.url }}" alt="{{ item.title }}" loading="lazy">
+                <img src="{{ item.image.url }}" alt="{{ item.title }}" loading="lazy" onerror="this.hidden=true; this.parentElement.classList.add('news-card-image-placeholder');">
               </div>
               {% else %}
               <div class="news-card-image news-card-image-placeholder">
@@ -43,13 +43,13 @@
                 <p class="news-card-description">
                   {{ item.short_description|truncatechars:140 }}
                 </p>
-                <a href="{% url 'news_detail' item.slug %}" class="news-card-read-more">
+                <div class="news-card-read-more">
                   Читать далее
                   <span class="read-more-arrow">→</span>
-                </a>
+                </div>
               </div>
             </article>
-          </div>
+          </a>
           {% endfor %}
         {% else %}
           <div class="news-empty">
@@ -78,7 +78,7 @@
 .section-content--news {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 60px 20px;
+  padding: clamp(40px, 6vh, 72px) var(--home-gutter, 20px);
 }
 
 .news-header {
@@ -96,7 +96,7 @@
 }
 
 .news-section-heading {
-  font-size: 2.5rem;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
   font-weight: 700;
   color: var(--txt, #1a1f36);
   text-transform: uppercase;
@@ -115,8 +115,8 @@
 /* Сетка новостей */
 .news-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 30px);
   margin-bottom: 40px;
 }
 
@@ -126,6 +126,7 @@
   display: block;
   transition: transform 0.4s var(--spring-easing, ease);
   -webkit-tap-highlight-color: transparent;
+  min-width: 0;
 }
 
 .news-card-link:hover {
@@ -137,7 +138,7 @@
 
 .news-card {
   background: var(--card2, #ffffff);
-  border-radius: 24px;
+  border-radius: var(--home-radius, 24px);
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(26,31,54,0.08);
   transition: box-shadow 0.4s var(--spring-easing, ease);
@@ -309,8 +310,25 @@
   }
   
   .news-cards-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 20px;
+    padding: 10px 20px 20px; /* Доп отступы для теней */
+    margin-left: -20px;
+    margin-right: -20px;
+    gap: 16px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .news-cards-grid::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .news-card-link {
+    flex: 0 0 min(86vw, 360px);
+    scroll-snap-align: center;
   }
   
   .news-card-image {
@@ -326,9 +344,20 @@
   }
 }
 
+@media (min-width: 769px) and (max-width: 1100px) {
+  .news-cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
 @media (max-width: 480px) {
   .section-content--news {
     padding: 40px 16px;
+  }
+  
+  .news-cards-grid {
+    padding: 10px 16px 20px;
+    margin-left: -16px;
+    margin-right: -16px;
+    scroll-padding: 0 16px;
   }
   
   .news-card-description {

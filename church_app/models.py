@@ -144,6 +144,25 @@ class Video(models.Model):
 
     def increment_views(self):
         self.views_count += 1
+
+
+class PodcastEpisode(models.Model):
+    """Локальный каталог выпусков подкаста."""
+    title = models.CharField(max_length=300, verbose_name="Название")
+    speaker = models.CharField(max_length=200, blank=True, verbose_name="Спикер")
+    duration = models.CharField(max_length=20, blank=True, verbose_name="Длительность")
+    episode_url = models.URLField(max_length=500, blank=True, verbose_name="Ссылка на выпуск")
+    audio_url = models.URLField(max_length=1000, blank=True, verbose_name="Аудио")
+    order = models.PositiveIntegerField(default=0, verbose_name="Порядок")
+    is_active = models.BooleanField(default=True, verbose_name="Активен")
+
+    class Meta:
+        ordering = ['order', 'id']
+        verbose_name = "Выпуск подкаста"
+        verbose_name_plural = "Выпуски подкаста"
+
+    def __str__(self):
+        return self.title
         self.save(update_fields=['views_count'])
 
 class BiblePlan(models.Model):

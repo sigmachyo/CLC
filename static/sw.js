@@ -1,6 +1,6 @@
 // Service Worker для KCLC Красноярск
 // Версия кэша - обновляйте при изменении файлов
-const CACHE_VERSION = 'v1.0.0';
+const CACHE_VERSION = 'v1.0.1';
 const CACHE_NAME = `kclc-cache-${CACHE_VERSION}`;
 
 // Файлы для кэширования (основные ресурсы)
