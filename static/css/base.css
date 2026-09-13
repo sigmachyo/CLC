@@ -45,6 +45,8 @@ html {
     -webkit-text-size-adjust: 100%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior-y: none;
+    background-color: #0f1420; /* Цвет Hero и Footer, убирает белую полосу при overscroll на iOS */
 }
 
 body {
@@ -56,6 +58,7 @@ body {
     width: 100%;
     /* iOS Momentum Scrolling */
     -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: none;
 }
 
 a {
