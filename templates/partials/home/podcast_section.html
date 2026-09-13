@@ -8,10 +8,403 @@
         <div class="podcast-header-accent"></div>
       </div>
 
-      <div class="podcast-embed-wrap">
-        <iframe class="podcast-iframe" loading="lazy" src="https://podster.fm/new/player/large?episode=&modalPage=podcast&podcast=46787&playerType=podcast&showList=true&order=new&episodesCount=5&collection=undefined&theme=dark&showPlayerCode=hide&showAuditions=hide&showDownload=hide&iframeStyles=%7B%22borderRadius%22%3A%2215px%22%2C%22width%22%3A%22100%25%22%7D&page=1" width="100%" style="border: unset; outline: 0; background: transparent; border-radius: 15px"></iframe>
+      <!-- Apple Music Style Player -->
+      <div class="podcast-embed-wrap apple-player-wrap">
+        <div class="apple-player">
+            <!-- Аудио источник -->
+            <audio id="customAudioPlayer" preload="metadata">
+                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+            </audio>
+            
+            <div class="apple-player-cover" id="playerCover">
+                <div class="cover-image-placeholder">
+                    <span class="material-symbols-outlined">podcasts</span>
+                </div>
+            </div>
+            
+            <div class="apple-player-info">
+                <h3 class="apple-track-title" id="playerTitle">Воскресное богослужение</h3>
+                <p class="apple-track-artist" id="playerArtist">Пастор Александр</p>
+            </div>
+            
+            <div class="apple-progress-container">
+                <div class="apple-progress-bar" id="audioProgressContainer">
+                    <div class="apple-progress-fill" id="audioProgressFill"></div>
+                    <div class="apple-progress-thumb" id="audioProgressThumb"></div>
+                </div>
+                <div class="apple-time-row">
+                    <span id="audioCurrentTime">0:00</span>
+                    <span id="audioDuration">-:--</span>
+                </div>
+            </div>
+            
+            <div class="apple-controls">
+                <button class="apple-btn" id="btnSkipBack" aria-label="Назад на 15 секунд">
+                    <span class="material-symbols-outlined">replay_10</span>
+                </button>
+                <button class="apple-btn apple-btn-play" id="btnPlayPause" aria-label="Воспроизвести">
+                    <span class="material-symbols-outlined" id="playIcon" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                </button>
+                <button class="apple-btn" id="btnSkipForward" aria-label="Вперед на 15 секунд">
+                    <span class="material-symbols-outlined">forward_10</span>
+                </button>
+            </div>
+            
+            <!-- Playlist -->
+            <div class="apple-playlist" id="applePlaylist">
+                <!-- Эпизод 1 -->
+                <button class="playlist-item active" 
+                        data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" 
+                        data-title="Воскресное богослужение" 
+                        data-artist="Пастор Александр">
+                    <div class="pl-thumb"><span class="material-symbols-outlined">graphic_eq</span></div>
+                    <div class="pl-info">
+                        <h4 class="pl-title">Воскресное богослужение</h4>
+                        <p class="pl-meta">6 Сентября • 45 мин</p>
+                    </div>
+                </button>
+                <!-- Эпизод 2 -->
+                <button class="playlist-item" 
+                        data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" 
+                        data-title="Сила молитвы в семье" 
+                        data-artist="Пастор Владимир">
+                    <div class="pl-thumb"><span class="material-symbols-outlined">play_arrow</span></div>
+                    <div class="pl-info">
+                        <h4 class="pl-title">Сила молитвы в семье</h4>
+                        <p class="pl-meta">30 Августа • 38 мин</p>
+                    </div>
+                </button>
+                <!-- Эпизод 3 -->
+                <button class="playlist-item" 
+                        data-src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" 
+                        data-title="Основы христианской жизни" 
+                        data-artist="Пастор Александр">
+                    <div class="pl-thumb"><span class="material-symbols-outlined">play_arrow</span></div>
+                    <div class="pl-info">
+                        <h4 class="pl-title">Основы христианской жизни</h4>
+                        <p class="pl-meta">23 Августа • 41 мин</p>
+                    </div>
+                </button>
+            </div>
+        </div>
       </div>
 
     </div>
   </div>
 </section>
+
+<style>
+.apple-player-wrap {
+    max-width: 540px; 
+    padding: 32px 24px;
+    background: rgba(15, 20, 32, 0.7);
+    border: 1px solid rgba(255,255,255,0.08);
+}
+.apple-player {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+.apple-player-cover {
+    width: clamp(140px, 40vw, 200px);
+    height: clamp(140px, 40vw, 200px);
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--gold), #8a7333);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.4s var(--spring-easing);
+    will-change: transform;
+}
+.cover-image-placeholder .material-symbols-outlined {
+    font-size: 64px;
+    color: rgba(255,255,255,0.5);
+}
+.apple-player-info {
+    text-align: center;
+    margin-bottom: 24px;
+    width: 100%;
+}
+.apple-track-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.apple-track-artist {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.6);
+    font-weight: 500;
+}
+.apple-progress-container {
+    width: 100%;
+    margin-bottom: 24px;
+}
+.apple-progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+    position: relative;
+    cursor: pointer;
+    margin-bottom: 8px;
+    touch-action: none;
+}
+.apple-progress-fill {
+    position: absolute;
+    top: 0; left: 0; height: 100%;
+    background: #fff;
+    border-radius: 3px;
+    width: 0%;
+    will-change: width;
+}
+.apple-progress-thumb {
+    position: absolute;
+    top: 50%; left: 0%;
+    width: 12px; height: 12px;
+    background: #fff;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    opacity: 0;
+    transition: opacity 0.2s;
+    will-change: left;
+}
+.apple-progress-bar:hover .apple-progress-thumb { opacity: 1; }
+.apple-time-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.5);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+.apple-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    margin-bottom: 32px;
+}
+.apple-btn {
+    background: transparent;
+    border: none; color: #fff;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.2s var(--spring-easing), opacity 0.2s;
+    -webkit-tap-highlight-color: transparent;
+}
+.apple-btn .material-symbols-outlined { font-size: 32px; }
+.apple-btn:active { transform: scale(0.85); opacity: 0.7; }
+.apple-btn-play {
+    width: 64px; height: 64px;
+    background: #fff; color: var(--navy);
+    border-radius: 50%;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+.apple-btn-play:active { transform: scale(0.9); }
+.apple-btn-play .material-symbols-outlined { font-size: 36px; }
+
+/* Плейлист */
+.apple-playlist {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 24px;
+}
+.playlist-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 12px;
+    border-radius: 16px;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.2s ease, transform 0.2s var(--spring-easing);
+    -webkit-tap-highlight-color: transparent;
+}
+.playlist-item:hover { background: rgba(255,255,255,0.05); }
+.playlist-item:active { transform: scale(0.98); background: rgba(255,255,255,0.08); }
+.pl-thumb {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.6);
+}
+.playlist-item.active .pl-thumb {
+    background: var(--gold);
+    color: var(--navy);
+}
+.pl-info {
+    flex: 1;
+    overflow: hidden;
+}
+.pl-title {
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.playlist-item.active .pl-title {
+    color: var(--gold);
+}
+.pl-meta {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.8rem;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const audio = document.getElementById('customAudioPlayer');
+    if(!audio) return;
+    
+    const btnPlay = document.getElementById('btnPlayPause');
+    const playIcon = document.getElementById('playIcon');
+    const btnSkipFwd = document.getElementById('btnSkipForward');
+    const btnSkipBack = document.getElementById('btnSkipBack');
+    
+    const progressContainer = document.getElementById('audioProgressContainer');
+    const progressFill = document.getElementById('audioProgressFill');
+    const progressThumb = document.getElementById('audioProgressThumb');
+    
+    const timeCurrent = document.getElementById('audioCurrentTime');
+    const timeTotal = document.getElementById('audioDuration');
+    
+    const titleEl = document.getElementById('playerTitle');
+    const artistEl = document.getElementById('playerArtist');
+    const coverEl = document.getElementById('playerCover');
+    
+    const playlistItems = document.querySelectorAll('.playlist-item');
+
+    // Оптимизированный форматтер времени (без лишних аллокаций)
+    const formatTime = (time) => {
+        if (isNaN(time) || !isFinite(time)) return "-:--";
+        const m = Math.floor(time / 60);
+        const s = Math.floor(time % 60);
+        return m + ":" + (s < 10 ? "0" + s : s);
+    };
+
+    const updatePlayState = (isPlaying) => {
+        playIcon.textContent = isPlaying ? 'pause' : 'play_arrow';
+        if (isPlaying) {
+            coverEl.style.transform = 'scale(1)';
+        } else {
+            coverEl.style.transform = 'scale(0.9)';
+        }
+    };
+
+    audio.addEventListener('loadedmetadata', () => {
+        timeTotal.textContent = formatTime(audio.duration);
+    });
+
+    // Оптимизация: requestAnimationFrame для плавности ползунка вместо дерганого timeupdate
+    let isDragging = false;
+    audio.addEventListener('timeupdate', () => {
+        if (!isDragging) {
+            timeCurrent.textContent = formatTime(audio.currentTime);
+            if(audio.duration) {
+                const percent = (audio.currentTime / audio.duration) * 100;
+                progressFill.style.width = percent + '%';
+                progressThumb.style.left = percent + '%';
+            }
+        }
+    });
+
+    btnPlay.addEventListener('click', () => {
+        if (audio.paused) {
+            audio.play().catch(e => console.warn('Play interrupted', e));
+        } else {
+            audio.pause();
+        }
+    });
+
+    audio.addEventListener('play', () => updatePlayState(true));
+    audio.addEventListener('pause', () => updatePlayState(false));
+
+    btnSkipFwd.addEventListener('click', () => { audio.currentTime = Math.min(audio.currentTime + 15, audio.duration); });
+    btnSkipBack.addEventListener('click', () => { audio.currentTime = Math.max(audio.currentTime - 15, 0); });
+
+    // Прогресс-бар с поддержкой touch
+    const seek = (e) => {
+        const rect = progressContainer.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        let pos = (clientX - rect.left) / rect.width;
+        pos = Math.max(0, Math.min(1, pos));
+        
+        progressFill.style.width = (pos * 100) + '%';
+        progressThumb.style.left = (pos * 100) + '%';
+        
+        if (e.type === 'mouseup' || e.type === 'touchend') {
+            audio.currentTime = pos * audio.duration;
+            isDragging = false;
+        } else {
+            timeCurrent.textContent = formatTime(pos * audio.duration);
+            isDragging = true;
+        }
+    };
+    
+    progressContainer.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        seek(e);
+        document.addEventListener('mousemove', seek);
+        document.addEventListener('mouseup', (e) => {
+            seek(e);
+            document.removeEventListener('mousemove', seek);
+        }, {once:true});
+    });
+    
+    progressContainer.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        seek(e);
+        const touchMove = (e) => seek(e);
+        document.addEventListener('touchmove', touchMove, {passive: true});
+        document.addEventListener('touchend', (e) => {
+            document.removeEventListener('touchmove', touchMove);
+            isDragging = false;
+        }, {once:true});
+    }, {passive: true});
+
+    // Логика плейлиста
+    playlistItems.forEach(item => {
+        item.addEventListener('click', () => {
+            // Убираем active у всех, ставим текущему
+            playlistItems.forEach(el => {
+                el.classList.remove('active');
+                el.querySelector('.material-symbols-outlined').textContent = 'play_arrow';
+            });
+            item.classList.add('active');
+            item.querySelector('.material-symbols-outlined').textContent = 'graphic_eq';
+
+            // Обновляем трек
+            titleEl.textContent = item.dataset.title;
+            artistEl.textContent = item.dataset.artist;
+            audio.src = item.dataset.src;
+            
+            // Сбрасываем UI
+            progressFill.style.width = '0%';
+            progressThumb.style.left = '0%';
+            timeCurrent.textContent = '0:00';
+            timeTotal.textContent = '-:--';
+            
+            // Воспроизводим
+            audio.play().catch(e => console.warn('Auto-play prevented', e));
+        });
+    });
+});
+</script>
