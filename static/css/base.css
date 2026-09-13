@@ -17,11 +17,17 @@
     --error: #e74c3c;
     
     --header-height: 72px;
-    --bottom-nav-height: 72px;
+    --bottom-nav-height: 80px;
     --max-width: 1200px;
     --radius: 16px;
     --radius-lg: 24px;
     --radius-xl: 32px;
+
+    /* Apple-tier Tokens */
+    --spring-easing: cubic-bezier(0.25, 1, 0.5, 1);
+    --fast-easing: cubic-bezier(0.4, 0, 0.2, 1);
+    --glass-bg: rgba(15, 20, 32, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.15);
 }
 
 /* ============================================================
@@ -42,163 +48,144 @@ html {
 }
 
 body {
-    font-family: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     background: var(--bg);
     color: var(--txt);
     line-height: 1.6;
     overflow-x: hidden;
     width: 100%;
-    min-height: 100vh;
-    min-height: 100dvh; /* Для современных браузеров */
-    display: flex;
-    flex-direction: column;
+    /* iOS Momentum Scrolling */
+    -webkit-overflow-scrolling: touch;
 }
 
 a {
-    color: var(--gold);
+    color: inherit;
     text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-a:hover {
-    color: var(--gold-hover);
+    -webkit-tap-highlight-color: transparent;
 }
 
 /* ============================================================
-   ШАПКА САЙТА (HEADER)
+   ШАПКА (HEADER)
    ============================================================ */
 
 .site-header {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    z-index: 1000;
+    width: 100%;
     height: var(--header-height);
-    background: rgba(26, 31, 54, 0.92);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    transition: transform 0.3s ease, background 0.3s ease;
+    background: var(--glass-bg);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border-bottom: 1px solid var(--glass-border);
+    z-index: 1000;
+    transition: transform 0.3s var(--spring-easing), background 0.3s ease;
 }
 
 .hdr-container {
     max-width: var(--max-width);
     margin: 0 auto;
-    padding: 0 20px;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    padding: 0 20px;
 }
 
 .hdr-logo {
-    flex-shrink: 0;
     display: flex;
     align-items: center;
-    height: 100%;
+    transition: transform 0.2s ease;
+}
+.hdr-logo:active {
+    transform: scale(0.95);
 }
 
 .hdr-logo img {
-    height: 40px;
+    height: 36px;
     width: auto;
-    display: block;
 }
 
-/* Десктопная навигация */
 .hdr-nav {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin: 0 auto;
 }
 
 .hdr-nav-link {
-    padding: 8px 16px;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.7);
-    border-radius: 8px;
-    transition: all 0.3s ease;
+    color: rgba(255, 255, 255, 0.85);
+    padding: 8px 16px;
+    border-radius: 12px;
+    transition: all 0.2s var(--fast-easing);
     position: relative;
 }
 
 .hdr-nav-link:hover {
     color: #fff;
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.12);
 }
 
 .hdr-nav-link.active {
     color: var(--gold);
-    background: rgba(201, 168, 76, 0.12);
-}
-
-.hdr-nav-link.active::after {
-    content: '';
-    position: absolute;
-    bottom: 4px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 20px;
-    height: 2px;
-    background: var(--gold);
-    border-radius: 2px;
+    background: rgba(201, 168, 76, 0.15);
 }
 
 .hdr-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
 }
 
 .hdr-btn-account {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    color: rgba(255, 255, 255, 0.7);
-    transition: all 0.3s ease;
+    color: rgba(255, 255, 255, 0.8);
+    transition: all 0.2s var(--fast-easing);
 }
 
 .hdr-btn-account:hover {
     color: #fff;
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.12);
+    transform: scale(1.05);
+}
+.hdr-btn-account:active {
+    transform: scale(0.95);
 }
 
 .hdr-btn-account .material-symbols-outlined {
-    font-size: 28px;
+    font-size: 26px;
 }
 
-/* Мобильное меню (гамбургер) - добавляем позже при необходимости */
-
 /* ============================================================
-   НИЖНЯЯ НАВИГАЦИЯ (МОБИЛЬНАЯ)
+   НИЖНЯЯ НАВИГАЦИЯ (МОБИЛЬНАЯ) - APPLE STYLE
    ============================================================ */
 
 .bottom-nav {
     position: fixed;
-    bottom: 16px;
+    bottom: env(safe-area-inset-bottom, 16px);
     left: 16px;
     right: 16px;
     z-index: 999;
-    height: 68px; /* Чуть выше для комфорта */
-    background: rgba(15, 20, 32, 0.85); /* Более темное, глубокое стекло */
-    backdrop-filter: blur(40px) saturate(200%);
-    -webkit-backdrop-filter: blur(40px) saturate(200%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    height: 68px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid var(--glass-border);
     border-radius: 24px;
     display: none;
     align-items: center;
     justify-content: space-around;
-    padding: 0 4px;
+    padding: 0 8px;
     box-shadow: 
-        0 10px 40px rgba(0, 0, 0, 0.5),
-        0 2px 10px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    margin-bottom: env(safe-area-inset-bottom, 0);
+        0 20px 40px rgba(0, 0, 0, 0.4),
+        0 1px 3px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .bottom-nav .nav-item {
@@ -206,34 +193,33 @@ a:hover {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 8px 6px;
+    padding: 6px;
     min-width: 64px;
-    color: rgba(255, 255, 255, 0.4);
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
+    color: rgba(255, 255, 255, 0.5);
+    transition: all 0.4s var(--spring-easing);
     position: relative;
     border: none;
     background: none;
     cursor: pointer;
     text-decoration: none;
-    border-radius: 16px;
     -webkit-tap-highlight-color: transparent;
 }
 
 .bottom-nav .nav-item span {
     font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.2px;
-    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.3px;
     margin-top: 4px;
-    transition: all 0.25s;
+    transition: all 0.3s var(--fast-easing);
 }
 
 .bottom-nav .nav-svg {
-    width: 26px; /* Увеличенные иконки */
-    height: 26px;
+    width: 24px;
+    height: 24px;
     fill: none;
     stroke: currentColor;
-    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.4s var(--spring-easing), stroke-width 0.3s ease;
 }
 
 .bottom-nav .nav-item.active {
@@ -241,25 +227,18 @@ a:hover {
 }
 
 .bottom-nav .nav-item.active .nav-svg {
-    transform: scale(1.1);
+    transform: translateY(-2px) scale(1.15);
+    stroke-width: 2.5;
 }
 
-.bottom-nav .nav-item.active::before {
-    content: '';
-    position: absolute;
-    bottom: 4px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 4px;
-    height: 4px;
-    background: var(--gold);
-    border-radius: 50%;
-    box-shadow: 0 0 8px rgba(201, 168, 76, 0.6);
+.bottom-nav .nav-item.active span {
+    transform: translateY(2px);
+    font-weight: 700;
 }
 
 .bottom-nav .nav-item:active {
-    transform: scale(0.92);
-    background: rgba(255, 255, 255, 0.06);
+    transform: scale(0.9);
+    opacity: 0.8;
 }
 
 /* ============================================================
