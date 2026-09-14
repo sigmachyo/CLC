@@ -2,36 +2,85 @@
 {% block title %}{{ content.title }}{% endblock %}
 
 {% block library_content %}
-<div style="max-width: 900px; margin: 0 auto;">
+<div class="mb-12">
+    <!-- Back Link -->
+    <a href="{% url 'kids_home' %}" class="inline-flex items-center gap-2 text-white/50 hover:text-white font-bold mb-8 transition-colors group">
+        <span class="material-symbols-outlined text-[20px] group-hover:-translate-x-1 transition-transform">arrow_back</span>
+        <span>В Детский уголок</span>
+    </a>
 
-    <h1 style="color: var(--navy); font-size: 2.2rem; font-weight:800; margin-bottom: 24px;">
-        {{ content.title }}
-    </h1>
+    <div class="bg-gradient-to-br from-indigo-500/20 to-purple-500/20 backdrop-blur-xl rounded-[40px] p-8 sm:p-12 border border-white/20 mb-12 shadow-2xl relative overflow-hidden">
+        <!-- Background Effects -->
+        <div class="absolute -top-24 -right-24 w-64 h-64 bg-indigo-500/30 rounded-full blur-[80px] z-0"></div>
+        <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-purple-500/30 rounded-full blur-[80px] z-0"></div>
 
-    {% if content.video_file %}
-    <div style="margin-bottom: 30px; border-radius: 20px; overflow: hidden; background: #000;">
-        <video controls style="width: 100%; display: block;">
-            <source src="{{ content.video_file.url }}">
-        </video>
+        <div class="relative z-10">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-16 h-16 rounded-[24px] bg-white/5 backdrop-blur-xl border border-white/10/10 flex items-center justify-center border border-white/20 backdrop-blur-md">
+                    <span class="material-symbols-outlined text-white text-3xl">child_care</span>
+                </div>
+                <div>
+                    <span class="inline-block px-3 py-1 bg-white/5 backdrop-blur-xl border border-white/10/20 rounded-full text-white text-xs font-bold uppercase tracking-wider mb-2 backdrop-blur-md">
+                        {{ content.get_age_group_display }}
+                    </span>
+                    <h1 class="text-3xl sm:text-5xl font-display font-black text-white leading-tight drop-shadow-md">
+                        {{ content.title }}
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Player -->
+            {% if content.youtube_url or content.video_file or content.thumbnail %}
+            <div class="relative rounded-[24px] sm:rounded-[32px] overflow-hidden bg-black shadow-2xl mb-8 aspect-video border border-white/10">
+                {% if content.video_file %}
+                <video class="w-full h-full object-cover" controls {% if content.thumbnail %}poster="{{ content.thumbnail.url }}" {% endif %}>
+                    <source src="{{ content.video_file.url }}" type="video/mp4">
+                    Твой браузер не поддерживает видео
+                </video>
+                {% elif content.get_youtube_embed_url %}
+                <iframe class="w-full h-full"
+                    src="{{ content.get_youtube_embed_url }}"
+                    allowfullscreen
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    title="{{ content.title }}">
+                </iframe>
+                {% elif content.youtube_url %}
+                <div class="w-full h-full flex items-center justify-center bg-black/80">
+                    <a href="{{ content.youtube_url }}" target="_blank" rel="noopener" class="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-full transition-colors">
+                        <span class="material-symbols-outlined">play_arrow</span>
+                        Смотреть на YouTube
+                    </a>
+                </div>
+                {% elif content.thumbnail %}
+                <img src="{{ content.thumbnail.url }}" alt="{{ content.title }}" class="w-full h-full object-cover opacity-80">
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <!-- Meta & Description -->
+            <div class="bg-white/5 rounded-[24px] p-6 sm:p-8 border border-white/10 backdrop-blur-md">
+                {% if content.bible_verse %}
+                <div class="bg-primary/20 border border-primary/30 rounded-2xl p-6 mb-8 text-center">
+                    <span class="material-symbols-outlined text-primary text-4xl mb-3">menu_book</span>
+                    <p class="text-white text-lg sm:text-xl font-medium">{{ content.bible_verse }}</p>
+                </div>
+                {% endif %}
+                
+                <div class="prose prose-invert max-w-none">
+                    <div class="text-white/80 text-lg leading-relaxed space-y-4 font-medium">
+                        {{ content.description|linebreaks }}
+                    </div>
+                </div>
+
+                {% if content.printable_material %}
+                <div class="border-t border-white/10 pt-8 mt-8">
+                    <a href="{{ content.printable_material.url }}" download class="inline-flex items-center gap-2 bg-white/5 backdrop-blur-xl border border-white/10/10 hover:bg-white/5 backdrop-blur-xl border border-white/10/20 text-white font-bold py-3 px-6 rounded-full transition-colors border border-white/20">
+                        <span class="material-symbols-outlined">print</span> Скачать материал для печати
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
-    {% endif %}
-
-    {% if content.get_youtube_embed_url %}
-    <div style="margin-bottom: 30px; border-radius: 20px; overflow: hidden;">
-        <iframe
-            width="100%"
-            height="500"
-            src="{{ content.get_youtube_embed_url }}"
-            title="{{ content.title }}"
-            frameborder="0"
-            allowfullscreen>
-        </iframe>
-    </div>
-    {% endif %}
-
-    <div style="color: var(--navy-light); line-height: 1.8; font-size: 1.05rem;">
-        {{ content.description|linebreaks }}
-    </div>
-
 </div>
 {% endblock %}

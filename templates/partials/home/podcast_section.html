@@ -104,9 +104,12 @@
     max-width: 1000px;
     min-width: 0;
     margin: 0 auto;
-    background: var(--navy);
-    border-radius: 24px;
-    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-radius: 40px;
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -283,6 +286,7 @@
 }
 .mobile-only { display: none; }
 
+.ym-track.active { background: rgba(255,255,255,0.05); }
 .ym-track.active .track-status { color: var(--gold); }
 .ym-track.active .track-title { color: var(--gold); font-weight: 600; }
 .ym-empty {
@@ -294,8 +298,10 @@
 
 /* Bottom Bar */
 .ym-player-bar {
-    background: var(--navy-hover);
-    border-top: 1px solid rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.02);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     position: relative;
     padding: 0 40px;
 }

@@ -20,12 +20,17 @@ def library_home(request):
         DailyVerse.objects.filter(date=today).first()
         or DailyVerse.objects.order_by('-date').first()
     )
+    
+    # Generate a predictable background index for the daily verse based on today's date
+    bg_index = (today.year * 365 + today.month * 31 + today.day) % 6
+    
     context = {
         'categories': categories,
         'recent_videos': recent_videos,
         'upcoming_events': upcoming_events,
         'kids_content': kids_content,
         'daily_verse': daily_verse,
+        'daily_bg_index': bg_index,
     }
     return render(request, 'library/home.html', context)
 def library_category(request, category_slug):
@@ -51,9 +56,11 @@ def library_category(request, category_slug):
         context['events'] = events
         return render(request, 'library/category_events.html', context)
     elif category.category_type == 'kids':
-        kids_content = KidsContent.objects.filter(is_active=True).order_by('-is_featured', 'order')
-        context['kids_content'] = kids_content
-        return render(request, 'library/category_kids.html', context)
+        # Перенаправляем на красивую главную детскую страницу вместо обычной сетки
+        return redirect('kids_home')
+        
+    # Default fallback
+    context['items'] = []
     return render(request, 'library/category.html', context)
 def video_detail(request, video_id):
     """Страница просмотра видео"""

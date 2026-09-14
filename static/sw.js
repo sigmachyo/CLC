@@ -1,6 +1,6 @@
 // Service Worker для KCLC Красноярск
 // Версия кэша - обновляйте при изменении файлов
-const CACHE_VERSION = 'v1.0.1';
+const CACHE_VERSION = 'v1.0.2';
 const CACHE_NAME = `kclc-cache-${CACHE_VERSION}`;
 
 // Файлы для кэширования (основные ресурсы)
@@ -76,40 +76,43 @@ self.addEventListener('activate', (event) => {
 
 // Перехватываем запросы
 self.addEventListener('fetch', (event) => {
-    const requestUrl = event.request.url;
-    
-    // Проверяем, нужно ли кэшировать этот запрос
-    const shouldCache = !EXCLUDED_URLS.some((url) => requestUrl.includes(url));
-    
+    const request = event.request;
+    const requestUrl = new URL(request.url);
+
+    // Не перехватываем POST, API, админку, медиа и внешние CDN.
+    // Иначе service worker запускает повторный сетевой запрос для каждого
+    // элемента страницы и заметно замедляет навигацию.
+    const isStaticAsset = ['style', 'script', 'image', 'font'].includes(request.destination);
+    const shouldCache = request.method === 'GET'
+        && requestUrl.origin === self.location.origin
+        && isStaticAsset
+        && !EXCLUDED_URLS.some((url) => requestUrl.pathname.startsWith(url));
+
     if (!shouldCache) {
-        // API-запросы и админку не кэшируем
         return;
     }
     
     event.respondWith(
         caches.match(event.request)
             .then((cachedResponse) => {
-                // Если есть в кэше - возвращаем
                 if (cachedResponse) {
-                    // Обновляем кэш в фоне (stale-while-revalidate)
-                    fetch(event.request)
+                    // Обновляем только локальную статику и не блокируем ответ.
+                    fetch(request)
                         .then((networkResponse) => {
                             if (networkResponse && networkResponse.status === 200) {
                                 caches.open(CACHE_NAME)
-                                    .then((cache) => {
-                                        cache.put(event.request, networkResponse.clone());
-                                    });
+                                    .then((cache) => cache.put(request, networkResponse.clone()));
                             }
                         })
                         .catch(() => {
-                            // Ошибка сети - используем кэш
+                            // При отсутствии сети оставляем кэшированный ресурс.
                         });
                     
                     return cachedResponse;
                 }
                 
                 // Если нет в кэше - запрашиваем из сети
-                return fetch(event.request)
+                return fetch(request)
                     .then((networkResponse) => {
                         // Если ответ успешный - сохраняем в кэш
                         if (networkResponse && networkResponse.status === 200) {

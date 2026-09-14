@@ -9,7 +9,7 @@
         <div class="absolute -top-24 -right-24 w-64 h-64 bg-primary rounded-full blur-[80px] opacity-20 z-0"></div>
         
         <div class="relative z-10 flex flex-col sm:flex-row items-center gap-6">
-            <div class="w-20 h-20 rounded-[1.5rem] bg-white/10 flex items-center justify-center backdrop-blur-md border border-white/20 shrink-0">
+            <div class="w-20 h-20 rounded-[1.5rem] bg-white/5 backdrop-blur-xl border border-white/10/10 flex items-center justify-center backdrop-blur-md border border-white/20 shrink-0">
                 <span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
             </div>
             <div>
@@ -22,29 +22,29 @@
     <!-- Plans Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {% for plan in plans %}
-        <a href="{% url 'bible_plan_detail' plan.id %}" class="group bg-white rounded-3xl overflow-hidden border border-navy/5 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col h-full">
-            <div class="relative aspect-[16/10] overflow-hidden bg-navy/5 flex items-center justify-center">
+        <a href="{% url 'bible_plan_detail' plan.id %}" class="group bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden border border-white/10 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col h-full">
+            <div class="relative aspect-[16/10] overflow-hidden bg-white/5 flex items-center justify-center">
                 {% if plan.image %}
                     <img src="{{ plan.image.url }}" alt="{{ plan.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                 {% else %}
                     <span class="material-symbols-outlined text-primary text-5xl opacity-40">menu_book</span>
                 {% endif %}
-                <div class="absolute top-4 right-4 px-3 py-1 bg-white/90 backdrop-blur-md rounded-full text-navy text-xs font-bold shadow-sm uppercase tracking-wider">
+                <div class="absolute top-4 right-4 px-3 py-1 bg-white/10 backdrop-blur-xl backdrop-blur-md rounded-full text-white text-xs font-bold shadow-sm uppercase tracking-wider">
                     {{ plan.days_count }} дней
                 </div>
             </div>
             
             <div class="p-8 flex flex-col flex-grow">
-                <h3 class="text-xl font-bold text-navy mb-3 group-hover:text-primary transition-colors leading-snug">{{ plan.title }}</h3>
-                <p class="text-txt-sub text-sm leading-relaxed mb-6 line-clamp-3">{{ plan.description }}</p>
+                <h3 class="text-xl font-bold text-white mb-3 group-hover:text-primary transition-colors leading-snug">{{ plan.title }}</h3>
+                <p class="text-white/60 text-sm leading-relaxed mb-6 line-clamp-3">{{ plan.description }}</p>
                 
                 {% if plan.user_progress %}
                 <div class="mt-auto space-y-3 pt-6 border-t border-gray-50">
                     <div class="flex items-center justify-between text-xs font-bold">
-                        <span class="text-txt-sub uppercase tracking-widest">Прогресс</span>
+                        <span class="text-white/60 uppercase tracking-widest">Прогресс</span>
                         <span class="text-primary">{{ plan.progress_percentage|default:0 }}%</span>
                     </div>
-                    <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+                    <div class="w-full bg-white/10 rounded-full h-2 overflow-hidden">
                         <div class="bg-primary h-2 rounded-full transition-all duration-1000" style="width: {{ plan.progress_percentage|default:0 }}%"></div>
                     </div>
                 </div>
@@ -57,12 +57,12 @@
             </div>
         </a>
         {% empty %}
-        <div class="col-span-full bg-white rounded-3xl p-16 text-center border border-navy/5 shadow-sm">
-            <div class="w-20 h-20 mx-auto bg-gray-50 rounded-full flex items-center justify-center mb-6">
-                <span class="material-symbols-outlined text-gray-400 text-4xl">book</span>
+        <div class="col-span-full bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-16 text-center border border-white/10 shadow-sm">
+            <div class="w-20 h-20 mx-auto bg-black/20 border border-white/5 rounded-full flex items-center justify-center mb-6">
+                <span class="material-symbols-outlined text-white/50 text-4xl">book</span>
             </div>
-            <h3 class="text-xl font-bold text-navy mb-2">Планы чтения скоро появятся</h3>
-            <p class="text-txt-sub">Следите за обновлениями нашей библиотеки.</p>
+            <h3 class="text-xl font-bold text-white mb-2">Планы чтения скоро появятся</h3>
+            <p class="text-white/60">Следите за обновлениями нашей библиотеки.</p>
         </div>
         {% endfor %}
     </div>

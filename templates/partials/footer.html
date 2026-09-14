@@ -1,16 +1,13 @@
+{% load static %}
 <footer class="bg-navy text-white/70 pt-16 pb-[calc(7rem+env(safe-area-inset-bottom))] md:pb-8 relative overflow-hidden w-full flex flex-col justify-between {% if is_home %}min-h-screen{% else %}mt-auto{% endif %}">
     <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0); background-size: 40px 40px;"></div>
     <div class="max-w-[1200px] mx-auto w-full px-6 relative z-10 flex-1 flex flex-col justify-center">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12 mb-12">
             <div class="lg:col-span-5 text-center md:text-left">
-                <div class="flex items-center justify-center md:justify-start gap-3 mb-6">
-                    <span class="material-symbols-outlined text-[32px] text-white">church</span>
-                    <span class="text-white font-black text-lg md:text-xl tracking-widest uppercase">KCLC КРАСНОЯРСК</span>
+                <div class="mb-8 inline-block relative">
+                    <img src="{% static 'img/logo.png' %}" alt="KCLC Logo" class="h-16 filter drop-shadow-lg relative z-10 brightness-200">
+                    <div class="absolute -inset-4 bg-primary/20 rounded-full blur-2xl z-0"></div>
                 </div>
-                <h2 class="text-white text-3xl md:text-5xl font-black mb-6 leading-tight uppercase relative inline-block">
-                    ЦЕРКОВЬ<br/>ХРИСТИАНСКОЙ<br/>ЖИЗНИ
-                    <div class="absolute -right-8 -top-8 w-24 h-24 bg-primary/20 rounded-full blur-2xl"></div>
-                </h2>
                 <p class="text-base md:text-lg mb-8 max-w-sm mx-auto md:mx-0 text-white/60">
                     Мы существуем, чтобы прославлять Бога, любить людей и служить нашему городу.
                 </p>
@@ -49,7 +46,7 @@
                     </li>
                     <li class="flex items-center gap-3">
                         <span class="material-symbols-outlined text-primary shrink-0">email</span>
-                        <span>office@church.example</span>
+                        <span>office.kclc@gmail.com</span>
                     </li>
                 </ul>
                 <div class="flex gap-3 mt-8 justify-center md:justify-start">

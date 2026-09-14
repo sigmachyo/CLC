@@ -1,33 +1,38 @@
 {% extends 'library/base_library.html' %}
 {% block title %}{{ event.title }}{% endblock %}
+{% block extra_css %}
+<meta property="og:title" content="{{ event.title }}">
+<meta property="og:description" content="{{ event.description|truncatewords:30 }}">
+{% if event.image %}<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ event.image.url }}">{% endif %}
+{% endblock %}
 
 {% block library_content %}
 <div class="mb-12">
     <!-- Breadcrumbs / Back Link -->
-    <a href="{% url 'events_list' %}" class="inline-flex items-center gap-2 text-txt-sub hover:text-primary font-bold mb-8 transition-colors group">
+    <a href="{% url 'events_list' %}" class="inline-flex items-center gap-2 text-white/50 hover:text-white font-bold mb-8 transition-colors group">
         <span class="material-symbols-outlined text-[20px] group-hover:-translate-x-1 transition-transform">arrow_back</span>
         <span>Ко всем событиям</span>
     </a>
 
     <!-- Event Banner -->
-    <div class="relative rounded-[2.5rem] overflow-hidden bg-navy shadow-2xl mb-10 min-h-[300px] sm:min-h-[400px] flex items-end">
+    <div class="relative rounded-[2.5rem] sm:rounded-[40px] overflow-hidden bg-black shadow-2xl mb-10 min-h-[300px] sm:min-h-[450px] flex items-end border border-white/10">
         {% if event.image %}
         <div class="absolute inset-0">
-            <img src="{{ event.image.url }}" alt="{{ event.title }}" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/80 to-transparent"></div>
+            <img src="{{ event.image.url }}" alt="{{ event.title }}" class="w-full h-full object-cover opacity-80">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0f1420] via-[#0f1420]/60 to-transparent"></div>
         </div>
         {% else %}
-        <div class="absolute inset-0 bg-gradient-to-br from-navy to-navy-light">
-            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
-            <div class="absolute -top-[20%] -right-[10%] w-[500px] h-[500px] bg-primary rounded-full blur-[120px] opacity-20 z-0"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-indigo-900 to-black">
+            <div class="absolute -top-[20%] -right-[10%] w-[500px] h-[500px] bg-primary rounded-full blur-[120px] opacity-30 z-0"></div>
+            <div class="absolute -bottom-[20%] -left-[10%] w-[400px] h-[400px] bg-blue-500 rounded-full blur-[120px] opacity-20 z-0"></div>
         </div>
         {% endif %}
         
         <div class="relative z-10 p-8 sm:p-12 w-full">
-            <span class="inline-block px-4 py-1.5 rounded-full bg-primary/20 text-primary border border-primary/30 text-sm font-bold tracking-wider uppercase mb-4 backdrop-blur-md">
+            <span class="inline-block px-4 py-1.5 rounded-full bg-primary text-black text-sm font-bold tracking-wider uppercase mb-4 shadow-lg">
                 {{ event.get_event_type_display }}
             </span>
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-bold text-white leading-tight max-w-4xl">
+            <h1 class="text-4xl sm:text-5xl lg:text-7xl font-display font-bold text-white leading-tight max-w-4xl drop-shadow-lg">
                 {{ event.title }}
             </h1>
         </div>
@@ -36,23 +41,23 @@
     <!-- Main Content Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
         <!-- Left Column: Details -->
-        <div class="lg:col-span-8">
-            <div class="bg-white rounded-[2rem] p-8 sm:p-10 shadow-[0_8px_40px_rgba(0,0,0,0.04)] border border-navy/5 mb-8">
-                <h2 class="text-2xl font-bold text-navy mb-6">О событии</h2>
-                <div class="prose prose-navy max-w-none text-txt-sub text-lg leading-relaxed">
+        <div class="lg:col-span-8 flex flex-col gap-8">
+            <div class="bg-white/5 backdrop-blur-xl rounded-[2.5rem] p-8 sm:p-10 shadow-[0_8px_40px_rgba(0,0,0,0.5)] border border-white/10">
+                <h2 class="text-2xl font-bold text-white mb-6">О событии</h2>
+                <div class="prose prose-invert max-w-none text-white/70 text-lg leading-relaxed">
                     {{ event.description|linebreaks }}
                 </div>
             </div>
 
             {% if event.address %}
-            <div class="bg-primary/5 rounded-[2rem] p-8 sm:p-10 border border-primary/20">
+            <div class="bg-primary/10 rounded-[2.5rem] p-8 sm:p-10 border border-primary/20 backdrop-blur-md">
                 <div class="flex items-start gap-4">
                     <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
                         <span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings: 'FILL' 1;">directions</span>
                     </div>
                     <div>
-                        <h3 class="text-xl font-bold text-navy mb-2">Как добраться</h3>
-                        <p class="text-txt-sub text-lg">{{ event.address }}</p>
+                        <h3 class="text-xl font-bold text-white mb-2">Как добраться</h3>
+                        <p class="text-white/70 text-lg">{{ event.address }}</p>
                     </div>
                 </div>
             </div>
@@ -61,50 +66,50 @@
 
         <!-- Right Column: Sidebar Info & Actions -->
         <div class="lg:col-span-4 flex flex-col gap-6">
-            <div class="bg-white rounded-[2rem] p-8 shadow-[0_8px_40px_rgba(0,0,0,0.04)] border border-navy/5">
+            <div class="bg-white/5 backdrop-blur-xl rounded-[2.5rem] p-8 shadow-[0_8px_40px_rgba(0,0,0,0.5)] border border-white/10 sticky top-[100px]">
                 <div class="space-y-6">
                     <!-- Date & Time -->
                     <div class="flex items-start gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center text-navy shrink-0 border border-gray-100">
+                        <div class="w-12 h-12 rounded-xl bg-white/5 backdrop-blur-xl border border-white/10/10 flex items-center justify-center text-primary shrink-0 border border-white/10">
                             <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
                         </div>
                         <div>
-                            <div class="text-sm text-txt-sub font-semibold uppercase tracking-wider mb-1">Начало</div>
-                            <div class="text-navy font-bold">{{ event.start_date|date:"d M Y, H:i" }}</div>
+                            <div class="text-sm text-white/50 font-semibold uppercase tracking-wider mb-1">Начало</div>
+                            <div class="text-white font-bold text-lg">{{ event.start_date|date:"d M Y, H:i" }}</div>
                             {% if event.end_date %}
-                            <div class="text-sm text-txt-sub mt-1">до {{ event.end_date|date:"d M Y, H:i" }}</div>
+                            <div class="text-sm text-primary mt-1">до {{ event.end_date|date:"d M Y, H:i" }}</div>
                             {% endif %}
                         </div>
                     </div>
 
-                    <div class="h-px w-full bg-gray-100"></div>
+                    <div class="h-px w-full bg-white/5 backdrop-blur-xl border border-white/10/10"></div>
 
                     <!-- Location -->
                     <div class="flex items-start gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center text-navy shrink-0 border border-gray-100">
+                        <div class="w-12 h-12 rounded-xl bg-white/5 backdrop-blur-xl border border-white/10/10 flex items-center justify-center text-primary shrink-0 border border-white/10">
                             <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">location_on</span>
                         </div>
                         <div>
-                            <div class="text-sm text-txt-sub font-semibold uppercase tracking-wider mb-1">Место</div>
-                            <div class="text-navy font-bold leading-snug">{{ event.location }}</div>
+                            <div class="text-sm text-white/50 font-semibold uppercase tracking-wider mb-1">Место</div>
+                            <div class="text-white font-bold text-lg leading-snug">{{ event.location }}</div>
                         </div>
                     </div>
 
                     {% if event.max_participants > 0 %}
-                    <div class="h-px w-full bg-gray-100"></div>
+                    <div class="h-px w-full bg-white/5 backdrop-blur-xl border border-white/10/10"></div>
 
                     <!-- Participants -->
                     <div class="flex items-start gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center text-navy shrink-0 border border-gray-100">
+                        <div class="w-12 h-12 rounded-xl bg-white/5 backdrop-blur-xl border border-white/10/10 flex items-center justify-center text-primary shrink-0 border border-white/10">
                             <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
                         </div>
                         <div class="w-full">
-                            <div class="text-sm text-txt-sub font-semibold uppercase tracking-wider mb-1">Участники</div>
+                            <div class="text-sm text-white/50 font-semibold uppercase tracking-wider mb-1">Участники</div>
                             <div class="flex justify-between items-end mb-2">
-                                <span class="text-navy font-bold text-xl">{{ event.registrations.count }}</span>
-                                <span class="text-txt-sub text-sm">из {{ event.max_participants }}</span>
+                                <span class="text-white font-bold text-2xl">{{ event.registrations.count }}</span>
+                                <span class="text-white/50 text-sm">из {{ event.max_participants }}</span>
                             </div>
-                            <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+                            <div class="w-full bg-black/50 rounded-full h-2 overflow-hidden inset-shadow-sm">
                                 <div class="bg-primary h-2 rounded-full" style="width: {% widthratio event.registrations.count event.max_participants 100 %}%"></div>
                             </div>
                         </div>
@@ -112,24 +117,24 @@
                     {% endif %}
                 </div>
 
-                <div class="mt-8 pt-8 border-t border-gray-100">
+                <div class="mt-8 pt-8 border-t border-white/10">
                     {% if user.is_authenticated %}
                         {% if user_registration %}
-                        <div class="bg-green-50 rounded-xl p-4 flex items-center justify-center gap-3 border border-green-100 text-green-700 font-bold">
+                        <div class="bg-green-500/20 rounded-xl p-4 flex items-center justify-center gap-3 border border-green-500/30 text-green-400 font-bold">
                             <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
                             Вы зарегистрированы
                         </div>
                         {% else %}
                         <form method="post" action="{% url 'event_register' event.slug %}">
                             {% csrf_token %}
-                            <button type="submit" class="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-navy font-bold py-4 px-6 rounded-xl transition-all shadow-[0_4px_12px_rgba(201,168,76,0.3)] hover:-translate-y-1">
+                            <button type="submit" class="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-black font-bold py-4 px-6 rounded-xl transition-all shadow-[0_4px_20px_rgba(201,168,76,0.4)] hover:-translate-y-1">
                                 <span class="material-symbols-outlined text-xl">how_to_reg</span>
                                 Зарегистрироваться
                             </button>
                         </form>
                         {% endif %}
                     {% else %}
-                    <a href="{% url 'login' %}?next={{ request.path }}" class="w-full flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-navy font-bold py-4 px-6 rounded-xl transition-all">
+                    <a href="{% url 'login' %}?next={{ request.path }}" class="w-full flex items-center justify-center gap-2 bg-white/5 backdrop-blur-xl border border-white/10/10 hover:bg-white/5 backdrop-blur-xl border border-white/10/20 text-white font-bold py-4 px-6 rounded-xl transition-all">
                         <span class="material-symbols-outlined text-xl">login</span>
                         Войти для регистрации
                     </a>
@@ -143,36 +148,36 @@
 {% if similar_events %}
 <div class="mt-20">
     <div class="flex items-center gap-3 mb-10">
-        <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+        <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
             <span class="material-symbols-outlined text-[24px]">event_upcoming</span>
         </div>
-        <h2 class="text-2xl sm:text-3xl font-display font-bold text-navy">Похожие события</h2>
+        <h2 class="text-2xl sm:text-3xl font-display font-bold text-white">Похожие события</h2>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="flex overflow-x-auto gap-4 sm:gap-6 pb-6 snap-x snap-mandatory hide-scrollbar">
         {% for ev in similar_events %}
-        <a href="{% url 'event_detail' slug=ev.slug %}" class="group bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl border border-navy/5 transition-all duration-300 hover:-translate-y-2 flex flex-col h-full">
-            <div class="relative h-48 overflow-hidden bg-navy">
+        <a href="{% url 'event_detail' slug=ev.slug %}" class="snap-start shrink-0 w-[280px] sm:w-[320px] group bg-white/5 backdrop-blur-md rounded-[24px] overflow-hidden border border-white/10 hover:bg-white/5 backdrop-blur-xl border border-white/10/10 transition-colors flex flex-col">
+            <div class="relative h-48 overflow-hidden bg-black/50">
                 {% if ev.image %}
-                <img src="{{ ev.image.url }}" alt="{{ ev.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                <img src="{{ ev.image.url }}" alt="{{ ev.title }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 {% else %}
-                <div class="absolute inset-0 bg-gradient-to-br from-navy to-navy-light flex items-center justify-center">
-                    <span class="material-symbols-outlined text-primary text-5xl opacity-30">event</span>
+                <div class="absolute inset-0 bg-gradient-to-br from-black/60 to-black/30 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-white/20 text-5xl">event</span>
                 </div>
                 {% endif %}
                 <div class="absolute top-4 left-4">
-                    <span class="px-3 py-1 rounded-full bg-white/90 text-navy text-xs font-bold shadow-sm backdrop-blur-md">
+                    <span class="px-3 py-1 rounded-full bg-black/80 backdrop-blur-md text-white text-xs font-bold shadow-sm">
                         {{ ev.get_event_type_display }}
                     </span>
                 </div>
             </div>
-            <div class="p-6 flex flex-col flex-grow">
-                <div class="flex items-center gap-2 text-txt-sub text-sm font-semibold mb-3">
+            <div class="p-5 flex flex-col flex-grow">
+                <div class="flex items-center gap-2 text-primary text-sm font-semibold mb-2">
                     <span class="material-symbols-outlined text-[16px]">calendar_month</span>
                     {{ ev.start_date|date:"d M Y, H:i" }}
                 </div>
-                <h3 class="text-xl font-bold text-navy mb-4 leading-snug group-hover:text-primary transition-colors">{{ ev.title }}</h3>
-                <div class="mt-auto pt-4 border-t border-gray-50 flex items-center gap-2 text-txt-sub text-sm">
+                <h3 class="text-lg font-bold text-white mb-4 line-clamp-2">{{ ev.title }}</h3>
+                <div class="mt-auto pt-4 border-t border-white/10 flex items-center gap-2 text-white/50 text-sm">
                     <span class="material-symbols-outlined text-[16px]">location_on</span>
                     <span class="truncate">{{ ev.location }}</span>
                 </div>
@@ -182,4 +187,13 @@
     </div>
 </div>
 {% endif %}
+<style>
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+</style>
 {% endblock %}

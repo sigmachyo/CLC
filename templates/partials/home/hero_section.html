@@ -2,15 +2,8 @@
 <section class="snap-sec" id="sec-hero" aria-label="Главная">
   
   <div class="snap-sec-inner hero-inner-wrap">
-    <!-- ====== ФОНОВОЕ ВИДЕО ====== -->
-    <div class="hero-video-bg">
-      <video autoplay loop muted playsinline preload="auto">
-      </video>
-      <!-- Плавный градиент для ухода в цвет фона сайта -->
-      <div class="hero-video-overlay"></div>
-    </div>
-
     <!-- ====== КОНТЕНТ ====== -->
+    
     <div class="hero-content">
         
         <!-- Logo with glow effect -->
@@ -36,7 +29,7 @@
 
 <style>
 #sec-hero {
-    background-color: #0f1420;
+    background-color: #1a1f36;
 }
 .hero-inner-wrap {
     position: relative;
@@ -59,7 +52,7 @@
 .hero-video-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(15,20,32,0.2) 0%, rgba(15,20,32,0.5) 60%, #0f1420 100%);
+    background: linear-gradient(180deg, rgba(26,31,54,0.4) 0%, rgba(26,31,54,0.7) 60%, #1a1f36 100%);
 }
 .hero-content {
     position: relative;
@@ -81,11 +74,11 @@
 }
 .hero-logo-glow {
     position: absolute;
-    width: 160px;
-    height: 160px;
-    background: radial-gradient(circle, rgba(201,168,76,0.2) 0%, transparent 70%);
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(201,168,76,0.4) 0%, transparent 70%);
     border-radius: 50%;
-    filter: blur(30px);
+    filter: blur(40px);
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);

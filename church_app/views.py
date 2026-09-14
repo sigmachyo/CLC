@@ -371,6 +371,7 @@ def video_api(request):
     }, status=404)
 
 @require_GET
+@staff_member_required
 def debug_stream_status(request):
     """Debug API - показывает текущее состояние трансляции"""
     kra = _kra_now()
@@ -402,6 +403,7 @@ def home(request):
     ).first()
     time_info = get_time_until_service()
     featured_events = Event.objects.filter(is_active=True, is_featured=True).order_by('start_date')[:10]
+    hero_backgrounds = HeroBackground.objects.filter(is_active=True).order_by('order', '-created_at')[:5]
     
     # Получаем текущее UTC время в миллисекундах
     # Это критично - должны быть миллисекунды от эпохи в UTC
@@ -421,6 +423,7 @@ def home(request):
         'is_live': time_info['is_live'],
         'service_schedule': SCHEDULE,
         'featured_events': featured_events,
+        'hero_backgrounds': hero_backgrounds,
         'server_now_ms': server_now_ms,
         'server_now_kra': _kra_now().isoformat(),
         'news': news,
@@ -511,12 +514,6 @@ def profile_view(request):
     
     # Недавние молитвенные нужды (последние 3)
     recent_prayers = PrayerRequest.objects.filter(user=user).order_by('-created_at')[:3]
-    
-    # Для отладки - выводим в консоль
-    print(f"DEBUG - prayers_count: {prayers_count}")
-    print(f"DEBUG - plans_count: {plans_count}")
-    print(f"DEBUG - events_count: {events_count}")
-    print(f"DEBUG - recent_prayers count: {recent_prayers.count()}")
     
     context = {
         'user': user,
@@ -689,15 +686,11 @@ def about_view(request):
     for slug in pastor_slugs:
         try:
             pastor = PastorPhoto.objects.get(slug=slug)
-            if pastor.image:  # Проверяем, что фото существует
+            if pastor.image:
                 pastor_photos[slug] = pastor.image.url
-                print(f'✅ Найдено фото для {slug}: {pastor.image.url}')
-            else:
-                print(f'⚠️ Фото не загружено для {slug}')
         except PastorPhoto.DoesNotExist:
-            print(f'❌ Нет записи для {slug}')
-    
-    print('Все фото:', pastor_photos)
+            pass
+            
     return render(request, 'info/about.html', {'pastor_photos': pastor_photos})
 
 from .models import HomeGroup

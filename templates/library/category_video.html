@@ -11,7 +11,7 @@
 
         <div class="relative z-10 flex flex-col sm:flex-row items-center gap-6">
             <div
-                class="w-20 h-20 rounded-[1.5rem] bg-white/10 flex items-center justify-center backdrop-blur-md border border-white/20 shrink-0">
+                class="w-20 h-20 rounded-[1.5rem] bg-white/5 backdrop-blur-xl border border-white/10/10 flex items-center justify-center backdrop-blur-md border border-white/20 shrink-0">
                 <span class="material-symbols-outlined text-primary text-4xl">play_circle</span>
             </div>
             <div>
@@ -25,8 +25,8 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
         {% for video in videos %}
         <a href="{% url 'video_detail' video.id %}"
-            class="group bg-white rounded-3xl overflow-hidden border border-navy/5 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col h-full">
-            <div class="relative aspect-video overflow-hidden bg-navy/5">
+            class="group bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden border border-white/10 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col h-full">
+            <div class="relative aspect-video overflow-hidden bg-white/5">
                 {% if video.thumbnail %}
                 <img src="{{ video.thumbnail.url }}" alt="{{ video.title }}"
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
@@ -38,7 +38,7 @@
 
                 {% if video.is_featured %}
                 <div
-                    class="absolute top-3 left-3 px-3 py-1 bg-primary text-navy text-[10px] font-black rounded-full shadow-sm uppercase tracking-widest">
+                    class="absolute top-3 left-3 px-3 py-1 bg-primary text-white text-[10px] font-black rounded-full shadow-sm uppercase tracking-widest">
                     Рекомендуем
                 </div>
                 {% endif %}
@@ -46,7 +46,7 @@
                 <div
                     class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <div
-                        class="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center text-primary transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                        class="w-12 h-12 rounded-full bg-white/10 backdrop-blur-xl flex items-center justify-center text-primary transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
                         <span class="material-symbols-outlined text-2xl"
                             style="font-variation-settings: 'FILL' 1;">play_arrow</span>
                     </div>
@@ -55,9 +55,9 @@
 
             <div class="p-6 flex flex-col flex-grow">
                 <h3
-                    class="text-navy font-bold text-lg mb-4 line-clamp-2 group-hover:text-primary transition-colors leading-snug">
+                    class="text-white font-bold text-lg mb-4 line-clamp-2 group-hover:text-primary transition-colors leading-snug">
                     {{ video.title }}</h3>
-                <div class="mt-auto flex items-center gap-4 text-xs text-txt-sub font-semibold">
+                <div class="mt-auto flex items-center gap-4 text-xs text-white/60 font-semibold">
                     <span class="flex items-center gap-1.5">
                         <span class="material-symbols-outlined text-[14px]">visibility</span>
                         {{ video.views_count }}
@@ -70,12 +70,12 @@
             </div>
         </a>
         {% empty %}
-        <div class="col-span-full bg-white rounded-3xl p-16 text-center border border-navy/5 shadow-sm">
-            <div class="w-20 h-20 mx-auto bg-gray-50 rounded-full flex items-center justify-center mb-6">
-                <span class="material-symbols-outlined text-gray-400 text-4xl">movie</span>
+        <div class="col-span-full bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-16 text-center border border-white/10 shadow-sm">
+            <div class="w-20 h-20 mx-auto bg-black/20 border border-white/5 rounded-full flex items-center justify-center mb-6">
+                <span class="material-symbols-outlined text-white/50 text-4xl">movie</span>
             </div>
-            <h3 class="text-xl font-bold text-navy mb-2">Видео пока нет</h3>
-            <p class="text-txt-sub">Скоро здесь появится новый контент.</p>
+            <h3 class="text-xl font-bold text-white mb-2">Видео пока нет</h3>
+            <p class="text-white/60">Скоро здесь появится новый контент.</p>
         </div>
         {% endfor %}
     </div>

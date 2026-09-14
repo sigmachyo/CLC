@@ -1,8 +1,19 @@
 {% extends 'base.html' %}
 {% block title %}Библиотека - {{ title|default:'Духовный Путь' }}{% endblock %}
-{% block main_class %}flex-grow relative bg-background-light{% endblock %}
+{% block main_class %}library-main flex-grow relative bg-[#0a0f18] overflow-hidden{% endblock %}
+{% block extra_css %}
+<style>
+    .library-main { padding-top: 0 !important; min-height: 100dvh; }
+    .library-verse-hero { min-height: 100dvh; height: 100dvh; }
+    @media (max-width: 768px) {
+        .library-verse-hero { min-height: 100svh; height: 100svh; }
+    }
+</style>
+{% endblock %}
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pb-24">
+<!-- Яркие цветовые акценты (цвета логотипа: cyan, pink, yellow, green) -->
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 pb-24 relative z-10">
     {% block library_content %}{% endblock %}
 </div>
 {% endblock %}

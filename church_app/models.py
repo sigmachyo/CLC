@@ -75,6 +75,7 @@ class Video(models.Model):
     video_file = models.FileField(upload_to='videos/', blank=True, null=True, verbose_name="Видео файл")
     youtube_url = models.URLField(blank=True, null=True, verbose_name="YouTube ссылка")
     rutube_url = models.URLField(blank=True, null=True, verbose_name="Rutube ссылка")
+    vk_url = models.URLField(blank=True, null=True, verbose_name="VK Video ссылка")
     thumbnail = models.ImageField(upload_to='video_thumbnails/', blank=True, null=True, verbose_name="Превью")
     duration = models.IntegerField(default=0, help_text="Длительность в секундах", verbose_name="Длительность")
     views_count = models.IntegerField(default=0, verbose_name="Просмотры")
@@ -163,7 +164,6 @@ class PodcastEpisode(models.Model):
 
     def __str__(self):
         return self.title
-        self.save(update_fields=['views_count'])
 
 class BiblePlan(models.Model):
     """Планы чтения Библии"""
@@ -337,6 +337,8 @@ class KidsContent(models.Model):
     age_group = models.CharField(max_length=10, choices=AGE_GROUPS, default='all', verbose_name="Возрастная группа")
     video_file = models.FileField(upload_to='kids_videos/', blank=True, null=True, verbose_name="Видео файл")
     youtube_url = models.URLField(blank=True, null=True, verbose_name="YouTube ссылка")
+    rutube_url = models.URLField(blank=True, null=True, verbose_name="Rutube ссылка")
+    vk_url = models.URLField(blank=True, null=True, verbose_name="VK Video ссылка")
     thumbnail = models.ImageField(upload_to='kids_thumbnails/', blank=True, null=True, verbose_name="Превью")
     bible_verse = models.CharField(max_length=200, blank=True, verbose_name="Библейский стих")
     game_data = models.JSONField(default=dict, blank=True, verbose_name="Данные игры")
@@ -506,6 +508,11 @@ class News(models.Model):
         default=0,
         verbose_name="Просмотры"
     )
+    published_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name="Дата публикации (опционально, заменяет дату создания)"
+    )
     created_at = models.DateTimeField(
         auto_now_add=True
     )
@@ -514,7 +521,7 @@ class News(models.Model):
     )
 
     class Meta:
-        ordering = ['-is_featured', '-created_at']
+        ordering = ['-is_featured', '-published_at', '-created_at']
         verbose_name = "Новость"
         verbose_name_plural = "Новости"
 

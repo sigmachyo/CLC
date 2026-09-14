@@ -1,32 +1,94 @@
 {% extends 'library/base_library.html' %}
 {% block title %}{{ content.title }}{% endblock %}
+{% block extra_css %}
+<style>
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+</style>
+{% endblock %}
 {% block library_content %}
-<div style="max-width: 800px; margin: 0 auto; text-align: center;">
-    <h1 style="color: white; font-size: 2rem; margin-bottom: 20px;">🎮 {{ content.title }}</h1>
-    {% if content.bible_verse %}
-    <div style="background: rgba(241,196,15,0.1); border-left: 4px solid #f1c40f; padding: 15px 20px; border-radius: 0 10px 10px 0; margin-bottom: 25px; text-align: left;">
-        <p style="color: #f1c40f; font-style: italic;">{{ content.bible_verse }}</p>
-    </div>
-    {% endif %}
-    <div style="color: rgba(255,255,255,0.9); line-height: 1.8; margin-bottom: 30px; text-align: left;">
-        {{ content.description|linebreaks }}
-    </div>
-    <div style="background: rgba(255,255,255,0.05); border-radius: 20px; padding: 40px; margin-bottom: 30px;">
-        <p style="color: rgba(255,255,255,0.7); font-size: 1.2rem;">
-            🚧 Игра в разработке. Скоро здесь появится интерактивный контент!
-        </p>
-    </div>
-    {% if similar %}
-    <div style="margin-top: 40px; text-align: left;">
-        <h2 class="section-title"><i class="fas fa-gamepad"></i> Другие игры</h2>
-        <div class="card-grid">
-            {% for item in similar %}
-            <a href="{% url 'kids_content_detail' item.id %}" class="content-card">
-                <div class="card-image" style="background: linear-gradient(145deg, #e74c3c, #f39c12);">
-                    <i class="fas fa-gamepad"></i>
+<div class="mb-12">
+    <!-- Back Link -->
+    <a href="{% url 'kids_home' %}?type=game" class="inline-flex items-center gap-2 text-white/50 hover:text-white font-bold mb-8 transition-colors group">
+        <span class="material-symbols-outlined text-[20px] group-hover:-translate-x-1 transition-transform">arrow_back</span>
+        <span>Ко всем играм</span>
+    </a>
+
+    <div class="bg-gradient-to-br from-orange-500/20 to-red-500/20 backdrop-blur-xl rounded-[40px] p-8 sm:p-12 border border-white/20 mb-12 shadow-2xl relative overflow-hidden">
+        <!-- Background Effects -->
+        <div class="absolute -top-24 -right-24 w-64 h-64 bg-orange-500/30 rounded-full blur-[80px] z-0"></div>
+        <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-red-500/30 rounded-full blur-[80px] z-0"></div>
+
+        <div class="relative z-10">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-16 h-16 rounded-[24px] bg-white/5 backdrop-blur-xl border border-white/10/10 flex items-center justify-center border border-white/20 backdrop-blur-md">
+                    <span class="material-symbols-outlined text-white text-3xl">sports_esports</span>
                 </div>
-                <div class="card-content">
-                    <div class="card-title">{{ item.title }}</div>
+                <div>
+                    <span class="inline-block px-3 py-1 bg-white/5 backdrop-blur-xl border border-white/10/20 rounded-full text-white text-xs font-bold uppercase tracking-wider mb-2 backdrop-blur-md">
+                        {{ content.get_age_group_display }}
+                    </span>
+                    <h1 class="text-3xl sm:text-5xl font-display font-black text-white leading-tight drop-shadow-md">
+                        {{ content.title }}
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Meta & Description -->
+            <div class="bg-white/5 rounded-[24px] p-6 sm:p-8 border border-white/10 backdrop-blur-md mb-8">
+                {% if content.bible_verse %}
+                <div class="bg-primary/20 border border-primary/30 rounded-2xl p-6 mb-8 text-center">
+                    <span class="material-symbols-outlined text-primary text-4xl mb-3">menu_book</span>
+                    <p class="text-white text-lg sm:text-xl font-medium">{{ content.bible_verse }}</p>
+                </div>
+                {% endif %}
+                
+                <div class="prose prose-invert max-w-none">
+                    <div class="text-white/80 text-lg leading-relaxed space-y-4 font-medium">
+                        {{ content.description|linebreaks }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Placeholder Game Box -->
+            <div class="bg-black/40 rounded-[32px] p-12 text-center border border-white/10 backdrop-blur-md relative overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                <span class="material-symbols-outlined text-6xl text-white/20 mb-4 inline-block group-hover:scale-110 transition-transform duration-300">construction</span>
+                <h3 class="text-2xl font-bold text-white mb-2">Игра в разработке</h3>
+                <p class="text-white/50 text-lg max-w-md mx-auto">Скоро здесь появится крутой интерактивный контент. Заходи позже!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Similar Content -->
+    {% if similar %}
+    <div class="mt-20">
+        <div class="flex items-center gap-3 mb-10">
+            <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined text-[24px]">sports_esports</span>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-display font-bold text-white">Другие игры</h2>
+        </div>
+
+        <div class="flex overflow-x-auto gap-4 sm:gap-6 pb-6 snap-x snap-mandatory hide-scrollbar">
+            {% for item in similar %}
+            <a href="{% url 'kids_content_detail' item.id %}" class="snap-start shrink-0 w-[280px] sm:w-[320px] group bg-white/5 backdrop-blur-md rounded-[24px] overflow-hidden border border-white/10 hover:bg-white/5 backdrop-blur-xl border border-white/10/10 transition-colors flex flex-col">
+                <div class="relative aspect-video bg-black/50 overflow-hidden">
+                    {% if item.thumbnail %}
+                    <img src="{{ item.thumbnail.url }}" alt="{{ item.title }}" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    {% else %}
+                    <div class="w-full h-full flex items-center justify-center bg-orange-500/20">
+                        <span class="material-symbols-outlined text-white/20 text-4xl">sports_esports</span>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="p-5 flex flex-col flex-grow">
+                    <h3 class="font-bold text-white text-lg mb-2 line-clamp-2 leading-snug">{{ item.title }}</h3>
                 </div>
             </a>
             {% endfor %}

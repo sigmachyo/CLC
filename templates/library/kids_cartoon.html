@@ -5,173 +5,125 @@
 
 {% block extra_css %}
 <style>
-    .kids-video-container {
-        background: linear-gradient(145deg, #3498db, #2980b9);
-        border-radius: 30px;
-        padding: 30px;
-        margin-bottom: 30px;
-    }
-
-    .kids-video-player {
-        background: #000;
-        border-radius: 20px;
-        overflow: hidden;
-        aspect-ratio: 16/9;
-        margin-bottom: 20px;
-    }
-
-    .kids-video-player video,
-    .kids-video-player iframe,
-    .kids-video-player img {
-        width: 100%;
-        height: 100%;
-        border: none;
-        object-fit: cover;
-    }
-
-    .kids-video-title {
-        font-size: 2rem;
-        color: white;
-        margin-bottom: 15px;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .kids-video-title i {
-        color: #f1c40f;
-        font-size: 2.5rem;
-    }
-
-    .bible-verse-box {
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 20px;
-        padding: 20px;
-        margin: 20px 0;
-        font-size: 1.3rem;
-        color: white;
-        text-align: center;
-        border-left: 5px solid #f1c40f;
-    }
-
-    .bible-verse-box i {
-        color: #f1c40f;
-        margin-right: 10px;
-    }
-
-    .content-text {
-        color: white;
-        font-size: 1.2rem;
-        line-height: 1.8;
-        margin-top: 30px;
-    }
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
 </style>
 {% endblock %}
 
 {% block library_content %}
-
-<div class="kids-video-container">
-
-    <div class="kids-video-title">
-        <i class="fas fa-child"></i>
-        <h1>{{ content.title }}</h1>
-    </div>
-
-    <div class="kids-video-player">
-
-        {% if content.video_file %}
-
-        <video controls {% if content.thumbnail %}poster="{{ content.thumbnail.url }}" {% endif %}>
-            <source src="{{ content.video_file.url }}" type="video/mp4">
-            Твой браузер не поддерживает видео
-        </video>
-
-        {% elif content.get_youtube_embed_url %}
-
-        <iframe
-            src="{{ content.get_youtube_embed_url }}"
-            allowfullscreen
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            title="{{ content.title }}">
-        </iframe>
-
-        {% elif content.youtube_url %}
-
-        <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#1a1f36;">
-            <a href="{{ content.youtube_url }}"
-               target="_blank"
-               rel="noopener"
-               style="color:#f1c40f;font-weight:bold;text-decoration:none;font-size:1.2rem;">
-                ▶ Смотреть на YouTube
-            </a>
-        </div>
-
-        {% elif content.thumbnail %}
-
-        <img src="{{ content.thumbnail.url }}" alt="{{ content.title }}">
-
-        {% endif %}
-
-    </div>
-
-    {% if content.bible_verse %}
-    <div class="bible-verse-box">
-        <i class="fas fa-bible"></i>
-        {{ content.bible_verse }}
-    </div>
-    {% endif %}
-
-    <div class="content-text">
-        {{ content.description|linebreaks }}
-    </div>
-
-</div>
-
-{% if similar %}
-<div class="section-title">
-    <i class="fas fa-thumbs-up"></i>
-    <h2>Ещё для тебя</h2>
-</div>
-
-<div class="card-grid">
-
-    {% for item in similar %}
-
-    <a href="{% url 'kids_content_detail' item.id %}"
-       class="content-card {{ item.content_type }}-card">
-
-        <div class="card-image">
-
-            {% if item.thumbnail %}
-                <img src="{{ item.thumbnail.url }}" alt="{{ item.title }}">
-            {% else %}
-                <i class="fas fa-film"></i>
-            {% endif %}
-
-            <div class="card-badge">
-                {{ item.get_content_type_display }}
-            </div>
-
-        </div>
-
-        <div class="card-content">
-            <div class="card-title">
-                {{ item.title }}
-            </div>
-
-            <div class="card-meta">
-                <span>
-                    <i class="fas fa-users"></i>
-                    {{ item.get_age_group_display }}
-                </span>
-            </div>
-        </div>
-
+<div class="mb-12">
+    <!-- Back Link -->
+    <a href="{% url 'kids_home' %}" class="inline-flex items-center gap-2 text-white/50 hover:text-white font-bold mb-8 transition-colors group">
+        <span class="material-symbols-outlined text-[20px] group-hover:-translate-x-1 transition-transform">arrow_back</span>
+        <span>В Детский уголок</span>
     </a>
 
-    {% endfor %}
+    <div class="bg-gradient-to-br from-blue-500/20 to-purple-500/20 backdrop-blur-xl rounded-[40px] p-8 sm:p-12 border border-white/20 mb-12 shadow-2xl relative overflow-hidden">
+        <!-- Background Effects -->
+        <div class="absolute -top-24 -right-24 w-64 h-64 bg-blue-500/30 rounded-full blur-[80px] z-0"></div>
+        <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-purple-500/30 rounded-full blur-[80px] z-0"></div>
 
+        <div class="relative z-10">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-16 h-16 rounded-[24px] bg-white/5 backdrop-blur-xl border border-white/10/10 flex items-center justify-center border border-white/20 backdrop-blur-md">
+                    <span class="material-symbols-outlined text-white text-3xl">child_care</span>
+                </div>
+                <div>
+                    <span class="inline-block px-3 py-1 bg-white/5 backdrop-blur-xl border border-white/10/20 rounded-full text-white text-xs font-bold uppercase tracking-wider mb-2 backdrop-blur-md">
+                        {{ content.get_age_group_display }}
+                    </span>
+                    <h1 class="text-3xl sm:text-5xl font-display font-black text-white leading-tight drop-shadow-md">
+                        {{ content.title }}
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Player -->
+            <div class="relative rounded-[24px] sm:rounded-[32px] overflow-hidden bg-black shadow-2xl mb-8 aspect-video border border-white/10">
+                {% if content.video_file %}
+                <video class="w-full h-full object-cover" controls {% if content.thumbnail %}poster="{{ content.thumbnail.url }}" {% endif %}>
+                    <source src="{{ content.video_file.url }}" type="video/mp4">
+                    Твой браузер не поддерживает видео
+                </video>
+                {% elif content.get_youtube_embed_url %}
+                <iframe class="w-full h-full"
+                    src="{{ content.get_youtube_embed_url }}"
+                    allowfullscreen
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    title="{{ content.title }}">
+                </iframe>
+                {% elif content.youtube_url %}
+                <div class="w-full h-full flex items-center justify-center bg-black/80">
+                    <a href="{{ content.youtube_url }}" target="_blank" rel="noopener" class="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-full transition-colors">
+                        <span class="material-symbols-outlined">play_arrow</span>
+                        Смотреть на YouTube
+                    </a>
+                </div>
+                {% elif content.thumbnail %}
+                <img src="{{ content.thumbnail.url }}" alt="{{ content.title }}" class="w-full h-full object-cover opacity-80">
+                {% endif %}
+            </div>
+
+            <!-- Meta & Description -->
+            <div class="bg-white/5 rounded-[24px] p-6 sm:p-8 border border-white/10 backdrop-blur-md">
+                {% if content.bible_verse %}
+                <div class="bg-primary/20 border border-primary/30 rounded-2xl p-6 mb-8 text-center">
+                    <span class="material-symbols-outlined text-primary text-4xl mb-3">menu_book</span>
+                    <p class="text-white text-lg sm:text-xl font-medium">{{ content.bible_verse }}</p>
+                </div>
+                {% endif %}
+                
+                <div class="prose prose-invert max-w-none">
+                    <div class="text-white/80 text-lg leading-relaxed space-y-4 font-medium">
+                        {{ content.description|linebreaks }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Similar Content -->
+    {% if similar %}
+    <div class="mt-20">
+        <div class="flex items-center gap-3 mb-10">
+            <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined text-[24px]">thumb_up</span>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-display font-bold text-white">Ещё для тебя</h2>
+        </div>
+
+        <div class="flex overflow-x-auto gap-4 sm:gap-6 pb-6 snap-x snap-mandatory hide-scrollbar">
+            {% for item in similar %}
+            <a href="{% url 'kids_content_detail' item.id %}" class="snap-start shrink-0 w-[280px] sm:w-[320px] group bg-white/5 backdrop-blur-md rounded-[24px] overflow-hidden border border-white/10 hover:bg-white/5 backdrop-blur-xl border border-white/10/10 transition-colors flex flex-col">
+                <div class="relative aspect-video bg-black/50 overflow-hidden">
+                    {% if item.thumbnail %}
+                    <img src="{{ item.thumbnail.url }}" alt="{{ item.title }}" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    {% else %}
+                    <div class="w-full h-full flex items-center justify-center bg-blue-500/20">
+                        <span class="material-symbols-outlined text-white/20 text-4xl">play_circle</span>
+                    </div>
+                    {% endif %}
+                    <div class="absolute top-3 left-3">
+                        <span class="px-3 py-1 rounded-full bg-black/80 backdrop-blur-md text-white text-xs font-bold uppercase shadow-sm">
+                            {{ item.get_content_type_display }}
+                        </span>
+                    </div>
+                </div>
+                <div class="p-5 flex flex-col flex-grow">
+                    <h3 class="font-bold text-white text-lg mb-2 line-clamp-2 leading-snug">{{ item.title }}</h3>
+                    <div class="mt-auto pt-4 border-t border-white/10 flex items-center justify-between text-white/50 text-xs font-medium">
+                        <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px]">child_care</span> {{ item.get_age_group_display }}</span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
 </div>
-{% endif %}
-
 {% endblock %}

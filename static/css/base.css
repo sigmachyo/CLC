@@ -439,3 +439,8 @@ a {
         line-height: 1.2;
     }
 }
+/* Отключение "резинового" скролла (overscroll bounce) на macOS и iOS */
+html, body {
+    overscroll-behavior-y: none;
+    overscroll-behavior-x: none;
+}
