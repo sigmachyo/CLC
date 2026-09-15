@@ -6,7 +6,18 @@
 
 <!-- Цветовые акценты на фоне всей страницы -->
 <style>
-  body { background-color: #0a0f18 !important; }  .optimized-glow {
+  body { background-color: #0a0f18 !important; }
+  
+  /* Убираем скроллбар на странице библиотеки */
+  ::-webkit-scrollbar {
+      display: none;
+  }
+  html, body {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+  }
+  
+  .optimized-glow {
       position: fixed;
       inset: 0;
       pointer-events: none;
