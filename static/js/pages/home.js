@@ -158,8 +158,6 @@ const initNav = () => {
     });
   });
 
-  // Scroll-top button
-  $('scrollTop')?.addEventListener('click', () => scrollToSection(0));
 
   // IntersectionObserver для отслеживания активной секции
   const snapRoot = $('snap-root');
@@ -178,9 +176,6 @@ const initNav = () => {
           nav.classList.toggle('active', isActive);
         });
 
-        // Scroll-top button
-        const scrollTopBtn = $('scrollTop');
-        if (scrollTopBtn) scrollTopBtn.classList.toggle('show', idx > 0);
       }
     });
   }, { root: snapRoot, threshold: 0.5 });

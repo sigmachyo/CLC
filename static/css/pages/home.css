@@ -93,21 +93,7 @@
 }
 .vn-item:hover .vn-tip { opacity: 1; }
 
-/* ── SCROLL TOP ──────────────────────────────────────────────── */
-#scrollTop {
-  position: fixed; bottom: 32px; right: 32px;
-  width: 46px; height: 46px;
-  background: var(--navy);
-  border: 1px solid rgba(201,168,76,0.25);
-  border-radius: 50%;
-  color: var(--gold); cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  opacity: 0; visibility: hidden;
-  transition: all 0.35s; z-index: 700;
-}
-#scrollTop.show { opacity: 1; visibility: visible; }
-#scrollTop:hover { background: var(--navy-h); transform: translateY(-2px); }
-#scrollTop svg { width: 18px; height: 18px; fill: currentColor; display: block; }
+
 
 /* ============================================================
    HERO SECTION
@@ -716,7 +702,6 @@
 @media (max-width: 900px) {
   :root { --hdr: 60px; }
   #v-nav { display: none !important; }
-  #scrollTop { display: none !important; }
   .snap-sec { padding-bottom: 100px; }
   #sec-footer { padding-bottom: 0; }
 
