@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load account socialaccount %}
+
+{% block title %}Регистрация | KCLC{% endblock %}
+
+{% block main_class %}!pt-0 !pb-0{% endblock %}
+{% block top_spacer %}{% endblock %}
+
+{% block content %}
+<!-- Воздушный фон во весь экран -->
+<div class="min-h-screen relative pt-[100px] pb-20 px-4 flex flex-col items-center justify-center">
+
+    <div class="absolute inset-0 z-0">
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1499346030926-9a72daac6c63?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat opacity-100"></div>
+        <div class="absolute inset-0 bg-white/10"></div>
+    </div>
+
+    <!-- Основная карточка регистрации (Glassmorphism) -->
+    <div class="w-full max-w-md bg-white/5 backdrop-blur-lg rounded-[2.5rem] shadow-[0_8px_32px_rgba(0,0,0,0.02)] border border-white/20 p-8 sm:p-12 relative z-10 flex flex-col items-center animate-fade-in-up mt-8">
+        
+        <h1 class="text-3xl font-serif font-bold text-navy mb-2 tracking-tight drop-shadow-sm text-center">Создать аккаунт</h1>
+        <p class="text-navy/70 text-sm mb-8 text-center">Присоединяйтесь к нашей семье</p>
+        
+        <div class="w-full mb-6">
+            <a href="{% provider_login_url 'google' %}" class="w-full flex items-center justify-center gap-3 bg-white/40 hover:bg-white/60 backdrop-blur-md border border-white/40 text-navy font-medium py-3 px-4 rounded-2xl transition-all mb-3 shadow-sm hover:shadow">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" class="w-5 h-5">
+                Продолжить с Google
+            </a>
+        </div>
+        
+        <div class="w-full flex items-center justify-center gap-4 mb-6">
+            <div class="h-px flex-1 bg-white/30"></div>
+            <span class="text-navy/40 text-xs font-semibold uppercase tracking-wider">Или через email</span>
+            <div class="h-px flex-1 bg-white/30"></div>
+        </div>
+
+        <form method="POST" action="{% url 'account_signup' %}" class="w-full flex flex-col gap-4">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+                <div class="bg-red-500/10 border border-red-500/30 text-red-600 rounded-xl p-4 text-sm text-center backdrop-blur-md mb-2 flex flex-col gap-1">
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
+            <div class="relative">
+                <input type="text" name="username" placeholder="Никнейм" required
+                    class="w-full bg-white/20 backdrop-blur-md border border-white/30 text-navy placeholder:text-navy/50 px-5 py-3.5 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/50 transition-all shadow-inner">
+            </div>
+            
+            <div class="relative">
+                <input type="email" name="email" placeholder="Электронная почта" required
+                    class="w-full bg-white/20 backdrop-blur-md border border-white/30 text-navy placeholder:text-navy/50 px-5 py-3.5 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/50 transition-all shadow-inner">
+            </div>
+            
+            <div class="relative group">
+                <input type="password" name="password_1" id="password_input" placeholder="Придумайте пароль" required
+                    class="w-full bg-white/20 backdrop-blur-md border border-white/30 text-navy placeholder:text-navy/50 px-5 py-3.5 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/50 transition-all shadow-inner">
+                <div class="mt-2 text-xs text-navy/50 px-1 transition-opacity opacity-0 group-focus-within:opacity-100">
+                    Пароль должен содержать не менее 8 символов.
+                </div>
+            </div>
+            
+            <div class="relative">
+                <input type="password" name="password_2" placeholder="Повторите пароль" required
+                    class="w-full bg-white/20 backdrop-blur-md border border-white/30 text-navy placeholder:text-navy/50 px-5 py-3.5 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/50 transition-all shadow-inner">
+            </div>
+            
+            {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+            {% endif %}
+            
+            <button type="submit" class="w-full bg-[#c9a84c] text-white font-bold text-base py-3.5 rounded-2xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all mt-4">
+                Зарегистрироваться
+            </button>
+        </form>
+        
+        <p class="mt-8 text-sm text-navy/60 text-center">
+            Уже есть аккаунт? <a href="{% url 'account_login' %}" class="text-[#c9a84c] font-bold hover:underline">Войти</a>
+        </p>
+        
+    </div>
+</div>
+{% endblock %}

@@ -5,9 +5,9 @@ from . import views, views_library, views_prayer, views_donate, views_push
 urlpatterns = [
     path('', views.home, name='home'),
 
-    path('register/', views.register_view, name='register'),
-    path('login/', views.login_view, name='login'),
-    path('logout/', views.logout_view, name='logout'),
+    # path('register/', views.register_view, name='register'),
+    # path('login/', views.login_view, name='login'),
+    # path('logout/', views.logout_view, name='logout'),
     path('password-reset/', TemplateView.as_view(template_name='password_reset.html'), name='password_reset'),
 
     path('profile/', views.profile_view, name='profile'),

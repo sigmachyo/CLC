@@ -312,7 +312,7 @@
                 
                 Пожертвовать
             </a>
-            <a href="{% if user.is_authenticated %}{% url 'profile' %}{% else %}{% url 'login' %}{% endif %}" class="btn-profile desktop-only">
+            <a href="{% if user.is_authenticated %}{% url 'profile' %}{% else %}{% url 'account_login' %}{% endif %}" class="btn-profile desktop-only">
                 <span class="material-symbols-outlined" style="font-size: 20px;">person</span>
             </a>
             <button class="header-burger" id="header-mobile-burger">

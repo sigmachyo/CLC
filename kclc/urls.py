@@ -5,7 +5,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('church_app.urls')),  # Все пути из приложения
+    path('', include('church_app.urls')),
+    path('accounts/', include('allauth.urls')),  # Все пути из приложения
 ]
 
 # Только в режиме DEBUG добавляем медиа файлы
