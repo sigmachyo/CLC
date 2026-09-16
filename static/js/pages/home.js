@@ -178,7 +178,7 @@ const initNav = () => {
 
       }
     });
-  }, { root: snapRoot, threshold: 0.5 });
+  }, { root: null, rootMargin: "-30% 0px -30% 0px", threshold: 0 });
 
   $$('.snap-sec').forEach(sec => observer.observe(sec));
 };
