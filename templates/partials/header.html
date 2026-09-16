@@ -1,11 +1,12 @@
-{% load static %}<style>
+{% load static %}
+<style>
 /* Header Styles */
 .kclc-header {
     position: fixed;
     top: 0; left: 0; right: 0;
     height: 72px;
     z-index: 2000;
-    transition: background-color 0.3s, backdrop-filter 0.3s;
+    transition: background-color 0.3s, backdrop-filter 0.3s, border-color 0.3s;
     background: rgba(10, 15, 24, 0.7);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
@@ -32,7 +33,7 @@
 .kclc-nav {
     display: flex;
     align-items: center;
-    gap: 40px;
+    gap: 32px;
     height: 100%;
 }
 
@@ -51,7 +52,7 @@
     transition: color 0.2s;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
 }
 .nav-link:hover, .nav-item:hover .nav-link, .nav-link.active {
     color: #fff;
@@ -73,7 +74,8 @@
     top: 72px;
     left: 50%;
     transform: translateX(-50%) translateY(10px);
-    width: 280px;
+    width: max-content;
+    min-width: 280px;
     background: rgba(18, 24, 38, 0.85);
     backdrop-filter: blur(40px);
     -webkit-backdrop-filter: blur(40px);
@@ -86,6 +88,15 @@
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     pointer-events: none;
 }
+/* Mega menu for 'О церкви' (2 columns) */
+.nav-dropdown.mega {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    min-width: 480px;
+    padding: 12px;
+}
+
 .nav-item:hover .nav-dropdown {
     opacity: 1;
     visibility: visible;
@@ -106,8 +117,8 @@
 .dropdown-item {
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 12px 16px;
+    gap: 14px;
+    padding: 10px 14px;
     border-radius: 14px;
     text-decoration: none;
     transition: background 0.2s;
@@ -116,7 +127,7 @@
     background: rgba(255,255,255,0.08);
 }
 .dropdown-icon {
-    width: 40px; height: 40px;
+    width: 36px; height: 36px;
     border-radius: 10px;
     background: rgba(255,255,255,0.05);
     display: flex; align-items: center; justify-content: center;
@@ -124,13 +135,13 @@
 }
 .dropdown-text h4 {
     color: #fff;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 500;
     margin: 0 0 2px 0;
 }
 .dropdown-text p {
     color: rgba(255,255,255,0.5);
-    font-size: 13px;
+    font-size: 12px;
     margin: 0;
 }
 
@@ -154,16 +165,39 @@
     transform: scale(1.05);
 }
 
-/* Mobile Burger inside Header */
-.mobile-burger {
+.btn-donate {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(201,168,76,0.15);
+    color: var(--gold, #c9a84c);
+    border: 1px solid rgba(201,168,76,0.3);
+    padding: 8px 18px;
+    border-radius: 24px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+.btn-donate:hover {
+    background: var(--gold, #c9a84c);
+    color: #0a0f18;
+}
+
+.header-burger {
     display: none;
     background: none; border: none; color: #fff;
     padding: 8px; cursor: pointer;
+    transition: opacity 0.2s;
 }
+.header-burger:hover { opacity: 0.7; }
 
-@media (max-width: 768px) {
+/* Switch to mobile layout at 900px */
+@media (max-width: 900px) {
     .desktop-only { display: none !important; }
-    .mobile-burger { display: flex; align-items: center; justify-content: center; }
+    .header-burger { display: flex; align-items: center; justify-content: center; }
 }
 </style>
 
@@ -177,13 +211,70 @@
         <!-- Center: Nav -->
         <nav class="kclc-nav desktop-only">
             <div class="nav-item">
-                <a href="{% url 'home' %}" class="nav-link {% if request.path == '/' %}active{% endif %}">Главная</a>
+                <a href="{% url 'home' %}" class="nav-link {% if request.path == '/' %}active{% endif %}">
+                    Главная
+                    <span class="material-symbols-outlined" style="font-size: 16px; margin-top: 1px;">expand_more</span>
+                </a>
+                <div class="nav-dropdown">
+                    <a href="{% url 'home' %}#sec-hero" class="dropdown-item">
+                        <div class="dropdown-icon"><span class="material-symbols-outlined">live_tv</span></div>
+                        <div class="dropdown-text">
+                            <h4>Трансляция</h4>
+                            <p>Смотреть служение</p>
+                        </div>
+                    </a>
+                    <a href="{% url 'home' %}#sec-events" class="dropdown-item">
+                        <div class="dropdown-icon"><span class="material-symbols-outlined">event</span></div>
+                        <div class="dropdown-text">
+                            <h4>События</h4>
+                            <p>Ближайшие мероприятия</p>
+                        </div>
+                    </a>
+                </div>
             </div>
             
             <div class="nav-item">
+                <a href="{% url 'about' %}" class="nav-link">
+                    О церкви
+                    <span class="material-symbols-outlined" style="font-size: 16px; margin-top: 1px;">expand_more</span>
+                </a>
+                <!-- Mega Menu Dropdown -->
+                <div class="nav-dropdown mega">
+                    <a href="{% url 'about' %}" class="dropdown-item">
+                        <div class="dropdown-icon"><span class="material-symbols-outlined">info</span></div>
+                        <div class="dropdown-text"><h4>О нас</h4><p>Наша миссия</p></div>
+                    </a>
+                    <a href="{% url 'alpha' %}" class="dropdown-item">
+                        <div class="dropdown-icon"><span class="material-symbols-outlined">lightbulb</span></div>
+                        <div class="dropdown-text"><h4>Альфа-курс</h4><p>Основы веры</p></div>
+                    </a>
+                    <a href="{% url 'ministries' %}" class="dropdown-item">
+                        <div class="dropdown-icon"><span class="material-symbols-outlined">volunteer_activism</span></div>
+                        <div class="dropdown-text"><h4>Служения</h4><p>Команды церкви</p></div>
+                    </a>
+                    <a href="{% url 'news_list' %}" class="dropdown-item">
+                        <div class="dropdown-icon"><span class="material-symbols-outlined">newspaper</span></div>
+                        <div class="dropdown-text"><h4>Новости</h4><p>Жизнь церкви</p></div>
+                    </a>
+                    <a href="{% url 'calendar' %}" class="dropdown-item">
+                        <div class="dropdown-icon"><span class="material-symbols-outlined">calendar_month</span></div>
+                        <div class="dropdown-text"><h4>Календарь</h4><p>Расписание</p></div>
+                    </a>
+                    <a href="{% url 'home_meet' %}" class="dropdown-item">
+                        <div class="dropdown-icon"><span class="material-symbols-outlined">home</span></div>
+                        <div class="dropdown-text"><h4>Домашние группы</h4><p>Общение посреди недели</p></div>
+                    </a>
+                    <a href="{% url 'regional_churches' %}" class="dropdown-item" style="grid-column: 1 / -1; justify-content: center; background: rgba(255,255,255,0.02); margin-top: 4px;">
+                        <div class="dropdown-icon" style="background: none; width: auto; color: rgba(255,255,255,0.7);"><span class="material-symbols-outlined">map</span></div>
+                        <div class="dropdown-text"><h4 style="margin:0; color: rgba(255,255,255,0.7);">Церкви региона</h4></div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="nav-item">
                 <a href="{% url 'library_home' %}" class="nav-link {% if '/library' in request.path %}active{% endif %}">
                     Библиотека
-                    <span class="material-symbols-outlined" style="font-size: 18px; margin-top: 1px;">expand_more</span>
+                    <span class="material-symbols-outlined" style="font-size: 16px; margin-top: 1px;">expand_more</span>
                 </a>
                 <div class="nav-dropdown">
                     <a href="{% url 'library_home' %}#sec-videos" class="dropdown-item">
@@ -217,10 +308,14 @@
 
         <!-- Right: Actions -->
         <div class="nav-actions">
+            <a href="{% url 'donate' %}" class="btn-donate desktop-only">
+                <span class="material-symbols-outlined" style="font-size:16px;">volunteer_activism</span>
+                Пожертвовать
+            </a>
             <a href="{% if user.is_authenticated %}{% url 'profile' %}{% else %}{% url 'login' %}{% endif %}" class="btn-profile desktop-only">
                 <span class="material-symbols-outlined" style="font-size: 20px;">person</span>
             </a>
-            <button class="mobile-burger" id="header-mobile-burger">
+            <button class="header-burger" id="header-mobile-burger">
                 <span class="material-symbols-outlined">menu</span>
             </button>
         </div>
