@@ -11,13 +11,14 @@
 <div class="min-h-screen relative pt-24 sm:pt-28 pb-20 px-4 flex flex-col items-center justify-center">
 
     <!-- Фоновое изображение облаков на всю высоту -->
-    <div class="absolute inset-0 z-0">
+    <!-- Fixed background to cover the entire screen behind header -->
+    <div class="fixed inset-0 z-[-1]">
         <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1499346030926-9a72daac6c63?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat opacity-100"></div>
         <div class="absolute inset-0 bg-white/10"></div>
     </div>
 
     <!-- Основная карточка пожертвования (Glassmorphism) -->
-    <div class="w-full max-w-4xl bg-white/5 backdrop-blur-lg rounded-[2.5rem] shadow-[0_8px_32px_rgba(0,0,0,0.02)] border border-white/20 p-6 sm:p-12 md:p-16 relative z-10 flex flex-col md:flex-row gap-12 md:gap-16 items-center">
+    <div class="w-full max-w-4xl bg-white/5 backdrop-blur-lg rounded-[2.5rem] shadow-[0_8px_32px_rgba(0,0,0,0.02)] border border-white/20 p-6 sm:p-12 md:p-16 relative z-10 flex flex-col md:flex-row gap-12 md:gap-16 items-start">
 
         <!-- Левая часть: Текст и стих -->
         <div class="w-full md:w-1/2 flex flex-col text-center md:text-left">
@@ -28,14 +29,11 @@
                 Ваше участие помогает нам нести свет Евангелия, служить людям и развивать церковь. Спасибо за вашу щедрость!
             </p>
 
-            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-none relative overflow-hidden">
-                <div class="absolute -top-4 -right-4 text-[#c9a84c] opacity-10">
-                    <span class="material-symbols-outlined text-8xl">format_quote</span>
-                </div>
-                <p class="text-sm sm:text-base text-navy/80 mb-3 italic leading-relaxed relative z-10">
+            <div class="relative">
+                <p class="text-lg text-navy/90 mb-4 italic leading-relaxed">
                     «Каждый уделяй по расположению сердца, не с огорчением и не с принуждением; ибо доброхотно дающего любит Бог.»
                 </p>
-                <p class="text-xs font-bold text-[#c9a84c] uppercase tracking-widest relative z-10">— 2 Коринфянам 9:7</p>
+                <p class="text-sm font-bold text-[#c9a84c] uppercase tracking-widest">— 2 Коринфянам 9:7</p>
             </div>
         </div>
 
