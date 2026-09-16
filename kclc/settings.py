@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
@@ -267,8 +268,22 @@ ACCOUNT_LOGOUT_ON_GET = True
 # Email backend (console for development/testing, will need real SMTP later)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# Optional styling customization for allauth forms
-ACCOUNT_FORMS = {
-    'login': 'church_app.forms.CustomLoginForm',
-    'signup': 'church_app.forms.CustomSignupForm',
+
+
+# Dummy configuration for Social Accounts so templates don't crash
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': 'change-me',
+            'secret': 'change-me',
+            'key': ''
+        }
+    },
+    'vk': {
+        'APP': {
+            'client_id': 'change-me',
+            'secret': 'change-me',
+            'key': ''
+        }
+    }
 }
