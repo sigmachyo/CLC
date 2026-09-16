@@ -10,12 +10,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <!-- Нежный облачный фон (оптимизированный, без тяжелых CSS-размытий) -->
-<div class="min-h-[calc(100vh-72px)] relative py-12 sm:py-20 px-4 flex flex-col items-center justify-center">
+<div class="min-h-[calc(100vh-72px)] relative pt-4 sm:pt-10 pb-20 px-4 flex flex-col items-center justify-start">
     
     <!-- Фоновое изображение облаков с наложением белого градиента для нежности и читаемости -->
     <div class="absolute inset-0 z-0">
-        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1501630834273-4b5604d2ee31?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat opacity-40"></div>
-        <div class="absolute inset-0 bg-gradient-to-b from-white/90 via-white/60 to-white/90"></div>
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1499346030926-9a72daac6c63?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat opacity-90"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white/40"></div>
     </div>
 
     <!-- Текстовый заголовок -->
@@ -27,7 +27,7 @@
     </div>
 
     <!-- Легкая белая карточка (без тяжелых теней) -->
-    <div class="w-full max-w-5xl bg-white/90 backdrop-blur-lg rounded-[2rem] shadow-sm border border-white p-6 sm:p-12 relative z-10 flex flex-col lg:flex-row gap-12 items-center">
+    <div class="w-full max-w-5xl bg-white/20 backdrop-blur-xl rounded-[2.5rem] shadow-[0_8px_32px_rgba(0,0,0,0.05)] border border-white/50 p-6 sm:p-12 relative z-10 flex flex-col lg:flex-row gap-12 items-start">
         
         <!-- Левая часть: Выбор суммы -->
         <div class="w-full lg:w-1/2 flex flex-col">
@@ -40,11 +40,11 @@
                 <button class="amount-btn" data-amount="5000">5 000 ₽</button>
                 <button class="amount-btn" data-amount="10000">10 000 ₽</button>
                 <div class="relative w-full">
-                    <input type="number" id="custom-amount" class="w-full h-full min-h-[50px] bg-white border border-navy/10 rounded-xl px-4 text-center font-bold text-navy outline-none focus:border-[#c9a84c] focus:ring-1 focus:ring-[#c9a84c] transition-colors placeholder:text-navy/30 placeholder:font-normal" placeholder="Другая сумма">
+                    <input type="number" id="custom-amount" class="w-full h-full min-h-[50px] bg-white/50 backdrop-blur-md border border-white/60 rounded-xl px-4 text-center font-bold text-navy outline-none focus:border-[#c9a84c] focus:ring-1 focus:ring-[#c9a84c] transition-colors placeholder:text-navy/30 placeholder:font-normal" placeholder="Другая сумма">
                 </div>
             </div>
 
-            <div class="mt-4 bg-[#f8f9fa] rounded-xl p-5 border border-black/5">
+            <div class="mt-4 bg-white/30 backdrop-blur-md rounded-xl p-5 border border-white/50 shadow-sm">
                 <p class="text-sm text-navy/70 mb-2 italic leading-relaxed">
                     «Каждый уделяй по расположению сердца, не с огорчением и не с принуждением»
                 </p>
@@ -66,7 +66,7 @@
             <p class="text-navy/60 text-sm mb-6 hidden lg:block max-w-[280px]">Наведите камеру телефона на QR-код для перевода через СБП</p>
             
             <!-- Убран тяжелый group-hover blur, оставлен только чистый белый контейнер -->
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-navy/5">
+            <div class="bg-white/80 backdrop-blur-md p-5 rounded-2xl shadow-sm border border-white/80">
                 <div id="qr-code-box" class="flex items-center justify-center w-[180px] h-[180px]">
                     <!-- QR will be generated here -->
                 </div>
@@ -82,7 +82,7 @@
                     <span class="material-symbols-outlined text-[18px] transition-transform" id="toggle-icon">expand_more</span>
                 </button>
                 
-                <div id="bank-details" class="hidden mt-4 bg-white rounded-xl p-5 text-sm text-navy/80 border border-navy/5 shadow-sm">
+                <div id="bank-details" class="hidden mt-4 bg-white/50 backdrop-blur-md rounded-xl p-5 text-sm text-navy/90 border border-white/60 shadow-sm">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <span class="block text-navy/40 text-[10px] uppercase tracking-wider mb-0.5">Получатель</span>
@@ -117,8 +117,9 @@
 
 <style>
     .amount-btn {
-        background: #f8f9fa;
-        border: 1px solid rgba(26, 31, 54, 0.05);
+        background: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
         color: #1a1f36;
         font-weight: 600;
         font-size: 1rem;
@@ -128,16 +129,17 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.02);
     }
     .amount-btn:hover {
-        background: white;
-        border-color: rgba(201, 168, 76, 0.5);
+        background: rgba(255, 255, 255, 0.6);
+        border-color: rgba(255, 255, 255, 0.8);
     }
     .amount-btn.active {
-        background: #c9a84c;
-        border-color: #c9a84c;
-        color: #ffffff;
-        box-shadow: 0 4px 12px rgba(201, 168, 76, 0.2);
+        background: #ffffff;
+        border-color: #ffffff;
+        color: #1a1f36;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
     }
     input[type="number"]::-webkit-inner-spin-button, 
     input[type="number"]::-webkit-outer-spin-button {
