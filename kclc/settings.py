@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.vk',
+    'allauth.socialaccount.providers.yandex',
     
     'church_app',  # Ваше приложение
 ]
@@ -273,6 +274,13 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Dummy configuration for Social Accounts so templates don't crash
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
+        'APP': {
+            'client_id': 'change-me',
+            'secret': 'change-me',
+            'key': ''
+        }
+    },
+    'yandex': {
         'APP': {
             'client_id': 'change-me',
             'secret': 'change-me',
