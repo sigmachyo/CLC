@@ -43,6 +43,7 @@
                     </div>
                     
                     <div class="ym-playlist" id="applePlaylist">
+                        <div id="podcastSearchEmpty" style="display:none; width: 100%; text-align: center; padding: 20px; color: rgba(255,255,255,0.5);">Ничего не найдено</div>
                         {% for episode in podcast_episodes %}
                         <button class="ym-track{% if forloop.first %} active{% endif %}"
                                 data-src="{{ episode.audio_url }}"
@@ -498,6 +499,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     item.style.display = 'none';
                 }
             });
+            const emptyMsg = document.getElementById('podcastSearchEmpty');
+            if (emptyMsg) emptyMsg.style.display = hasVisible ? 'none' : 'block';
         });
     }
 
