@@ -185,6 +185,7 @@
     <!-- Main Content -->
     <main class="{% block main_class %}main-content{% endblock %} flex-grow pb-[120px] lg:pb-0">
         
+        {% block top_spacer %}<div class="h-[72px] w-full shrink-0"></div>{% endblock %}
         {% block content %}{% endblock %}
     </main>
     {% block site_footer %}
