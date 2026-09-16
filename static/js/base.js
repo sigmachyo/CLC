@@ -268,17 +268,19 @@ function initSmartHeader() {
             window.requestAnimationFrame(() => {
                 const currentScrollY = window.scrollY;
                 
-                // Скрываем если скроллим вниз и прошли высоту хеддера
-                if (currentScrollY > lastScrollY && currentScrollY > 72) {
-                    header.style.transform = 'translateY(-100%)';
-                } else {
-                    // Показываем при скролле вверх
-                    header.style.transform = 'translateY(0)';
-                }
-                
-                // Игнорируем отрицательный скролл (bounce effect на Mac)
-                if (currentScrollY > 0) {
-                    lastScrollY = currentScrollY;
+                // Проверяем, изменилась ли позиция
+                if (currentScrollY !== lastScrollY) {
+                    if (currentScrollY > lastScrollY && currentScrollY > 80) {
+                        // Скролл вниз - прячем
+                        header.style.transform = 'translateY(-100%)';
+                    } else if (currentScrollY < lastScrollY) {
+                        // Скролл вверх - показываем
+                        header.style.transform = 'translateY(0)';
+                    }
+                    
+                    if (currentScrollY >= 0) {
+                        lastScrollY = currentScrollY;
+                    }
                 }
                 ticking = false;
             });

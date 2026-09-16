@@ -70,7 +70,7 @@
       }
     </style>
     {% block extra_css %}{% endblock %}
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}?v=1.2">
     <style>
         /* Фикс конфликта окружения Tailwind и Material Symbols */
         .material-symbols-outlined {
@@ -239,7 +239,7 @@
             });
         }
     </script>
-    <script src="{% static 'js/base.js' %}" defer></script>
+    <script src="{% static 'js/base.js' %}?v=1.2" defer></script>
     <script src="{% static 'js/pwa-install.js' %}" defer></script>
     {% block extra_js %}{% endblock %}
 </body>
