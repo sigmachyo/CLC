@@ -1,0 +1,252 @@
+<style>
+/* Header Styles */
+.kclc-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 72px;
+    z-index: 2000;
+    transition: background-color 0.3s, backdrop-filter 0.3s;
+    background: rgba(10, 15, 24, 0.7);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.kclc-header-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.kclc-logo img {
+    height: 32px;
+    width: auto;
+    transition: opacity 0.2s;
+}
+.kclc-logo:hover img { opacity: 0.8; }
+
+.kclc-nav {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    height: 100%;
+}
+
+.nav-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.nav-link {
+    color: rgba(255,255,255,0.7);
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.nav-link:hover, .nav-item:hover .nav-link, .nav-link.active {
+    color: #fff;
+}
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--gold, #c9a84c);
+    border-radius: 2px 2px 0 0;
+}
+
+/* Beautiful Glass Dropdown */
+.nav-dropdown {
+    position: absolute;
+    top: 72px;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    width: 280px;
+    background: rgba(18, 24, 38, 0.85);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 8px;
+    box-shadow: 0 24px 48px rgba(0,0,0,0.4);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+}
+.nav-item:hover .nav-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+}
+
+/* Invisible hover bridge so mouse doesn't fall off */
+.nav-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 0;
+    right: 0;
+    height: 20px;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+.dropdown-item:hover {
+    background: rgba(255,255,255,0.08);
+}
+.dropdown-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.05);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold, #c9a84c);
+}
+.dropdown-text h4 {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    margin: 0 0 2px 0;
+}
+.dropdown-text p {
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+    margin: 0;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.btn-profile {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+.btn-profile:hover {
+    background: rgba(255,255,255,0.1);
+    transform: scale(1.05);
+}
+
+/* Mobile Burger inside Header */
+.mobile-burger {
+    display: none;
+    background: none; border: none; color: #fff;
+    padding: 8px; cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .desktop-only { display: none !important; }
+    .mobile-burger { display: flex; align-items: center; justify-content: center; }
+}
+</style>
+
+<header class="kclc-header">
+    <div class="kclc-header-container">
+        <!-- Left: Logo -->
+        <a href="{% url 'home' %}" class="kclc-logo">
+            <img src="{% static 'img/logo.png' %}" alt="KCLC">
+        </a>
+
+        <!-- Center: Nav -->
+        <nav class="kclc-nav desktop-only">
+            <div class="nav-item">
+                <a href="{% url 'home' %}" class="nav-link {% if request.path == '/' %}active{% endif %}">Главная</a>
+            </div>
+            
+            <div class="nav-item">
+                <a href="{% url 'library_home' %}" class="nav-link {% if '/library' in request.path %}active{% endif %}">
+                    Библиотека
+                    <span class="material-symbols-outlined" style="font-size: 18px; margin-top: 1px;">expand_more</span>
+                </a>
+                <div class="nav-dropdown">
+                    <a href="{% url 'library_home' %}#sec-videos" class="dropdown-item">
+                        <div class="dropdown-icon"><span class="material-symbols-outlined">play_circle</span></div>
+                        <div class="dropdown-text">
+                            <h4>Новые видео</h4>
+                            <p>Проповеди и трансляции</p>
+                        </div>
+                    </a>
+                    <a href="{% url 'library_home' %}#sec-podcasts" class="dropdown-item">
+                        <div class="dropdown-icon"><span class="material-symbols-outlined">podcasts</span></div>
+                        <div class="dropdown-text">
+                            <h4>Аудиоподкасты</h4>
+                            <p>Слушайте в пути</p>
+                        </div>
+                    </a>
+                    <a href="{% url 'library_home' %}#sec-kids" class="dropdown-item">
+                        <div class="dropdown-icon"><span class="material-symbols-outlined">child_care</span></div>
+                        <div class="dropdown-text">
+                            <h4>Детский раздел</h4>
+                            <p>Мультики и истории</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="nav-item">
+                <a href="{% url 'prayer_list' %}" class="nav-link {% if '/prayer' in request.path %}active{% endif %}">Молитва</a>
+            </div>
+        </nav>
+
+        <!-- Right: Actions -->
+        <div class="nav-actions">
+            <a href="{% if user.is_authenticated %}{% url 'profile' %}{% else %}{% url 'login' %}{% endif %}" class="btn-profile desktop-only">
+                <span class="material-symbols-outlined" style="font-size: 20px;">person</span>
+            </a>
+            <button class="mobile-burger" id="header-mobile-burger">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const header = document.querySelector('.kclc-header');
+    
+    // Dynamic glass effect on scroll
+    const updateHeader = () => {
+        if (window.scrollY > 20) {
+            header.style.background = 'rgba(10, 15, 24, 0.7)';
+            header.style.backdropFilter = 'blur(24px)';
+            header.style.webkitBackdropFilter = 'blur(24px)';
+            header.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+        } else {
+            header.style.background = 'linear-gradient(to bottom, rgba(10, 15, 24, 0.9) 0%, rgba(10, 15, 24, 0) 100%)';
+            header.style.backdropFilter = 'none';
+            header.style.webkitBackdropFilter = 'none';
+            header.style.borderBottom = '1px solid transparent';
+        }
+    };
+    
+    window.addEventListener('scroll', updateHeader, { passive: true });
+    updateHeader(); // Init
+});
+</script>
