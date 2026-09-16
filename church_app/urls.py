@@ -33,6 +33,7 @@ urlpatterns = [
     path('donate/fail/', views_donate.donate_fail, name='donate_fail'),
 
     path('library/', views_library.library_home, name='library_home'),
+    path('library/videos/', views_library.video_list, name='video_list'),
     path('library/category/<slug:category_slug>/', views_library.library_category, name='library_category'),
     path('library/video/<int:video_id>/', views_library.video_detail, name='video_detail'),
 

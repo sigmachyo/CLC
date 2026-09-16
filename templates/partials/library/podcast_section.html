@@ -1,7 +1,7 @@
 {% load static %}
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-2xl font-bold text-white tracking-wide">Аудиоподкасты</h2>
-        <a href="#" class="text-white/50 hover:text-white transition-colors text-sm font-medium">Все подкасты</a>
+        
     </div>
     <div class="podcast-container" style="max-width: 100%; min-width: 0;">
       
@@ -29,9 +29,11 @@
                         </button>
                     </div>
                 </div>
+            </div>
+        </div> <!-- End ym-layout -->
 
-                <div class="ym-playlist-container">
-                    <div class="ym-playlist-header desktop-only">
+        <div class="ym-playlist-container">
+            <div class="ym-playlist-header desktop-only" style="display:none;">
                         <span class="col-track">Проповедь</span>
                         <span class="col-artist">Спикер</span>
                         <span class="col-time"><span class="material-symbols-outlined">schedule</span></span>
@@ -57,8 +59,7 @@
                         {% endfor %}
                     </div>
                 </div>
-            </div>
-        </div>
+            <!-- layout was closed above -->
 
         <!-- Bottom Player Bar -->
         <div class="ym-player-bar">
@@ -111,14 +112,16 @@
 .ym-layout {
     display: flex;
     flex-direction: row;
-    gap: 40px;
+    align-items: center;
+    gap: 20px;
     padding: 0;
     min-width: 0;
+    margin-bottom: 24px;
 }
 
 /* Left Column */
 .ym-cover-col {
-    flex: 0 0 300px;
+    flex: 0 0 120px;
 }
 .ym-cover {
     width: 100%;
@@ -384,30 +387,28 @@
     .mobile-only { display: block; }
     
     .ym-layout {
-        flex-direction: column;
-        padding: 0; /* Minimal */
-        gap: 24px;
+        flex-direction: row;
+        padding: 0;
+        gap: 16px;
+        align-items: center;
     }
     .ym-cover-col {
-        display: flex;
-        justify-content: center;
-        flex: none;
+        flex: 0 0 100px;
     }
     .ym-cover {
-        width: 160px;
-        height: 160px;
+        width: 100px;
+        height: 100px;
     }
     .ym-album-title {
-        font-size: 1.5rem;
-        text-align: center;
+        font-size: 1.25rem;
+        text-align: left;
     }
     .ym-album-meta {
-        text-align: center;
-        margin-bottom: 20px;
+        text-align: left;
+        margin-bottom: 12px;
     }
     .ym-btn-main {
-        width: 100%;
-        justify-content: center;
+        width: auto;
     }
     
     /* FIX: Горизонтальный свайп-слайдер для карточек (влево-вправо) */

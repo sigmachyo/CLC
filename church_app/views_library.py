@@ -11,7 +11,7 @@ def library_home(request):
     categories = Category.objects.filter(is_active=True).order_by('order')
     recent_videos = Video.objects.filter(is_active=True).order_by('-created_at')[:6]
     kids_content = KidsContent.objects.filter(is_active=True).order_by('-is_featured', '-created_at')[:4]
-    podcast_episodes = PodcastEpisode.objects.filter(is_active=True).order_by('order')[:10]
+    podcast_episodes = PodcastEpisode.objects.filter(is_active=True).order_by('order')
     
     today = timezone.localdate()
     
@@ -279,3 +279,9 @@ def kids_content_detail(request, content_id):
         'song': 'library/kids_song.html',
     }
     return render(request, template_map.get(content.content_type, 'library/kids_detail.html'), context)
+
+def video_list(request):
+    """Страница со всеми видео"""
+    videos = Video.objects.filter(is_active=True).order_by('-created_at')
+    return render(request, 'library/video_list.html', {'videos': videos})
+
