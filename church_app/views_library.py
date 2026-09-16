@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.utils import timezone
 from django.db.models import Q, Count
-from .models import Category, Video, BiblePlan, BibleReading, UserBibleProgress, Event, EventRegistration, KidsContent, KidsProgress, DailyVerse
+from .models import Category, Video, BiblePlan, BibleReading, UserBibleProgress, Event, EventRegistration, KidsContent, KidsProgress, DailyVerse, PodcastEpisode
 import json
 def library_home(request):
     """Главная страница библиотеки"""
