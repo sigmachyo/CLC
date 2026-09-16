@@ -132,7 +132,7 @@ document.addEventListener('keydown', e => {
 });
 
 // ── СЕКЦИИ / НАВИГАЦИЯ ───────────────────────────────────────────────────────
-const SECTIONS = ['sec-hero', 'sec-events', 'sec-timer', 'sec-news', 'sec-footer'];
+const SECTIONS = ['sec-hero', 'sec-events', 'sec-timer', 'sec-footer'];
 
 const scrollToSection = idx => {
   const sec = $(SECTIONS[idx]);
