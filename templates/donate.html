@@ -2,88 +2,70 @@
 {% load static %}
 {% block title %}Пожертвования | KCLC{% endblock %}
 
-{% block top_spacer %}
-<div class="h-[72px] w-full shrink-0 bg-white/80 backdrop-blur-md"></div>
-{% endblock %}
+{% block top_spacer %}{% endblock %}
 
 {% block content %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-<!-- Нежный облачный фон (оптимизированный, без тяжелых CSS-размытий) -->
-<div class="min-h-[calc(100vh-72px)] relative pt-4 sm:pt-10 pb-20 px-4 flex flex-col items-center justify-start">
+<!-- Воздушный фон во весь экран -->
+<div class="min-h-screen relative pt-28 sm:pt-36 pb-20 px-4 flex flex-col items-center justify-center">
     
-    <!-- Фоновое изображение облаков с наложением белого градиента для нежности и читаемости -->
+    <!-- Фоновое изображение облаков на всю высоту -->
     <div class="absolute inset-0 z-0">
         <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1499346030926-9a72daac6c63?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat opacity-90"></div>
-        <div class="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white/40"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white/50"></div>
     </div>
 
-    <!-- Текстовый заголовок -->
-    <div class="w-full max-w-4xl relative z-10 text-center mb-10">
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-navy mb-4 tracking-tight drop-shadow-sm">Сердце даяния</h1>
-        <p class="text-lg sm:text-xl text-navy/70 max-w-2xl mx-auto font-light leading-relaxed">
-            «Доброхотно дающего любит Бог»
-        </p>
-    </div>
-
-    <!-- Легкая белая карточка (без тяжелых теней) -->
-    <div class="w-full max-w-5xl bg-white/20 backdrop-blur-xl rounded-[2.5rem] shadow-[0_8px_32px_rgba(0,0,0,0.05)] border border-white/50 p-6 sm:p-12 relative z-10 flex flex-col lg:flex-row gap-12 items-start">
+    <!-- Основная карточка пожертвования (Glassmorphism) -->
+    <div class="w-full max-w-4xl bg-white/30 backdrop-blur-xl rounded-[2.5rem] shadow-[0_8px_32px_rgba(0,0,0,0.05)] border border-white/50 p-6 sm:p-12 md:p-16 relative z-10 flex flex-col md:flex-row gap-12 md:gap-16 items-center">
         
-        <!-- Левая часть: Выбор суммы -->
-        <div class="w-full lg:w-1/2 flex flex-col">
-            <h2 class="text-2xl font-bold text-navy mb-6">Сумма пожертвования</h2>
-            
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
-                <button class="amount-btn active" data-amount="500">500 ₽</button>
-                <button class="amount-btn" data-amount="1000">1 000 ₽</button>
-                <button class="amount-btn" data-amount="2000">2 000 ₽</button>
-                <button class="amount-btn" data-amount="5000">5 000 ₽</button>
-                <button class="amount-btn" data-amount="10000">10 000 ₽</button>
-                <div class="relative w-full">
-                    <input type="number" id="custom-amount" class="w-full h-full min-h-[50px] bg-white/50 backdrop-blur-md border border-white/60 rounded-xl px-4 text-center font-bold text-navy outline-none focus:border-[#c9a84c] focus:ring-1 focus:ring-[#c9a84c] transition-colors placeholder:text-navy/30 placeholder:font-normal" placeholder="Другая сумма">
-                </div>
+        <!-- Левая часть: Текст и стих -->
+        <div class="w-full md:w-1/2 flex flex-col text-center md:text-left">
+            <div class="inline-flex items-center justify-center md:justify-start gap-2 mb-4 text-[#c9a84c]">
+                <span class="material-symbols-outlined text-3xl">volunteer_activism</span>
             </div>
+            <h1 class="text-4xl sm:text-5xl font-serif font-bold text-navy mb-6 tracking-tight drop-shadow-sm">Сердце даяния</h1>
+            
+            <p class="text-base sm:text-lg text-navy/80 font-light leading-relaxed mb-8">
+                Ваше участие помогает нам нести свет Евангелия, служить людям и развивать церковь. Спасибо за вашу щедрость!
+            </p>
 
-            <div class="mt-4 bg-white/30 backdrop-blur-md rounded-xl p-5 border border-white/50 shadow-sm">
-                <p class="text-sm text-navy/70 mb-2 italic leading-relaxed">
-                    «Каждый уделяй по расположению сердца, не с огорчением и не с принуждением»
+            <div class="bg-white/40 backdrop-blur-md rounded-2xl p-6 border border-white/60 shadow-sm relative overflow-hidden">
+                <div class="absolute -top-4 -right-4 text-[#c9a84c] opacity-10">
+                    <span class="material-symbols-outlined text-8xl">format_quote</span>
+                </div>
+                <p class="text-sm sm:text-base text-navy/80 mb-3 italic leading-relaxed relative z-10">
+                    «Каждый уделяй по расположению сердца, не с огорчением и не с принуждением; ибо доброхотно дающего любит Бог.»
                 </p>
-                <p class="text-xs font-bold text-[#c9a84c] uppercase tracking-widest">— 2 Коринфянам 9:7</p>
+                <p class="text-xs font-bold text-[#c9a84c] uppercase tracking-widest relative z-10">— 2 Коринфянам 9:7</p>
             </div>
-            
-            <button id="mobile-pay-btn" class="mt-6 w-full bg-[#c9a84c] text-white font-bold text-lg py-4 rounded-xl shadow-md hover:shadow-lg transition-shadow lg:hidden flex items-center justify-center gap-2">
-                <span class="material-symbols-outlined">account_balance_wallet</span>
-                Оплатить через СБП
-            </button>
         </div>
 
-        <!-- Разделитель -->
-        <div class="hidden lg:block w-[1px] h-[250px] bg-gradient-to-b from-transparent via-navy/10 to-transparent"></div>
-
-        <!-- Правая часть: QR код -->
-        <div class="w-full lg:w-1/2 flex flex-col items-center text-center">
-            <h2 class="text-2xl font-bold text-navy mb-2 hidden lg:block">Быстрая оплата</h2>
-            <p class="text-navy/60 text-sm mb-6 hidden lg:block max-w-[280px]">Наведите камеру телефона на QR-код для перевода через СБП</p>
+        <!-- Правая часть: QR код и реквизиты -->
+        <div class="w-full md:w-1/2 flex flex-col items-center text-center">
             
-            <!-- Убран тяжелый group-hover blur, оставлен только чистый белый контейнер -->
-            <div class="bg-white/80 backdrop-blur-md p-5 rounded-2xl shadow-sm border border-white/80">
-                <div id="qr-code-box" class="flex items-center justify-center w-[180px] h-[180px]">
-                    <!-- QR will be generated here -->
-                </div>
+            <div class="bg-white/80 backdrop-blur-md p-6 rounded-[2rem] shadow-sm border border-white/80 transition-transform duration-500 hover:scale-[1.02]">
+                <!-- Контейнер для генерации QR -->
+                <div id="qr-code-box" class="flex items-center justify-center w-[200px] h-[200px] mx-auto mb-4"></div>
+                <h3 class="font-bold text-navy text-lg mb-1">Быстрая оплата</h3>
+                <p class="text-xs text-navy/50 max-w-[200px] mx-auto">Наведите камеру на QR-код для перевода через СБП</p>
             </div>
             
-            <a id="desktop-pay-link" href="#" class="mt-6 text-[#c9a84c] font-semibold hover:text-navy transition-colors flex items-center gap-2 lg:hidden">
-                Или нажмите здесь для оплаты
+            <!-- Кнопка для мобильных -->
+            <a href="https://qr.nspk.ru/AS1A003KDIQAGT8J9TP836SFB4M5TEPQ?type=01&bank=100000000111&crc=E94F" class="mt-6 w-full max-w-[280px] bg-[#c9a84c] text-white font-bold text-base py-4 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all md:hidden flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined">account_balance_wallet</span>
+                Оплатить через СБП
             </a>
             
             <div class="mt-8 w-full text-left">
-                <button id="toggle-details" class="flex items-center gap-2 text-navy/50 hover:text-navy transition-colors text-sm font-medium mx-auto">
+                <button id="toggle-details" class="flex items-center justify-center gap-2 text-navy/60 hover:text-navy transition-colors text-sm font-medium mx-auto w-full py-2">
                     <span>Банковские реквизиты</span>
                     <span class="material-symbols-outlined text-[18px] transition-transform" id="toggle-icon">expand_more</span>
                 </button>
                 
-                <div id="bank-details" class="hidden mt-4 bg-white/50 backdrop-blur-md rounded-xl p-5 text-sm text-navy/90 border border-white/60 shadow-sm">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <!-- Реквизиты -->
+                <div id="bank-details" class="hidden mt-4 bg-white/50 backdrop-blur-md rounded-2xl p-5 text-sm text-navy/90 border border-white/60 shadow-sm">
+                    <div class="grid grid-cols-1 gap-3 text-left">
                         <div>
                             <span class="block text-navy/40 text-[10px] uppercase tracking-wider mb-0.5">Получатель</span>
                             <span class="font-medium text-xs">МРО ЦХВЕ "Церковь Христианской Жизни"</span>
@@ -92,11 +74,11 @@
                             <span class="block text-navy/40 text-[10px] uppercase tracking-wider mb-0.5">ИНН / КПП</span>
                             <span class="font-medium text-xs">[PHONE_REDACTED] / [PHONE_REDACTED]</span>
                         </div>
-                        <div class="sm:col-span-2">
+                        <div>
                             <span class="block text-navy/40 text-[10px] uppercase tracking-wider mb-0.5">Расчетный счет</span>
                             <span class="font-medium font-mono text-sm">407038[PHONE_REDACTED]</span>
                         </div>
-                        <div class="sm:col-span-2">
+                        <div>
                             <span class="block text-navy/40 text-[10px] uppercase tracking-wider mb-0.5">Банк</span>
                             <span class="font-medium text-xs">Красноярское отделение N 8646 ПАО Сбербанк</span>
                         </div>
@@ -104,132 +86,39 @@
                             <span class="block text-navy/40 text-[10px] uppercase tracking-wider mb-0.5">БИК</span>
                             <span class="font-medium font-mono text-xs">[PHONE_REDACTED]</span>
                         </div>
-                        <div class="sm:col-span-2 mt-1 pt-2 border-t border-navy/5">
+                        <div class="mt-1 pt-2 border-t border-navy/10">
                             <span class="block text-navy/40 text-[10px] uppercase tracking-wider mb-0.5">Назначение платежа</span>
-                            <span class="font-medium italic text-xs">Добровольное пожертвование на уставную деятельность. Без НДС.</span>
+                            <span class="font-medium italic text-xs leading-tight">Добровольное пожертвование на уставную деятельность. Без НДС.</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        
     </div>
 </div>
 
-<style>
-    .amount-btn {
-        background: rgba(255, 255, 255, 0.3);
-        backdrop-filter: blur(8px);
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        color: #1a1f36;
-        font-weight: 600;
-        font-size: 1rem;
-        padding: 12px;
-        border-radius: 12px;
-        transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.02);
-    }
-    .amount-btn:hover {
-        background: rgba(255, 255, 255, 0.6);
-        border-color: rgba(255, 255, 255, 0.8);
-    }
-    .amount-btn.active {
-        background: #ffffff;
-        border-color: #ffffff;
-        color: #1a1f36;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-    }
-    input[type="number"]::-webkit-inner-spin-button, 
-    input[type="number"]::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-    input[type="number"] {
-        -moz-appearance: textfield;
-    }
-</style>
-
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    const amountBtns = document.querySelectorAll('.amount-btn');
-    const customInput = document.getElementById('custom-amount');
     const qrBox = document.getElementById('qr-code-box');
-    const mobilePayBtn = document.getElementById('mobile-pay-btn');
-    const desktopPayLink = document.getElementById('desktop-pay-link');
-    
     const detailsBtn = document.getElementById('toggle-details');
     const detailsBox = document.getElementById('bank-details');
     const toggleIcon = document.getElementById('toggle-icon');
     
-    let currentAmount = 500;
-    let qr = null;
-    let debounceTimer;
+    // Статичная ссылка для QR кода
+    const staticUrl = "https://qr.nspk.ru/AS1A003KDIQAGT8J9TP836SFB4M5TEPQ?type=01&bank=100000000111&crc=E94F";
 
-    function crc16_ccitt(str) {
-        let crc = 0xFFFF;
-        for (let i = 0; i < str.length; i++) {
-            let byte = str.charCodeAt(i);
-            crc ^= (byte << 8);
-            for (let j = 0; j < 8; j++) {
-                if (crc & 0x8000) {
-                    crc = (crc << 1) ^ 0x1021;
-                } else {
-                    crc = crc << 1;
-                }
-            }
-            crc &= 0xFFFF;
-        }
-        return crc.toString(16).toUpperCase().padStart(4, '0');
-    }
-
-    function generateSBPUrl(amount) {
-        let base = "https://qr.nspk.ru/AS1A003KDIQAGT8J9TP836SFB4M5TEPQ?type=01&bank=100000000111";
-        if (amount > 0) {
-            base += "&sum=" + (amount * 100);
-        }
-        let crc = crc16_ccitt(base);
-        return base + "&crc=" + crc;
-    }
-
-    function updateQR() {
-        const url = generateSBPUrl(currentAmount);
-        mobilePayBtn.onclick = () => window.location.href = url;
-        desktopPayLink.href = url;
-        
-        qrBox.innerHTML = '';
-        qr = new QRCode(qrBox, {
-            text: url,
-            width: 180,
-            height: 180,
-            colorDark : "#1a1f36",
-            colorLight : "#ffffff",
-            correctLevel : QRCode.CorrectLevel.M
-        });
-    }
-
-    amountBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            amountBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            customInput.value = '';
-            currentAmount = parseInt(btn.dataset.amount);
-            updateQR();
-        });
+    // Генерируем QR
+    new QRCode(qrBox, {
+        text: staticUrl,
+        width: 200,
+        height: 200,
+        colorDark : "#1a1f36",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.M
     });
 
-    // Дебаунс для ввода, чтобы не лагало при быстром печатании
-    customInput.addEventListener('input', (e) => {
-        amountBtns.forEach(b => b.classList.remove('active'));
-        let val = parseInt(e.target.value);
-        if (isNaN(val) || val <= 0) val = 0;
-        currentAmount = val;
-        
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(updateQR, 250);
-    });
-
+    // Тоггл реквизитов
     detailsBtn.addEventListener('click', () => {
         detailsBox.classList.toggle('hidden');
         if (detailsBox.classList.contains('hidden')) {
@@ -238,8 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
             toggleIcon.style.transform = 'rotate(180deg)';
         }
     });
-
-    updateQR();
 });
 </script>
 {% endblock %}
