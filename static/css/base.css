@@ -444,3 +444,18 @@ html, body {
     overscroll-behavior-y: none;
     overscroll-behavior-x: none;
 }
+
+/* Утилита для красивого отображения Библейских стихов */
+.bible-verse {
+    font-family: var(--font-serif), Georgia, serif;
+    font-style: italic;
+    font-size: 1.125rem;
+    line-height: 1.625;
+    letter-spacing: 0.025em;
+    color: rgba(26, 31, 54, 0.85); /* navy с небольшой прозрачностью */
+}
+@media (min-width: 640px) {
+    .bible-verse {
+        font-size: 1.25rem;
+    }
+}
