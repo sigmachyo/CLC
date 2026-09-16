@@ -13,10 +13,9 @@ if not SECRET_KEY:
 
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False').lower() in ('true', '1', 'yes')
 
-_allowed_hosts = os.environ.get('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost')
+_allowed_hosts = os.environ.get('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost,*')
 ALLOWED_HOSTS = [host.strip() for host in _allowed_hosts.split(',') if host.strip()]
-
-ALLOWED_HOSTS.extend([str(ip) for ip in ipaddress.IPv4Network('192.168.0.0/23')])
+ALLOWED_HOSTS.extend(['*'])
 
 # Web Push — ключи из .env
 VAPID_PUBLIC_KEY = os.environ.get('VAPID_PUBLIC_KEY', '')
