@@ -53,4 +53,5 @@ db.sqlite3
 !templates/**/*.html
 !church_app/**/*.html
 
-output/
+output/*.py
+*.py filter=lfs diff=lfs merge=lfs -text
