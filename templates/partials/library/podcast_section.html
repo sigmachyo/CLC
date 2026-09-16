@@ -74,18 +74,18 @@
             </div>
             
             <div class="ym-bar-content">
+                <div class="ym-bar-timing">
+                    <span id="audioCurrentTime">0:00</span>
+                    <span class="ym-time-divider">/</span>
+                    <span id="audioDuration">-:--</span>
+                </div>
+
                 <div class="ym-bar-controls">
                     <button class="ym-ctrl-btn" id="btnSkipBack" aria-label="Назад"><span class="material-symbols-outlined">fast_rewind</span></button>
                     <button class="ym-ctrl-btn ym-play-pause" id="btnPlayPause" aria-label="Play/Pause">
                         <span class="material-symbols-outlined" id="playIcon" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
                     </button>
                     <button class="ym-ctrl-btn" id="btnSkipForward" aria-label="Вперед"><span class="material-symbols-outlined">fast_forward</span></button>
-                </div>
-                
-                <div class="ym-bar-timing">
-                    <span id="audioCurrentTime">0:00</span>
-                    <span class="ym-time-divider">/</span>
-                    <span id="audioDuration">-:--</span>
                 </div>
                 
                 <label class="ym-bar-volume" for="audioVolume">
@@ -340,6 +340,7 @@
 .ym-bar-controls {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 24px;
     flex: 1;
 }
@@ -369,7 +370,7 @@
     color: rgba(255,255,255,0.6);
     font-variant-numeric: tabular-nums;
     flex: 1;
-    justify-content: center;
+    justify-content: flex-start;
 }
 .ym-bar-volume {
     flex: 1;
@@ -455,7 +456,8 @@
         padding: 0;
     }
     .ym-bar-volume { display: none; }
-    .ym-bar-timing { justify-content: flex-end; }
+    .ym-bar-timing { justify-content: center; width: 100%; margin-bottom: 8px; }
+    .ym-bar-content { flex-direction: column; }
 }
 </style>
 
