@@ -16,6 +16,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     // ── Защита форм от повторной отправки
     initFormProtection();
+    // ── Smart Header
+    initSmartHeader();
 });
 
 /**
@@ -249,4 +251,38 @@ function initFormProtection() {
             }
         });
     });
+}
+
+/**
+ * Smart Header - Скрытие при скролле вниз
+ */
+function initSmartHeader() {
+    const header = document.querySelector('.kclc-header');
+    if (!header) return;
+    
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                const currentScrollY = window.scrollY;
+                
+                // Скрываем если скроллим вниз и прошли высоту хеддера
+                if (currentScrollY > lastScrollY && currentScrollY > 72) {
+                    header.style.transform = 'translateY(-100%)';
+                } else {
+                    // Показываем при скролле вверх
+                    header.style.transform = 'translateY(0)';
+                }
+                
+                // Игнорируем отрицательный скролл (bounce effect на Mac)
+                if (currentScrollY > 0) {
+                    lastScrollY = currentScrollY;
+                }
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }, { passive: true });
 }
