@@ -15,6 +15,8 @@ def library_home(request):
         end_date__gte=timezone.now()
     ).order_by('start_date')[:3]
     kids_content = KidsContent.objects.filter(is_active=True).order_by('-is_featured', '-created_at')[:4]
+    podcast_episodes = PodcastEpisode.objects.filter(is_active=True).order_by('order')[:10]
+    
     today = timezone.localdate()
     
     # Сначала ищем стих, привязанный конкретно к сегодняшней дате
@@ -37,6 +39,7 @@ def library_home(request):
         'recent_videos': recent_videos,
         'upcoming_events': upcoming_events,
         'kids_content': kids_content,
+        'podcast_episodes': podcast_episodes,
         'daily_verse': daily_verse,
         'daily_bg_index': bg_index,
     }

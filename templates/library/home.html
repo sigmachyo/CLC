@@ -126,6 +126,12 @@
     </div>
     {% endif %}
 
+    {% if podcast_episodes %}
+    <div class="mb-16">
+        {% include "partials/library/podcast_section.html" %}
+    </div>
+    {% endif %}
+
     {% if upcoming_events %}
     <div class="mb-16">
         <div class="flex items-center justify-between mb-8">
