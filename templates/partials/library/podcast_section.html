@@ -1,6 +1,7 @@
 {% load static %}
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-2xl font-bold text-white tracking-wide">Аудиоподкасты</h2>
+        <a href="#" class="text-white/50 hover:text-white transition-colors text-sm font-medium">Все подкасты</a>
     </div>
     <div class="podcast-container" style="max-width: 100%; min-width: 0;">
       
@@ -96,15 +97,12 @@
 <style>
 .ym-player-wrap {
     width: 100%;
-    max-width: 1000px;
+    max-width: 100%;
     min-width: 0;
     margin: 0 auto;
-    background: rgba(255,255,255,0.03);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
-    border-radius: 40px;
-    border: 1px solid rgba(255,255,255,0.15);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    background: transparent;
+    border: none;
+    box-shadow: none;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -114,7 +112,7 @@
     display: flex;
     flex-direction: row;
     gap: 40px;
-    padding: 40px;
+    padding: 0;
     min-width: 0;
 }
 
@@ -295,8 +293,6 @@
 .ym-player-bar {
     background: rgba(255,255,255,0.02);
     border-top: 1px solid rgba(255,255,255,0.1);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
     position: relative;
     padding: 0 40px;
 }
@@ -389,7 +385,7 @@
     
     .ym-layout {
         flex-direction: column;
-        padding: 24px 24px 0 24px; /* Убрал нижний отступ */
+        padding: 0; /* Minimal */
         gap: 24px;
     }
     .ym-cover-col {
@@ -416,7 +412,7 @@
     
     /* FIX: Горизонтальный свайп-слайдер для карточек (влево-вправо) */
     .ym-playlist-container {
-        margin: 0 -24px; /* Растягиваем за пределы padding контейнера */
+        margin: 0 -16px; padding: 12px 16px 24px 16px;
     }
     .ym-playlist {
         flex-direction: row;
@@ -424,7 +420,7 @@
         overflow-y: hidden;
         scroll-snap-type: x mandatory;
         gap: 12px;
-        padding: 12px 24px 24px 24px; /* Отступы для теней и скролла */
+        padding: 12px 0 24px 0;
         max-height: none;
         scrollbar-width: none; /* Скрываем скроллбар */
     }
@@ -451,7 +447,7 @@
     }
 
     .ym-player-bar {
-        padding: 0 24px;
+        padding: 0;
     }
     .ym-bar-volume { display: none; }
     .ym-bar-timing { justify-content: flex-end; }
