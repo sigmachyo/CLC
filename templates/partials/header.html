@@ -309,7 +309,7 @@
         <!-- Right: Actions -->
         <div class="nav-actions">
             <a href="{% url 'donate' %}" class="btn-donate desktop-only">
-                <span class="material-symbols-outlined" style="font-size:16px;">volunteer_activism</span>
+                
                 Пожертвовать
             </a>
             <a href="{% if user.is_authenticated %}{% url 'profile' %}{% else %}{% url 'login' %}{% endif %}" class="btn-profile desktop-only">

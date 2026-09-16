@@ -9,28 +9,26 @@
 
 <!-- Воздушный фон во весь экран -->
 <div class="min-h-screen relative pt-24 sm:pt-28 pb-20 px-4 flex flex-col items-center justify-center">
-    
+
     <!-- Фоновое изображение облаков на всю высоту -->
     <div class="absolute inset-0 z-0">
-        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1499346030926-9a72daac6c63?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat opacity-90"></div>
-        <div class="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white/50"></div>
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1499346030926-9a72daac6c63?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat opacity-100"></div>
+        <div class="absolute inset-0 bg-white/10"></div>
     </div>
 
     <!-- Основная карточка пожертвования (Glassmorphism) -->
-    <div class="w-full max-w-4xl bg-white/30 backdrop-blur-xl rounded-[2.5rem] shadow-[0_8px_32px_rgba(0,0,0,0.05)] border border-white/50 p-6 sm:p-12 md:p-16 relative z-10 flex flex-col md:flex-row gap-12 md:gap-16 items-center">
-        
+    <div class="w-full max-w-4xl bg-white/5 backdrop-blur-lg rounded-[2.5rem] shadow-[0_8px_32px_rgba(0,0,0,0.02)] border border-white/20 p-6 sm:p-12 md:p-16 relative z-10 flex flex-col md:flex-row gap-12 md:gap-16 items-center">
+
         <!-- Левая часть: Текст и стих -->
         <div class="w-full md:w-1/2 flex flex-col text-center md:text-left">
-            <div class="inline-flex items-center justify-center md:justify-start gap-2 mb-4 text-[#c9a84c]">
-                <span class="material-symbols-outlined text-3xl">volunteer_activism</span>
-            </div>
+
             <h1 class="text-4xl sm:text-5xl font-serif font-bold text-navy mb-6 tracking-tight drop-shadow-sm">Сердце даяния</h1>
-            
+
             <p class="text-base sm:text-lg text-navy/80 font-light leading-relaxed mb-8">
                 Ваше участие помогает нам нести свет Евангелия, служить людям и развивать церковь. Спасибо за вашу щедрость!
             </p>
 
-            <div class="bg-white/40 backdrop-blur-md rounded-2xl p-6 border border-white/60 shadow-sm relative overflow-hidden">
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-none relative overflow-hidden">
                 <div class="absolute -top-4 -right-4 text-[#c9a84c] opacity-10">
                     <span class="material-symbols-outlined text-8xl">format_quote</span>
                 </div>
@@ -43,28 +41,28 @@
 
         <!-- Правая часть: QR код и реквизиты -->
         <div class="w-full md:w-1/2 flex flex-col items-center text-center">
-            
-            <div class="bg-white/80 backdrop-blur-md p-6 rounded-[2rem] shadow-sm border border-white/80 transition-transform duration-500 hover:scale-[1.02]">
+
+            <div class="bg-white/60 backdrop-blur-md p-6 rounded-[2.5rem] shadow-sm border border-white/40 transition-transform duration-500 hover:scale-[1.02]">
                 <!-- Контейнер для генерации QR -->
                 <div id="qr-code-box" class="flex items-center justify-center w-[200px] h-[200px] mx-auto mb-4"></div>
                 <h3 class="font-bold text-navy text-lg mb-1">Быстрая оплата</h3>
                 <p class="text-xs text-navy/50 max-w-[200px] mx-auto">Наведите камеру на QR-код для перевода через СБП</p>
             </div>
-            
+
             <!-- Кнопка для мобильных -->
             <a href="https://qr.nspk.ru/AS1A003KDIQAGT8J9TP836SFB4M5TEPQ?type=01&bank=100000000111&crc=E94F" class="mt-6 w-full max-w-[280px] bg-[#c9a84c] text-white font-bold text-base py-4 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all md:hidden flex items-center justify-center gap-2">
-                <span class="material-symbols-outlined">account_balance_wallet</span>
+
                 Оплатить через СБП
             </a>
-            
+
             <div class="mt-8 w-full text-left">
                 <button id="toggle-details" class="flex items-center justify-center gap-2 text-navy/60 hover:text-navy transition-colors text-sm font-medium mx-auto w-full py-2">
                     <span>Банковские реквизиты</span>
                     <span class="material-symbols-outlined text-[18px] transition-transform" id="toggle-icon">expand_more</span>
                 </button>
-                
+
                 <!-- Реквизиты -->
-                <div id="bank-details" class="hidden mt-4 bg-white/50 backdrop-blur-md rounded-2xl p-5 text-sm text-navy/90 border border-white/60 shadow-sm">
+                <div id="bank-details" class="hidden mt-4 bg-white/20 backdrop-blur-md rounded-2xl p-5 text-sm text-navy/90 border border-white/30 shadow-sm">
                     <div class="grid grid-cols-1 gap-3 text-left">
                         <div>
                             <span class="block text-navy/40 text-[10px] uppercase tracking-wider mb-0.5">Получатель</span>
@@ -94,7 +92,7 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
 </div>
 
@@ -104,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const detailsBtn = document.getElementById('toggle-details');
     const detailsBox = document.getElementById('bank-details');
     const toggleIcon = document.getElementById('toggle-icon');
-    
+
     // Статичная ссылка для QR кода
     const staticUrl = "https://qr.nspk.ru/AS1A003KDIQAGT8J9TP836SFB4M5TEPQ?type=01&bank=100000000111&crc=E94F";
 
