@@ -16,13 +16,21 @@ def library_home(request):
     ).order_by('start_date')[:3]
     kids_content = KidsContent.objects.filter(is_active=True).order_by('-is_featured', '-created_at')[:4]
     today = timezone.localdate()
-    daily_verse = (
-        DailyVerse.objects.filter(date=today).first()
-        or DailyVerse.objects.order_by('-date').first()
-    )
     
-    # Generate a predictable background index for the daily verse based on today's date
-    bg_index = (today.year * 365 + today.month * 31 + today.day) % 6
+    # Сначала ищем стих, привязанный конкретно к сегодняшней дате
+    daily_verse = DailyVerse.objects.filter(date=today).first()
+    
+    # Если на сегодня стих не назначен, берем любой из базы, 
+    # циклично меняя его каждый день (привязка к дате)
+    if not daily_verse:
+        all_verses = DailyVerse.objects.all().order_by('id')
+        count = all_verses.count()
+        if count > 0:
+            index = today.toordinal() % count
+            daily_verse = all_verses[index]
+    
+    # Генерация индекса фона, меняющегося ровно в полночь (Красноярск)
+    bg_index = today.toordinal() % 6
     
     context = {
         'categories': categories,

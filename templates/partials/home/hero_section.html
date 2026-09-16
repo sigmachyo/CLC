@@ -15,9 +15,8 @@
     <!-- ====== КОНТЕНТ ====== -->
     <div class="hero-content">
         
-        <!-- Logo with glow effect -->
+        <!-- Logo -->
         <div class="hero-logo-wrap">
-            <div class="hero-logo-glow"></div>
             <img src="{% static 'img/logo.png' %}" alt="KCLC" class="hero-logo-img">
         </div>
 
@@ -93,18 +92,6 @@
     margin-bottom: clamp(32px, 5vh, 48px);
     display: inline-block;
 }
-.hero-logo-glow {
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, rgba(201,168,76,0.5) 0%, transparent 70%);
-    border-radius: 50%;
-    filter: blur(40px);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    animation: pulseGlow 4s ease-in-out infinite;
-}
 .hero-logo-img {
     width: 100%;
     max-width: 220px;
@@ -157,8 +144,6 @@
     transform: scale(0.96);
     box-shadow: 0 5px 15px rgba(201,168,76,0.2);
 }
-@keyframes pulseGlow {
-    0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
     50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
 }
 </style>

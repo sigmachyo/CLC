@@ -102,7 +102,7 @@
     <!-- Left Sidebar Drawer -->
     <aside id="left-sidebar" style="position:fixed;top:0;left:0;height:100%;width:300px;background:rgba(20,25,40,0.5);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border-right:1px solid rgba(255,255,255,0.1);box-shadow:20px 0 40px rgba(0,0,0,0.5);z-index:2000;transform:translateX(-100%);transition:transform 0.5s cubic-bezier(0.19,1,0.22,1);display:flex;flex-direction:column;padding:112px 0 40px;">
         <div style="padding:0 32px;margin-bottom:40px;opacity:0.9;">
-            <img src="{% static 'img/logo.png' %}" alt="KCLC" style="height:44px;width:auto;filter:brightness(2) drop-shadow(0 2px 10px rgba(201,168,76,0.5));">
+            <img src="{% static 'img/logo.png' %}" alt="KCLC" style="height:44px;width:auto;">
         </div>
         <nav style="display:flex;flex-direction:column;gap:12px;padding:0 24px;flex:1;">
             <a href="{% url 'home' %}" style="display:flex;align-items:center;gap:16px;padding:16px 20px;border-radius:24px;color:{% if request.path == '/' %}#000{% else %}rgba(255,255,255,0.8){% endif %};{% if request.path == '/' %}background:#c9a84c;box-shadow:0 8px 20px rgba(201,168,76,0.3);font-weight:700;{% else %}background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);{% endif %}text-decoration:none;transition:all 0.3s;" onmouseover="if('{{ request.path }}'!=='/')this.style.background='rgba(255,255,255,0.1)'" onmouseout="if('{{ request.path }}'!=='/')this.style.background='rgba(255,255,255,0.03)'">
