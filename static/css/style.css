@@ -14,7 +14,7 @@ body {
     min-height: 100vh;
     padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px));
     line-height: 1.6;
-    overflow-x: hidden;
+    /* overflow-x: hidden removed */
 }
 .container {
     max-width: 1200px;

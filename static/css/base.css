@@ -55,7 +55,7 @@ body {
     background: var(--bg);
     color: var(--txt);
     line-height: 1.6;
-    overflow-x: hidden;
+     
     width: 100%;
     /* iOS Momentum Scrolling */
     -webkit-overflow-scrolling: touch;

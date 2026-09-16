@@ -260,22 +260,19 @@ function initSmartHeader() {
     const header = document.querySelector('.kclc-header');
     if (!header) return;
     
-    let lastScrollY = window.scrollY;
+    let lastScrollY = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
     let ticking = false;
 
-    window.addEventListener('scroll', () => {
+    function handleScroll() {
         if (!ticking) {
             window.requestAnimationFrame(() => {
-                const currentScrollY = window.scrollY;
+                const currentScrollY = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
                 
-                // Проверяем, изменилась ли позиция
                 if (currentScrollY !== lastScrollY) {
                     if (currentScrollY > lastScrollY && currentScrollY > 80) {
-                        // Скролл вниз - прячем
-                        header.style.transform = 'translateY(-100%)';
+                        header.classList.add('header-hidden');
                     } else if (currentScrollY < lastScrollY) {
-                        // Скролл вверх - показываем
-                        header.style.transform = 'translateY(0)';
+                        header.classList.remove('header-hidden');
                     }
                     
                     if (currentScrollY >= 0) {
@@ -286,5 +283,10 @@ function initSmartHeader() {
             });
             ticking = true;
         }
-    }, { passive: true });
+    }
+
+    // Listen on multiple common scroll containers just in case CSS rules hijack the scroll
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    document.body.addEventListener('scroll', handleScroll, { passive: true });
+    document.documentElement.addEventListener('scroll', handleScroll, { passive: true });
 }
