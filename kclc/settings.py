@@ -31,7 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
     # allauth
     'allauth',
     'allauth.account',
@@ -39,7 +39,10 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.vk',
     'allauth.socialaccount.providers.yandex',
-    
+
+    # captcha
+    'hcaptcha',
+
     'church_app',  # Ваше приложение
 ]
 
@@ -325,3 +328,10 @@ SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
 SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
 
+# ---------------------------------------------------------
+# hCaptcha — защита форм регистрации и сброса пароля
+# Получить ключи бесплатно на https://www.hcaptcha.com/
+# Для тестирования используем тестовые ключи hCaptcha (всегда проходят)
+# ---------------------------------------------------------
+HCAPTCHA_SITEKEY = os.environ.get('HCAPTCHA_SITEKEY', '10000000-ffff-ffff-ffff-000000000001')
+HCAPTCHA_SECRET = os.environ.get('HCAPTCHA_SECRET', '0x0000000000000000000000000000000000000000')

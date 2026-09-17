@@ -1,37 +1,33 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Письмо отправлено | KCLC{% endblock %}
+{% block title %}Подтвердите email | KCLC{% endblock %}
 
 {% block main_class %}!pt-0 !pb-0{% endblock %}
 {% block top_spacer %}{% endblock %}
 
 {% block content %}
 <div class="min-h-screen relative pt-[100px] pb-20 px-4 flex flex-col items-center justify-center">
-
-
     <div class="absolute inset-0 z-0">
-        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1499346030926-9a72daac6c63?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat opacity-100"></div>
-        <div class="absolute inset-0 bg-white/30 "></div>
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1499346030926-9a72daac6c63?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat"></div>
+        <div class="absolute inset-0 bg-white/20"></div>
     </div>
 
-    <!-- Основная карточка (Premium Glassmorphism) -->
-    <div class="w-full max-w-md bg-white/20 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_8px_32px_rgba(0,0,0,0.08)] border border-white/40 p-8 sm:p-12 relative z-10 flex flex-col items-center animate-fade-in-up mt-8">
-        
-        <div class="w-20 h-20 rounded-full bg-white/40 backdrop-blur-md flex items-center justify-center border border-white/50 mb-6 text-[#c9a84c] shadow-sm">
+    <div class="w-full max-w-md bg-white/25 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_8px_40px_rgba(0,0,0,0.12)] border border-white/50 p-8 sm:p-12 relative z-10 flex flex-col items-center mt-8">
+
+        <div class="w-20 h-20 rounded-full bg-white/40 backdrop-blur-md border border-white/50 flex items-center justify-center mb-6 text-blue-400 shadow-sm">
             <span class="material-symbols-outlined text-4xl">mark_email_unread</span>
         </div>
-        
-        <h1 class="text-3xl font-serif font-bold text-navy mb-4 tracking-tight drop-shadow-sm text-center">Проверьте почту</h1>
-        
-        <p class="text-navy/80 font-medium text-base mb-8 text-center leading-relaxed">
-            Мы отправили ссылку для активации аккаунта или сброса пароля. Пожалуйста, перейдите по ней.
+
+        <h1 class="text-3xl font-serif font-bold text-navy mb-3 tracking-tight drop-shadow-sm text-center">Проверьте почту</h1>
+        <p class="text-navy/75 font-medium text-base text-center leading-relaxed mb-8">
+            Мы отправили письмо с подтверждением на ваш email.<br>
+            Пожалуйста, нажмите на ссылку в письме для активации аккаунта.
         </p>
-        
-        <a href="{% url 'home' %}" class="w-full text-center bg-white/50 hover:bg-white/70 backdrop-blur-md border border-white/50 text-navy font-bold text-base py-3.5 rounded-2xl transition-all shadow-sm">
+
+        <a href="{% url 'home' %}" class="w-full text-center bg-white/40 hover:bg-white/60 backdrop-blur-md border border-white/50 text-navy font-bold text-base py-3.5 rounded-2xl transition-all shadow-sm">
             На главную
         </a>
-        
     </div>
 </div>
 {% endblock %}
