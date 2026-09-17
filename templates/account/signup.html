@@ -10,93 +10,171 @@
 {% block content %}
 <div class="min-h-screen relative pt-[100px] pb-20 px-4 flex flex-col items-center justify-center">
 
-
+    <!-- Фон с облаками -->
     <div class="absolute inset-0 z-0">
-        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1499346030926-9a72daac6c63?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat opacity-100"></div>
-        <div class="absolute inset-0 bg-white/30 "></div>
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1499346030926-9a72daac6c63?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat"></div>
+        <div class="absolute inset-0 bg-white/20"></div>
     </div>
 
-    <!-- Основная карточка регистрации (Premium Glassmorphism) -->
-    <div class="w-full max-w-md bg-white/20 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_8px_32px_rgba(0,0,0,0.08)] border border-white/40 p-8 sm:p-12 relative z-10 flex flex-col items-center animate-fade-in-up mt-8">
-        
-        <h1 class="text-3xl font-serif font-bold text-navy mb-2 tracking-tight drop-shadow-sm text-center">Создать аккаунт</h1>
+    <!-- Карточка -->
+    <div class="w-full max-w-md bg-white/25 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_8px_40px_rgba(0,0,0,0.12)] border border-white/50 p-8 sm:p-12 relative z-10 flex flex-col items-center mt-8">
+
+        <h1 class="text-3xl font-serif font-bold text-navy mb-1 tracking-tight drop-shadow-sm text-center">Создать аккаунт</h1>
         <p class="text-navy/70 text-sm mb-8 text-center font-medium">Присоединяйтесь к нашей семье</p>
-        
+
+        <!-- OAuth кнопки -->
         <div class="w-full flex flex-col gap-3 mb-6">
-            <a href="{% provider_login_url 'google' %}" class="w-full flex items-center justify-center gap-3 bg-white/50 hover:bg-white/70 backdrop-blur-md border border-white/50 text-navy font-bold py-3 px-4 rounded-2xl transition-all shadow-sm">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" class="w-5 h-5">
-                Google
+            <a href="{% provider_login_url 'google' %}" class="w-full flex items-center justify-center gap-3 bg-white/60 hover:bg-white/80 backdrop-blur-md border border-white/60 text-navy font-bold py-3.5 px-4 rounded-2xl transition-all shadow-sm">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" class="w-5 h-5 flex-shrink-0">
+                Зарегистрироваться через Google
             </a>
             <div class="flex gap-3">
-                <a href="{% provider_login_url 'yandex' %}" class="flex-1 flex items-center justify-center gap-2 bg-[#FC3F1D]/90 hover:bg-[#FC3F1D] backdrop-blur-md border border-white/20 text-white font-bold py-3 px-2 rounded-2xl transition-all shadow-sm text-sm">
-                    <svg viewBox="0 0 24 24" class="w-4 h-4 fill-current"><path d="M11.66 12.83L6.87 3.51A.88.88 0 016.94 2.54c.2-.27.53-.42.87-.42h2.72c.45 0 .86.25 1.07.65l5.24 10.37V2.19c0-.44.35-.79.79-.79h2.36c.44 0 .79.35.79.79v19.62c0 .44-.35.79-.79.79h-2.36c-.44 0-.79-.35-.79-.79v-8.86l-3.32 8.78c-.24.62-.83 1.03-1.5 1.03H8.38c-.63 0-1.07-.63-.84-1.22l3.12-8.57z"/></svg>
+                <a href="{% provider_login_url 'yandex' %}" class="flex-1 flex items-center justify-center gap-2 bg-[#FC3F1D]/90 hover:bg-[#FC3F1D] border border-white/20 text-white font-bold py-3 px-3 rounded-2xl transition-all shadow-sm text-sm">
+                    <svg viewBox="0 0 24 24" class="w-4 h-4 fill-current flex-shrink-0"><path d="M11.66 12.83L6.87 3.51A.88.88 0 016.94 2.54c.2-.27.53-.42.87-.42h2.72c.45 0 .86.25 1.07.65l5.24 10.37V2.19c0-.44.35-.79.79-.79h2.36c.44 0 .79.35.79.79v19.62c0 .44-.35.79-.79.79h-2.36c-.44 0-.79-.35-.79-.79v-8.86l-3.32 8.78c-.24.62-.83 1.03-1.5 1.03H8.38c-.63 0-1.07-.63-.84-1.22l3.12-8.57z"/></svg>
                     Яндекс
                 </a>
-                <a href="{% provider_login_url 'vk' %}" class="flex-1 flex items-center justify-center gap-2 bg-[#0077FF]/90 hover:bg-[#0077FF] backdrop-blur-md border border-white/20 text-white font-bold py-3 px-2 rounded-2xl transition-all shadow-sm text-sm">
-                    <svg viewBox="0 0 24 24" class="w-4 h-4 fill-current"><path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2Zm3.47 13.91c.21.29.43.57.67.84.34.35.7.67 1.05.99.14.12.28.25.38.41a1 1 0 0 1 .15.54c0 .41-.33.74-.74.74h-2.12c-.41 0-.74-.18-.95-.51a11.96 11.96 0 0 0-1.4-1.74c-.16-.18-.32-.35-.51-.51-.19-.16-.36-.18-.54-.05-.18.12-.3.33-.36.56a3.86 3.86 0 0 0-.05.77c0 .42-.32.74-.74.74h-1.28c-1.39 0-2.61-.31-3.66-.94a7.96 7.96 0 0 1-3.13-2.91c-1.57-2.33-2.71-4.9-3.41-7.7A.75.75 0 0 1 6.8 5.4h2.15c.34 0 .61.22.7.55.43 1.54 1.05 3 1.87 4.36.19.3.38.59.59.87.16.2.33.31.51.31.18 0 .3-.11.36-.31.06-.21.11-.47.14-.77.04-.32.05-.65.05-.99 0-1.46-.35-2.28-1.04-2.45a.73.73 0 0 1-.36-1.12.75.75 0 0 1 .63-.35h3.19c.35 0 .63.28.63.63v4.47c0 .19.04.34.12.45.08.11.19.16.33.16.14 0 .31-.11.51-.31.33-.32.66-.7 1-1.12.63-.82 1.15-1.72 1.57-2.67a.76.76 0 0 1 .71-.47h2.23c.48 0 .8.46.64.91-.4 1.1-1.04 2.11-1.92 3.03a15.82 15.82 0 0 0-1.22 1.25c-.21.23-.29.43-.24.6.05.17.21.36.48.56Z"/></svg>
+                <a href="{% provider_login_url 'vk' %}" class="flex-1 flex items-center justify-center gap-2 bg-[#0077FF]/90 hover:bg-[#0077FF] border border-white/20 text-white font-bold py-3 px-3 rounded-2xl transition-all shadow-sm text-sm">
+                    <svg viewBox="0 0 24 24" class="w-4 h-4 fill-current flex-shrink-0"><path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2Zm3.47 13.91c.21.29.43.57.67.84.34.35.7.67 1.05.99.14.12.28.25.38.41a1 1 0 0 1 .15.54c0 .41-.33.74-.74.74h-2.12c-.41 0-.74-.18-.95-.51a11.96 11.96 0 0 0-1.4-1.74c-.16-.18-.32-.35-.51-.51-.19-.16-.36-.18-.54-.05-.18.12-.3.33-.36.56a3.86 3.86 0 0 0-.05.77c0 .42-.32.74-.74.74h-1.28c-1.39 0-2.61-.31-3.66-.94a7.96 7.96 0 0 1-3.13-2.91c-1.57-2.33-2.71-4.9-3.41-7.7A.75.75 0 0 1 6.8 5.4h2.15c.34 0 .61.22.7.55.43 1.54 1.05 3 1.87 4.36.19.3.38.59.59.87.16.2.33.31.51.31.18 0 .3-.11.36-.31.06-.21.11-.47.14-.77.04-.32.05-.65.05-.99 0-1.46-.35-2.28-1.04-2.45a.73.73 0 0 1-.36-1.12.75.75 0 0 1 .63-.35h3.19c.35 0 .63.28.63.63v4.47c0 .19.04.34.12.45.08.11.19.16.33.16.14 0 .31-.11.51-.31.33-.32.66-.7 1-1.12.63-.82 1.15-1.72 1.57-2.67a.76.76 0 0 1 .71-.47h2.23c.48 0 .8.46.64.91-.4 1.1-1.04 2.11-1.92 3.03a15.82 15.82 0 0 0-1.22 1.25c-.21.23-.29.43-.24.6.05.17.21.36.48.56Z"/></svg>
                     ВКонтакте
                 </a>
             </div>
         </div>
-        
-        <div class="w-full flex items-center justify-center gap-4 mb-6">
-            <div class="h-px flex-1 bg-white/40"></div>
-            <span class="text-navy/50 text-xs font-bold uppercase tracking-wider">Или через email</span>
-            <div class="h-px flex-1 bg-white/40"></div>
+
+        <div class="w-full flex items-center gap-4 mb-6">
+            <div class="h-px flex-1 bg-white/50"></div>
+            <span class="text-navy/60 text-xs font-bold uppercase tracking-wider">Или через email</span>
+            <div class="h-px flex-1 bg-white/50"></div>
         </div>
 
-        <form method="POST" action="{% url 'account_signup' %}" class="w-full flex flex-col gap-4">
+        <!-- Форма -->
+        <form method="POST" action="{% url 'account_signup' %}" class="w-full flex flex-col gap-3" id="signup-form">
             {% csrf_token %}
-            
+
             {% if form.errors %}
-                <div class="bg-red-500/10 border border-red-500/30 text-red-600 rounded-xl p-4 text-sm text-center backdrop-blur-md mb-2 flex flex-col gap-1 font-medium">
-                    {% for field in form %}
-                        {% for error in field.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
+            <div class="bg-red-500/10 border border-red-400/40 text-red-700 rounded-xl p-3.5 text-sm backdrop-blur-md flex flex-col gap-0.5">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <span>• {{ error }}</span>
                     {% endfor %}
-                    {% for error in form.non_field_errors %}
-                        <span>{{ error }}</span>
-                    {% endfor %}
-                </div>
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <span>• {{ error }}</span>
+                {% endfor %}
+            </div>
             {% endif %}
-            
-            <div class="relative">
-                <input type="text" name="username" placeholder="Никнейм" required
-                    class="w-full bg-white/30 backdrop-blur-md border border-white/50 text-navy placeholder:text-navy/50 px-5 py-3.5 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/50 focus:bg-white/50 transition-all shadow-inner font-medium">
-            </div>
-            
-            <div class="relative">
-                <input type="email" name="email" placeholder="Электронная почта" required
-                    class="w-full bg-white/30 backdrop-blur-md border border-white/50 text-navy placeholder:text-navy/50 px-5 py-3.5 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/50 focus:bg-white/50 transition-all shadow-inner font-medium">
-            </div>
-            
-            <div class="relative group">
-                <input type="password" name="password_1" placeholder="Придумайте пароль" required
-                    class="w-full bg-white/30 backdrop-blur-md border border-white/50 text-navy placeholder:text-navy/50 px-5 py-3.5 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/50 focus:bg-white/50 transition-all shadow-inner font-medium">
-                <div class="mt-2 text-xs font-medium text-navy/50 px-1 transition-opacity opacity-0 group-focus-within:opacity-100">
-                    Пароль должен содержать не менее 8 символов.
+
+            <input type="text" name="username"
+                value="{{ form.username.value|default_if_none:'' }}"
+                placeholder="Никнейм (уникальный)" required autocomplete="username"
+                class="w-full bg-white/30 backdrop-blur-md border border-white/50 text-navy placeholder:text-navy/50 px-5 py-3.5 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/50 focus:bg-white/50 transition-all font-medium">
+
+            <input type="email" name="email"
+                value="{{ form.email.value|default_if_none:'' }}"
+                placeholder="Электронная почта" required autocomplete="email"
+                class="w-full bg-white/30 backdrop-blur-md border border-white/50 text-navy placeholder:text-navy/50 px-5 py-3.5 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/50 focus:bg-white/50 transition-all font-medium">
+
+            <!-- Пароль с live-валидацией -->
+            <div>
+                <div class="relative">
+                    <input type="password" name="password1" id="pw1"
+                        placeholder="Придумайте пароль (мин. 8 символов)" required autocomplete="new-password"
+                        oninput="checkPassword(this)"
+                        class="w-full bg-white/30 backdrop-blur-md border border-white/50 text-navy placeholder:text-navy/50 px-5 py-3.5 pr-12 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/50 focus:bg-white/50 transition-all font-medium">
+                    <button type="button" onclick="togglePassword('pw1', this)" class="absolute right-4 top-1/2 -translate-y-1/2 text-navy/40 hover:text-navy/70 transition-colors">
+                        <span class="material-symbols-outlined text-xl">visibility</span>
+                    </button>
+                </div>
+                <!-- Индикатор силы пароля -->
+                <div class="mt-2 px-1" id="pw-strength-wrap" style="display:none">
+                    <div class="flex gap-1 mb-1">
+                        <div class="h-1 flex-1 rounded-full bg-white/40" id="bar1"></div>
+                        <div class="h-1 flex-1 rounded-full bg-white/40" id="bar2"></div>
+                        <div class="h-1 flex-1 rounded-full bg-white/40" id="bar3"></div>
+                        <div class="h-1 flex-1 rounded-full bg-white/40" id="bar4"></div>
+                    </div>
+                    <p class="text-xs font-medium text-navy/60" id="pw-label">Введите пароль</p>
                 </div>
             </div>
-            
+
             <div class="relative">
-                <input type="password" name="password_2" placeholder="Повторите пароль" required
-                    class="w-full bg-white/30 backdrop-blur-md border border-white/50 text-navy placeholder:text-navy/50 px-5 py-3.5 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/50 focus:bg-white/50 transition-all shadow-inner font-medium">
+                <input type="password" name="password2" id="pw2"
+                    placeholder="Повторите пароль" required autocomplete="new-password"
+                    oninput="checkMatch()"
+                    class="w-full bg-white/30 backdrop-blur-md border border-white/50 text-navy placeholder:text-navy/50 px-5 py-3.5 pr-12 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/50 focus:bg-white/50 transition-all font-medium" id="pw2-input">
+                <button type="button" onclick="togglePassword('pw2', this)" class="absolute right-4 top-1/2 -translate-y-1/2 text-navy/40 hover:text-navy/70 transition-colors">
+                    <span class="material-symbols-outlined text-xl">visibility</span>
+                </button>
             </div>
-            
+            <p class="text-xs px-1 font-medium hidden" id="match-msg"></p>
+
             {% if redirect_field_value %}
             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
             {% endif %}
-            
-            <button type="submit" class="w-full bg-[#c9a84c] text-white font-bold text-base py-3.5 rounded-2xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all mt-4">
-                Зарегистрироваться
+
+            <button type="submit" class="w-full bg-[#c9a84c] text-white font-bold text-base py-3.5 rounded-2xl shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all mt-2">
+                Создать аккаунт
             </button>
         </form>
-        
-        <p class="mt-8 text-sm font-medium text-navy/70 text-center">
-            Уже есть аккаунт? <a href="{% url 'account_login' %}" class="text-[#c9a84c] font-bold hover:underline drop-shadow-sm">Войти</a>
+
+        <p class="mt-7 text-sm font-medium text-navy/70 text-center">
+            Уже есть аккаунт? <a href="{% url 'account_login' %}" class="text-[#c9a84c] font-bold hover:underline">Войти</a>
         </p>
-        
     </div>
 </div>
+
+<script>
+function togglePassword(inputId, btn) {
+    const input = document.getElementById(inputId);
+    const icon = btn.querySelector('.material-symbols-outlined');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.textContent = 'visibility_off';
+    } else {
+        input.type = 'password';
+        icon.textContent = 'visibility';
+    }
+}
+
+function checkPassword(input) {
+    const pw = input.value;
+    const wrap = document.getElementById('pw-strength-wrap');
+    const bars = [document.getElementById('bar1'), document.getElementById('bar2'), document.getElementById('bar3'), document.getElementById('bar4')];
+    const label = document.getElementById('pw-label');
+
+    if (!pw) { wrap.style.display = 'none'; return; }
+    wrap.style.display = 'block';
+
+    let score = 0;
+    if (pw.length >= 8) score++;
+    if (pw.length >= 12) score++;
+    if (/[A-Z]/.test(pw) && /[a-z]/.test(pw)) score++;
+    if (/[0-9]/.test(pw) || /[^A-Za-z0-9]/.test(pw)) score++;
+
+    const colors = ['bg-red-400', 'bg-orange-400', 'bg-yellow-400', 'bg-green-400'];
+    const labels = ['Слабый', 'Средний', 'Хороший', 'Отличный!'];
+
+    bars.forEach((b, i) => {
+        b.className = 'h-1 flex-1 rounded-full ' + (i < score ? colors[score - 1] : 'bg-white/40');
+    });
+    label.textContent = labels[score - 1] || 'Очень короткий';
+    label.style.color = score >= 3 ? '#16a34a' : score === 2 ? '#d97706' : '#dc2626';
+
+    checkMatch();
+}
+
+function checkMatch() {
+    const pw1 = document.getElementById('pw1').value;
+    const pw2 = document.getElementById('pw2').value;
+    const msg = document.getElementById('match-msg');
+    if (!pw2) { msg.classList.add('hidden'); return; }
+    msg.classList.remove('hidden');
+    if (pw1 === pw2) {
+        msg.textContent = '✓ Пароли совпадают';
+        msg.style.color = '#16a34a';
+    } else {
+        msg.textContent = '✗ Пароли не совпадают';
+        msg.style.color = '#dc2626';
+    }
+}
+</script>
 {% endblock %}

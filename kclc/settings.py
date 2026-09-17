@@ -118,9 +118,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_URL = '/login/'  # URL для входа
-LOGIN_REDIRECT_URL = '/profile/'  # Куда перенаправлять после входа
-LOGOUT_REDIRECT_URL = '/'  # Куда перенаправлять после выхода
+LOGIN_URL = '/accounts/login/'  # URL для входа (allauth)
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 # -------------------------------------------------------
 # Кастомные страницы ошибок
@@ -245,7 +245,7 @@ JAZZMIN_UI_TWEAKS = {
 }
 
 # ---------------------------------------------------------
-# DJANGO-ALLAUTH SETTINGS
+# DJANGO-ALLAUTH SETTINGS (v65+)
 # ---------------------------------------------------------
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
@@ -253,45 +253,75 @@ AUTHENTICATION_BACKENDS = [
 ]
 SITE_ID = 1
 
-# Account config
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  # Требует настоящую почту
-ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+# ── Поля при регистрации (новый синтаксис v65+)
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
 
-# URLs
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+# ── Методы входа: по email ИЛИ по нику
+ACCOUNT_LOGIN_METHODS = {'username', 'email'}
+
+# ── Email — обязателен, уникален
+ACCOUNT_UNIQUE_EMAIL = True
+
+# ── Верификация email.
+#    'optional' — можно войти без подтверждения (подойдёт пока нет SMTP).
+#    'mandatory' — включите когда подключите реальный SMTP.
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
+
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 ACCOUNT_LOGOUT_ON_GET = True
 
-# Email backend (console for development/testing, will need real SMTP later)
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# ── Кастомный валидатор email (отсеивает одноразовые домены)
+ACCOUNT_EMAIL_VALIDATORS = [
+    'church_app.validators.BlockDisposableEmailValidator',
+]
 
+# ── Политика паролей
+ACCOUNT_PASSWORD_MIN_LENGTH = 8
 
+# ── Email backend
+# Для разработки: письма выводятся в консоль
+# Для продакшена: замените на настоящий SMTP через переменные окружения
+_email_backend = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
+EMAIL_BACKEND = _email_backend
 
-# Dummy configuration for Social Accounts so templates don't crash
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True').lower() in ('true', '1')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'KCLC <noreply@kclc.ru>')
+
+# ---------------------------------------------------------
+# OAuth — ключи из переменных окружения (.env файл)
+# ---------------------------------------------------------
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'APP': {
-            'client_id': 'change-me',
-            'secret': 'change-me',
-            'key': ''
-        }
-    },
-    'yandex': {
-        'APP': {
-            'client_id': 'change-me',
-            'secret': 'change-me',
-            'key': ''
-        }
+            'client_id': os.environ.get('GOOGLE_CLIENT_ID', 'change-me'),
+            'secret': os.environ.get('GOOGLE_CLIENT_SECRET', 'change-me'),
+            'key': '',
+        },
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
     },
     'vk': {
         'APP': {
-            'client_id': 'change-me',
-            'secret': 'change-me',
-            'key': ''
-        }
-    }
+            'client_id': os.environ.get('VK_CLIENT_ID', 'change-me'),
+            'secret': os.environ.get('VK_CLIENT_SECRET', 'change-me'),
+            'key': '',
+        },
+    },
+    'yandex': {
+        'APP': {
+            'client_id': os.environ.get('YANDEX_CLIENT_ID', 'change-me'),
+            'secret': os.environ.get('YANDEX_CLIENT_SECRET', 'change-me'),
+            'key': '',
+        },
+    },
 }
+
+# При OAuth-регистрации — не требовать повторного ввода email/никнейма
+SOCIALACCOUNT_AUTO_SIGNUP = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+
