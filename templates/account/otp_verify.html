@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Подтверждение почты | KCLC{% endblock %}
+
+{% block main_class %}!pt-0 !pb-0{% endblock %}
+{% block top_spacer %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen relative pt-[100px] pb-20 px-4 flex flex-col items-center justify-center">
+
+    <!-- Фон с облаками (единый стиль) -->
+    <div class="absolute inset-0 z-0">
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1499346030926-9a72daac6c63?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat"></div>
+        <div class="absolute inset-0 bg-white/20"></div>
+    </div>
+
+    <!-- Карточка Glassmorphism -->
+    <div class="w-full max-w-lg bg-white/25 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_8px_40px_rgba(0,0,0,0.12)] border border-white/50 p-8 sm:p-12 relative z-10 flex flex-col items-center mt-8">
+
+        <!-- Иконка замка / письма -->
+        <div class="w-16 h-16 rounded-full bg-white/40 backdrop-blur-md border border-white/50 flex items-center justify-center mb-5 text-[#c9a84c] shadow-sm">
+            <span class="material-symbols-outlined text-3xl">mark_email_read</span>
+        </div>
+
+        <h1 class="text-3xl font-serif font-bold text-navy mb-2 tracking-tight drop-shadow-sm text-center">Проверьте почту</h1>
+        <p class="text-navy/70 text-sm mb-2 text-center font-medium">Мы отправили 6-значный проверочный код на адрес:</p>
+        <div class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-white/40 backdrop-blur-md border border-white/60 text-navy font-bold text-sm mb-6 shadow-sm">
+            <span class="material-symbols-outlined text-base text-[#c9a84c]">mail</span>
+            <span>{{ email }}</span>
+        </div>
+
+        {% if error_message %}
+        <div class="w-full bg-red-500/15 border border-red-400/40 text-red-700 rounded-2xl p-3.5 text-sm backdrop-blur-md mb-5 text-center font-medium flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-lg shrink-0">error</span>
+            <span>{{ error_message }}</span>
+        </div>
+        {% endif %}
+
+        <!-- Форма 6-значного OTP кода -->
+        <form method="POST" action="{% url 'verify_otp' %}" id="otp-form" class="w-full flex flex-col items-center">
+            {% csrf_token %}
+            <input type="hidden" name="code" id="full-code-input" value="">
+
+            <div class="flex justify-center items-center gap-2 sm:gap-3 mb-6 w-full">
+                <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" class="otp-digit w-11 h-14 sm:w-13 sm:h-16 text-center text-2xl font-mono font-bold text-navy bg-white/40 backdrop-blur-md border-2 border-white/60 rounded-2xl focus:border-[#c9a84c] focus:bg-white/70 focus:outline-none transition-all shadow-sm" autofocus autocomplete="one-time-code">
+                <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" class="otp-digit w-11 h-14 sm:w-13 sm:h-16 text-center text-2xl font-mono font-bold text-navy bg-white/40 backdrop-blur-md border-2 border-white/60 rounded-2xl focus:border-[#c9a84c] focus:bg-white/70 focus:outline-none transition-all shadow-sm">
+                <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" class="otp-digit w-11 h-14 sm:w-13 sm:h-16 text-center text-2xl font-mono font-bold text-navy bg-white/40 backdrop-blur-md border-2 border-white/60 rounded-2xl focus:border-[#c9a84c] focus:bg-white/70 focus:outline-none transition-all shadow-sm">
+                <span class="text-navy/30 text-xl font-bold select-none">•</span>
+                <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" class="otp-digit w-11 h-14 sm:w-13 sm:h-16 text-center text-2xl font-mono font-bold text-navy bg-white/40 backdrop-blur-md border-2 border-white/60 rounded-2xl focus:border-[#c9a84c] focus:bg-white/70 focus:outline-none transition-all shadow-sm">
+                <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" class="otp-digit w-11 h-14 sm:w-13 sm:h-16 text-center text-2xl font-mono font-bold text-navy bg-white/40 backdrop-blur-md border-2 border-white/60 rounded-2xl focus:border-[#c9a84c] focus:bg-white/70 focus:outline-none transition-all shadow-sm">
+                <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" class="otp-digit w-11 h-14 sm:w-13 sm:h-16 text-center text-2xl font-mono font-bold text-navy bg-white/40 backdrop-blur-md border-2 border-white/60 rounded-2xl focus:border-[#c9a84c] focus:bg-white/70 focus:outline-none transition-all shadow-sm">
+            </div>
+
+            <button type="submit" id="submit-btn" class="w-full bg-[#c9a84c] hover:bg-[#b59540] text-white font-bold text-base py-3.5 rounded-2xl shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-xl">verified_user</span>
+                <span>Подтвердить код</span>
+            </button>
+        </form>
+
+        <!-- Таймер и повторная отправка -->
+        <div class="mt-6 flex flex-col items-center text-sm font-medium text-navy/70">
+            <div id="countdown-wrap" class="{% if can_resend %}hidden{% endif %} flex items-center gap-1.5 text-navy/60">
+                <span class="material-symbols-outlined text-base animate-spin text-[#c9a84c]">schedule</span>
+                <span>Повторный код можно запросить через <strong id="countdown-sec" class="text-navy">{{ seconds_left }}</strong> сек.</span>
+            </div>
+
+            <form method="POST" action="{% url 'resend_otp' %}" id="resend-form" class="{% if not can_resend %}hidden{% endif %} mt-1">
+                {% csrf_token %}
+                <button type="submit" class="text-[#c9a84c] hover:text-[#b59540] font-bold hover:underline transition-colors flex items-center gap-1">
+                    <span class="material-symbols-outlined text-base">refresh</span>
+                    <span>Отправить код повторно</span>
+                </button>
+            </form>
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-white/40 w-full text-center">
+            <a href="{% url 'account_login' %}" class="text-xs font-semibold text-navy/60 hover:text-navy transition-colors">
+                ← Войти в другой аккаунт
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const inputs = document.querySelectorAll('.otp-digit');
+    const fullCodeInput = document.getElementById('full-code-input');
+    const form = document.getElementById('otp-form');
+
+    function syncFullCode() {
+        let code = '';
+        inputs.forEach(input => { code += input.value.trim(); });
+        fullCodeInput.value = code;
+        if (code.length === 6) {
+            // Автоматическая отправка при вводе всех 6 цифр
+            form.submit();
+        }
+    }
+
+    inputs.forEach((input, index) => {
+        input.addEventListener('input', function (e) {
+            const val = this.value.replace(/[^0-9]/g, '');
+            this.value = val ? val[val.length - 1] : '';
+
+            if (this.value && index < inputs.length - 1) {
+                inputs[index + 1].focus();
+            }
+            syncFullCode();
+        });
+
+        input.addEventListener('keydown', function (e) {
+            if (e.key === 'Backspace' && !this.value && index > 0) {
+                inputs[index - 1].focus();
+            }
+        });
+
+        // Поддержка вставки (Ctrl+V / Cmd+V)
+        input.addEventListener('paste', function (e) {
+            e.preventDefault();
+            const pastedData = (e.clipboardData || window.clipboardData).getData('text').trim().replace(/[^0-9]/g, '');
+            if (!pastedData) return;
+
+            for (let i = 0; i < inputs.length; i++) {
+                if (i < pastedData.length) {
+                    inputs[i].value = pastedData[i];
+                }
+            }
+            const nextFocus = Math.min(pastedData.length, inputs.length - 1);
+            inputs[nextFocus].focus();
+            syncFullCode();
+        });
+    });
+
+    // Обратный отсчёт кулдауна
+    let seconds = parseInt("{{ seconds_left|default:0 }}", 10);
+    const countdownWrap = document.getElementById('countdown-wrap');
+    const countdownSec = document.getElementById('countdown-sec');
+    const resendForm = document.getElementById('resend-form');
+
+    if (seconds > 0) {
+        const timer = setInterval(() => {
+            seconds--;
+            if (countdownSec) countdownSec.textContent = seconds;
+            if (seconds <= 0) {
+                clearInterval(timer);
+                if (countdownWrap) countdownWrap.classList.add('hidden');
+                if (resendForm) resendForm.classList.remove('hidden');
+            }
+        }, 1000);
+    }
+});
+</script>
+{% endblock %}

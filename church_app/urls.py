@@ -1,9 +1,15 @@
 from django.urls import path
 from django.views.generic import TemplateView, RedirectView
-from . import views, views_library, views_prayer, views_donate, views_push
+from . import views, views_library, views_prayer, views_donate, views_push, views_auth
 
 urlpatterns = [
     path('', views.home, name='home'),
+
+    # Подтверждение Email через 6-значный OTP код
+    path('accounts/verify-code/', views_auth.verify_otp_view, name='verify_otp'),
+    path('accounts/resend-code/', views_auth.resend_otp_view, name='resend_otp'),
+    path('accounts/api/check-username/', views_auth.check_username_api, name='api_check_username'),
+    path('accounts/api/check-email/', views_auth.check_email_api, name='api_check_email'),
 
     # path('register/', views.register_view, name='register'),
     # path('login/', views.login_view, name='login'),

@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.vk',
     'allauth.socialaccount.providers.yandex',
 
@@ -94,6 +93,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 8,
+        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -265,10 +267,11 @@ ACCOUNT_LOGIN_METHODS = {'username', 'email'}
 # ── Email — обязателен, уникален
 ACCOUNT_UNIQUE_EMAIL = True
 
-# ── Верификация email.
-#    'optional' — можно войти без подтверждения (подойдёт пока нет SMTP).
-#    'mandatory' — включите когда подключите реальный SMTP.
-ACCOUNT_EMAIL_VERIFICATION = 'optional'
+# ── Кастомный адаптер Allauth (отправка 6-значных OTP кодов)
+ACCOUNT_ADAPTER = 'church_app.adapter.CustomAccountAdapter'
+
+# ── Верификация email обязательна через OTP-код
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 ACCOUNT_LOGOUT_ON_GET = True
@@ -281,32 +284,26 @@ ACCOUNT_EMAIL_VALIDATORS = [
 # ── Политика паролей
 ACCOUNT_PASSWORD_MIN_LENGTH = 8
 
-# ── Email backend
-# Для разработки: письма выводятся в консоль
-# Для продакшена: замените на настоящий SMTP через переменные окружения
-_email_backend = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
-EMAIL_BACKEND = _email_backend
-
-EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
-EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
-EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True').lower() in ('true', '1')
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+# ── Email backend (Настройка под bot.kclc@mail.ru)
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.mail.ru')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '465'))
+EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL', 'True').lower() in ('true', '1')
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'False').lower() in ('true', '1')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'bot.kclc@mail.ru')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
-DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'KCLC <noreply@kclc.ru>')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'KCLC <bot.kclc@mail.ru>')
+
+# Если пароль указан в .env — шлём через реальный SMTP mail.ru. Иначе выводим в консоль терминала
+if EMAIL_HOST_PASSWORD:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+else:
+    EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
 
 # ---------------------------------------------------------
 # OAuth — ключи из переменных окружения (.env файл)
+# Только VK и Яндекс (Google удален по запросу)
 # ---------------------------------------------------------
 SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'APP': {
-            'client_id': os.environ.get('GOOGLE_CLIENT_ID', 'change-me'),
-            'secret': os.environ.get('GOOGLE_CLIENT_SECRET', 'change-me'),
-            'key': '',
-        },
-        'SCOPE': ['profile', 'email'],
-        'AUTH_PARAMS': {'access_type': 'online'},
-    },
     'vk': {
         'APP': {
             'client_id': os.environ.get('VK_CLIENT_ID', 'change-me'),

@@ -599,3 +599,25 @@ class HomeGroup(models.Model):
 
     def get_type_display(self):
         return dict(self.GROUP_TYPES).get(self.group_type, self.group_type)
+
+
+class EmailVerificationOTP(models.Model):
+    """Одноразовый 6-значный код подтверждения email"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='email_otps', verbose_name="Пользователь")
+    email = models.EmailField(verbose_name="Email")
+    code = models.CharField(max_length=6, verbose_name="6-значный код")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Создан")
+    expires_at = models.DateTimeField(verbose_name="Истекает")
+    is_used = models.BooleanField(default=False, verbose_name="Использован")
+    attempts = models.IntegerField(default=0, verbose_name="Попыток ввода")
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "OTP код подтверждения"
+        verbose_name_plural = "OTP коды подтверждения"
+
+    def is_valid(self):
+        return not self.is_used and timezone.now() <= self.expires_at and self.attempts < 5
+
+    def __str__(self):
+        return f"{self.user.username} - {self.code} ({self.email})"

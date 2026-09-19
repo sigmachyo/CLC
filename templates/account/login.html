@@ -22,22 +22,25 @@
         <h1 class="text-3xl font-serif font-bold text-navy mb-1 tracking-tight drop-shadow-sm text-center">С возвращением</h1>
         <p class="text-navy/70 text-sm mb-8 text-center font-medium">Войдите в свой аккаунт</p>
 
-        <!-- OAuth кнопки -->
+        <!-- OAuth кнопки (VK ID и Яндекс ID) -->
         <div class="w-full flex flex-col gap-3 mb-6">
-            <a href="{% provider_login_url 'google' %}" class="w-full flex items-center justify-center gap-3 bg-white/60 hover:bg-white/80 backdrop-blur-md border border-white/60 text-navy font-bold py-3.5 px-4 rounded-2xl transition-all shadow-sm">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" class="w-5 h-5 flex-shrink-0">
-                Продолжить с Google
+            <!-- VK ID -->
+            <a href="{% provider_login_url 'vk' %}" class="w-full flex items-center justify-center gap-3 bg-[#0077FF] hover:bg-[#0066DF] text-white font-bold py-3.5 px-4 rounded-2xl transition-all shadow-[0_4px_16px_rgba(0,119,255,0.25)] hover:shadow-[0_6px_20px_rgba(0,119,255,0.35)] hover:-translate-y-0.5 active:translate-y-0 text-sm">
+                <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2Z" fill="#FFFFFF"/>
+                    <path d="M12.98 16.71c-4.3 0-6.75-2.95-6.85-7.86h2.15c.07 3.6 1.66 5.13 2.92 5.44V8.85h2.03v3.1c1.24-.13 2.54-1.54 2.98-3.1h2.03c-.34 2-1.8 3.41-2.85 4.02 1.05.49 2.7 1.74 3.29 3.84h-2.24c-.46-1.44-1.61-2.56-3.1-2.71v2.71h-.36Z" fill="#0077FF"/>
+                </svg>
+                <span>Войти через VK ID</span>
             </a>
-            <div class="flex gap-3">
-                <a href="{% provider_login_url 'yandex' %}" class="flex-1 flex items-center justify-center gap-2 bg-[#FC3F1D]/90 hover:bg-[#FC3F1D] border border-white/20 text-white font-bold py-3 px-3 rounded-2xl transition-all shadow-sm text-sm">
-                    <svg viewBox="0 0 24 24" class="w-4 h-4 fill-current flex-shrink-0"><path d="M11.66 12.83L6.87 3.51A.88.88 0 016.94 2.54c.2-.27.53-.42.87-.42h2.72c.45 0 .86.25 1.07.65l5.24 10.37V2.19c0-.44.35-.79.79-.79h2.36c.44 0 .79.35.79.79v19.62c0 .44-.35.79-.79.79h-2.36c-.44 0-.79-.35-.79-.79v-8.86l-3.32 8.78c-.24.62-.83 1.03-1.5 1.03H8.38c-.63 0-1.07-.63-.84-1.22l3.12-8.57z"/></svg>
-                    Яндекс
-                </a>
-                <a href="{% provider_login_url 'vk' %}" class="flex-1 flex items-center justify-center gap-2 bg-[#0077FF]/90 hover:bg-[#0077FF] border border-white/20 text-white font-bold py-3 px-3 rounded-2xl transition-all shadow-sm text-sm">
-                    <svg viewBox="0 0 24 24" class="w-4 h-4 fill-current flex-shrink-0"><path d="M15.07 2H8.93C3.33 2 2 3.33 2 8.93v6.14C2 20.67 3.33 22 8.93 22h6.14c5.6 0 6.93-1.33 6.93-6.93V8.93C22 3.33 20.67 2 15.07 2Zm3.47 13.91c.21.29.43.57.67.84.34.35.7.67 1.05.99.14.12.28.25.38.41a1 1 0 0 1 .15.54c0 .41-.33.74-.74.74h-2.12c-.41 0-.74-.18-.95-.51a11.96 11.96 0 0 0-1.4-1.74c-.16-.18-.32-.35-.51-.51-.19-.16-.36-.18-.54-.05-.18.12-.3.33-.36.56a3.86 3.86 0 0 0-.05.77c0 .42-.32.74-.74.74h-1.28c-1.39 0-2.61-.31-3.66-.94a7.96 7.96 0 0 1-3.13-2.91c-1.57-2.33-2.71-4.9-3.41-7.7A.75.75 0 0 1 6.8 5.4h2.15c.34 0 .61.22.7.55.43 1.54 1.05 3 1.87 4.36.19.3.38.59.59.87.16.2.33.31.51.31.18 0 .3-.11.36-.31.06-.21.11-.47.14-.77.04-.32.05-.65.05-.99 0-1.46-.35-2.28-1.04-2.45a.73.73 0 0 1-.36-1.12.75.75 0 0 1 .63-.35h3.19c.35 0 .63.28.63.63v4.47c0 .19.04.34.12.45.08.11.19.16.33.16.14 0 .31-.11.51-.31.33-.32.66-.7 1-1.12.63-.82 1.15-1.72 1.57-2.67a.76.76 0 0 1 .71-.47h2.23c.48 0 .8.46.64.91-.4 1.1-1.04 2.11-1.92 3.03a15.82 15.82 0 0 0-1.22 1.25c-.21.23-.29.43-.24.6.05.17.21.36.48.56Z"/></svg>
-                    ВКонтакте
-                </a>
-            </div>
+
+            <!-- Яндекс ID -->
+            <a href="{% provider_login_url 'yandex' %}" class="w-full flex items-center justify-center gap-3 bg-white/85 hover:bg-white text-navy font-bold py-3.5 px-4 rounded-2xl transition-all border border-white/80 shadow-[0_4px_16px_rgba(0,0,0,0.06)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.1)] hover:-translate-y-0.5 active:translate-y-0 text-sm">
+                <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="11" fill="#FC3F1D"/>
+                    <path d="M13.43 6.2h-1.73c-1.84 0-2.85 1.07-2.85 2.65 0 1.48.81 2.34 2.12 3.32l-2.48 5.63h1.83l2.45-5.65h.66v5.65h1.74V6.2h-1.74zm0 4.35h-.62c-.89 0-1.44-.5-1.44-1.42 0-.84.58-1.39 1.44-1.39h.62v2.81z" fill="#FFFFFF"/>
+                </svg>
+                <span>Войти с Яндекс ID</span>
+            </a>
         </div>
 
         <div class="w-full flex items-center gap-4 mb-6">
