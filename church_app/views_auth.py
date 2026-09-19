@@ -200,3 +200,4 @@ def check_email_api(request):
         })
 
     return JsonResponse({'valid': True, 'available': True, 'message': 'Email свободен и корректен!'})
+

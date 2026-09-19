@@ -35,3 +35,4 @@ class CustomAccountAdapter(DefaultAccountAdapter):
             request.session['otp_user_id'] = user.id
             request.session['otp_email'] = user.email
         return redirect(reverse('verify_otp'))
+

@@ -303,18 +303,21 @@ else:
 # OAuth — ключи из переменных окружения (.env файл)
 # Только VK и Яндекс (Google удален по запросу)
 # ---------------------------------------------------------
+SOCIALACCOUNT_LOGIN_ON_GET = True
+
 SOCIALACCOUNT_PROVIDERS = {
     'vk': {
         'APP': {
-            'client_id': os.environ.get('VK_CLIENT_ID', 'change-me'),
-            'secret': os.environ.get('VK_CLIENT_SECRET', 'change-me'),
+            'client_id': os.environ.get('VK_CLIENT_ID', ''),
+            'secret': os.environ.get('VK_CLIENT_SECRET', ''),
             'key': '',
         },
+        'SCOPE': ['email'],
     },
     'yandex': {
         'APP': {
-            'client_id': os.environ.get('YANDEX_CLIENT_ID', 'change-me'),
-            'secret': os.environ.get('YANDEX_CLIENT_SECRET', 'change-me'),
+            'client_id': os.environ.get('YANDEX_CLIENT_ID', ''),
+            'secret': os.environ.get('YANDEX_CLIENT_SECRET', ''),
             'key': '',
         },
     },

@@ -173,3 +173,4 @@ def verify_otp_code(user, code):
         email_address.save(update_fields=['verified', 'primary'])
 
     return True, "Email успешно подтверждён!"
+

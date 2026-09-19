@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Вход через соцсеть | KCLC{% endblock %}
+
+{% block main_class %}!pt-0 !pb-0{% endblock %}
+{% block top_spacer %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen relative pt-[100px] pb-20 px-4 flex flex-col items-center justify-center">
+    <div class="absolute inset-0 z-0">
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1499346030926-9a72daac6c63?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat"></div>
+        <div class="absolute inset-0 bg-white/20"></div>
+    </div>
+
+    <div class="w-full max-w-md bg-white/25 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_8px_40px_rgba(0,0,0,0.12)] border border-white/50 p-8 sm:p-12 relative z-10 flex flex-col items-center mt-8 text-center">
+
+        <div class="w-16 h-16 rounded-full bg-white/40 backdrop-blur-md border border-white/50 flex items-center justify-center mb-5 text-[#c9a84c] shadow-sm">
+            <span class="material-symbols-outlined text-3xl">account_circle</span>
+        </div>
+
+        <h1 class="text-2xl sm:text-3xl font-serif font-bold text-navy mb-2 tracking-tight drop-shadow-sm">
+            Вход через {{ provider.name }}
+        </h1>
+        <p class="text-navy/70 text-sm mb-6 font-medium">
+            Вы собираетесь войти, используя стороннюю учётную запись {{ provider.name }}.
+        </p>
+
+        <form method="post" class="w-full">
+            {% csrf_token %}
+            <button type="submit" class="w-full bg-[#c9a84c] hover:bg-[#b59540] text-white font-bold py-3.5 px-4 rounded-2xl transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 text-base">
+                Продолжить
+            </button>
+        </form>
+
+        <div class="mt-6 pt-4 border-t border-white/40 w-full text-center">
+            <a href="{% url 'account_login' %}" class="text-xs font-semibold text-navy/60 hover:text-navy transition-colors">
+                ← Вернуться назад
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

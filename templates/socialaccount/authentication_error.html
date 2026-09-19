@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ошибка авторизации | KCLC{% endblock %}
+
+{% block main_class %}!pt-0 !pb-0{% endblock %}
+{% block top_spacer %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen relative pt-[100px] pb-20 px-4 flex flex-col items-center justify-center">
+    <div class="absolute inset-0 z-0">
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1499346030926-9a72daac6c63?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center bg-no-repeat"></div>
+        <div class="absolute inset-0 bg-white/20"></div>
+    </div>
+
+    <div class="w-full max-w-md bg-white/25 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_8px_40px_rgba(0,0,0,0.12)] border border-white/50 p-8 sm:p-12 relative z-10 flex flex-col items-center mt-8 text-center">
+
+        <div class="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center mb-5 text-red-500 shadow-sm">
+            <span class="material-symbols-outlined text-3xl">warning</span>
+        </div>
+
+        <h1 class="text-2xl sm:text-3xl font-serif font-bold text-navy mb-2 tracking-tight drop-shadow-sm">
+            Ошибка авторизации
+        </h1>
+        <p class="text-navy/70 text-sm mb-6 font-medium leading-relaxed">
+            Не удалось завершить вход через внешнюю службу.<br>
+            Возможно, в настройках ещё не указаны ключи приложения (Client ID / Secret) либо авторизация была отменена.
+        </p>
+
+        <div class="flex flex-col gap-3 w-full">
+            <a href="{% url 'account_login' %}" class="w-full bg-[#c9a84c] hover:bg-[#b59540] text-white font-bold py-3.5 px-4 rounded-2xl transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 text-base">
+                Войти по Email и паролю
+            </a>
+            <a href="{% url 'account_signup' %}" class="w-full bg-white/40 hover:bg-white/60 text-navy font-bold py-3 px-4 rounded-2xl transition-all border border-white/60 text-sm">
+                Регистрация нового аккаунта
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
