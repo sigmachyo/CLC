@@ -16,11 +16,10 @@ def library_home(request):
     today = timezone.localdate()
     day_of_year = today.toordinal()
     
-    # 1. Background Logic
-    from .daily_verse_data import UNSPLASH_IDS, VERSES
-    bg_index = day_of_year % len(UNSPLASH_IDS)
-    bg_id = UNSPLASH_IDS[bg_index]
-    daily_bg_url = f"https://images.unsplash.com/photo-{bg_id}?q=80&w=1200&auto=format&fit=crop"
+    # 1. Background Logic (Локальные высококачественные фоны без зависимости от Unsplash и VPN)
+    from .daily_verse_data import VERSES
+    verse_bg_num = (day_of_year % 31) + 1
+    daily_bg_url = f"/static/img/daily_verses/verse_{verse_bg_num}.jpg"
     
     # 2. Verse Logic
     daily_verse = DailyVerse.objects.filter(date=today).first()

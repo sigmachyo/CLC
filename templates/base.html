@@ -58,15 +58,48 @@
       }
     </script>
     <style>
-      /* Hide old sidebar on desktop since we have top nav */
-      @media (min-width: 769px) {
-        #left-sidebar, #sidebar-backdrop { display: none !important; }
+      /* Mobile drawer is hidden on desktop (desktop has its own top navigation) */
+      @media (min-width: 901px) {
+        #left-sidebar, #sidebar-backdrop, #burger-wrapper { 
+          display: none !important; 
+        }
       }
-      /* Critical: sidebar hidden by default, burger hidden on mobile */
-      #sidebar-backdrop { display: none; }
-      @media (max-width: 767px) {
-        #burger-wrapper { display: none !important; }
-        #left-sidebar { display: none !important; }
+      #sidebar-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(5, 8, 15, 0.75);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        z-index: 9998;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.35s ease;
+      }
+      #sidebar-backdrop.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      #left-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        height: 100%;
+        width: 86%;
+        max-width: 320px;
+        background: rgba(10, 15, 24, 0.96);
+        backdrop-filter: blur(32px);
+        -webkit-backdrop-filter: blur(32px);
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 20px 0 50px rgba(0, 0, 0, 0.6);
+        z-index: 9999;
+        transform: translateX(-100%);
+        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        display: flex;
+        flex-direction: column;
+      }
+      #left-sidebar.active {
+        transform: translateX(0);
       }
     </style>
     {% block extra_css %}{% endblock %}
@@ -91,109 +124,126 @@
 <body>
     <div style="display: none;">{% csrf_token %}</div>
     {% include "partials/header.html" %}
-    
-    <!-- Desktop Burger Button (Left) -->
-    <div id="burger-wrapper" style="display:none !important;">
-        <button id="desktop-burger" style="width:48px;height:48px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:6px;background:none;border:none;cursor:pointer;padding:0;mix-blend-mode:difference;" aria-label="Меню">
-            <span style="height:3px;width:32px;background:#fff;border-radius:9px;transition:all 0.3s;" id="burger-line-1"></span>
-            <span style="height:3px;width:24px;background:#fff;border-radius:9px;transition:all 0.3s;" id="burger-line-2"></span>
-            <span style="height:3px;width:16px;background:#fff;border-radius:9px;transition:all 0.3s;" id="burger-line-3"></span>
-        </button>
-    </div>
 
     <!-- Sidebar Backdrop -->
-    <div id="sidebar-backdrop" style="position:fixed;inset:0;background:rgba(26,31,54,0.6);z-index:1999;opacity:0;pointer-events:none;transition:opacity 0.3s;"></div>
+    <div id="sidebar-backdrop" aria-hidden="true"></div>
     
-    <!-- Left Sidebar Drawer -->
-    <aside id="left-sidebar" style="position:fixed;top:0;left:0;height:100%;width:300px;background:rgba(20,25,40,0.5);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border-right:1px solid rgba(255,255,255,0.1);box-shadow:20px 0 40px rgba(0,0,0,0.5);z-index:2000;transform:translateX(-100%);transition:transform 0.5s cubic-bezier(0.19,1,0.22,1);display:flex;flex-direction:column;padding:112px 0 40px;">
-        <div style="padding:0 32px;margin-bottom:40px;opacity:0.9;">
-            <img src="{% static 'img/logo.png' %}" alt="KCLC" style="height:44px;width:auto;">
+    <!-- Mobile Navigation Drawer -->
+    <aside id="left-sidebar" aria-label="Мобильное меню">
+        <!-- Top Drawer Bar (Logo & Close Button) -->
+        <div class="flex items-center justify-between px-6 pt-6 pb-4 border-b border-white/10">
+            <a href="{% url 'home' %}" class="flex items-center">
+                <img src="{% static 'img/logo.png' %}" alt="KCLC" class="h-8 w-auto">
+            </a>
+            <button id="sidebar-close-btn" class="w-10 h-10 rounded-full flex items-center justify-center text-white/70 hover:text-white bg-white/5 hover:bg-white/10 transition-colors border border-white/10 cursor-pointer" aria-label="Закрыть меню">
+                <span class="material-symbols-outlined text-2xl">close</span>
+            </button>
         </div>
-        <nav style="display:flex;flex-direction:column;gap:8px;padding:0 24px;flex:1;overflow-y:auto;">
-            <a href="{% url 'about' %}" style="display:flex;align-items:center;gap:16px;padding:14px 20px;border-radius:16px;color:rgba(255,255,255,0.8);background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);text-decoration:none;transition:all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
-                <span class="material-symbols-outlined">info</span>
-                <span style="font-size:16px;letter-spacing:0.02em;">О церкви</span>
+
+        <!-- Scrollable Navigation Items -->
+        <nav class="flex-1 overflow-y-auto px-4 py-4 space-y-1.5" style="-webkit-overflow-scrolling: touch;">
+            <!-- Основные разделы -->
+            <a href="{% url 'home' %}" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-white/80 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.04] transition-all text-sm font-medium {% if request.path == '/' %}!bg-[#c9a84c]/20 !text-[#c9a84c] !border-[#c9a84c]/30 font-bold{% endif %}">
+                <span class="material-symbols-outlined text-xl text-[#c9a84c]">home</span>
+                <span>Главная</span>
             </a>
-            <a href="{% url 'alpha' %}" style="display:flex;align-items:center;gap:16px;padding:14px 20px;border-radius:16px;color:rgba(255,255,255,0.8);background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);text-decoration:none;transition:all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
-                <span class="material-symbols-outlined">lightbulb</span>
-                <span style="font-size:16px;letter-spacing:0.02em;">Альфа-курс</span>
+            <a href="{% url 'library_home' %}" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-white/80 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.04] transition-all text-sm font-medium {% if '/library' in request.path %}!bg-[#c9a84c]/20 !text-[#c9a84c] !border-[#c9a84c]/30 font-bold{% endif %}">
+                <span class="material-symbols-outlined text-xl text-[#c9a84c]">auto_stories</span>
+                <span>Библиотека</span>
             </a>
-            <a href="{% url 'ministries' %}" style="display:flex;align-items:center;gap:16px;padding:14px 20px;border-radius:16px;color:rgba(255,255,255,0.8);background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);text-decoration:none;transition:all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
-                <span class="material-symbols-outlined">volunteer_activism</span>
-                <span style="font-size:16px;letter-spacing:0.02em;">Служения</span>
+            <a href="{% url 'prayer_list' %}" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-white/80 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.04] transition-all text-sm font-medium {% if '/prayer' in request.path %}!bg-[#c9a84c]/20 !text-[#c9a84c] !border-[#c9a84c]/30 font-bold{% endif %}">
+                <span class="material-symbols-outlined text-xl text-[#c9a84c]">volunteer_activism</span>
+                <span>Молитвенная стена</span>
             </a>
-            <a href="{% url 'news_list' %}" style="display:flex;align-items:center;gap:16px;padding:14px 20px;border-radius:16px;color:rgba(255,255,255,0.8);background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);text-decoration:none;transition:all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
-                <span class="material-symbols-outlined">newspaper</span>
-                <span style="font-size:16px;letter-spacing:0.02em;">Новости</span>
+
+            <div class="h-px bg-white/10 my-3"></div>
+
+            <!-- Церковная жизнь -->
+            <a href="{% url 'about' %}" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-white/80 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.04] transition-all text-sm font-medium">
+                <span class="material-symbols-outlined text-xl text-white/60">info</span>
+                <span>О церкви</span>
             </a>
-            <a href="{% url 'calendar' %}" style="display:flex;align-items:center;gap:16px;padding:14px 20px;border-radius:16px;color:rgba(255,255,255,0.8);background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);text-decoration:none;transition:all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
-                <span class="material-symbols-outlined">calendar_month</span>
-                <span style="font-size:16px;letter-spacing:0.02em;">Календарь</span>
+            <a href="{% url 'alpha' %}" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-white/80 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.04] transition-all text-sm font-medium">
+                <span class="material-symbols-outlined text-xl text-white/60">lightbulb</span>
+                <span>Альфа-курс</span>
             </a>
-            <a href="{% url 'home_meet' %}" style="display:flex;align-items:center;gap:16px;padding:14px 20px;border-radius:16px;color:rgba(255,255,255,0.8);background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);text-decoration:none;transition:all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
-                <span class="material-symbols-outlined">home</span>
-                <span style="font-size:16px;letter-spacing:0.02em;">Домашние встречи</span>
+            <a href="{% url 'ministries' %}" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-white/80 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.04] transition-all text-sm font-medium">
+                <span class="material-symbols-outlined text-xl text-white/60">diversity_3</span>
+                <span>Служения</span>
             </a>
-            <a href="{% url 'regional_churches' %}" style="display:flex;align-items:center;gap:16px;padding:14px 20px;border-radius:16px;color:rgba(255,255,255,0.8);background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);text-decoration:none;transition:all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
-                <span class="material-symbols-outlined">map</span>
-                <span style="font-size:16px;letter-spacing:0.02em;">Церкви региона</span>
+            <a href="{% url 'news_list' %}" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-white/80 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.04] transition-all text-sm font-medium">
+                <span class="material-symbols-outlined text-xl text-white/60">newspaper</span>
+                <span>Новости</span>
+            </a>
+            <a href="{% url 'calendar' %}" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-white/80 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.04] transition-all text-sm font-medium">
+                <span class="material-symbols-outlined text-xl text-white/60">calendar_month</span>
+                <span>Календарь</span>
+            </a>
+            <a href="{% url 'home_meet' %}" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-white/80 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.04] transition-all text-sm font-medium">
+                <span class="material-symbols-outlined text-xl text-white/60">roofing</span>
+                <span>Домашние группы</span>
+            </a>
+            <a href="{% url 'regional_churches' %}" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-white/80 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.04] transition-all text-sm font-medium">
+                <span class="material-symbols-outlined text-xl text-white/60">explore</span>
+                <span>Церкви региона</span>
             </a>
         </nav>
         
-        <div style="padding:0 24px;margin-top:auto;">
-            <a href="{% if user.is_authenticated %}{% url 'profile' %}{% else %}{% url 'account_login' %}{% endif %}" style="display:flex;align-items:center;gap:16px;padding:16px 20px;border-radius:24px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:{% if '/profile' in request.path or '/login' in request.path %}#1a1f36;background:#c9a84c;font-weight:700;{% else %}rgba(255,255,255,0.9);{% endif %}text-decoration:none;transition:all 0.3s;" onmouseover="if(!window.location.pathname.includes('/profile') && !window.location.pathname.includes('/login'))this.style.background='rgba(255,255,255,0.1)'" onmouseout="if(!window.location.pathname.includes('/profile') && !window.location.pathname.includes('/login'))this.style.background='rgba(255,255,255,0.05)'">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                <span style="font-size:17px;font-weight:700;letter-spacing:0.02em;">Профиль</span>
+        <!-- Bottom Actions (Donate & Profile) -->
+        <div class="p-4 border-t border-white/10 space-y-2 bg-white/[0.02]">
+            <a href="{% url 'donate' %}" class="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-2xl bg-[#c9a84c] hover:bg-[#b59540] text-navy font-bold text-sm shadow-[0_4px_16px_rgba(201,168,76,0.3)] transition-all">
+                <span class="material-symbols-outlined text-xl">favorite</span>
+                <span>Пожертвовать</span>
+            </a>
+            <a href="{% if user.is_authenticated %}{% url 'profile' %}{% else %}{% url 'account_login' %}{% endif %}" class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-white/90 text-sm font-medium transition-all">
+                <span class="material-symbols-outlined text-xl">person</span>
+                <span>{% if user.is_authenticated %}Мой профиль{% else %}Войти в аккаунт{% endif %}</span>
             </a>
         </div>
     </aside>
 
     <script>
     (function() {
-        var burger = document.getElementById('header-mobile-burger') || document.getElementById('desktop-burger');
+        var burger = document.getElementById('header-mobile-burger');
         var sidebar = document.getElementById('left-sidebar');
         var backdrop = document.getElementById('sidebar-backdrop');
-        var line1 = document.getElementById('burger-line-1');
-        var line2 = document.getElementById('burger-line-2');
-        var line3 = document.getElementById('burger-line-3');
-        var open = false;
+        var closeBtn = document.getElementById('sidebar-close-btn');
 
-        function show() {
-            open = true;
-            sidebar.style.transform = 'translateX(0)';
-            backdrop.style.display = 'block';
-            backdrop.style.opacity = '1';
-            backdrop.style.pointerEvents = 'auto';
-            if(line1) line1.style.transform = 'translateY(9px) rotate(45deg)';
-            if(line1) line1.style.width = '28px';
-            if(line2) line2.style.opacity = '0';
-            if(line3) line3.style.transform = 'translateY(-9px) rotate(-45deg)';
-            if(line3) line3.style.width = '28px';
-            if(burger && burger.id === 'desktop-burger') burger.style.mixBlendMode = 'normal';
+        function openDrawer() {
+            if (!sidebar || !backdrop) return;
+            sidebar.classList.add('active');
+            backdrop.classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
 
-        function hide() {
-            open = false;
-            sidebar.style.transform = 'translateX(-100%)';
-            backdrop.style.opacity = '0';
-            backdrop.style.pointerEvents = 'none';
-            if(line1) line1.style.transform = 'none';
-            if(line1) line1.style.width = '32px';
-            line2.style.opacity = '1';
-            line3.style.transform = 'none';
-            line3.style.width = '16px';
-            setTimeout(function() { burger.style.mixBlendMode = 'difference'; }, 300);
-            setTimeout(function() { backdrop.style.display = 'none'; }, 300);
+        function closeDrawer() {
+            if (!sidebar || !backdrop) return;
+            sidebar.classList.remove('active');
+            backdrop.classList.remove('active');
+            document.body.style.overflow = '';
         }
 
         if (burger) {
-            burger.addEventListener('click', function() {
-                if (open) hide(); else show();
+            burger.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                openDrawer();
+            });
+        }
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeDrawer();
             });
         }
         if (backdrop) {
-            backdrop.addEventListener('click', hide);
+            backdrop.addEventListener('click', closeDrawer);
         }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && sidebar && sidebar.classList.contains('active')) {
+                closeDrawer();
+            }
+        });
     })();
     </script>
 

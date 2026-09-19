@@ -22,16 +22,7 @@ def prayer_list(request):
     active_count = qs.filter(is_answered=False).count()
     answered_count = qs.filter(is_answered=True).count()
 
-    # Фильтр по вкладке
-    if tab == 'active':
-        qs = qs.filter(is_answered=False)
-    elif tab == 'answered':
-        qs = qs.filter(is_answered=True)
-
-    # Фильтр по категории
-    if category and category != 'all':
-        qs = qs.filter(category=category)
-
+    # Загружаем все публичные молитвы для мгновенного переключения категорий без перезагрузки
     prayers = qs.order_by('-is_answered', '-created_at')
 
     # Проверяем, какие молитвы уже поддержаны текущим пользователем / сессией
