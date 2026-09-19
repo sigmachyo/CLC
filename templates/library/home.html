@@ -38,7 +38,7 @@
     <!-- Динамический фон -->
     <div class="absolute inset-0 w-full h-full z-0">
         <div class="w-full h-full bg-cover bg-center"
-             style="background-image: url('{% if daily_bg_index == 0 %}https://images.unsplash.com/photo-1497215848520-2ce0495f32a7?q=80&w=1200&auto=format&fit=crop{% elif daily_bg_index == 1 %}https://images.unsplash.com/photo-1447014421976-7fec21d26d86?q=80&w=1200&auto=format&fit=crop{% elif daily_bg_index == 2 %}https://images.unsplash.com/photo-1507692049790-de58290a4334?q=80&w=1200&auto=format&fit=crop{% elif daily_bg_index == 3 %}https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop{% elif daily_bg_index == 4 %}https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=1200&auto=format&fit=crop{% else %}https://images.unsplash.com/photo-1473170611423-22489201d919?q=80&w=1200&auto=format&fit=crop{% endif %}');">
+             style="background-image: url('{{ daily_bg_url }}');">
         </div>
     </div>
     <!-- Плавный градиент для читаемости текста и перехода к секциям внизу -->

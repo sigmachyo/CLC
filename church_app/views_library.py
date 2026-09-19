@@ -14,21 +14,28 @@ def library_home(request):
     podcast_episodes = PodcastEpisode.objects.filter(is_active=True).order_by('order')
     
     today = timezone.localdate()
+    day_of_year = today.toordinal()
     
-    # Сначала ищем стих, привязанный конкретно к сегодняшней дате
+    # 1. Background Logic
+    from .daily_verse_data import UNSPLASH_IDS, VERSES
+    bg_index = day_of_year % len(UNSPLASH_IDS)
+    bg_id = UNSPLASH_IDS[bg_index]
+    daily_bg_url = f"https://images.unsplash.com/photo-{bg_id}?q=80&w=1200&auto=format&fit=crop"
+    
+    # 2. Verse Logic
     daily_verse = DailyVerse.objects.filter(date=today).first()
-    
-    # Если на сегодня стих не назначен, берем любой из базы, 
-    # циклично меняя его каждый день (привязка к дате)
     if not daily_verse:
-        all_verses = DailyVerse.objects.all().order_by('id')
-        count = all_verses.count()
-        if count > 0:
-            index = today.toordinal() % count
-            daily_verse = all_verses[index]
-    
-    # Генерация индекса фона, меняющегося ровно в полночь (Красноярск)
-    bg_index = today.toordinal() % 6
+        # Если в базе нет стиха для конкретной даты, используемFallback из нашего красивого списка
+        verse_index = day_of_year % len(VERSES)
+        verse_data = VERSES[verse_index]
+        
+        # Создаем "mock" объект, чтобы шаблон мог вызывать .verse_text и .reference
+        class MockVerse:
+            def __init__(self, text, reference):
+                self.verse_text = text
+                self.reference = reference
+        
+        daily_verse = MockVerse(verse_data['text'], verse_data['ref'])
     
     context = {
         'categories': categories,
@@ -36,8 +43,9 @@ def library_home(request):
         'kids_content': kids_content,
         'podcast_episodes': podcast_episodes,
         'daily_verse': daily_verse,
-        'daily_bg_index': bg_index,
+        'daily_bg_url': daily_bg_url,
     }
+
     return render(request, 'library/home.html', context)
 def library_category(request, category_slug):
     """Страница категории"""
