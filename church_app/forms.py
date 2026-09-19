@@ -356,21 +356,36 @@ class ChangePasswordForm(forms.Form):
 
 
 class PrayerRequestForm(forms.Form):
-    """Форма добавления молитвенной нужды с базовой санитацией."""
+    """Форма добавления молитвенной нужды с валидацией и соблюдением 152-ФЗ."""
+    CATEGORY_CHOICES = [
+        ('general', 'Общая нужда'),
+        ('health', 'Здоровье и исцеление'),
+        ('family', 'Семья и дети'),
+        ('spiritual', 'Духовная жизнь и вера'),
+        ('finance', 'Работа и финансы'),
+        ('thanks', 'Благодарность Богу'),
+    ]
+
     title = forms.CharField(
         max_length=200,
         label='Тема',
-        widget=forms.TextInput(attrs={'placeholder': 'Тема молитвы'}),
+        widget=forms.TextInput(attrs={'placeholder': 'Кратко суть просьбы (напр. О здоровье бабушки)'}),
         error_messages={
             'required': 'Пожалуйста, укажите тему молитвы.',
             'max_length': 'Тема не должна превышать 200 символов.',
         }
     )
+    category = forms.ChoiceField(
+        choices=CATEGORY_CHOICES,
+        initial='general',
+        label='Категория нужды',
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
     description = forms.CharField(
         label='Описание',
         widget=forms.Textarea(attrs={
             'placeholder': 'Опишите вашу нужду...',
-            'rows': 4,
+            'rows': 5,
         }),
         error_messages={
             'required': 'Пожалуйста, опишите вашу нужду.',
@@ -379,14 +394,26 @@ class PrayerRequestForm(forms.Form):
     is_public = forms.BooleanField(
         required=False,
         initial=True,
-        label='Показывать публично на молитвенной стене',
+        label='Разместить на публичной стене церкви',
+    )
+    is_anonymous = forms.BooleanField(
+        required=False,
+        initial=False,
+        label='Опубликовать анонимно (не указывать имя/никнейм)',
+    )
+    consent_152fz = forms.BooleanField(
+        required=True,
+        initial=True,
+        label='Согласие на обработку персональных данных (152-ФЗ)',
+        error_messages={
+            'required': 'Для отправки нужды необходимо подтвердить согласие на обработку данных.'
+        }
     )
 
     def clean_title(self):
         title = self.cleaned_data['title'].strip()
         if len(title) < 3:
             raise ValidationError('Тема должна содержать минимум 3 символа.')
-        # Простая защита от спама
         if len(title) > 200:
             raise ValidationError('Тема слишком длинная.')
         return title

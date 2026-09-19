@@ -11,10 +11,11 @@ urlpatterns = [
     path('accounts/api/check-username/', views_auth.check_username_api, name='api_check_username'),
     path('accounts/api/check-email/', views_auth.check_email_api, name='api_check_email'),
 
-    # path('register/', views.register_view, name='register'),
-    # path('login/', views.login_view, name='login'),
-    # path('logout/', views.logout_view, name='logout'),
-    path('password-reset/', TemplateView.as_view(template_name='password_reset.html'), name='password_reset'),
+    # Обратная совместимость для ссылок login, register, logout
+    path('login/', RedirectView.as_view(pattern_name='account_login', permanent=False), name='login'),
+    path('register/', RedirectView.as_view(pattern_name='account_signup', permanent=False), name='register'),
+    path('logout/', RedirectView.as_view(pattern_name='account_logout', permanent=False), name='logout'),
+    path('password-reset/', RedirectView.as_view(pattern_name='account_reset_password', permanent=False), name='password_reset'),
 
     path('profile/', views.profile_view, name='profile'),
     path('profile/edit/', views.profile_edit_view, name='profile_edit'),

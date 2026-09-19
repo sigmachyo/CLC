@@ -1,108 +1,272 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Молитвенная стена{% endblock %}
-{% block main_class %}flex-grow relative bg-background-light{% endblock %}
+
+{% block title %}{{ title|default:"Молитвенная стена | KCLC" }}{% endblock %}
+
+{% block main_class %}flex-grow relative bg-[#faf8f5]{% endblock %}
+
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 pb-24">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-24">
+
+    <!-- Flash-сообщения -->
     {% if messages %}
     <div class="mb-8 space-y-3">
         {% for message in messages %}
-        <div class="bg-success/10 border-l-4 border-success text-success p-4 rounded-r-lg flex items-center shadow-sm">
-            <span class="material-symbols-outlined mr-3">check_circle</span>
-            <span class="font-medium">{{ message }}</span>
+        <div class="bg-white/80 backdrop-blur-md border-l-4 border-[#c9a84c] text-navy p-4 rounded-2xl shadow-sm flex items-center gap-3">
+            <span class="material-symbols-outlined text-[#c9a84c]">check_circle</span>
+            <span class="font-medium text-sm sm:text-base">{{ message }}</span>
         </div>
         {% endfor %}
     </div>
     {% endif %}
-    <div class="text-center mb-12">
-        <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary/10 text-primary mb-6 shadow-inner">
-            <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">front_hand</span>
+
+    <!-- Заголовок и библейский стих -->
+    <div class="text-center mb-12 sm:mb-16">
+        <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-[#c9a84c]/10 text-[#c9a84c] mb-6 shadow-sm border border-[#c9a84c]/20">
+            <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
         </div>
-        <h1 class="text-4xl sm:text-5xl font-display font-bold text-navy mb-4">Молитвенная стена</h1>
-        <p class="text-txt-sub text-lg max-w-2xl mx-auto">Поддержите братьев и сестер в молитве или оставьте свою нужду. Вместе мы сильнее.</p>
+        <h1 class="text-4xl sm:text-5xl font-serif font-bold text-navy mb-4 tracking-tight">
+            Молитвенная стена
+        </h1>
+        <p class="text-navy/70 text-base sm:text-lg max-w-2xl mx-auto font-serif italic mb-4 leading-relaxed">
+            «Не заботьтесь ни о чем, но всегда в молитве и прошении с благодарением открывайте свои желания пред Богом»
+        </p>
+        <p class="text-xs sm:text-sm font-bold text-[#c9a84c] uppercase tracking-[0.2em]">
+            К Филиппийцам 4:6
+        </p>
     </div>
-    <div class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white/60 backdrop-blur-md px-6 py-4 rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-navy/5 mb-10">
-        <div class="flex items-center gap-2">
-            <span class="text-navy font-bold text-lg">Публичные нужды</span>
-            <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-bold">{{ prayers.count }}</span>
-        </div>
-        <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">
-            {% if user.is_authenticated %}
-            <a href="{% url 'my_prayers' %}" class="px-5 py-2.5 rounded-xl font-bold text-txt-sub hover:text-navy hover:bg-white border border-transparent hover:border-gray-200 transition-all">
-                Мои нужды
+
+    <!-- Верхняя панель: Статистика и кнопки действий -->
+    <div class="bg-white/70 backdrop-blur-xl border border-white/60 p-5 sm:p-6 rounded-[2rem] shadow-[0_8px_30px_rgba(0,0,0,0.04)] mb-8 flex flex-col md:flex-row items-center justify-between gap-5">
+        
+        <!-- Вкладки (Все / Активные / Отвеченные) -->
+        <div class="flex items-center p-1.5 bg-navy/5 rounded-2xl w-full md:w-auto overflow-x-auto no-scrollbar">
+            <a href="?tab=all{% if current_category != 'all' %}&category={{ current_category }}{% endif %}" 
+               class="px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all whitespace-nowrap {% if current_tab == 'all' %}bg-white text-navy shadow-sm{% else %}text-navy/60 hover:text-navy{% endif %}">
+                Все нужды <span class="ml-1 opacity-60">({{ total_public }})</span>
             </a>
-            <a href="{% url 'prayer_add' %}" class="flex items-center gap-2 bg-primary hover:bg-primary-hover text-navy font-bold px-6 py-2.5 rounded-xl shadow-[0_4px_12px_rgba(201,168,76,0.3)] transition-all hover:-translate-y-0.5 active:scale-95">
-                <span class="material-symbols-outlined text-xl font-bold">add</span>
+            <a href="?tab=active{% if current_category != 'all' %}&category={{ current_category }}{% endif %}" 
+               class="px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all whitespace-nowrap {% if current_tab == 'active' %}bg-white text-navy shadow-sm{% else %}text-navy/60 hover:text-navy{% endif %}">
+                Ожидают молитвы <span class="ml-1 opacity-60">({{ active_count }})</span>
+            </a>
+            <a href="?tab=answered{% if current_category != 'all' %}&category={{ current_category }}{% endif %}" 
+               class="px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all whitespace-nowrap {% if current_tab == 'answered' %}bg-white text-emerald-700 shadow-sm{% else %}text-navy/60 hover:text-emerald-700{% endif %} flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span>Отвечено</span>
+                <span class="ml-1 opacity-60">({{ answered_count }})</span>
+            </a>
+        </div>
+
+        <!-- Кнопки действий -->
+        <div class="flex items-center gap-3 w-full md:w-auto justify-end">
+            {% if user.is_authenticated %}
+            <a href="{% url 'my_prayers' %}" class="px-5 py-3 rounded-2xl font-bold text-sm text-navy/70 hover:text-navy bg-white hover:bg-white/80 border border-navy/10 transition-all shadow-sm flex items-center gap-2">
+                <span class="material-symbols-outlined text-lg">book</span>
+                <span>Мои нужды</span>
+            </a>
+            <a href="{% url 'prayer_add' %}" class="flex items-center gap-2 bg-[#c9a84c] hover:bg-[#b59540] text-white font-bold px-6 py-3 rounded-2xl shadow-[0_4px_16px_rgba(201,168,76,0.3)] transition-all hover:-translate-y-0.5 active:translate-y-0 text-sm">
+                <span class="material-symbols-outlined text-xl">add</span>
                 <span>Оставить нужду</span>
             </a>
             {% else %}
-            <a href="{% url 'login' %}?next={% url 'prayer_add' %}" class="flex items-center gap-2 bg-primary hover:bg-primary-hover text-navy font-bold px-6 py-2.5 rounded-xl shadow-[0_4px_12px_rgba(201,168,76,0.3)] transition-all hover:-translate-y-0.5 active:scale-95">
+            <a href="{% url 'account_login' %}?next={% url 'prayer_add' %}" class="flex items-center gap-2 bg-[#c9a84c] hover:bg-[#b59540] text-white font-bold px-6 py-3 rounded-2xl shadow-[0_4px_16px_rgba(201,168,76,0.3)] transition-all hover:-translate-y-0.5 active:translate-y-0 text-sm">
                 <span class="material-symbols-outlined text-xl">login</span>
-                <span>Войти для добавления</span>
+                <span>Войти и оставить нужду</span>
             </a>
             {% endif %}
         </div>
     </div>
+
+    <!-- Чипсы категорий -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar">
+        <a href="?tab={{ current_tab }}&category=all" 
+           class="px-4 py-2 rounded-full text-xs font-bold transition-all border whitespace-nowrap {% if current_category == 'all' or not current_category %}bg-navy text-white border-navy shadow-sm{% else %}bg-white/70 text-navy/70 border-navy/10 hover:border-navy/30{% endif %}">
+            Все категории
+        </a>
+        {% for cat_code, cat_title in categories %}
+        <a href="?tab={{ current_tab }}&category={{ cat_code }}" 
+           class="px-4 py-2 rounded-full text-xs font-bold transition-all border whitespace-nowrap {% if current_category == cat_code %}bg-navy text-white border-navy shadow-sm{% else %}bg-white/70 text-navy/70 border-navy/10 hover:border-navy/30{% endif %}">
+            {{ cat_title }}
+        </a>
+        {% endfor %}
+    </div>
+
+    <!-- Сетка молитвенных нужд -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8">
         {% for prayer in prayers %}
-        <div class="group relative flex flex-col bg-white rounded-3xl p-6 sm:p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-navy/5 transition-all duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:-translate-y-1.5 focus-within:ring-2 focus-within:ring-primary/50
-            {% if prayer.is_answered %}bg-primary/5 border-primary/20{% endif %}">
+        <div class="group relative flex flex-col bg-white rounded-3xl p-6 sm:p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-navy/5 transition-all duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:-translate-y-1.5 {% if prayer.is_answered %}ring-2 ring-emerald-400/40 bg-gradient-to-b from-emerald-50/20 to-white{% endif %}">
+            
+            <!-- Бейдж "Отвечено" -->
             {% if prayer.is_answered %}
-            <div class="absolute -top-3 -right-3 bg-gradient-to-r from-success to-[#2ecc71] text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-md flex items-center gap-1.5 z-10 animate-fade-in-up">
-                <span class="material-symbols-outlined text-[14px] font-bold">check</span>
-                Отвечено
+            <div class="absolute -top-3 -right-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-3.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider shadow-md flex items-center gap-1.5 z-10">
+                <span class="material-symbols-outlined text-[14px]">auto_awesome</span>
+                <span>Бог ответил!</span>
             </div>
             {% endif %}
-            <div class="flex-grow">
-                <h3 class="text-xl font-bold text-navy mb-3 leading-snug group-hover:text-primary transition-colors">{{ prayer.title }}</h3>
-                <p class="text-txt-sub text-sm leading-relaxed mb-6">{{ prayer.description|linebreaksbr }}</p>
+
+            <!-- Категория -->
+            <div class="flex items-center justify-between mb-4">
+                <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-[#c9a84c]/10 text-[#a07c24] border border-[#c9a84c]/20">
+                    <span class="material-symbols-outlined text-[13px]">tag</span>
+                    <span>{{ prayer.get_category_display }}</span>
+                </span>
+                <span class="text-xs font-medium text-navy/50 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[14px]">schedule</span>
+                    {{ prayer.created_at|date:"d.m.Y" }}
+                </span>
             </div>
-            <div class="flex flex-col mt-auto pt-5 border-t border-gray-100 gap-4">
-                <div class="flex items-center justify-between text-xs font-semibold text-txt-sub">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-7 h-7 rounded-full bg-navy/5 flex items-center justify-center text-navy shrink-0">
-                            <span class="material-symbols-outlined text-[14px]">person</span>
+
+            <!-- Текст нужды -->
+            <div class="flex-grow">
+                <h3 class="text-xl font-bold font-serif text-navy mb-3 leading-snug group-hover:text-[#c9a84c] transition-colors">
+                    {{ prayer.title }}
+                </h3>
+                <p class="text-navy/70 text-sm leading-relaxed mb-6 whitespace-pre-line font-normal">
+                    {{ prayer.description }}
+                </p>
+            </div>
+
+            <!-- Подвал карточки -->
+            <div class="flex flex-col mt-auto pt-5 border-t border-navy/5 gap-4">
+                
+                <!-- Автор (Соблюдение 152-ФЗ и анонимность) -->
+                <div class="flex items-center justify-between text-xs font-medium text-navy/60">
+                    <div class="flex items-center gap-2">
+                        {% if prayer.is_anonymous %}
+                        <div class="w-7 h-7 rounded-full bg-navy/5 text-navy/60 flex items-center justify-center shrink-0" title="Анонимная просьба защищена политикой конфиденциальности">
+                            <span class="material-symbols-outlined text-[15px]">security</span>
                         </div>
-                        <span class="truncate max-w-[100px]">{{ prayer.user.username }}</span>
+                        <span class="italic text-navy/60 font-semibold">Анонимная нужда</span>
+                        {% else %}
+                        <div class="w-7 h-7 rounded-full bg-[#c9a84c]/15 text-[#c9a84c] flex items-center justify-center font-bold text-xs shrink-0">
+                            {{ prayer.user.username|first|upper }}
+                        </div>
+                        <span class="font-semibold text-navy truncate max-w-[130px]">{{ prayer.user.username }}</span>
+                        {% endif %}
                     </div>
-                    <div class="flex items-center gap-1.5 opacity-70">
-                        <span class="material-symbols-outlined text-[14px]">schedule</span>
-                        <span>{{ prayer.created_at|date:"d.m.Y" }}</span>
+
+                    <div class="flex items-center gap-1 text-navy/60 font-semibold text-xs">
+                        <span class="material-symbols-outlined text-sm text-[#c9a84c]">groups</span>
+                        <span>Молятся: <strong class="text-navy" id="prayer-count-val-{{ prayer.id }}">{{ prayer.prayer_count }}</strong></span>
                     </div>
                 </div>
+
+                <!-- Кнопка "Я молюсь" (с поддержкой AJAX) -->
                 <div class="mt-1">
-                    {% if not prayer.is_answered and user.is_authenticated %}
-                    <form method="post" action="{% url 'prayer_support' prayer.id %}">
-                        {% csrf_token %}
-                        <button type="submit" class="w-full flex justify-center items-center gap-2 py-2.5 rounded-xl text-primary font-bold bg-primary/10 hover:bg-primary hover:text-white transition-all duration-300 active:scale-[0.98] group/btn">
-                            <span class="material-symbols-outlined text-[18px] group-hover/btn:scale-110 transition-transform">front_hand</span>
-                            <span>Я молюсь ({{ prayer.prayer_count }})</span>
-                        </button>
-                    </form>
+                    {% if prayer.id in supported_ids %}
+                    <button type="button" disabled class="w-full flex justify-center items-center gap-2 py-3 rounded-2xl font-bold text-sm bg-emerald-500/10 text-emerald-700 border border-emerald-500/20 cursor-default">
+                        <span class="material-symbols-outlined text-base">check_circle</span>
+                        <span>Вы помолились</span>
+                    </button>
                     {% else %}
-                    <div class="w-full flex justify-center items-center gap-2 py-2.5 rounded-xl text-txt-sub font-semibold bg-gray-50 border border-gray-100">
-                        <span class="material-symbols-outlined text-[18px]">groups</span>
-                        <span>Уже молятся: <span class="text-navy font-bold ml-1">{{ prayer.prayer_count }}</span></span>
-                    </div>
+                    <button type="button" 
+                            onclick="submitSupport({{ prayer.id }}, this)" 
+                            class="w-full flex justify-center items-center gap-2 py-3 rounded-2xl text-[#c9a84c] hover:text-white font-bold text-sm bg-[#c9a84c]/10 hover:bg-[#c9a84c] transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 group/btn cursor-pointer">
+                        <span class="material-symbols-outlined text-lg group-hover/btn:scale-125 transition-transform" style="font-variation-settings: 'FILL' 1;">favorite</span>
+                        <span>Я молюсь</span>
+                    </button>
                     {% endif %}
                 </div>
             </div>
         </div>
         {% empty %}
         <div class="col-span-full">
-            <div class="bg-white rounded-[2rem] p-12 text-center border border-dashed border-gray-200">
-                <div class="w-24 h-24 mx-auto bg-gray-50 rounded-full flex items-center justify-center mb-6">
-                    <span class="material-symbols-outlined text-5xl text-primary" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+            <div class="bg-white/80 backdrop-blur-md rounded-[2.5rem] p-12 sm:p-16 text-center border border-dashed border-navy/15 max-w-xl mx-auto shadow-sm">
+                <div class="w-20 h-20 mx-auto bg-[#c9a84c]/10 rounded-full flex items-center justify-center mb-6 text-[#c9a84c]">
+                    <span class="material-symbols-outlined text-4xl">hourglass_empty</span>
                 </div>
-                <h3 class="text-2xl font-bold text-navy mb-2">Стена пока пуста</h3>
-                <p class="text-txt-sub text-lg mb-8 max-w-md mx-auto">Будьте первым, кто оставит молитвенную нужду. Давайте поддержим друг друга в молитве.</p>
-                <a href="{% url 'prayer_add' %}" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-hover text-navy font-bold px-8 py-3.5 rounded-xl shadow-lg transition-all hover:-translate-y-1">
+                <h3 class="text-2xl font-serif font-bold text-navy mb-3">В этом разделе пока нет нужд</h3>
+                <p class="text-navy/60 text-sm sm:text-base mb-8 leading-relaxed">
+                    Будьте первым, кто оставит молитвенную нужду, или выберите другую категорию.
+                </p>
+                {% if user.is_authenticated %}
+                <a href="{% url 'prayer_add' %}" class="inline-flex items-center gap-2 bg-[#c9a84c] hover:bg-[#b59540] text-white font-bold px-8 py-3.5 rounded-2xl shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5">
                     <span class="material-symbols-outlined text-xl">add</span>
-                    Создать просьбу
+                    <span>Оставить нужду</span>
                 </a>
+                {% else %}
+                <a href="{% url 'account_login' %}?next={% url 'prayer_add' %}" class="inline-flex items-center gap-2 bg-[#c9a84c] hover:bg-[#b59540] text-white font-bold px-8 py-3.5 rounded-2xl shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5">
+                    <span class="material-symbols-outlined text-xl">login</span>
+                    <span>Войти и оставить нужду</span>
+                </a>
+                {% endif %}
             </div>
         </div>
         {% endfor %}
     </div>
 </div>
+
+<!-- Всплывающее уведомление (Toast) -->
+<div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+<script>
+// AJAX отправка поддержки молитвы
+function submitSupport(prayerId, btn) {
+    btn.disabled = true;
+    const originalContent = btn.innerHTML;
+    btn.innerHTML = '<span class="material-symbols-outlined text-base animate-spin">progress_activity</span>';
+
+    fetch(`/prayer/${prayerId}/support/`, {
+        method: 'POST',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': getCookie('csrftoken')
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success || data.already_supported) {
+            btn.className = "w-full flex justify-center items-center gap-2 py-3 rounded-2xl font-bold text-sm bg-emerald-500/10 text-emerald-700 border border-emerald-500/20 cursor-default";
+            btn.innerHTML = '<span class="material-symbols-outlined text-base">check_circle</span><span>Вы помолились</span>';
+            
+            const countEl = document.getElementById(`prayer-count-val-${prayerId}`);
+            if (countEl && data.count !== undefined) {
+                countEl.textContent = data.count;
+            }
+            showToast(data.message || 'Спасибо за молитвенную поддержку!');
+        } else {
+            btn.disabled = false;
+            btn.innerHTML = originalContent;
+            showToast(data.message || 'Не удалось отправить молитву');
+        }
+    })
+    .catch(err => {
+        btn.disabled = false;
+        btn.innerHTML = originalContent;
+        showToast('Произошла ошибка при отправке.');
+    });
+}
+
+function showToast(msg) {
+    const container = document.getElementById('toast-container');
+    const toast = document.createElement('div');
+    toast.className = "bg-navy text-white px-5 py-3 rounded-2xl shadow-xl flex items-center gap-2 text-sm font-medium transform translate-y-4 opacity-0 transition-all duration-300 pointer-events-auto border border-white/10";
+    toast.innerHTML = `<span class="material-symbols-outlined text-base text-[#c9a84c]">favorite</span><span>${msg}</span>`;
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.classList.remove('translate-y-4', 'opacity-0');
+    }, 10);
+
+    setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+    }, 3500);
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
 {% endblock %}

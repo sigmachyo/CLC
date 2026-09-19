@@ -14,3 +14,4 @@ def oauth_providers_status(request):
         'oauth_vk_ready': bool(vk_id and vk_id != 'change-me'),
         'oauth_yandex_ready': bool(yandex_id and yandex_id != 'change-me'),
     }
+

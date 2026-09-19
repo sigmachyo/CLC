@@ -417,12 +417,24 @@ class PrayerRequestManager(models.Manager):
 
 class PrayerRequest(models.Model):
     """Молитвенная нужда"""
+    PRAYER_CATEGORIES = [
+        ('general', 'Общая нужда'),
+        ('health', 'Здоровье и исцеление'),
+        ('family', 'Семья и дети'),
+        ('spiritual', 'Духовная жизнь'),
+        ('finance', 'Работа и финансы'),
+        ('thanks', 'Благодарность Богу'),
+    ]
+
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь")
     title = models.CharField(max_length=200, verbose_name="Тема молитвы")
     description = models.TextField(verbose_name="Описание нужды")
+    category = models.CharField(max_length=30, choices=PRAYER_CATEGORIES, default='general', verbose_name="Категория")
     is_answered = models.BooleanField(default=False, verbose_name="Получен ответ")
     prayer_count = models.IntegerField(default=0, verbose_name="Сколько человек молится")
     is_public = models.BooleanField(default=True, verbose_name="Публичная просьба")
+    is_anonymous = models.BooleanField(default=False, verbose_name="Анонимная просьба")
+    supporters = models.ManyToManyField(User, related_name='supported_prayers', blank=True, verbose_name="Кто поддержал в молитве")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Создана")
     answered_at = models.DateTimeField(null=True, blank=True, verbose_name="Дата ответа")
     
@@ -434,7 +446,12 @@ class PrayerRequest(models.Model):
         verbose_name_plural = "Молитвенные нужды"
 
     def __str__(self):
-        return f"{self.title} - {self.user.username}"
+        return f"{self.title} - {self.get_author_display()}"
+
+    def get_author_display(self):
+        if self.is_anonymous:
+            return "Анонимная просьба"
+        return self.user.username
 
 class PushSubscription(models.Model):
     """Подписка на Web Push уведомления"""
