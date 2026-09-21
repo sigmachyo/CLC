@@ -28,7 +28,6 @@
                 <option value="{% url 'events_list' %}" class="bg-[#1a2133] text-white">Все типы</option>
                 <option value="?type=service" class="bg-[#1a2133] text-white" {% if current_filter.type == 'service' %}selected{% endif %}>Богослужения</option>
                 <option value="?type=youth" class="bg-[#1a2133] text-white" {% if current_filter.type == 'youth' %}selected{% endif %}>Молодежка</option>
-                <option value="?type=kids" class="bg-[#1a2133] text-white" {% if current_filter.type == 'kids' %}selected{% endif %}>Детское</option>
                 <option value="?type=study" class="bg-[#1a2133] text-white" {% if current_filter.type == 'study' %}selected{% endif %}>Библейские уроки</option>
                 <option value="?type=prayer" class="bg-[#1a2133] text-white" {% if current_filter.type == 'prayer' %}selected{% endif %}>Молитвенные</option>
                 <option value="?type=special" class="bg-[#1a2133] text-white" {% if current_filter.type == 'special' %}selected{% endif %}>Особые</option>

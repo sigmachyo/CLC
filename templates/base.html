@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>{% block title %}Главная{% endblock %} | KCLC — Церковь Христианской Жизни</title>
     {% load static %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,6 +39,8 @@
               "secondary": "#1a272d",
               "accent-gold": "#c9a84c",
               "navy-dark": "#1a1f36",
+              "txt-sub": "#3d4260",
+              "txt-muted": "#8b8fa8",
             },
             fontFamily: {
               "display": ["Public Sans", "sans-serif"],
@@ -101,6 +104,16 @@
       #left-sidebar.active {
         transform: translateX(0);
       }
+      /* Защита от горизонтального сдвига всей страницы на мобильных */
+      html, body {
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
+        position: relative;
+      }
+      main, .main-content {
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
+      }
     </style>
     {% block extra_css %}{% endblock %}
     <link rel="stylesheet" href="{% static 'css/base.css' %}?v=1.4">
@@ -123,6 +136,26 @@
 </head>
 <body>
     <div style="display: none;">{% csrf_token %}</div>
+
+    <!-- Global Floating Toast Notification System (Auto-dismissing Apple/Glass Style) -->
+    <div id="global-toast-container" class="fixed top-20 right-4 sm:right-6 z-[9999] pointer-events-none flex flex-col gap-2.5 max-w-sm sm:max-w-md w-full" aria-live="polite">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="global-toast pointer-events-auto bg-[#0e1422]/95 backdrop-blur-2xl border border-white/15 text-white shadow-[0_12px_40px_rgba(0,0,0,0.5)] rounded-2xl p-3.5 sm:p-4 flex items-center justify-between gap-3 transition-all duration-300" role="alert">
+                <div class="flex items-center gap-2.5 min-w-0">
+                    <span class="material-symbols-outlined text-lg sm:text-xl {% if message.tags == 'error' %}text-red-400{% elif message.tags == 'warning' %}text-amber-400{% else %}text-[#c9a84c]{% endif %} shrink-0">
+                        {% if message.tags == 'error' %}error{% elif message.tags == 'warning' %}warning{% else %}check_circle{% endif %}
+                    </span>
+                    <span class="text-xs sm:text-sm font-medium leading-snug break-words">{{ message }}</span>
+                </div>
+                <button type="button" onclick="this.closest('.global-toast').remove()" class="w-6 h-6 rounded-full bg-white/5 hover:bg-white/10 text-white/50 hover:text-white flex items-center justify-center shrink-0 transition-colors cursor-pointer" aria-label="Закрыть">
+                    <span class="material-symbols-outlined text-sm">close</span>
+                </button>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
     {% include "partials/header.html" %}
 
     <!-- Sidebar Backdrop -->
@@ -142,19 +175,43 @@
 
         <!-- Scrollable Navigation Items -->
         <nav class="flex-1 overflow-y-auto px-4 py-4 space-y-1.5" style="-webkit-overflow-scrolling: touch;">
-            <!-- Основные разделы -->
-            <a href="{% url 'home' %}" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-white/80 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.04] transition-all text-sm font-medium {% if request.path == '/' %}!bg-[#c9a84c]/20 !text-[#c9a84c] !border-[#c9a84c]/30 font-bold{% endif %}">
-                <span class="material-symbols-outlined text-xl text-[#c9a84c]">home</span>
-                <span>Главная</span>
-            </a>
-            <a href="{% url 'library_home' %}" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-white/80 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.04] transition-all text-sm font-medium {% if '/library' in request.path %}!bg-[#c9a84c]/20 !text-[#c9a84c] !border-[#c9a84c]/30 font-bold{% endif %}">
-                <span class="material-symbols-outlined text-xl text-[#c9a84c]">auto_stories</span>
-                <span>Библиотека</span>
-            </a>
-            <a href="{% url 'prayer_list' %}" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-white/80 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.04] transition-all text-sm font-medium {% if '/prayer' in request.path %}!bg-[#c9a84c]/20 !text-[#c9a84c] !border-[#c9a84c]/30 font-bold{% endif %}">
-                <span class="material-symbols-outlined text-xl text-[#c9a84c]">volunteer_activism</span>
-                <span>Молитвенная стена</span>
-            </a>
+            <!-- Раздел Молитва (Dropdown) -->
+            <div class="relative">
+                <button class="w-full flex items-center justify-between px-4 py-3 rounded-2xl text-white/80 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.04] transition-all text-sm font-medium {% if '/prayer' in request.path %}!bg-[#c9a84c]/20 !text-[#c9a84c] !border-[#c9a84c]/30 font-bold{% endif %}" onclick="this.nextElementSibling.classList.toggle('hidden');">
+                    <div class="flex items-center gap-3.5">
+                        <span class="material-symbols-outlined text-xl text-[#c9a84c]">volunteer_activism</span>
+                        <span>Молитва</span>
+                    </div>
+                    <span class="material-symbols-outlined">expand_more</span>
+                </button>
+                <div class="hidden pl-10 pr-4 py-2 space-y-2 mt-1 bg-white/[0.02] rounded-xl border border-white/[0.02]">
+                    <a href="{% url 'prayer_list' %}" class="block text-white/70 hover:text-white text-sm py-1">Молитвенная стена</a>
+                    <a href="{% url 'prayer_add' %}" class="block text-white/70 hover:text-white text-sm py-1">Оставить нужду</a>
+                    <a href="{% url 'my_prayers' %}" class="block text-white/70 hover:text-white text-sm py-1">Мои нужды</a>
+                    <a href="{% url 'revelation_list' %}" class="block text-white/70 hover:text-white text-sm py-1">Откровения и свидетельства</a>
+                    <a href="{% url 'revelation_add' %}" class="block text-white/70 hover:text-white text-sm py-1">Поделиться откровением</a>
+                </div>
+            </div>
+
+            <!-- Раздел Библиотека (Dropdown) -->
+            <div class="relative">
+                <button class="w-full flex items-center justify-between px-4 py-3 rounded-2xl text-white/80 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.04] transition-all text-sm font-medium {% if '/library' in request.path or '/worship' in request.path %}!bg-[#c9a84c]/20 !text-[#c9a84c] !border-[#c9a84c]/30 font-bold{% endif %}" onclick="this.nextElementSibling.classList.toggle('hidden');">
+                    <div class="flex items-center gap-3.5">
+                        <span class="material-symbols-outlined text-xl text-[#c9a84c]">local_library</span>
+                        <span>Библиотека</span>
+                    </div>
+                    <span class="material-symbols-outlined">expand_more</span>
+                </button>
+                <div class="{% if '/library' not in request.path and '/worship' not in request.path %}hidden{% endif %} pl-10 pr-4 py-2 space-y-2 mt-1 bg-white/[0.02] rounded-xl border border-white/[0.02]">
+                    <a href="{% url 'library_home' %}" class="block text-white/70 hover:text-white text-sm py-1">Главная библиотеки</a>
+                    <a href="{% url 'video_list' %}" class="block text-white/70 hover:text-white text-sm py-1">Все видео и проповеди</a>
+                    <a href="{% url 'worship_songs' %}" class="block text-amber-300/90 hover:text-amber-200 text-sm py-1 font-semibold flex items-center justify-between">
+                        <span>Песни прославления</span>
+                        <span class="text-[10px] uppercase px-1.5 py-0.5 rounded bg-red-500/20 text-red-300">Worship</span>
+                    </a>
+                    <a href="{% url 'library_home' %}#sec-podcasts" class="block text-white/70 hover:text-white text-sm py-1">Аудиоподкасты</a>
+                </div>
+            </div>
 
             <div class="h-px bg-white/10 my-3"></div>
 
@@ -184,8 +241,12 @@
                 <span>Домашние группы</span>
             </a>
             <a href="{% url 'regional_churches' %}" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-white/80 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.04] transition-all text-sm font-medium">
-                <span class="material-symbols-outlined text-xl text-white/60">explore</span>
+                <span class="material-symbols-outlined text-xl text-white/60">domain</span>
                 <span>Церкви региона</span>
+            </a>
+            <a href="{% url 'community_map' %}" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-[#c9a84c] hover:text-white bg-[rgba(201,168,76,0.1)] hover:bg-[rgba(201,168,76,0.2)] border border-[rgba(201,168,76,0.3)] transition-all text-sm font-semibold">
+                <span class="material-symbols-outlined text-xl text-[#c9a84c]">explore</span>
+                <span>Интерактивная карта</span>
             </a>
         </nav>
         
@@ -195,9 +256,18 @@
                 <span class="material-symbols-outlined text-xl">favorite</span>
                 <span>Пожертвовать</span>
             </a>
-            <a href="{% if user.is_authenticated %}{% url 'profile' %}{% else %}{% url 'account_login' %}{% endif %}" class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-white/90 text-sm font-medium transition-all">
-                <span class="material-symbols-outlined text-xl">person</span>
-                <span>{% if user.is_authenticated %}Мой профиль{% else %}Войти в аккаунт{% endif %}</span>
+            <a href="{% if user.is_authenticated %}{% url 'profile' %}{% else %}{% url 'account_login' %}{% endif %}" class="w-full flex items-center gap-3 py-2.5 px-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-white/90 text-sm font-medium transition-all">
+                {% if user.is_authenticated and user.profile and user.profile.avatar %}
+                    <img src="{{ user.profile.avatar.url }}" alt="{{ user.profile.get_display_name }}" class="w-8 h-8 rounded-full object-cover shrink-0 ring-1 ring-white/20">
+                {% elif user.is_authenticated and user.profile %}
+                    <div class="w-8 h-8 rounded-full bg-amber-500/20 border border-amber-400/30 flex items-center justify-center text-amber-300 text-xs font-bold shrink-0">{{ user.profile.get_initials }}</div>
+                {% else %}
+                    <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-lg">person</span></div>
+                {% endif %}
+                <div class="flex flex-col text-left overflow-hidden">
+                    <span class="text-sm font-semibold truncate">{% if user.is_authenticated %}{{ user.profile.get_display_name }}{% else %}Войти в аккаунт{% endif %}</span>
+                    {% if user.is_authenticated %}<span class="text-[11px] text-white/50 truncate">Личный кабинет</span>{% endif %}
+                </div>
             </a>
         </div>
     </aside>
@@ -292,5 +362,48 @@
     <script src="{% static 'js/base.js' %}?v=1.4" defer></script>
     <script src="{% static 'js/pwa-install.js' %}" defer></script>
     {% block extra_js %}{% endblock %}
+    <script>
+    (function() {
+        function dismissToast(el) {
+            if (!el) return;
+            el.style.transition = 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)';
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(-12px) scale(0.95)';
+            setTimeout(() => { if (el && el.parentNode) el.remove(); }, 350);
+        }
+
+        // Автоматическое скрытие начальных сообщений через 4 секунды
+        document.querySelectorAll('.global-toast').forEach(toast => {
+            setTimeout(() => dismissToast(toast), 4000);
+        });
+
+        // Глобальный метод для вызова красивых всплывающих уведомлений из JS
+        window.showNotification = function(msg, type = 'info') {
+            const container = document.getElementById('global-toast-container');
+            if (!container) return;
+            const toast = document.createElement('div');
+            const isSuccess = type === 'success';
+            const isError = type === 'error';
+            const isWarning = type === 'warning';
+            const icon = isSuccess ? 'check_circle' : (isError ? 'error' : (isWarning ? 'warning' : 'info'));
+            const iconColor = isSuccess ? 'text-emerald-400' : (isError ? 'text-red-400' : (isWarning ? 'text-amber-400' : 'text-[#c9a84c]'));
+
+            toast.className = 'global-toast pointer-events-auto bg-[#0e1422]/95 backdrop-blur-2xl border border-white/15 text-white shadow-[0_12px_40px_rgba(0,0,0,0.5)] rounded-2xl p-3.5 sm:p-4 flex items-center justify-between gap-3 transition-all duration-300';
+            toast.setAttribute('role', 'alert');
+            toast.innerHTML = `
+                <div class="flex items-center gap-2.5 min-w-0">
+                    <span class="material-symbols-outlined text-lg sm:text-xl ${iconColor} shrink-0">${icon}</span>
+                    <span class="text-xs sm:text-sm font-medium leading-snug break-words">${msg}</span>
+                </div>
+                <button type="button" class="w-6 h-6 rounded-full bg-white/5 hover:bg-white/10 text-white/50 hover:text-white flex items-center justify-center shrink-0 transition-colors cursor-pointer" aria-label="Закрыть">
+                    <span class="material-symbols-outlined text-sm">close</span>
+                </button>
+            `;
+            toast.querySelector('button').addEventListener('click', () => dismissToast(toast));
+            container.appendChild(toast);
+            setTimeout(() => dismissToast(toast), 4000);
+        };
+    })();
+    </script>
 </body>
 </html>

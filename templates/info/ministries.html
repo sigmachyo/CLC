@@ -1,42 +1,756 @@
 {% extends "base.html" %}
-{% block title %}Служения{% endblock %}
+{% load static %}
+
+{% block title %}Хочу служить — Команды церкви KCLC{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ── MINISTRIES PAGE (Apple Dark Glass Theme) ── */
+:root {
+  --min-gold: #c9a84c;
+  --min-bg: #080c14;
+  --min-card: rgba(18, 24, 38, 0.75);
+  --min-border: rgba(255, 255, 255, 0.08);
+}
+
+body {
+  background: var(--min-bg);
+}
+
+.ministries-wrapper {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 100px 24px 80px;
+}
+
+/* Header */
+.min-hero {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 48px;
+}
+
+.min-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--min-gold);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.min-title {
+  font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin: 0 0 16px 0;
+}
+
+.min-desc {
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.6;
+  margin: 0 0 24px 0;
+}
+
+.min-verse {
+  display: inline-block;
+  background: rgba(201, 168, 76, 0.08);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  border-radius: 16px;
+  padding: 14px 22px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.95rem;
+  font-style: italic;
+}
+
+.min-verse strong {
+  color: var(--min-gold);
+  font-style: normal;
+}
+
+/* Category Filter Bar */
+.min-filters {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.min-filter-btn {
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.25s;
+  backdrop-filter: blur(10px);
+}
+
+.min-filter-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.min-filter-btn.active {
+  background: var(--min-gold);
+  color: #080c14;
+  border-color: var(--min-gold);
+  font-weight: 700;
+  box-shadow: 0 4px 16px rgba(201, 168, 76, 0.3);
+}
+
+/* Grid */
+.min-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 24px;
+}
+
+/* Card */
+.min-card {
+  background: var(--min-card);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid var(--min-border);
+  border-radius: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.min-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(201, 168, 76, 0.35);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45);
+}
+
+/* Card Banner / Gradient */
+.min-card-top {
+  height: 120px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  padding: 18px 20px;
+}
+
+.min-card-banner-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.35;
+  transition: transform 0.4s ease;
+}
+
+.min-card:hover .min-card-banner-bg {
+  transform: scale(1.05);
+}
+
+.min-card-gradient-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(18, 24, 38, 0.3) 0%, rgba(18, 24, 38, 0.95) 100%);
+}
+
+.min-icon-wrap {
+  position: relative;
+  z-index: 2;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.min-icon-wrap .material-symbols-outlined {
+  font-size: 28px;
+  color: #fff;
+}
+
+.min-card-badge {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  z-index: 2;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(201, 168, 76, 0.2);
+  color: var(--min-gold);
+  border: 1px solid rgba(201, 168, 76, 0.35);
+  backdrop-filter: blur(10px);
+}
+
+/* Card Content */
+.min-card-body {
+  padding: 18px 22px 22px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.min-card-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 8px 0;
+  line-height: 1.25;
+}
+
+.min-card-desc {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.55;
+  margin: 0 0 16px 0;
+  flex: 1;
+}
+
+/* Requirements & info tags */
+.min-meta-box {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 10px 12px;
+  margin-bottom: 18px;
+  font-size: 12px;
+}
+
+.min-meta-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 4px;
+}
+.min-meta-row:last-child { margin-bottom: 0; }
+
+.min-meta-row .material-symbols-outlined {
+  font-size: 15px;
+  color: var(--min-gold);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* Card Actions */
+.min-card-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.min-btn-apply {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 11px 16px;
+  background: var(--min-gold);
+  color: #080c14;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+.min-btn-apply:hover {
+  background: #deb853;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(201, 168, 76, 0.35);
+}
+
+.min-btn-details {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.min-btn-details:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* ── MODAL (Apple Glass Sheet) ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 8, 15, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-sheet {
+  background: rgba(16, 22, 35, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 28px;
+  max-width: 520px;
+  width: 100%;
+  padding: 32px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+  transform: translateY(20px) scale(0.96);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.modal-overlay.active .modal-sheet {
+  transform: translateY(0) scale(1);
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 20px; right: 20px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.modal-close-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+.modal-heading {
+  font-size: 24px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 6px 0;
+}
+
+.modal-subheading {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0 0 24px 0;
+}
+
+.modal-target-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 12px;
+  background: rgba(201, 168, 76, 0.15);
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  color: var(--min-gold);
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* Form Styles */
+.form-field {
+  margin-bottom: 16px;
+}
+
+.form-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 6px;
+}
+
+.form-field label .req {
+  color: #f87171;
+}
+
+.form-field input, .form-field textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 12px 16px;
+  color: #fff;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.form-field input:focus, .form-field textarea:focus {
+  border-color: var(--min-gold);
+  background: rgba(255, 255, 255, 0.09);
+  box-shadow: 0 0 14px rgba(201, 168, 76, 0.2);
+}
+
+.form-field textarea {
+  resize: vertical;
+  min-height: 84px;
+}
+
+.modal-submit-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 16px;
+  background: var(--min-gold);
+  color: #080c14;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.modal-submit-btn:hover {
+  background: #deb853;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 25px rgba(201, 168, 76, 0.35);
+}
+
+.modal-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.modal-footnote {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+  text-align: center;
+  margin-top: 14px;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .ministries-wrapper {
+    padding: 84px 16px 60px;
+  }
+  .min-grid {
+    grid-template-columns: 1fr;
+  }
+  .modal-sheet {
+    padding: 24px 20px;
+  }
+}
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="max-w-[1200px] mx-auto px-6 py-16">
-    <div class="text-center mb-16">
-        <h1 class="text-4xl md:text-5xl font-black text-navy mb-4 uppercase tracking-tighter">Служения церкви</h1>
-        <p class="text-lg text-navy/60 max-w-2xl mx-auto">Мы верим, что каждый человек наделен уникальными дарами для служения Богу и людям.</p>
+<div class="ministries-wrapper">
+  
+  <!-- Hero Section -->
+  <header class="min-hero">
+    <span class="min-eyebrow">
+      <span class="material-symbols-outlined" style="font-size:16px;">volunteer_activism</span>
+      СЛУЖЕНИЯ ЦЕРКВИ
+    </span>
+    <h1 class="min-title">Хочу служить</h1>
+    <p class="min-desc">
+      Церковь — это живое тело Христа, где каждый человек наделен уникальными дарами и призванием. Найдите команду по сердцу и служите Богу вместе с нами!
+    </p>
+    <div class="min-verse">
+      «Служите друг другу, каждый тем даром, какой получил, как добрые домостроители многоразличной благодати Божией»
+      <br><strong>(1 Петра 4:10)</strong>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-navy/5 flex flex-col items-center p-8 text-center">
-            <span class="material-symbols-outlined text-primary text-6xl mb-4">volunteer_activism</span>
-            <h3 class="text-2xl font-bold text-navy mb-3">Социальное служение</h3>
-            <p class="text-navy/70 text-sm mb-6 flex-grow">Помощь и поддержка нуждающимся: кормление бездомных, посещение детских домов и больниц, помощь многодетным семьям.</p>
+  </header>
+
+  <!-- Category Filter Pills -->
+  <nav class="min-filters" id="minFilterBar">
+    <button type="button" class="min-filter-btn active" data-cat="all">Все команды</button>
+    <button type="button" class="min-filter-btn" data-cat="worship">Прославление</button>
+    <button type="button" class="min-filter-btn" data-cat="media">Медиа и звук</button>
+    <button type="button" class="min-filter-btn" data-cat="youth">Молодёжь</button>
+    <button type="button" class="min-filter-btn" data-cat="kids">Детское</button>
+    <button type="button" class="min-filter-btn" data-cat="social">Милосердие</button>
+    <button type="button" class="min-filter-btn" data-cat="care">Порядок и гостеприимство</button>
+    <button type="button" class="min-filter-btn" data-cat="alpha">Альфа и наставничество</button>
+  </nav>
+
+  <!-- Ministries Cards Grid -->
+  <div class="min-grid" id="minGrid">
+    {% for m in ministries %}
+    <article class="min-card" data-cat="{{ m.category }}">
+      
+      <!-- Top banner with icon -->
+      <div class="min-card-top" style="background: {{ m.gradient_css|default:'linear-gradient(135deg, #1e293b, #0f172a)' }};">
+        {% if m.image %}
+        <div class="min-card-banner-bg" style="background-image: url('{{ m.image.url }}');"></div>
+        {% endif %}
+        <div class="min-card-gradient-overlay"></div>
+        
+        <div class="min-icon-wrap">
+          <span class="material-symbols-outlined">{{ m.icon|default:"favorite" }}</span>
         </div>
-        <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-navy/5 flex flex-col items-center p-8 text-center">
-            <span class="material-symbols-outlined text-primary text-6xl mb-4">library_music</span>
-            <h3 class="text-2xl font-bold text-navy mb-3">Прославление</h3>
-            <p class="text-navy/70 text-sm mb-6 flex-grow">Служение левитов: музыкальная и вокальная команда, ведущая церковь в поклонении во время собраний.</p>
+
+        {% if m.badge %}
+        <span class="min-card-badge">{{ m.badge }}</span>
+        {% endif %}
+      </div>
+
+      <!-- Body -->
+      <div class="min-card-body">
+        <h2 class="min-card-title">{{ m.title }}</h2>
+        <p class="min-card-desc">{{ m.short_description }}</p>
+
+        <!-- Meta info -->
+        <div class="min-meta-box">
+          {% if m.schedule_info %}
+          <div class="min-meta-row">
+            <span class="material-symbols-outlined">schedule</span>
+            <span>{{ m.schedule_info }}</span>
+          </div>
+          {% endif %}
+          {% if m.requirements %}
+          <div class="min-meta-row">
+            <span class="material-symbols-outlined">verified</span>
+            <span><strong>Требования:</strong> {{ m.requirements|truncatechars:70 }}</span>
+          </div>
+          {% endif %}
+          {% if m.leader_name %}
+          <div class="min-meta-row">
+            <span class="material-symbols-outlined">person</span>
+            <span>Лидер: {{ m.leader_name }}</span>
+          </div>
+          {% endif %}
         </div>
-        <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-navy/5 flex flex-col items-center p-8 text-center">
-            <span class="material-symbols-outlined text-primary text-6xl mb-4">child_care</span>
-            <h3 class="text-2xl font-bold text-navy mb-3">Детское служение (Царские охотники)</h3>
-            <p class="text-navy/70 text-sm mb-6 flex-grow">Воскресная школа, воспитание детей в христианских ценностях, организация детских лагерей и праздников.</p>
+
+        <!-- Actions -->
+        <div class="min-card-actions">
+          <button type="button" 
+                  class="min-btn-apply" 
+                  onclick="openApplyModal('{{ m.slug }}', '{{ m.title|escapejs }}', '{{ m.icon|default:'favorite' }}')">
+            <span class="material-symbols-outlined" style="font-size:16px;">how_to_reg</span>
+            <span>Присоединиться</span>
+          </button>
+          <a href="{% url 'ministry_detail' slug=m.slug %}" class="min-btn-details">
+            <span>Подробнее</span>
+          </a>
         </div>
-        <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-navy/5 flex flex-col items-center p-8 text-center">
-            <span class="material-symbols-outlined text-primary text-6xl mb-4">sports_esports</span>
-            <h3 class="text-2xl font-bold text-navy mb-3">Молодежное служение</h3>
-            <p class="text-navy/70 text-sm mb-6 flex-grow">Современное, динамичное поклонение, актуальные слова и общение для молодого поколения. Встречи каждую субботу.</p>
-        </div>
-        <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-navy/5 flex flex-col items-center p-8 text-center">
-            <span class="material-symbols-outlined text-primary text-6xl mb-4">movie</span>
-            <h3 class="text-2xl font-bold text-navy mb-3">Медиа служение</h3>
-            <p class="text-navy/70 text-sm mb-6 flex-grow">Организация трансляций, видеосъемка, работа со звуком и светом, создание контента для социальных сетей.</p>
-        </div>
-        <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-navy/5 flex flex-col items-center p-8 text-center">
-            <span class="material-symbols-outlined text-primary text-6xl mb-4">diversity_1</span>
-            <h3 class="text-2xl font-bold text-navy mb-3">Служение порядка</h3>
-            <p class="text-navy/70 text-sm mb-6 flex-grow">Обеспечение комфорта, безопасности и порядка во время богослужений, встреча гостей церкви.</p>
-        </div>
+
+      </div>
+
+    </article>
+    {% empty %}
+    <div style="grid-column: 1 / -1; text-align:center; padding:60px 20px; color:rgba(255,255,255,0.5);">
+      <p>Список служений обновляется. Загляните позже!</p>
     </div>
+    {% endfor %}
+  </div>
+
 </div>
+
+<!-- ═══ APPLICATION MODAL (1-Click with user pre-fill) ═══ -->
+<div class="modal-overlay" id="applyModalOverlay" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal-sheet">
+    <button type="button" class="modal-close-btn" onclick="closeApplyModal()" aria-label="Закрыть">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+
+    <h2 class="modal-heading">Подать заявку в команду</h2>
+    <p class="modal-subheading">Заполните контактные данные, и лидер служения свяжется с вами для знакомства.</p>
+
+    <div class="modal-target-badge" id="modalTargetBadge">
+      <span class="material-symbols-outlined" id="modalTargetIcon" style="font-size:18px;">favorite</span>
+      <span id="modalTargetTitle">Служение</span>
+    </div>
+
+    <form id="applyMinistryForm" onsubmit="handleMinistryApply(event)">
+      {% csrf_token %}
+      <input type="hidden" id="applyMinistrySlug" name="ministry_slug" value="">
+
+      <div class="form-field">
+        <label for="applyName">Ваше имя и фамилия <span class="req">*</span></label>
+        <input type="text" id="applyName" name="name" required placeholder="Иван Иванов" value="{{ user_initials.name|default:'' }}">
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div class="form-field">
+          <label for="applyPhone">Телефон <span class="req">*</span></label>
+          <input type="tel" id="applyPhone" name="phone" required placeholder="+7 (999) 000-00-00" value="{{ user_initials.phone|default:'' }}">
+        </div>
+        <div class="form-field">
+          <label for="applyTelegram">Telegram</label>
+          <input type="text" id="applyTelegram" name="telegram" placeholder="@username" value="{{ user_initials.telegram|default:'' }}">
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="applyEmail">Email</label>
+        <input type="email" id="applyEmail" name="email" placeholder="example@mail.ru" value="{{ user_initials.email|default:'' }}">
+      </div>
+
+      <div class="form-field">
+        <label for="applyMessage">О себе и ваших навыках</label>
+        <textarea id="applyMessage" name="message" placeholder="Расскажите о своем опыте, почему вас привлекает это служение..."></textarea>
+      </div>
+
+      <button type="submit" class="modal-submit-btn" id="applySubmitBtn">
+        <span class="material-symbols-outlined">send</span>
+        <span>Отправить заявку</span>
+      </button>
+
+      <p class="modal-footnote">
+        Отправляя заявку, вы даете согласие на обработку персональных данных в соответствии с политикой конфиденциальности церкви KCLC.
+      </p>
+    </form>
+  </div>
+</div>
+
+<script>
+(function() {
+  // ── FILTER TABS ──
+  const filterBtns = document.querySelectorAll('#minFilterBar .min-filter-btn');
+  const cards = document.querySelectorAll('#minGrid .min-card');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      const cat = this.getAttribute('data-cat');
+
+      cards.forEach(card => {
+        if (cat === 'all' || card.getAttribute('data-cat') === cat) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // ── MODAL LOGIC ──
+  window.openApplyModal = function(slug, title, icon) {
+    document.getElementById('applyMinistrySlug').value = slug;
+    document.getElementById('modalTargetTitle').textContent = title;
+    document.getElementById('modalTargetIcon').textContent = icon || 'favorite';
+    
+    const overlay = document.getElementById('applyModalOverlay');
+    overlay.classList.add('active');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeApplyModal = function() {
+    const overlay = document.getElementById('applyModalOverlay');
+    overlay.classList.remove('active');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+
+  document.getElementById('applyModalOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeApplyModal();
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeApplyModal();
+  });
+
+  // ── SUBMISSION HANDLER ──
+  window.handleMinistryApply = async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('applySubmitBtn');
+    const slug = document.getElementById('applyMinistrySlug').value;
+    if (!slug) return;
+
+    const name = document.getElementById('applyName').value.trim();
+    const phone = document.getElementById('applyPhone').value.trim();
+    const telegram = document.getElementById('applyTelegram').value.trim();
+    const email = document.getElementById('applyEmail').value.trim();
+    const message = document.getElementById('applyMessage').value.trim();
+
+    if (!name || !phone) {
+      if (window.showNotification) {
+        window.showNotification('Пожалуйста, укажите имя и телефон', 'error');
+      } else {
+        alert('Пожалуйста, укажите имя и телефон');
+      }
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="material-symbols-outlined">sync</span> <span>Отправка...</span>';
+
+    try {
+      const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+      const resp = await fetch(`/api/ministries/${encodeURIComponent(slug)}/apply/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken,
+        },
+        body: JSON.stringify({ name, phone, telegram, email, message })
+      });
+
+      const res = await resp.json();
+      if (res.success) {
+        if (window.showNotification) {
+          window.showNotification(res.message || 'Ваша заявка успешно отправлена!', 'success');
+        } else {
+          alert(res.message);
+        }
+        closeApplyModal();
+        document.getElementById('applyMessage').value = '';
+      } else {
+        if (window.showNotification) {
+          window.showNotification(res.error || 'Произошла ошибка при отправке заявки', 'error');
+        } else {
+          alert(res.error || 'Ошибка при отправке');
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      if (window.showNotification) {
+        window.showNotification('Сетевая ошибка при отправке заявки', 'error');
+      } else {
+        alert('Сетевая ошибка');
+      }
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<span class="material-symbols-outlined">send</span> <span>Отправить заявку</span>';
+    }
+  };
+
+})();
+</script>
 {% endblock %}

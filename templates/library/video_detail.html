@@ -10,6 +10,58 @@
         <span>Назад к разделу {{ video.category.name }}</span>
     </a>
 
+    <!-- Video Player Source Switcher & Diagnostics -->
+    {% with rt=video.get_rutube_embed_url vk=video.get_vk_embed_url yt=video.get_youtube_embed_url %}
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-4 px-2">
+        <div class="flex items-center gap-2.5 flex-wrap">
+            <span class="text-xs font-bold uppercase tracking-wider text-white/50">Источник видео:</span>
+            <div class="inline-flex p-1 bg-white/10 backdrop-blur-md rounded-2xl border border-white/10 gap-1">
+                {% if yt %}
+                <button type="button" id="btn-src-yt" onclick="switchPlayerSource('youtube', true)" class="px-4 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-red-600 text-white shadow-md">
+                    <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                    <span>YouTube (Основной)</span>
+                </button>
+                {% endif %}
+                {% if rt %}
+                <button type="button" id="btn-src-rt" onclick="switchPlayerSource('rutube', true)" class="px-4 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 {% if not yt %}bg-blue-600 text-white shadow-md{% else %}text-white/70 hover:text-white{% endif %}">
+                    <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                    <span>RuTube (Резерв)</span>
+                </button>
+                {% endif %}
+                {% if vk %}
+                <button type="button" id="btn-src-vk" onclick="switchPlayerSource('vk', true)" class="px-4 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 {% if not yt and not rt %}bg-[#2787F5] text-white shadow-md{% else %}text-white/70 hover:text-white{% endif %}">
+                    <span class="w-2 h-2 rounded-full bg-[#2787F5]"></span>
+                    <span>VK Видео</span>
+                </button>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+            {% if video.youtube_url %}
+            <a href="{{ video.youtube_url }}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-xs text-white/70 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 px-3 py-1.5 rounded-full transition-colors" title="Открыть в YouTube">
+                <span class="material-symbols-outlined text-[16px] text-red-500">open_in_new</span>
+                <span>В YouTube</span>
+            </a>
+            {% endif %}
+            <div class="flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full">
+                <span class="material-symbols-outlined text-[15px]">verified</span>
+                <span>Smart Player</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast if YouTube fails and auto-switches -->
+    <div id="player-fallback-toast" class="hidden mb-4 p-3.5 rounded-2xl bg-amber-500/15 border border-amber-500/30 text-amber-200 text-sm flex items-center justify-between gap-3 backdrop-blur-md">
+        <div class="flex items-center gap-2.5">
+            <span class="material-symbols-outlined text-amber-400 text-xl">info</span>
+            <span id="player-fallback-toast-text">YouTube недоступен или замедлен в вашей сети. Мы автоматически переключили воспроизведение на резервный источник.</span>
+        </div>
+        <button type="button" onclick="document.getElementById('player-fallback-toast').classList.add('hidden')" class="w-6 h-6 rounded-full hover:bg-white/10 flex items-center justify-center text-white/50 hover:text-white">
+            <span class="material-symbols-outlined text-sm">close</span>
+        </button>
+    </div>
+
     <!-- Video Player Section -->
     <div class="relative rounded-[2rem] sm:rounded-[40px] overflow-hidden bg-black shadow-2xl mb-10 aspect-video group border border-white/10">
         {% if video.video_file %}
@@ -17,22 +69,40 @@
             <source src="{{ video.video_file.url }}" type="video/mp4">
             Ваш браузер не поддерживает видео.
         </video>
-        {% elif video.get_youtube_embed_url %}
-        <iframe class="w-full h-full"
-                src="{{ video.get_youtube_embed_url }}"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-                title="{{ video.title }}">
-        </iframe>
-        {% elif video.get_rutube_embed_url %}
-        <iframe class="w-full h-full"
-                src="{{ video.get_rutube_embed_url }}"
-                frameborder="0"
-                allow="autoplay; encrypted-media; fullscreen"
-                allowfullscreen
-                title="{{ video.title }}">
-        </iframe>
+        {% elif yt or rt or vk %}
+            {% if yt %}
+            <iframe id="iframe-player-yt"
+                    class="w-full h-full"
+                    src="{{ yt }}&origin={{ request.scheme }}://{{ request.get_host }}&widget_referrer={{ request.build_absolute_uri|urlencode }}"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen
+                    title="{{ video.title }} (YouTube)">
+            </iframe>
+            {% endif %}
+            {% if rt %}
+            <iframe id="iframe-player-rt"
+                    class="w-full h-full {% if yt %}hidden{% endif %}"
+                    {% if not yt %}src="{{ rt }}"{% else %}src="" data-src="{{ rt }}"{% endif %}
+                    frameborder="0"
+                    allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen
+                    title="{{ video.title }} (RuTube)">
+            </iframe>
+            {% endif %}
+            {% if vk %}
+            <iframe id="iframe-player-vk"
+                    class="w-full h-full {% if yt or rt %}hidden{% endif %}"
+                    {% if not yt and not rt %}src="{{ vk }}"{% else %}src="" data-src="{{ vk }}"{% endif %}
+                    frameborder="0"
+                    allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen
+                    title="{{ video.title }} (VK)">
+            </iframe>
+            {% endif %}
         {% else %}
         <div class="w-full h-full flex items-center justify-center bg-black/90">
             <div class="text-center">
@@ -43,6 +113,137 @@
         {% endif %}
     </div>
 
+    <script>
+    var activeSource = "{% if yt %}youtube{% elif rt %}rutube{% elif vk %}vk{% else %}none{% endif %}";
+    var fallbackTriggered = false;
+
+    function showFallbackToast(msg) {
+        var toast = document.getElementById('player-fallback-toast');
+        var txt = document.getElementById('player-fallback-toast-text');
+        if (toast && txt) {
+            txt.textContent = msg;
+            toast.classList.remove('hidden');
+        }
+    }
+
+    function switchPlayerSource(source, manualUserClick) {
+        if (manualUserClick) {
+            fallbackTriggered = true; // User clicked manually, don't auto-switch anymore
+        }
+        activeSource = source;
+        var rtBtn = document.getElementById('btn-src-rt');
+        var vkBtn = document.getElementById('btn-src-vk');
+        var ytBtn = document.getElementById('btn-src-yt');
+        
+        var rtFrame = document.getElementById('iframe-player-rt');
+        var vkFrame = document.getElementById('iframe-player-vk');
+        var ytFrame = document.getElementById('iframe-player-yt');
+
+        // Reset frames
+        if (rtFrame) rtFrame.classList.add('hidden');
+        if (vkFrame) vkFrame.classList.add('hidden');
+        if (ytFrame) ytFrame.classList.add('hidden');
+
+        // Reset buttons
+        var inactiveClass = "px-4 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 text-white/70 hover:text-white";
+        if (rtBtn) rtBtn.className = inactiveClass;
+        if (vkBtn) vkBtn.className = inactiveClass;
+        if (ytBtn) ytBtn.className = inactiveClass;
+
+        if (source === 'youtube' && ytFrame) {
+            ytFrame.classList.remove('hidden');
+            if (!ytFrame.src && ytFrame.dataset.src) ytFrame.src = ytFrame.dataset.src;
+            if (ytBtn) ytBtn.className = "px-4 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-red-600 text-white shadow-md";
+        } else if (source === 'rutube' && rtFrame) {
+            rtFrame.classList.remove('hidden');
+            if (!rtFrame.src && rtFrame.dataset.src) rtFrame.src = rtFrame.dataset.src;
+            if (rtBtn) rtBtn.className = "px-4 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-blue-600 text-white shadow-md";
+        } else if (source === 'vk' && vkFrame) {
+            vkFrame.classList.remove('hidden');
+            if (!vkFrame.src && vkFrame.dataset.src) vkFrame.src = vkFrame.dataset.src;
+            if (vkBtn) vkBtn.className = "px-4 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 bg-[#2787F5] text-white shadow-md";
+        }
+    }
+
+    // Configure YouTube embed parameters to prevent Error 153 (Referer / origin policy)
+    (function configureYouTubeIframe() {
+        var ytFrame = document.getElementById('iframe-player-yt');
+        if (ytFrame && ytFrame.src) {
+            try {
+                var url = new URL(ytFrame.src);
+                url.searchParams.set('origin', window.location.origin);
+                url.searchParams.set('widget_referrer', window.location.href);
+                ytFrame.src = url.toString();
+            } catch (_) {}
+        }
+    })();
+
+    // Smart Automated Fallback Watchdog for YouTube
+    (function initYouTubeWatchdog() {
+        var hasYt = {% if yt %}true{% else %}false{% endif %};
+        var hasRt = {% if rt %}true{% else %}false{% endif %};
+        var hasVk = {% if vk %}true{% else %}false{% endif %};
+
+        if (!hasYt || (!hasRt && !hasVk)) return;
+
+        var backupSource = hasRt ? 'rutube' : 'vk';
+        var backupName = hasRt ? 'RuTube' : 'VK Видео';
+
+        // 1. Listen for postMessage errors from YouTube iframe API
+        window.addEventListener('message', function(e) {
+            if (fallbackTriggered) return;
+            try {
+                var data = (typeof e.data === 'string') ? JSON.parse(e.data) : e.data;
+                if (data && (data.event === 'onError' || (data.info && typeof data.info.errorCode !== 'undefined'))) {
+                    var code = data.info ? data.info.errorCode : data.errorCode;
+                    console.log('[WATCHDOG] YouTube reported error code:', code);
+                    // Code 153: Player configuration error (restricted / blocked embed)
+                    // Code 150/101: Video not allowed in embedded player
+                    // Code 2: Invalid video ID
+                    // Code 5: HTML5 error
+                    fallbackTriggered = true;
+                    switchPlayerSource(backupSource, false);
+                    var errTxt = (code === 153 || code === 150 || code === 101) 
+                        ? 'YouTube ограничил встроенный плеер для этого видео (ошибка ' + code + '). Мы автоматически включили ' + backupName + '.'
+                        : 'Ошибка воспроизведения YouTube (код ' + code + '). Автоматически переключено на ' + backupName + '.';
+                    showFallbackToast(errTxt);
+                }
+            } catch (_) {}
+        });
+
+        // 2. Connectivity probe: test if YouTube domain / CDN is accessible without timeout
+        var probeImg = new Image();
+        var probeFinished = false;
+
+        probeImg.onload = function() {
+            probeFinished = true;
+        };
+        probeImg.onerror = function() {
+            if (!probeFinished && !fallbackTriggered && activeSource === 'youtube') {
+                probeFinished = true;
+                fallbackTriggered = true;
+                console.log('[WATCHDOG] YouTube image probe failed. Switching to', backupSource);
+                switchPlayerSource(backupSource, false);
+                showFallbackToast('YouTube недоступен или заблокирован в вашей сети. Автоматически включен ' + backupName + '.');
+            }
+        };
+
+        // Watchdog timer (3800ms)
+        setTimeout(function() {
+            if (!probeFinished && !fallbackTriggered && activeSource === 'youtube') {
+                fallbackTriggered = true;
+                console.log('[WATCHDOG] YouTube connection timeout (>3.8s). Switching to', backupSource);
+                switchPlayerSource(backupSource, false);
+                showFallbackToast('YouTube долго отвечает (возможно, замедлен провайдером). Воспроизведение переключено на ' + backupName + '.');
+            }
+        }, 3800);
+
+        // Trigger probe
+        probeImg.src = 'https://www.youtube.com/s/desktop/f4ca3552/img/favicon.ico?_t=' + Date.now();
+    })();
+    </script>
+    {% endwith %}
+
     <!-- Video Information Card -->
     <div class="bg-white/5 backdrop-blur-xl rounded-[2.5rem] p-8 sm:p-12 shadow-[0_8px_40px_rgba(0,0,0,0.5)] border border-white/10">
         <div class="flex flex-col lg:flex-row justify-between items-start gap-8 mb-8">
@@ -51,7 +252,7 @@
                 <div class="flex flex-wrap items-center gap-4 sm:gap-8 text-sm font-semibold text-white/50">
                     <div class="flex items-center gap-2">
                         <span class="material-symbols-outlined text-primary text-[20px]">visibility</span>
-                        <span>{{ video.views_count }} просмотров</span>
+                        <span>{{ video.get_views_display }}</span>
                     </div>
                     {% if video.duration %}
                     <div class="flex items-center gap-2">
@@ -61,9 +262,9 @@
                     {% endif %}
                     <div class="flex items-center gap-2">
                         <span class="material-symbols-outlined text-primary text-[20px]">calendar_today</span>
-                        <span>{{ video.created_at|date:"d M Y" }}</span>
+                        <span>{{ video.get_effective_date|date:"d E Y" }}</span>
                     </div>
-                    <div class="flex items-center gap-2 bg-white/5 backdrop-blur-xl border border-white/10/10 px-3 py-1 rounded-full text-white/70">
+                    <div class="flex items-center gap-2 bg-white/5 backdrop-blur-xl border border-white/10 px-3 py-1 rounded-full text-white/70">
                         <span class="material-symbols-outlined text-[16px]">folder</span>
                         <span>{{ video.category.name }}</span>
                     </div>
@@ -73,15 +274,15 @@
             <!-- Social Share -->
             <div class="flex items-center gap-3 shrink-0">
                 <a href="https://vk.com/share.php?url={{ request.build_absolute_uri }}&title={{ video.title }}" target="_blank" 
-                   class="w-12 h-12 rounded-full bg-white/5 backdrop-blur-xl border border-white/10/10 text-white/70 flex items-center justify-center hover:bg-[#4a76a8] hover:text-white transition-all shadow-sm">
+                   class="w-12 h-12 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 text-white/70 flex items-center justify-center hover:bg-[#4a76a8] hover:text-white transition-all shadow-sm">
                     <i class="fab fa-vk text-lg"></i>
                 </a>
                 <a href="https://t.me/share/url?url={{ request.build_absolute_uri }}&text={{ video.title }}" target="_blank" 
-                   class="w-12 h-12 rounded-full bg-white/5 backdrop-blur-xl border border-white/10/10 text-white/70 flex items-center justify-center hover:bg-[#0088cc] hover:text-white transition-all shadow-sm">
+                   class="w-12 h-12 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 text-white/70 flex items-center justify-center hover:bg-[#0088cc] hover:text-white transition-all shadow-sm">
                     <i class="fab fa-telegram text-lg"></i>
                 </a>
                 <a href="https://wa.me/?text={{ video.title }}%20{{ request.build_absolute_uri }}" target="_blank" 
-                   class="w-12 h-12 rounded-full bg-white/5 backdrop-blur-xl border border-white/10/10 text-white/70 flex items-center justify-center hover:bg-[#25D366] hover:text-white transition-all shadow-sm">
+                   class="w-12 h-12 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 text-white/70 flex items-center justify-center hover:bg-[#25D366] hover:text-white transition-all shadow-sm">
                     <i class="fab fa-whatsapp text-lg"></i>
                 </a>
             </div>
@@ -109,7 +310,7 @@
 
     <div class="flex overflow-x-auto gap-4 sm:gap-6 pb-6 snap-x snap-mandatory hide-scrollbar">
         {% for rec in recommended %}
-        <a href="{% url 'video_detail' rec.id %}" class="snap-start shrink-0 w-[280px] sm:w-[340px] group bg-white/5 backdrop-blur-md rounded-[24px] overflow-hidden border border-white/10 hover:bg-white/5 backdrop-blur-xl border border-white/10/10 transition-colors flex flex-col">
+        <a href="{% url 'video_detail' rec.id %}" class="snap-start shrink-0 w-[280px] sm:w-[340px] group bg-white/5 backdrop-blur-md rounded-[24px] overflow-hidden border border-white/10 hover:border-white/20 transition-colors flex flex-col">
             <div class="relative aspect-video bg-black/50 overflow-hidden">
                 {% if rec.thumbnail %}
                 <img src="{{ rec.thumbnail.url }}" alt="{{ rec.title }}" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
@@ -119,7 +320,7 @@
                 </div>
                 {% endif %}
                 <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <div class="w-12 h-12 rounded-full bg-white/5 backdrop-blur-xl border border-white/10/30 backdrop-blur-md flex items-center justify-center text-white transform scale-90 group-hover:scale-100 transition-all duration-300">
+                    <div class="w-12 h-12 rounded-full bg-white/20 border border-white/30 backdrop-blur-md flex items-center justify-center text-white transform scale-90 group-hover:scale-100 transition-all duration-300">
                         <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
                     </div>
                 </div>
@@ -131,7 +332,7 @@
             </div>
             <div class="p-4 sm:p-5 flex-grow">
                 <h3 class="font-bold text-white text-base sm:text-lg mb-2 line-clamp-2 leading-tight">{{ rec.title }}</h3>
-                <div class="text-white/50 text-xs font-medium">{{ rec.created_at|date:"d.m.Y" }} &bull; {{ rec.views_count }} просмотров</div>
+                <div class="text-white/50 text-xs font-medium">{{ rec.get_effective_date|date:"d M Y" }} &bull; {{ rec.get_views_display }}</div>
             </div>
         </a>
         {% endfor %}

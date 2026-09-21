@@ -285,8 +285,72 @@ function initSmartHeader() {
         }
     }
 
-    // Listen on multiple common scroll containers just in case CSS rules hijack the scroll
     window.addEventListener('scroll', handleScroll, { passive: true });
-    document.body.addEventListener('scroll', handleScroll, { passive: true });
-    document.documentElement.addEventListener('scroll', handleScroll, { passive: true });
 }
+
+/**
+ * Тестовое Push-уведомление — немедленная проверка на смартфоне
+ */
+window.sendTestPushNotification = async function() {
+    if (!('serviceWorker' in navigator)) {
+        showNotification('Service Worker не поддерживается вашим браузером', 'error');
+        return;
+    }
+
+    // 1. Проверяем/запрашиваем разрешение
+    if (Notification.permission === 'denied') {
+        showNotification('Уведомления заблокированы. Разрешите их в настройках браузера (иконка замка в адресной строке)', 'error');
+        return;
+    }
+
+    if (Notification.permission !== 'granted') {
+        const permission = await Notification.requestPermission();
+        if (permission !== 'granted') {
+            showNotification('Вы не разрешили уведомления', 'error');
+            return;
+        }
+    }
+
+    try {
+        // 2. Тактильный виброотклик смартфона
+        if ('vibrate' in navigator) {
+            try { navigator.vibrate([200, 100, 200]); } catch(e) {}
+        }
+
+        // 3. Локальный мгновенный пуш через Service Worker (всегда работает)
+        const reg = await navigator.serviceWorker.ready;
+        await reg.showNotification('Церковь KCLC Красноярск 🕊️', {
+            body: 'Тестовое уведомление! Уведомления на вашем смартфоне работают безупречно!',
+            icon: '/static/icons/apple-touch-icon.png',
+            badge: '/static/icons/favicon-32x32.png',
+            vibrate: [200, 100, 200],
+            data: { url: '/profile/' },
+            tag: 'test-push-' + Date.now(),
+        });
+
+        showNotification('🔔 Проверьте шторку уведомлений на телефоне!', 'success');
+
+        // 3. Также отправляем серверный пуш для проверки полного цикла
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+        if (csrfToken) {
+            // Получаем endpoint текущей подписки для передачи серверу
+            let endpoint = '';
+            try {
+                const sub = await reg.pushManager.getSubscription();
+                if (sub) endpoint = sub.endpoint;
+            } catch(e) { /* ignore */ }
+
+            fetch('/api/push/test/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({ endpoint })
+            }).catch(() => { /* server push is optional bonus */ });
+        }
+    } catch (err) {
+        console.error('Test push error:', err);
+        showNotification('Ошибка при отправке тестового уведомления', 'error');
+    }
+};

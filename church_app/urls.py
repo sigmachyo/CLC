@@ -20,6 +20,13 @@ urlpatterns = [
     path('profile/', views.profile_view, name='profile'),
     path('profile/edit/', views.profile_edit_view, name='profile_edit'),
     path('profile/change-password/', views.change_password_view, name='change_password'),
+    path('profile/avatar/upload/', views.profile_avatar_upload, name='profile_avatar_upload'),
+    path('user/<str:username>/', views.user_public_profile, name='user_public_profile'),
+
+    # API молитвенных друзей и любимых стихов
+    path('api/user/<str:username>/toggle-friend/', views.toggle_prayer_friend, name='toggle_prayer_friend'),
+    path('api/verses/favorite/add/', views.add_favorite_verse, name='add_favorite_verse'),
+    path('api/verses/favorite/<int:verse_id>/delete/', views.delete_favorite_verse, name='delete_favorite_verse'),
 
     path('dismiss-announcement/', views.dismiss_announcement, name='dismiss_announcement'),
 
@@ -34,6 +41,10 @@ urlpatterns = [
     path('prayer/my/', views_prayer.my_prayers, name='my_prayers'),
     path('prayer/<int:prayer_id>/toggle/', views_prayer.prayer_toggle_answered, name='prayer_toggle_answered'),
 
+    path('prayer/revelations/', views_prayer.revelation_list, name='revelation_list'),
+    path('prayer/revelations/add/', views_prayer.revelation_add, name='revelation_add'),
+    path('prayer/revelations/<int:pk>/react/', views_prayer.revelation_react, name='revelation_react'),
+
     path('donate/', views_donate.donate_page, name='donate'),
     path('donate/gateway/<uuid:payment_id>/', views_donate.mock_payment_gateway, name='mock_payment_gateway'),
     path('donate/success/', views_donate.donate_success, name='donate_success'),
@@ -41,6 +52,8 @@ urlpatterns = [
 
     path('library/', views_library.library_home, name='library_home'),
     path('library/videos/', views_library.video_list, name='video_list'),
+    path('library/worship/', views_library.worship_songs_list, name='library_worship'),
+    path('worship/', views_library.worship_songs_list, name='worship_songs'),
     path('library/category/<slug:category_slug>/', views_library.library_category, name='library_category'),
     path('library/video/<int:video_id>/', views_library.video_detail, name='video_detail'),
 
@@ -50,6 +63,7 @@ urlpatterns = [
     path('library/bible/complete/<int:plan_id>/<int:day>/', views_library.complete_bible_day, name='complete_bible_day'),
 
     path('library/events/', views_library.events_list, name='events_list'),
+    path('events/', views_library.events_list, name='events_catalog'),
     path('events/<slug:slug>/', views_library.event_detail, name='event_detail'),
     path('events/<slug:slug>/register/', views_library.event_register, name='event_register'),
 
@@ -57,6 +71,7 @@ urlpatterns = [
     path('library/kids/<int:content_id>/', views_library.kids_content_detail, name='kids_content_detail'),
 
     path('api/push/subscribe/', views_push.subscribe, name='api_push_subscribe'),
+    path('api/push/test/', views_push.test_push, name='api_push_test'),
 
     path('offline/', views.offline_view, name='offline'),
     path('sw.js', views.service_worker, name='service_worker'),
@@ -65,12 +80,16 @@ urlpatterns = [
 
     path('about/', views.about_view, name='about'),
     path('alpha/', TemplateView.as_view(template_name='info/alpha.html'), name='alpha'),
-    path('ministries/', TemplateView.as_view(template_name='info/ministries.html'), name='ministries'),
+    path('ministries/', views.ministries_list_view, name='ministries'),
+    path('ministries/<slug:slug>/', views.ministry_detail_view, name='ministry_detail'),
+    path('api/ministries/<slug:slug>/apply/', views.apply_ministry_api, name='api_apply_ministry'),
     path('news/', views.news_list, name='news_list'),
     path('news/<slug:slug>/', views.news_detail, name='news_detail'),
-    path('calendar/', TemplateView.as_view(template_name='info/calendar.html'), name='calendar'),
+    path('calendar/', views.calendar_page_view, name='calendar'),
     path('home-meet/', views.home_meet_view, name='home_meet'),
-    path('regional-churches/', TemplateView.as_view(template_name='info/regional_churches.html'), name='regional_churches'),
+    path('map/', views.community_map_view, name='community_map'),
+    path('api/map/locations/', views.api_map_locations, name='api_map_locations'),
+    path('regional-churches/', views.regional_churches_view, name='regional_churches'),
     path('privacy-policy/', TemplateView.as_view(template_name='info/privacy.html'), name='privacy'),
     path('api/upload-pastor-photo/', views.upload_pastor_photo, name='upload_pastor_photo'),
 ]

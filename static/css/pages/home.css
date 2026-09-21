@@ -5,16 +5,33 @@
   --home-ease: cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+@media (min-width: 901px) {
+  html.home-page, html.home-page body {
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+}
+
+main.main-snap {
+  display: contents !important;
+}
+
 #snap-root {
   width: 100%; height: 100%;
   position: fixed; inset: 0;
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; z-index: 10;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  z-index: 10;
   overscroll-behavior: none;
 }
-#snap-root::-webkit-scrollbar { display: none; }
+#snap-root::-webkit-scrollbar, html::-webkit-scrollbar, body::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
 
 .snap-sec {
   scroll-snap-align: start;
@@ -49,12 +66,13 @@
   z-index: 1600;
   display: none; flex-direction: column; align-items: center;
   gap: 14px; padding: 14px 8px;
-  background: rgba(26,31,54,0.25);
-  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  background: rgba(15, 20, 32, 0.45);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
   border-radius: 100px;
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
 }
-@media (min-width: 1200px) { #v-nav { display: flex; } }
+@media (min-width: 901px) { #v-nav { display: flex; } }
 
 .vn-item {
   position: relative;
@@ -101,10 +119,10 @@
 #sec-hero { padding-top: 0 !important; background: var(--navy); }
 
 /* ============================================================
-   TIMER SECTION  (matches reference design)
+   TIMER SECTION
    ============================================================ */
 #sec-timer {
-  background: var(--bg);
+  background: #f5f0e8 !important;
   align-items: center; justify-content: center;
 }
 .timer-container {
@@ -131,24 +149,24 @@
 .timer-eyebrow {
   font-size: 0.68rem; font-weight: 700;
   letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--gold-d); margin-bottom: 16px;
-  opacity: 0.9;
+  color: #a88734 !important; margin-bottom: 16px;
+  opacity: 0.95;
 }
 
 /* ── Heading ─────────────────────────────────────────────────── */
 .timer-heading {
   font-size: clamp(1.8rem, 4vw, 2.8rem);
-  font-weight: 900; color: var(--navy);
+  font-weight: 900; color: #1a1f36 !important;
   letter-spacing: -0.02em; line-height: 1.12;
   margin-bottom: 12px;
 }
 
 .timer-subtitle {
   font-size: clamp(0.85rem, 1.3vw, 1rem);
-  color: var(--txt-sub);
+  color: #3d4260 !important;
   margin-bottom: clamp(24px, 4vh, 40px);
   max-width: 420px;
-  opacity: 0.7;
+  opacity: 0.85;
 }
 
 /* ── COUNTDOWN CARDS (Desktop: gold row, Mobile: 2x2 navy) ──── */
@@ -165,11 +183,11 @@
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   gap: 10px;
-  background: #fff;
+  background: #ffffff !important;
   border-radius: clamp(16px, 2vw, 22px);
   padding: clamp(16px, 3vh, 24px) 10px;
   box-shadow: 0 10px 40px rgba(0,0,0,0.05);
-  border: 1px solid rgba(0,0,0,0.02);
+  border: 1px solid rgba(0,0,0,0.04);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
 }
@@ -185,7 +203,7 @@
 
 .cd-num {
   font-size: clamp(2.2rem, 5vw, 3.2rem);
-  font-weight: 900; color: var(--gold-d);
+  font-weight: 900; color: #a88734 !important;
   line-height: 1;
   display: inline-block;
 }
@@ -194,8 +212,8 @@
   font-size: 0.6rem;
   font-weight: 800; text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: var(--txt-muted);
-  opacity: 0.6;
+  color: #8b8fa8 !important;
+  opacity: 0.85;
 }
 
 .num-pop {
@@ -566,15 +584,16 @@
 }
 .events-slider::-webkit-scrollbar { display: none; }
 .event-slide {
-  flex: 0 0 clamp(300px, 85vw, 1100px);
+  flex: 0 0 min(1180px, calc(64vh * 16 / 9), 88vw);
   scroll-snap-align: center;
   border-radius: 20px;
   overflow: hidden;
   position: relative;
-  aspect-ratio: 21 / 9;
+  aspect-ratio: 16 / 9;
+  max-height: min(65vh, 620px);
   background: var(--navy);
-  box-shadow: 0 15px 45px rgba(0,0,0,0.3);
-  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.08);
   transition: all 0.5s var(--spring-easing, ease);
   -webkit-tap-highlight-color: transparent;
 }
@@ -585,30 +604,39 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: 16px;
-  padding: clamp(20px, 3vw, 36px);
+  padding: clamp(16px, 2.5vw, 28px);
   color: #fff;
-  background: linear-gradient(180deg, transparent, rgba(15, 20, 32, 0.9));
+  background: linear-gradient(180deg, transparent 0%, rgba(15, 20, 32, 0.3) 30%, rgba(15, 20, 32, 0.85) 100%);
   pointer-events: none;
 }
 .event-slide-title {
   max-width: 70%;
-  font-size: clamp(1.05rem, 2vw, 1.75rem);
-  line-height: 1.15;
+  font-size: clamp(1.05rem, 1.8vw, 1.6rem);
+  line-height: 1.2;
   font-weight: 800;
-  text-shadow: 0 2px 12px rgba(0,0,0,.35);
+  text-shadow: 0 2px 12px rgba(0,0,0,.65);
 }
 .event-slide-cta {
   flex: 0 0 auto;
-  min-height: 44px;
+  min-height: 40px;
   display: inline-flex;
   align-items: center;
-  padding: 10px 16px;
+  padding: 8px 18px;
   border: 1px solid rgba(255,255,255,.45);
   border-radius: 999px;
-  background: rgba(15,20,32,.35);
-  font-size: .78rem;
+  background: rgba(15,20,32,.55);
+  font-size: .82rem;
   font-weight: 700;
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  transition: all 0.3s ease;
+}
+.event-slide:hover .event-slide-cta {
+  background: var(--gold, #c9a84c);
+  color: #0f1420;
+  border-color: transparent;
+  transform: translateX(4px);
 }
 .event-fallback-art {
   width: 100%;
@@ -617,19 +645,25 @@
 }
 @media (max-width: 768px) {
   .events-slider {
-    gap: 16px;
-    padding: 30px 20px;
-    scroll-padding: 0 20px;
+    gap: 14px;
+    padding: 20px 16px;
+    scroll-padding: 0 16px;
   }
   .event-slide {
     flex: 0 0 calc(100vw - 32px);
-    aspect-ratio: 4 / 3;
-    border-radius: var(--home-radius);
+    aspect-ratio: 16 / 9;
+    max-height: 55vh;
+    border-radius: 16px;
     box-shadow: 0 12px 30px rgba(0,0,0,0.4);
   }
-  .event-slide-overlay { padding: 20px; }
-  .event-slide-title { max-width: 100%; font-size: 1.25rem; }
-  .event-slide-cta { display: none; }
+  .event-slide-overlay { padding: 14px 16px; }
+  .event-slide-title { max-width: 68%; font-size: 1.1rem; }
+  .event-slide-cta {
+    display: inline-flex;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    min-height: 32px;
+  }
 }
 
 .event-slide:hover {
@@ -711,14 +745,14 @@
     gap: 12px;
   }
   .cd-card {
-    background: #fff;
+    background: #ffffff !important;
     box-shadow: 0 8px 30px rgba(0,0,0,0.06);
     border-radius: 18px;
     padding: clamp(15px, 4vh, 25px) 12px;
     border: 1px solid rgba(0,0,0,0.03);
   }
-  .cd-num { color: var(--gold-d); font-size: clamp(1.8rem, 8vw, 2.5rem); }
-  .cd-lbl { color: var(--txt-muted); opacity: 0.6; }
+  .cd-num { color: #a88734 !important; font-size: clamp(1.8rem, 8vw, 2.5rem); }
+  .cd-lbl { color: #8b8fa8 !important; opacity: 0.85; }
 
   .live-player-meta { flex-direction: column; align-items: flex-start; }
   .video-meta-bar { flex-direction: column; align-items: flex-start; }
@@ -740,9 +774,31 @@
 
 /* ── Disable Snap on Mobile for Perfect Native Scrolling ── */
 @media (max-width: 900px) {
-  #snap-root { scroll-snap-type: none; overflow-y: visible; position: static; height: auto; }
-  .snap-sec { height: auto; min-height: 100vh; min-height: 100dvh; padding-bottom: 60px; scroll-snap-align: none; }
-  .snap-sec-inner { overflow: visible; height: auto; padding-top: calc(var(--hdr) + 20px); }
+  html.home-page, html.home-page body {
+    height: auto !important;
+    min-height: 100% !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  #snap-root { 
+    scroll-snap-type: none !important; 
+    overflow-y: visible !important; 
+    overflow-x: hidden !important;
+    position: static !important; 
+    height: auto !important; 
+  }
+  .snap-sec { 
+    height: auto !important; 
+    min-height: auto !important; 
+    padding-bottom: 60px !important; 
+    scroll-snap-align: none !important; 
+  }
+  .snap-sec-inner { 
+    overflow: visible !important; 
+    height: auto !important; 
+    padding-top: calc(var(--hdr) + 20px) !important; 
+  }
   
   /* Remove global padding bottom from main on home page since sections are auto-height now, we just pad the last footer */
   #sec-footer { padding-bottom: 140px !important; }

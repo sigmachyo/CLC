@@ -3,11 +3,21 @@
   
   <div class="snap-sec-inner hero-inner-wrap">
     
-    <!-- ====== ФОНОВОЕ ВИДЕО ====== -->
+    <!-- ====== ДИНАМИЧЕСКИЙ ФОН ИЗ АДМИНКИ ====== -->
+    {% with active_bg=hero_backgrounds|first %}
     <div class="hero-video-bg">
-      <video autoplay loop muted playsinline preload="auto">
-        <source type="video/mp4" src="https://kclc.ru/wp-content/uploads/2024/09/фон-на-сайт.mp4" />
-      </video>
+      {% if active_bg and active_bg.video_url %}
+        <video autoplay loop muted playsinline preload="auto"{% if active_bg.image %} poster="{{ active_bg.image.url }}"{% endif %}>
+          <source type="video/mp4" src="{{ active_bg.video_url }}" />
+        </video>
+      {% elif active_bg and active_bg.image %}
+        <img src="{{ active_bg.image.url }}" alt="{{ active_bg.title|default:'KCLC' }}" class="hero-static-bg" />
+      {% else %}
+        <!-- Fallback стандартное видео KCLC -->
+        <video autoplay loop muted playsinline preload="auto">
+          <source type="video/mp4" src="https://kclc.ru/wp-content/uploads/2024/09/фон-на-сайт.mp4" />
+        </video>
+      {% endif %}
       <!-- Плавный градиент для ухода в цвет фона сайта и читаемости -->
       <div class="hero-video-overlay"></div>
     </div>
@@ -26,10 +36,11 @@
         </p>
 
         <!-- Primary Action Button -->
-        <a href="#sec-timer" class="hero-primary-btn">
+        <a href="{% if active_bg and active_bg.link_url %}{{ active_bg.link_url }}{% else %}#sec-timer{% endif %}" class="hero-primary-btn">
             Смотреть онлайн
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
+    {% endwith %}
 
     </div>
   </div>
@@ -61,11 +72,12 @@
     inset: 0;
     z-index: 1;
 }
-.hero-video-bg video {
+.hero-video-bg video,
+.hero-static-bg {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0.85; /* Немного прозрачности, чтобы не слепило */
+    opacity: 0.85;
 }
 .hero-video-overlay {
     position: absolute;
@@ -143,7 +155,5 @@
 .hero-primary-btn:active {
     transform: scale(0.96);
     box-shadow: 0 5px 15px rgba(201,168,76,0.2);
-}
-    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
 }
 </style>

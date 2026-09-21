@@ -39,9 +39,10 @@
                 </video>
                 {% elif content.get_youtube_embed_url %}
                 <iframe class="w-full h-full"
-                    src="{{ content.get_youtube_embed_url }}"
+                    src="{{ content.get_youtube_embed_url }}&origin={{ request.scheme }}://{{ request.get_host }}&widget_referrer={{ request.build_absolute_uri|urlencode }}"
                     allowfullscreen
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    referrerpolicy="strict-origin-when-cross-origin"
                     title="{{ content.title }}">
                 </iframe>
                 {% elif content.youtube_url %}

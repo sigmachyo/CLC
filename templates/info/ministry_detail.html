@@ -1,0 +1,539 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ ministry.title }} — Служение церкви KCLC{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ── MINISTRY DETAIL (Apple Dark Glass Theme) ── */
+:root {
+  --min-gold: #c9a84c;
+  --min-bg: #080c14;
+  --min-card: rgba(18, 24, 38, 0.75);
+  --min-border: rgba(255, 255, 255, 0.08);
+}
+
+body {
+  background: var(--min-bg);
+}
+
+.min-detail-wrapper {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 96px 24px 80px;
+}
+
+.min-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  transition: color 0.2s;
+}
+.min-back-link:hover {
+  color: var(--min-gold);
+}
+
+/* Hero Banner */
+.min-detail-hero {
+  position: relative;
+  border-radius: 28px;
+  overflow: hidden;
+  padding: clamp(32px, 5vw, 64px) clamp(24px, 4vw, 48px);
+  margin-bottom: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+
+.hero-bg-media {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.25;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(8,12,20,0.85) 0%, rgba(18,24,38,0.7) 100%);
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 720px;
+}
+
+.hero-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.hero-badge {
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: rgba(201, 168, 76, 0.2);
+  border: 1px solid rgba(201, 168, 76, 0.4);
+  color: var(--min-gold);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.hero-icon-box {
+  width: 56px; height: 56px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 18px;
+}
+.hero-icon-box .material-symbols-outlined {
+  font-size: 32px;
+  color: #fff;
+}
+
+.hero-title {
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin: 0 0 16px 0;
+}
+
+.hero-short-desc {
+  font-size: clamp(1.05rem, 1.3vw, 1.2rem);
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.6;
+  margin: 0 0 28px 0;
+}
+
+.hero-apply-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 16px;
+  background: var(--min-gold);
+  color: #080c14;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 10px 28px rgba(201, 168, 76, 0.35);
+}
+.hero-apply-btn:hover {
+  background: #deb853;
+  transform: translateY(-2px);
+}
+
+/* Two-column layout */
+.min-content-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 32px;
+  margin-bottom: 60px;
+}
+
+.min-main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.content-glass-card {
+  background: var(--min-card);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--min-border);
+  border-radius: 24px;
+  padding: 28px;
+}
+
+.content-glass-card h2 {
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.content-glass-card h2 .material-symbols-outlined {
+  color: var(--min-gold);
+}
+
+.content-text {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.7;
+}
+.content-text p { margin: 0 0 14px 0; }
+.content-text p:last-child { margin-bottom: 0; }
+
+/* Sidebar Cards */
+.min-sidebar-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.info-item-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.info-item-row:last-child { margin-bottom: 0; }
+
+.info-item-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--min-gold);
+  flex-shrink: 0;
+}
+
+.info-item-text h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 3px 0;
+}
+.info-item-text p {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+
+/* Other ministries */
+.other-min-section {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 48px;
+}
+.other-min-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 24px 0;
+}
+.other-min-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.other-min-card {
+  background: rgba(18, 24, 38, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 18px;
+  padding: 18px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: all 0.25s;
+}
+.other-min-card:hover {
+  background: rgba(24, 32, 50, 0.85);
+  border-color: rgba(201, 168, 76, 0.3);
+  transform: translateY(-2px);
+}
+.other-min-icon {
+  width: 44px; height: 44px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--min-gold);
+  flex-shrink: 0;
+}
+.other-min-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 3px 0;
+}
+.other-min-tag {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 850px) {
+  .min-content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="min-detail-wrapper">
+  
+  <a href="{% url 'ministries' %}" class="min-back-link">
+    <span class="material-symbols-outlined" style="font-size:16px;">arrow_back</span>
+    <span>Все служения церкви</span>
+  </a>
+
+  <!-- Hero Banner -->
+  <div class="min-detail-hero" style="background: {{ ministry.gradient_css|default:'linear-gradient(135deg, #1e293b, #0f172a)' }};">
+    {% if ministry.image %}
+    <div class="hero-bg-media" style="background-image: url('{{ ministry.image.url }}');"></div>
+    {% endif %}
+    <div class="hero-overlay"></div>
+
+    <div class="hero-inner">
+      <div class="hero-badge-row">
+        {% if ministry.badge %}
+        <span class="hero-badge">{{ ministry.badge }}</span>
+        {% endif %}
+        <span style="font-size:12px; color:rgba(255,255,255,0.6);">{{ ministry.get_category_display }}</span>
+      </div>
+
+      <div class="hero-icon-box">
+        <span class="material-symbols-outlined">{{ ministry.icon|default:"favorite" }}</span>
+      </div>
+
+      <h1 class="hero-title">{{ ministry.title }}</h1>
+      <p class="hero-short-desc">{{ ministry.short_description }}</p>
+
+      <button type="button" class="hero-apply-btn" onclick="openApplyModal('{{ ministry.slug }}', '{{ ministry.title|escapejs }}', '{{ ministry.icon|default:'favorite' }}')">
+        <span class="material-symbols-outlined">how_to_reg</span>
+        <span>Присоединиться к команде</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Content Grid -->
+  <div class="min-content-grid">
+    
+    <!-- Left Column: Detailed Description & Requirements -->
+    <div class="min-main-content">
+      
+      <div class="content-glass-card">
+        <h2>
+          <span class="material-symbols-outlined">info</span>
+          О служении
+        </h2>
+        <div class="content-text">
+          {% if ministry.description %}
+            {{ ministry.description|linebreaks }}
+          {% else %}
+            <p>{{ ministry.short_description }}</p>
+          {% endif %}
+        </div>
+      </div>
+
+      {% if ministry.requirements %}
+      <div class="content-glass-card">
+        <h2>
+          <span class="material-symbols-outlined">verified</span>
+          Требования и пожелания
+        </h2>
+        <div class="content-text">
+          {{ ministry.requirements|linebreaks }}
+        </div>
+      </div>
+      {% endif %}
+
+    </div>
+
+    <!-- Right Column: Schedule & Leader Info -->
+    <div class="min-sidebar-col">
+      
+      <!-- Info Card -->
+      <div class="content-glass-card">
+        <h2>
+          <span class="material-symbols-outlined">schedule</span>
+          Детали служения
+        </h2>
+
+        {% if ministry.schedule_info %}
+        <div class="info-item-row">
+          <div class="info-item-icon"><span class="material-symbols-outlined">event</span></div>
+          <div class="info-item-text">
+            <h4>График и встречи</h4>
+            <p>{{ ministry.schedule_info }}</p>
+          </div>
+        </div>
+        {% endif %}
+
+        {% if ministry.leader_name %}
+        <div class="info-item-row">
+          <div class="info-item-icon"><span class="material-symbols-outlined">person</span></div>
+          <div class="info-item-text">
+            <h4>Лидер команды</h4>
+            <p>{{ ministry.leader_name }}</p>
+            {% if ministry.leader_contact %}
+            <p style="font-size:12px; color:var(--min-gold); margin-top:2px;">{{ ministry.leader_contact }}</p>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+
+        <div style="margin-top:20px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.06);">
+          <button type="button" class="hero-apply-btn" style="width:100%; justify-content:center;" onclick="openApplyModal('{{ ministry.slug }}', '{{ ministry.title|escapejs }}', '{{ ministry.icon|default:'favorite' }}')">
+            <span class="material-symbols-outlined">how_to_reg</span>
+            <span>Подать заявку</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Other ministries -->
+  {% if other_ministries %}
+  <div class="other-min-section">
+    <h3 class="other-min-title">Другие служения церкви</h3>
+    <div class="other-min-grid">
+      {% for om in other_ministries %}
+      <a href="{% url 'ministry_detail' slug=om.slug %}" class="other-min-card">
+        <div class="other-min-icon">
+          <span class="material-symbols-outlined">{{ om.icon|default:"favorite" }}</span>
+        </div>
+        <div>
+          <h4 class="other-min-name">{{ om.title }}</h4>
+          <span class="other-min-tag">{{ om.get_category_display }}</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+
+<!-- ═══ APPLICATION MODAL ═══ -->
+<div class="modal-overlay" id="applyModalOverlay" role="dialog" aria-modal="true" aria-hidden="true" style="position:fixed; inset:0; background:rgba(5,8,15,0.85); backdrop-filter:blur(16px); z-index:10000; display:flex; align-items:center; justify-content:center; padding:20px; opacity:0; pointer-events:none; transition:opacity 0.3s ease;">
+  <div class="modal-sheet" style="background:rgba(16,22,35,0.97); border:1px solid rgba(255,255,255,0.12); border-radius:28px; max-width:500px; width:100%; padding:32px; box-shadow:0 24px 60px rgba(0,0,0,0.7); position:relative;">
+    <button type="button" onclick="closeApplyModal()" style="position:absolute; top:20px; right:20px; width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,0.08); border:none; color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center;">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+
+    <h2 style="font-size:22px; font-weight:800; color:#fff; margin:0 0 6px 0;">Подать заявку в команду</h2>
+    <p style="font-size:13px; color:rgba(255,255,255,0.6); margin:0 0 20px 0;">Команда «{{ ministry.title }}»</p>
+
+    <form id="applyMinistryForm" onsubmit="handleMinistryApply(event)">
+      {% csrf_token %}
+      <input type="hidden" id="applyMinistrySlug" name="ministry_slug" value="{{ ministry.slug }}">
+
+      <div style="margin-bottom:14px;">
+        <label style="display:block; font-size:12px; font-weight:600; color:rgba(255,255,255,0.75); margin-bottom:5px;">Ваше имя и фамилия *</label>
+        <input type="text" id="applyName" name="name" required placeholder="Иван Иванов" value="{{ user_initials.name|default:'' }}" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:10px 14px; color:#fff; font-size:14px; outline:none;">
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
+        <div>
+          <label style="display:block; font-size:12px; font-weight:600; color:rgba(255,255,255,0.75); margin-bottom:5px;">Телефон *</label>
+          <input type="tel" id="applyPhone" name="phone" required placeholder="+7 (999) 000-00-00" value="{{ user_initials.phone|default:'' }}" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:10px 14px; color:#fff; font-size:14px; outline:none;">
+        </div>
+        <div>
+          <label style="display:block; font-size:12px; font-weight:600; color:rgba(255,255,255,0.75); margin-bottom:5px;">Telegram</label>
+          <input type="text" id="applyTelegram" name="telegram" placeholder="@username" value="{{ user_initials.telegram|default:'' }}" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:10px 14px; color:#fff; font-size:14px; outline:none;">
+        </div>
+      </div>
+
+      <div style="margin-bottom:14px;">
+        <label style="display:block; font-size:12px; font-weight:600; color:rgba(255,255,255,0.75); margin-bottom:5px;">Email</label>
+        <input type="email" id="applyEmail" name="email" placeholder="example@mail.ru" value="{{ user_initials.email|default:'' }}" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:10px 14px; color:#fff; font-size:14px; outline:none;">
+      </div>
+
+      <div style="margin-bottom:20px;">
+        <label style="display:block; font-size:12px; font-weight:600; color:rgba(255,255,255,0.75); margin-bottom:5px;">О себе / ваши навыки</label>
+        <textarea id="applyMessage" name="message" placeholder="Расскажите о своем опыте..." style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:10px 14px; color:#fff; font-size:14px; outline:none; min-height:80px;"></textarea>
+      </div>
+
+      <button type="submit" class="hero-apply-btn" id="applySubmitBtn" style="width:100%; justify-content:center;">
+        <span class="material-symbols-outlined">send</span>
+        <span>Отправить заявку</span>
+      </button>
+    </form>
+  </div>
+</div>
+
+<script>
+(function() {
+  window.openApplyModal = function() {
+    const overlay = document.getElementById('applyModalOverlay');
+    overlay.style.opacity = '1';
+    overlay.style.pointerEvents = 'auto';
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeApplyModal = function() {
+    const overlay = document.getElementById('applyModalOverlay');
+    overlay.style.opacity = '0';
+    overlay.style.pointerEvents = 'none';
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  };
+
+  document.getElementById('applyModalOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeApplyModal();
+  });
+
+  window.handleMinistryApply = async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('applySubmitBtn');
+    const slug = document.getElementById('applyMinistrySlug').value;
+    const name = document.getElementById('applyName').value.trim();
+    const phone = document.getElementById('applyPhone').value.trim();
+    const telegram = document.getElementById('applyTelegram').value.trim();
+    const email = document.getElementById('applyEmail').value.trim();
+    const message = document.getElementById('applyMessage').value.trim();
+
+    if (!name || !phone) {
+      if (window.showNotification) window.showNotification('Укажите имя и телефон', 'error');
+      else alert('Укажите имя и телефон');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="material-symbols-outlined">sync</span> <span>Отправка...</span>';
+
+    try {
+      const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+      const resp = await fetch(`/api/ministries/${encodeURIComponent(slug)}/apply/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken,
+        },
+        body: JSON.stringify({ name, phone, telegram, email, message })
+      });
+
+      const res = await resp.json();
+      if (res.success) {
+        if (window.showNotification) window.showNotification(res.message, 'success');
+        else alert(res.message);
+        closeApplyModal();
+      } else {
+        if (window.showNotification) window.showNotification(res.error || 'Ошибка', 'error');
+        else alert(res.error);
+      }
+    } catch (err) {
+      if (window.showNotification) window.showNotification('Сетевая ошибка', 'error');
+      else alert('Сетевая ошибка');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<span class="material-symbols-outlined">send</span> <span>Отправить заявку</span>';
+    }
+  };
+})();
+</script>
+{% endblock %}
+

@@ -165,10 +165,13 @@
     color: #fff;
     text-decoration: none;
     transition: all 0.2s;
+    overflow: hidden;
+    position: relative;
 }
 .btn-profile:hover {
     background: rgba(255,255,255,0.1);
     transform: scale(1.05);
+    border-color: rgba(255,255,255,0.25);
 }
 
 .btn-donate {
@@ -236,6 +239,13 @@
                             <p>Ближайшие мероприятия</p>
                         </div>
                     </a>
+                    <a href="{% url 'home' %}#sec-calendar" class="dropdown-item">
+                        <div class="dropdown-icon"><span class="material-symbols-outlined">calendar_month</span></div>
+                        <div class="dropdown-text">
+                            <h4>Календарь</h4>
+                            <p>Служения и конференции</p>
+                        </div>
+                    </a>
                 </div>
             </div>
             
@@ -270,15 +280,15 @@
                         <div class="dropdown-icon"><span class="material-symbols-outlined">home</span></div>
                         <div class="dropdown-text"><h4>Домашние группы</h4><p>Общение посреди недели</p></div>
                     </a>
-                    <a href="{% url 'regional_churches' %}" class="dropdown-item" style="grid-column: 1 / -1; justify-content: center; background: rgba(255,255,255,0.02); margin-top: 4px;">
-                        <div class="dropdown-icon" style="background: none; width: auto; color: rgba(255,255,255,0.7);"><span class="material-symbols-outlined">map</span></div>
-                        <div class="dropdown-text"><h4 style="margin:0; color: rgba(255,255,255,0.7);">Церкви региона</h4></div>
+                    <a href="{% url 'community_map' %}" class="dropdown-item" style="grid-column: 1 / -1; justify-content: center; background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.25); border-radius: 14px; margin-top: 4px;">
+                        <div class="dropdown-icon" style="background: none; width: auto; color: var(--gold, #c9a84c);"><span class="material-symbols-outlined">explore</span></div>
+                        <div class="dropdown-text"><h4 style="margin:0; color: var(--gold, #c9a84c);">Интерактивная карта KCLC</h4><p style="margin:0; color:rgba(255,255,255,0.6); font-size:11px;">Филиалы, залы, домашние группы</p></div>
                     </a>
                 </div>
             </div>
 
             <div class="nav-item">
-                <a href="{% url 'library_home' %}" class="nav-link {% if '/library' in request.path %}active{% endif %}">
+                <a href="{% url 'library_home' %}" class="nav-link {% if '/library' in request.path or '/worship' in request.path %}active{% endif %}">
                     Библиотека
                     <span class="material-symbols-outlined" style="font-size: 16px; margin-top: 1px;">expand_more</span>
                 </a>
@@ -290,6 +300,13 @@
                             <p>Проповеди и трансляции</p>
                         </div>
                     </a>
+                    <a href="{% url 'worship_songs' %}" class="dropdown-item">
+                        <div class="dropdown-icon" style="color: #f43f5e;"><span class="material-symbols-outlined">music_note</span></div>
+                        <div class="dropdown-text">
+                            <h4>Песни прославления</h4>
+                            <p>KCLC Worship (YouTube)</p>
+                        </div>
+                    </a>
                     <a href="{% url 'library_home' %}#sec-podcasts" class="dropdown-item">
                         <div class="dropdown-icon"><span class="material-symbols-outlined">podcasts</span></div>
                         <div class="dropdown-text">
@@ -297,18 +314,51 @@
                             <p>Слушайте в пути</p>
                         </div>
                     </a>
-                    <a href="{% url 'library_home' %}#sec-kids" class="dropdown-item">
-                        <div class="dropdown-icon"><span class="material-symbols-outlined">child_care</span></div>
-                        <div class="dropdown-text">
-                            <h4>Детский раздел</h4>
-                            <p>Мультики и истории</p>
-                        </div>
-                    </a>
                 </div>
             </div>
 
             <div class="nav-item">
-                <a href="{% url 'prayer_list' %}" class="nav-link {% if '/prayer' in request.path %}active{% endif %}">Молитва</a>
+                <a href="{% url 'prayer_list' %}" class="nav-link {% if '/prayer' in request.path %}active{% endif %}">
+                    Молитва
+                    <span class="material-symbols-outlined" style="font-size: 16px; margin-top: 1px;">expand_more</span>
+                </a>
+                <div class="nav-dropdown">
+                    <a href="{% url 'prayer_list' %}" class="dropdown-item">
+                        <div class="dropdown-icon"><span class="material-symbols-outlined">forum</span></div>
+                        <div class="dropdown-text">
+                            <h4>Молитвенная стена</h4>
+                            <p>Поддержите других</p>
+                        </div>
+                    </a>
+                    <a href="{% url 'prayer_add' %}" class="dropdown-item">
+                        <div class="dropdown-icon"><span class="material-symbols-outlined">add_box</span></div>
+                        <div class="dropdown-text">
+                            <h4>Оставить нужду</h4>
+                            <p>Попросить о молитве</p>
+                        </div>
+                    </a>
+                    <a href="{% url 'my_prayers' %}" class="dropdown-item">
+                        <div class="dropdown-icon"><span class="material-symbols-outlined">list_alt</span></div>
+                        <div class="dropdown-text">
+                            <h4>Мои нужды</h4>
+                            <p>Дневник молитв</p>
+                        </div>
+                    </a>
+                    <a href="{% url 'revelation_list' %}" class="dropdown-item">
+                        <div class="dropdown-icon"><span class="material-symbols-outlined">auto_awesome</span></div>
+                        <div class="dropdown-text">
+                            <h4>Откровения и свидетельства</h4>
+                            <p>Что сделал Бог</p>
+                        </div>
+                    </a>
+                    <a href="{% url 'revelation_add' %}" class="dropdown-item">
+                        <div class="dropdown-icon"><span class="material-symbols-outlined">history_edu</span></div>
+                        <div class="dropdown-text">
+                            <h4>Поделиться откровением</h4>
+                            <p>Написать свидетельство</p>
+                        </div>
+                    </a>
+                </div>
             </div>
         </nav>
 
@@ -318,8 +368,14 @@
                 
                 Пожертвовать
             </a>
-            <a href="{% if user.is_authenticated %}{% url 'profile' %}{% else %}{% url 'account_login' %}{% endif %}" class="btn-profile desktop-only">
-                <span class="material-symbols-outlined" style="font-size: 20px;">person</span>
+            <a href="{% if user.is_authenticated %}{% url 'profile' %}{% else %}{% url 'account_login' %}{% endif %}" class="btn-profile desktop-only" title="{% if user.is_authenticated %}{{ user.profile.get_display_name }}{% else %}Войти{% endif %}">
+                {% if user.is_authenticated and user.profile and user.profile.avatar %}
+                    <img src="{{ user.profile.avatar.url }}" alt="{{ user.profile.get_display_name }}" class="w-full h-full object-cover rounded-full">
+                {% elif user.is_authenticated and user.profile %}
+                    <span class="text-xs font-bold text-amber-300">{{ user.profile.get_initials }}</span>
+                {% else %}
+                    <span class="material-symbols-outlined" style="font-size: 20px;">person</span>
+                {% endif %}
             </a>
             <button class="header-burger" id="header-mobile-burger">
                 <span class="material-symbols-outlined">menu</span>

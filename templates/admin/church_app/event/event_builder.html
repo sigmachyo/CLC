@@ -1,0 +1,1702 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}{{ title }} | KCLC Admin{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+    /* =========================================================
+       СВЕТЛЫЙ И ПРОСТОРНЫЙ SaaS UI КОНСТРУКТОРА (PowerPoint + WordPress)
+       Никаких навязанных тяжелых темных цветов — чистый воздух и свобода!
+       ========================================================= */
+    :root {
+        --cms-bg: #f8fafc;
+        --cms-card: #ffffff;
+        --cms-border: #e2e8f0;
+        --cms-border-focus: #3b82f6;
+        --cms-text-main: #0f172a;
+        --cms-text-muted: #64748b;
+        --cms-primary: #2563eb;
+        --cms-primary-hover: #1d4ed8;
+        --cms-success: #10b981;
+        --cms-danger: #ef4444;
+        --cms-accent: {{ theme_config.accent_color|default:"#2563eb" }};
+    }
+
+    .cms-container {
+        max-width: 1440px;
+        margin: 20px auto 60px auto;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        color: var(--cms-text-main);
+    }
+
+    /* Верхняя панель управления */
+    .cms-header-bar {
+        background: #ffffff;
+        border: 1px solid var(--cms-border);
+        border-radius: 16px;
+        padding: 18px 24px;
+        margin-bottom: 22px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    }
+    .cms-header-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .cms-badge-soft {
+        background: #eff6ff;
+        color: #2563eb;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 4px 10px;
+        border-radius: 20px;
+    }
+    .cms-header-title h1 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 800;
+        color: #0f172a;
+    }
+    .cms-header-title p {
+        margin: 2px 0 0 0;
+        font-size: 13px;
+        color: var(--cms-text-muted);
+    }
+
+    /* Кнопки действий */
+    .cms-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+    }
+    .btn-cms {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        border: 1px solid transparent;
+        text-decoration: none;
+        transition: all 0.15s ease;
+    }
+    .btn-cms-primary {
+        background: #2563eb;
+        color: #ffffff;
+        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+    }
+    .btn-cms-primary:hover {
+        background: #1d4ed8;
+        transform: translateY(-1px);
+        color: #ffffff;
+    }
+    .btn-cms-light {
+        background: #ffffff;
+        color: #334155;
+        border-color: #cbd5e1;
+    }
+    .btn-cms-light:hover {
+        background: #f1f5f9;
+        color: #0f172a;
+    }
+    .btn-cms-auto {
+        background: #f0fdf4;
+        color: #166534;
+        border-color: #bbf7d0;
+    }
+    .btn-cms-auto:hover {
+        background: #dcfce7;
+        color: #14532d;
+    }
+    .btn-cms-sm {
+        padding: 6px 12px;
+        font-size: 12px;
+        border-radius: 8px;
+    }
+    .btn-cms-danger {
+        background: #fef2f2;
+        color: #b91c1c;
+        border-color: #fecaca;
+    }
+    .btn-cms-danger:hover {
+        background: #fee2e2;
+    }
+
+    /* Двухколоночный макет PowerPoint */
+    .ppt-workspace {
+        display: grid;
+        grid-template-columns: 310px 1fr;
+        gap: 24px;
+        align-items: start;
+    }
+    @media (max-width: 960px) {
+        .ppt-workspace {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Левая колонка: Слайд-дек */
+    .ppt-deck {
+        background: #ffffff;
+        border: 1px solid var(--cms-border);
+        border-radius: 16px;
+        padding: 18px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+        position: sticky;
+        top: 20px;
+        max-height: calc(100vh - 40px);
+        overflow-y: auto;
+    }
+    .ppt-deck-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 12px;
+        margin-bottom: 14px;
+        border-bottom: 1px solid #f1f5f9;
+    }
+    .ppt-deck-header h3 {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #475569;
+    }
+
+    .slide-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 10px 12px;
+        background: #f8fafc;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+    }
+    .slide-item:hover {
+        border-color: #93c5fd;
+        background: #f0f7ff;
+    }
+    .slide-item.active {
+        border-color: #2563eb;
+        background: #eff6ff;
+        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.12);
+    }
+    .slide-item-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+        flex: 1;
+    }
+    .slide-num {
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        background: #ffffff;
+        border: 1px solid #cbd5e1;
+        font-size: 11px;
+        font-weight: 800;
+        color: #64748b;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        shrink-0;
+    }
+    .slide-item.active .slide-num {
+        background: #2563eb;
+        color: #ffffff;
+        border-color: #2563eb;
+    }
+    .slide-info {
+        min-width: 0;
+    }
+    .slide-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: #0f172a;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .slide-type {
+        font-size: 11px;
+        color: #64748b;
+    }
+    .slide-actions {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        opacity: 0.6;
+        transition: opacity 0.15s;
+    }
+    .slide-item:hover .slide-actions {
+        opacity: 1;
+    }
+    .slide-act-btn {
+        background: none;
+        border: none;
+        padding: 4px 6px;
+        color: #64748b;
+        cursor: pointer;
+        border-radius: 6px;
+        font-size: 11px;
+    }
+    .slide-act-btn:hover {
+        background: #e2e8f0;
+        color: #0f172a;
+    }
+
+    /* Меню добавления слайдов */
+    .add-slide-box {
+        margin-top: 14px;
+        padding-top: 14px;
+        border-top: 1px solid #f1f5f9;
+    }
+
+    /* Правая колонка: Холст активного слайда */
+    .ppt-canvas {
+        background: #ffffff;
+        border: 1px solid var(--cms-border);
+        border-radius: 16px;
+        padding: 28px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03);
+    }
+    .canvas-pane {
+        display: none;
+    }
+    .canvas-pane.active {
+        display: block;
+        animation: canvasFade 0.15s ease-out;
+    }
+    @keyframes canvasFade {
+        from { opacity: 0; transform: translateY(3px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .pane-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding-bottom: 18px;
+        margin-bottom: 24px;
+        border-bottom: 2px solid #f1f5f9;
+    }
+    .pane-toolbar h2 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 800;
+        color: #0f172a;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Инлайн поля ввода в стиле PowerPoint */
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-label {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 6px;
+    }
+    .form-input-text {
+        width: 100%;
+        padding: 12px 16px;
+        font-size: 14px;
+        border: 1px solid #cbd5e1;
+        border-radius: 10px;
+        background: #ffffff;
+        color: #0f172a;
+        box-sizing: border-box;
+        transition: all 0.15s;
+    }
+    .form-input-text:focus {
+        border-color: #2563eb;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+    .form-input-lg {
+        font-size: 18px;
+        font-weight: 700;
+        padding: 14px 18px;
+    }
+    .form-textarea {
+        width: 100%;
+        padding: 12px 16px;
+        font-size: 14px;
+        border: 1px solid #cbd5e1;
+        border-radius: 10px;
+        background: #ffffff;
+        color: #0f172a;
+        box-sizing: border-box;
+        min-height: 85px;
+        resize: vertical;
+        line-height: 1.5;
+    }
+    .form-textarea:focus {
+        border-color: #2563eb;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* Сетка 2-4 колонки */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    @media (max-width: 768px) {
+        .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    }
+
+    /* Карточка с баннером на весь экран */
+    .banner-stage {
+        background: #f8fafc;
+        border: 2px dashed #cbd5e1;
+        border-radius: 14px;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 20px;
+        position: relative;
+    }
+    .banner-stage-img {
+        max-height: 280px;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        margin-bottom: 12px;
+    }
+
+    /* Карточки элементов (спикеры, темы, расписание) */
+    .item-card {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 12px;
+        position: relative;
+    }
+    .item-card-del {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: #ffffff;
+        border: 1px solid #fecaca;
+        color: #ef4444;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+    }
+    .item-card-del:hover {
+        background: #fee2e2;
+    }
+
+    /* Редактор кода HTML / CSS */
+    .code-editor-area {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 13px;
+        background: #0f172a;
+        color: #38bdf8;
+        border-radius: 10px;
+        padding: 16px;
+        width: 100%;
+        box-sizing: border-box;
+        min-height: 180px;
+        line-height: 1.5;
+    }
+
+    /* Модальное окно темы */
+    .cms-modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.4);
+        backdrop-filter: blur(4px);
+        z-index: 1000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+    .cms-modal {
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 28px;
+        width: 100%;
+        max-width: 620px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    .cms-modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid #f1f5f9;
+    }
+    .cms-modal-header h3 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 800;
+        color: #0f172a;
+    }
+
+    /* Панель управления макетом слайда и переключатель режимов */
+    .slide-control-bar {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 10px 14px;
+        margin-bottom: 22px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+    .slide-control-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    .mode-tab-bar {
+        display: inline-flex;
+        background: #e2e8f0;
+        padding: 3px;
+        border-radius: 10px;
+        gap: 2px;
+    }
+    .mode-tab-btn {
+        border: none;
+        background: transparent;
+        color: #475569;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 6px 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .mode-tab-btn.active {
+        background: #ffffff;
+        color: #2563eb;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+    .mode-tab-btn:hover:not(.active) {
+        color: #0f172a;
+    }
+
+    /* Модальное окно Live Preview */
+    .preview-modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.65);
+        backdrop-filter: blur(6px);
+        z-index: 1050;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+    .preview-modal {
+        background: #0f172a;
+        border-radius: 20px;
+        padding: 16px 20px 20px 20px;
+        width: 100%;
+        max-width: 1280px;
+        height: 92vh;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+    }
+    .preview-modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #334155;
+        margin-bottom: 14px;
+        color: #ffffff;
+    }
+    .preview-device-btn {
+        background: #1e293b;
+        color: #94a3b8;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        padding: 6px 12px;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.15s;
+    }
+    .preview-device-btn.active, .preview-device-btn:hover {
+        background: #2563eb;
+        color: #ffffff;
+        border-color: #2563eb;
+    }
+    .preview-frame-wrapper {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        background: #020617;
+        border-radius: 12px;
+        padding: 10px;
+    }
+    .preview-iframe {
+        height: 100%;
+        border: none;
+        border-radius: 10px;
+        background: #ffffff;
+        transition: width 0.25s ease-in-out;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    /* Инфо-плашка режима кода */
+    .code-mode-notice {
+        background: #f0f9ff;
+        border: 1px solid #bae6fd;
+        border-radius: 10px;
+        padding: 12px 16px;
+        margin-bottom: 14px;
+        font-size: 12px;
+        color: #0369a1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    /* Плавающая плашка быстрого сохранения */
+    .floating-bar {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-radius: 14px;
+        padding: 10px 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        z-index: 99;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="cms-container">
+
+    <!-- 1. Верхняя панель управления CMS -->
+    <div class="cms-header-bar">
+        <div class="cms-header-title">
+            <span class="cms-badge-soft">Визитка / Конференция</span>
+            <div>
+                <h1>{{ event.title }}</h1>
+                <p>Режим свободного визуального редактирования страниц (PowerPoint + WordPress CMS)</p>
+            </div>
+        </div>
+        <div class="cms-actions">
+            <!-- 1-клик автосборка визитки -->
+            <form method="post" style="display:inline;" onsubmit="return confirm('Автоматически сгенерировать структуру визитки со всеми слайдами и баннером? Текущие блоки будут обновлены.');">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="auto_generate">
+                <button type="submit" class="btn-cms btn-cms-auto">
+                    <i class="fas fa-bolt"></i>
+                    <span>⚡ Собрать визитку в 1 клик</span>
+                </button>
+            </form>
+
+            <!-- Кнопка настройки стиля и темы -->
+            <button type="button" class="btn-cms btn-cms-light" onclick="openThemeModal()">
+                <i class="fas fa-palette"></i>
+                <span>Тема и стиль</span>
+            </button>
+
+            <!-- Кнопка исходного HTML/CSS кода страницы -->
+            <button type="button" class="btn-cms btn-cms-light" onclick="openFullCodeModal()" title="Редактировать полный HTML/CSS код лендинга">
+                <i class="fas fa-code"></i>
+                <span>Код страницы</span>
+            </button>
+
+            <!-- Кнопка встроенного Live Preview прямо в админке -->
+            {% if event.slug %}
+            <button type="button" class="btn-cms btn-cms-light" onclick="openLivePreview()" style="border-color: #93c5fd; color: #1d4ed8; background: #eff6ff;">
+                <i class="fas fa-desktop"></i>
+                <span>Live Preview</span>
+            </button>
+            <a href="{% url 'event_detail' event.slug %}" target="_blank" class="btn-cms btn-cms-light" title="Открыть в новой вкладке">
+                <i class="fas fa-external-link-alt"></i>
+                <span>На сайт</span>
+            </a>
+            {% endif %}
+
+            <!-- Главная кнопка сохранения -->
+            <button type="button" class="btn-cms btn-cms-primary" onclick="document.getElementById('main-builder-form').submit()">
+                <i class="fas fa-save"></i>
+                <span>Сохранить все</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 2. Двухколоночный макет PowerPoint -->
+    <div class="ppt-workspace">
+
+        <!-- Левая колонка: Слайды презентации -->
+        <div class="ppt-deck">
+            <div class="ppt-deck-header">
+                <h3>Слайды ({{ blocks|length }})</h3>
+                <span style="font-size: 11px; color: #94a3b8;">Порядок страниц</span>
+            </div>
+
+            <!-- Список миниатюр слайдов -->
+            <div class="slides-list" id="slides-deck-list">
+                {% for b in blocks %}
+                <div class="slide-item {% if forloop.first %}active{% endif %}" id="thumb-block-{{ b.id }}" onclick="selectSlide('pane-block-{{ b.id }}', this)">
+                    <div class="slide-item-left">
+                        <div class="slide-num">{{ forloop.counter }}</div>
+                        <div class="slide-info">
+                            <div class="slide-title">{{ b.content.title|default:b.get_block_type_display }}</div>
+                            <div class="slide-type">{{ b.get_block_type_display }}</div>
+                        </div>
+                    </div>
+                    <div class="slide-actions">
+                        <!-- Вверх -->
+                        {% if not forloop.first %}
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="move_block">
+                            <input type="hidden" name="block_id" value="{{ b.id }}">
+                            <input type="hidden" name="direction" value="up">
+                            <button type="submit" class="slide-act-btn" title="Поднять слайд"><i class="fas fa-arrow-up"></i></button>
+                        </form>
+                        {% endif %}
+                        <!-- Вниз -->
+                        {% if not forloop.last %}
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="move_block">
+                            <input type="hidden" name="block_id" value="{{ b.id }}">
+                            <input type="hidden" name="direction" value="down">
+                            <button type="submit" class="slide-act-btn" title="Опустить слайд"><i class="fas fa-arrow-down"></i></button>
+                        </form>
+                        {% endif %}
+                        <!-- Дублировать -->
+                        <form method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="duplicate_block">
+                            <input type="hidden" name="block_id" value="{{ b.id }}">
+                            <button type="submit" class="slide-act-btn" title="Дублировать слайд"><i class="far fa-copy"></i></button>
+                        </form>
+                        <!-- Удалить -->
+                        <form method="post" style="display:inline;" onsubmit="return confirm('Удалить этот слайд/блок?');">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="delete_block">
+                            <input type="hidden" name="block_id" value="{{ b.id }}">
+                            <button type="submit" class="slide-act-btn" title="Удалить слайд"><i class="far fa-trash-alt" style="color:#ef4444;"></i></button>
+                        </form>
+                    </div>
+                </div>
+                {% empty %}
+                <div style="padding: 20px; text-align: center; color: #94a3b8; font-size: 13px;">
+                    Нет добавленных слайдов.<br>Нажмите «⚡ Собрать визитку в 1 клик» или добавьте блок ниже.
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Добавление нового слайда / блока -->
+            <div class="add-slide-box">
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="add_block">
+                    <label class="form-label" style="margin-bottom: 8px;">+ Добавить новый слайд:</label>
+                    <div style="display: flex; gap: 6px;">
+                        <select name="new_block_type" class="form-input-text" style="padding: 8px 12px; font-size: 12px;">
+                            <option value="hero">🖼️ Главный экран (Hero) и баннер</option>
+                            <option value="text">✍️ Произвольный текст и тезисы</option>
+                            <option value="concept">💡 О событии / Видение</option>
+                            <option value="audience">🗂️ Для кого (Карточки участников)</option>
+                            <option value="topics">🎯 Темы и модули обучения</option>
+                            <option value="schedule">📅 Расписание сессий (Тайминг)</option>
+                            <option value="speakers">👥 Спикеры и наставники</option>
+                            <option value="pricing">💳 Пожертвование и реквизиты (СБП/PayPal)</option>
+                            <option value="registration">🎟️ Форма регистрации</option>
+                            <option value="faq">❓ Часто задаваемые вопросы (FAQ)</option>
+                            <option value="video">🎬 Видео / Трейлер</option>
+                            <option value="custom_html">💻 Кастомный HTML / CSS блок</option>
+                        </select>
+                        <button type="submit" class="btn-cms btn-cms-primary btn-cms-sm" style="shrink-0;">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Правая колонка: Холст активного слайда -->
+        <div class="ppt-canvas">
+            <form method="post" id="main-builder-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="save_blocks">
+
+                {% for b in blocks %}
+                <div class="canvas-pane {% if forloop.first %}active{% endif %}" id="pane-block-{{ b.id }}">
+
+                    <!-- Шапка холста слайда -->
+                    <div class="pane-toolbar">
+                        <h2>
+                            <span>Слайд {{ forloop.counter }}: {{ b.get_block_type_display }}</span>
+                        </h2>
+                        <div style="display: flex; align-items: center; gap: 14px;">
+                            <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; cursor: pointer;">
+                                <input type="checkbox" name="block_{{ b.id }}_active" {% if b.is_active %}checked{% endif %}>
+                                <span>Показывать на странице</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Панель макета и режимов слайда (Выравнивание, Фон, Код/Визуал) -->
+                    <div class="slide-control-bar">
+                        <div class="slide-control-group">
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <label class="form-label" style="margin: 0; font-size: 11px;">Выравнивание:</label>
+                                <select name="block_{{ b.id }}_text_align" class="form-input-text" style="padding: 6px 10px; font-size: 12px; width: auto;">
+                                    <option value="center" {% if b.content.text_align == 'center' or not b.content.text_align %}selected{% endif %}>По центру</option>
+                                    <option value="left" {% if b.content.text_align == 'left' %}selected{% endif %}>По левому краю</option>
+                                    <option value="right" {% if b.content.text_align == 'right' %}selected{% endif %}>По правому краю</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <label class="form-label" style="margin: 0; font-size: 11px;">Стиль фона:</label>
+                                <select name="block_{{ b.id }}_bg_style" class="form-input-text" style="padding: 6px 10px; font-size: 12px; width: auto;">
+                                    <option value="default" {% if b.content.bg_style == 'default' or not b.content.bg_style %}selected{% endif %}>По умолчанию</option>
+                                    <option value="white" {% if b.content.bg_style == 'white' %}selected{% endif %}>Белый картон</option>
+                                    <option value="slate" {% if b.content.bg_style == 'slate' %}selected{% endif %}>Светло-серый (Slate)</option>
+                                    <option value="dark" {% if b.content.bg_style == 'dark' %}selected{% endif %}>Глубокий тёмный</option>
+                                    <option value="accent" {% if b.content.bg_style == 'accent' %}selected{% endif %}>Акцентная подсветка</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mode-tab-bar">
+                            <button type="button" class="mode-tab-btn {% if not b.content.custom_html_override %}active{% endif %}" id="btn-mode-visual-{{ b.id }}" onclick="setSlideMode({{ b.id }}, 'visual')">
+                                <i class="fas fa-magic"></i> 🎨 Визуальный холст
+                            </button>
+                            <button type="button" class="mode-tab-btn {% if b.content.custom_html_override %}active{% endif %}" id="btn-mode-code-{{ b.id }}" onclick="setSlideMode({{ b.id }}, 'code')">
+                                <i class="fas fa-code"></i> 💻 HTML/CSS код
+                                {% if b.content.custom_html_override %}
+                                <span style="background:#10b981; color:#fff; border-radius:10px; padding:1px 6px; font-size:9px; font-weight:800; margin-left:4px;">ON</span>
+                                {% endif %}
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ВКЛАДКА 1: ВИЗУАЛЬНЫЙ ХОЛСТ СЛАЙДА -->
+                    <div id="slide-visual-{{ b.id }}" style="{% if b.content.custom_html_override %}display:none;{% endif %}">
+
+                    <!-- ──────────────────────────────────────────────
+                         СЛАЙД 1: HERO & БАННЕР НА ВЕСЬ ЭКРАН
+                         ────────────────────────────────────────────── -->
+                    {% if b.block_type == 'hero' %}
+                    <div class="form-group">
+                        <label class="form-label">Бейдж / Тип события (вверху)</label>
+                        <input type="text" name="block_{{ b.id }}_badge" value="{{ b.content.badge|default:'Конференция' }}" class="form-input-text" placeholder="Практическая онлайн-школа">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Главный заголовок конференции (H1)</label>
+                        <input type="text" name="block_{{ b.id }}_title" value="{{ b.content.title|default:event.title }}" class="form-input-text form-input-lg" placeholder="Название конференции">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Подзаголовок / Краткая суть</label>
+                        <textarea name="block_{{ b.id }}_subtitle" class="form-textarea" placeholder="О чем событие...">{{ b.content.subtitle|default:event.description }}</textarea>
+                    </div>
+
+                    <!-- 4 КЛЮЧЕВЫХ ПЛАШКИ: ЧТО, КОГДА, ГДЕ, СТОИМОСТЬ -->
+                    <div style="background: #f1f5f9; border-radius: 12px; padding: 18px; margin-bottom: 22px;">
+                        <h4 style="margin: 0 0 12px 0; font-size: 13px; font-weight: 800; color: #334155; text-transform: uppercase;">
+                            📌 Главная сводка первого экрана (Что / Когда / Где / Стоимость)
+                        </h4>
+                        <div class="grid-2">
+                            <div class="form-group" style="margin-bottom: 12px;">
+                                <label class="form-label">Что проходит:</label>
+                                <input type="text" name="block_{{ b.id }}_what_text" value="{{ b.content.what_text|default:event.title }}" class="form-input-text" placeholder="Онлайн-школа / Конференция">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 12px;">
+                                <label class="form-label">Когда проходит (Даты и время):</label>
+                                <input type="text" name="block_{{ b.id }}_when_text" value="{{ b.content.when_text|default:event.start_date|date:'d E Y' }}" class="form-input-text" placeholder="23–25 апреля 2026 • 18:00 МСК">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label">Где проходит (Платформа / Адрес):</label>
+                                <input type="text" name="block_{{ b.id }}_where_text" value="{{ b.content.where_text|default:event.location }}" class="form-input-text" placeholder="Прямой эфир в Zoom / KCLC">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label">Стоимость / Пожертвование:</label>
+                                <input type="text" name="block_{{ b.id }}_price_text" value="{{ b.content.price_text|default:event.registration_fee|default:'Добровольный взнос' }}" class="form-input-text" placeholder="5 000 ₽ / Бесплатно">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- УПРАВЛЕНИЕ БАННЕРОМ НА ВЕСЬ ЭКРАН -->
+                    <div class="banner-stage">
+                        <h4 style="margin: 0 0 8px 0; font-size: 14px; font-weight: 800; color: #0f172a;">
+                            🖼️ Главный баннер / Обложка конференции
+                        </h4>
+                        <p style="margin: 0 0 14px 0; font-size: 12px; color: #64748b;">
+                            Баннер отображается крупно на первом экране конференции. Выберите файл с компьютера или укажите прямую ссылку.
+                        </p>
+
+                        {% if b.content.banner_url or event.image %}
+                            <img src="{{ b.content.banner_url|default:event.image.url }}" alt="Баннер" class="banner-stage-img">
+                        {% endif %}
+
+                        <div class="grid-2" style="text-align: left;">
+                            <div>
+                                <label class="form-label">Загрузить баннер с компьютера:</label>
+                                <input type="file" name="event_banner_file" accept="image/*" class="form-input-text">
+                            </div>
+                            <div>
+                                <label class="form-label">Или ссылка на изображение (URL):</label>
+                                <input type="url" name="block_{{ b.id }}_banner_url" value="{{ b.content.banner_url|default:'' }}" class="form-input-text" placeholder="https://example.com/banner.jpg">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ──────────────────────────────────────────────
+                         СЛАЙД 2: КОНЦЕПЦИЯ / МАНИФЕСТ
+                         ────────────────────────────────────────────── -->
+                    {% elif b.block_type == 'concept' %}
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label class="form-label">Заголовок манифеста</label>
+                            <input type="text" name="block_{{ b.id }}_title" value="{{ b.content.title|default:'О СОБЫТИИ' }}" class="form-input-text form-input-lg">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Подзаголовок / Смысл</label>
+                            <input type="text" name="block_{{ b.id }}_subtitle" value="{{ b.content.subtitle|default:'Видение и цели' }}" class="form-input-text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Основной текст 1 (Главная мысль)</label>
+                        <textarea name="block_{{ b.id }}_text_1" class="form-textarea" style="min-height: 100px;">{{ b.content.text_1|default:'' }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Дополнительный текст 2 (Развитие темы)</label>
+                        <textarea name="block_{{ b.id }}_text_2" class="form-textarea" style="min-height: 90px;">{{ b.content.text_2|default:'' }}</textarea>
+                    </div>
+
+                    <!-- ──────────────────────────────────────────────
+                         СЛАЙД 3: ДЛЯ КОГО ЭТО СОБЫТИЕ (AUDIENCE)
+                         ────────────────────────────────────────────── -->
+                    {% elif b.block_type == 'audience' %}
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label class="form-label">Заголовок секции</label>
+                            <input type="text" name="block_{{ b.id }}_title" value="{{ b.content.title|default:'Для кого эта школа' }}" class="form-input-text form-input-lg">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Подзаголовок</label>
+                            <input type="text" name="block_{{ b.id }}_subtitle" value="{{ b.content.subtitle|default:'Целевая аудитория' }}" class="form-input-text">
+                        </div>
+                    </div>
+
+                    <div id="audience-list-{{ b.id }}">
+                        {% for c in b.content.cards %}
+                        <div class="item-card">
+                            <button type="button" class="item-card-del" onclick="this.closest('.item-card').remove()"><i class="fas fa-times"></i></button>
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label class="form-label">Номер карточки</label>
+                                    <input type="text" name="block_{{ b.id }}_card_num" value="{{ c.num|default:forloop.counter }}" class="form-input-text">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Для кого (Категория)</label>
+                                    <input type="text" name="block_{{ b.id }}_card_title" value="{{ c.title }}" class="form-input-text font-bold" required>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label">Описание</label>
+                                <textarea name="block_{{ b.id }}_card_desc" class="form-textarea" style="min-height: 60px;">{{ c.desc }}</textarea>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button type="button" class="btn-cms btn-cms-light btn-cms-sm" onclick="addAudienceRow({{ b.id }})">
+                        <i class="fas fa-plus"></i> + Добавить карточку аудитории
+                    </button>
+
+                    <!-- ──────────────────────────────────────────────
+                         СЛАЙД 4: ТЕМЫ И МОДУЛИ ОБУЧЕНИЯ (TOPICS)
+                         ────────────────────────────────────────────── -->
+                    {% elif b.block_type == 'topics' %}
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label class="form-label">Заголовок блока тем</label>
+                            <input type="text" name="block_{{ b.id }}_title" value="{{ b.content.title|default:'Ключевые темы' }}" class="form-input-text form-input-lg">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Подзаголовок</label>
+                            <input type="text" name="block_{{ b.id }}_subtitle" value="{{ b.content.subtitle|default:'Программа обучения' }}" class="form-input-text">
+                        </div>
+                    </div>
+
+                    <div id="topics-list-{{ b.id }}">
+                        {% for t in b.content.topics %}
+                        <div class="item-card">
+                            <button type="button" class="item-card-del" onclick="this.closest('.item-card').remove()"><i class="fas fa-times"></i></button>
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label class="form-label">Номер темы</label>
+                                    <input type="text" name="block_{{ b.id }}_topic_num" value="{{ t.num|default:forloop.counter }}" class="form-input-text">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Название темы</label>
+                                    <input type="text" name="block_{{ b.id }}_topic_title" value="{{ t.title }}" class="form-input-text font-bold" required>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label">Описание темы</label>
+                                <textarea name="block_{{ b.id }}_topic_desc" class="form-textarea" style="min-height: 60px;">{{ t.desc }}</textarea>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button type="button" class="btn-cms btn-cms-light btn-cms-sm" onclick="addTopicRow({{ b.id }})">
+                        <i class="fas fa-plus"></i> + Добавить тему
+                    </button>
+
+                    <!-- ──────────────────────────────────────────────
+                         СЛАЙД 5: РАСПИСАНИЕ И ТАЙМИНГ (SCHEDULE)
+                         ────────────────────────────────────────────── -->
+                    {% elif b.block_type == 'schedule' %}
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label class="form-label">Заголовок расписания</label>
+                            <input type="text" name="block_{{ b.id }}_title" value="{{ b.content.title|default:'Расписание' }}" class="form-input-text form-input-lg">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Подзаголовок</label>
+                            <input type="text" name="block_{{ b.id }}_subtitle" value="{{ b.content.subtitle|default:'Формат и время сессий' }}" class="form-input-text">
+                        </div>
+                    </div>
+
+                    <div id="schedule-list-{{ b.id }}">
+                        {% for s in b.content.sessions %}
+                        <div class="item-card">
+                            <button type="button" class="item-card-del" onclick="this.closest('.item-card').remove()"><i class="fas fa-times"></i></button>
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label class="form-label">Время (МСК)</label>
+                                    <input type="text" name="block_{{ b.id }}_session_time" value="{{ s.time }}" class="form-input-text font-mono" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">День / дата</label>
+                                    <input type="text" name="block_{{ b.id }}_session_day" value="{{ s.day|default:'День' }}" class="form-input-text">
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label">Название сессии / тема</label>
+                                <input type="text" name="block_{{ b.id }}_session_title" value="{{ s.title }}" class="form-input-text font-bold" required>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button type="button" class="btn-cms btn-cms-light btn-cms-sm" onclick="addScheduleRow({{ b.id }})">
+                        <i class="fas fa-plus"></i> + Добавить сессию
+                    </button>
+
+                    <!-- ──────────────────────────────────────────────
+                         СЛАЙД 6: СПИКЕРЫ КОНФЕРЕНЦИИ (SPEAKERS)
+                         ────────────────────────────────────────────── -->
+                    {% elif b.block_type == 'speakers' %}
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label class="form-label">Заголовок блока спикеров</label>
+                            <input type="text" name="block_{{ b.id }}_title" value="{{ b.content.title|default:'Спикеры конференции' }}" class="form-input-text form-input-lg">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Подзаголовок</label>
+                            <input type="text" name="block_{{ b.id }}_subtitle" value="{{ b.content.subtitle|default:'Наставники' }}" class="form-input-text">
+                        </div>
+                    </div>
+
+                    <div id="speakers-list-{{ b.id }}">
+                        {% for sp in b.content.speakers %}
+                        <div class="item-card">
+                            <button type="button" class="item-card-del" onclick="this.closest('.item-card').remove()"><i class="fas fa-times"></i></button>
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label class="form-label">Имя и фамилия спикера</label>
+                                    <input type="text" name="block_{{ b.id }}_sp_name" value="{{ sp.name }}" class="form-input-text font-bold" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Роль / служение</label>
+                                    <input type="text" name="block_{{ b.id }}_sp_role" value="{{ sp.role }}" class="form-input-text">
+                                </div>
+                            </div>
+                            <div class="grid-3">
+                                <div class="form-group">
+                                    <label class="form-label">Инициалы</label>
+                                    <input type="text" name="block_{{ b.id }}_sp_initials" value="{{ sp.initials|default:'' }}" class="form-input-text" placeholder="ДМ">
+                                </div>
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label class="form-label">URL фотографии</label>
+                                    <input type="url" name="block_{{ b.id }}_sp_image" value="{{ sp.image_url|default:'' }}" class="form-input-text" placeholder="https://...">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Книги / труды спикера</label>
+                                <input type="text" name="block_{{ b.id }}_sp_books" value="{{ sp.books|default:'' }}" class="form-input-text" placeholder="Автор книг...">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label">Биография спикера</label>
+                                <textarea name="block_{{ b.id }}_sp_bio" class="form-textarea">{{ sp.bio|default:'' }}</textarea>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button type="button" class="btn-cms btn-cms-light btn-cms-sm" onclick="addSpeakerRow({{ b.id }})">
+                        <i class="fas fa-plus"></i> + Добавить спикера
+                    </button>
+
+                    <!-- ──────────────────────────────────────────────
+                         СЛАЙД 7: РЕКВИЗИТЫ И ПОЖЕРТВОВАНИЕ (PRICING)
+                         ────────────────────────────────────────────── -->
+                    {% elif b.block_type == 'pricing' %}
+                    <div class="form-group">
+                        <label class="form-label">Заголовок блока пожертвования</label>
+                        <input type="text" name="block_{{ b.id }}_title" value="{{ b.content.title|default:'Регистрационный взнос и реквизиты' }}" class="form-input-text form-input-lg">
+                    </div>
+                    <div class="grid-2">
+                        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px;">
+                            <h4 style="margin: 0 0 10px 0; font-size: 13px; font-weight: 800; color: #166534;">🇷🇺 Карты РФ / СБП</h4>
+                            <div class="form-group">
+                                <label class="form-label">Сумма по СБП (текст)</label>
+                                <input type="text" name="block_{{ b.id }}_sbp_amount" value="{{ b.content.sbp_amount|default:'5 000 ₽' }}" class="form-input-text font-bold">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label">Ссылка для оплаты по СБП / QR</label>
+                                <input type="url" name="block_{{ b.id }}_sbp_url" value="{{ b.content.sbp_url|default:'' }}" class="form-input-text" placeholder="https://qr.nspk.ru/...">
+                            </div>
+                        </div>
+                        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px;">
+                            <h4 style="margin: 0 0 10px 0; font-size: 13px; font-weight: 800; color: #1e40af;">🌍 Зарубежные карты / PayPal</h4>
+                            <div class="form-group">
+                                <label class="form-label">Сумма PayPal (текст)</label>
+                                <input type="text" name="block_{{ b.id }}_paypal_amount" value="{{ b.content.paypal_amount|default:'60 €' }}" class="form-input-text font-bold">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label">Ссылка PayPal</label>
+                                <input type="url" name="block_{{ b.id }}_paypal_url" value="{{ b.content.paypal_url|default:'' }}" class="form-input-text" placeholder="https://paypal.me/...">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 16px;">
+                        <label class="form-label">Telegram куратора / поддержки</label>
+                        <input type="text" name="block_{{ b.id }}_support_telegram" value="{{ b.content.support_telegram|default:'@krasnkate' }}" class="form-input-text">
+                    </div>
+
+                    <!-- ──────────────────────────────────────────────
+                         СЛАЙД 8: ФОРМА РЕГИСТРАЦИИ (REGISTRATION)
+                         ────────────────────────────────────────────── -->
+                    {% elif b.block_type == 'registration' %}
+                    <div class="form-group">
+                        <label class="form-label">Заголовок формы регистрации</label>
+                        <input type="text" name="block_{{ b.id }}_title" value="{{ b.content.title|default:'Регистрация на событие' }}" class="form-input-text form-input-lg">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Подзаголовок / Инструкция участнику</label>
+                        <textarea name="block_{{ b.id }}_subtitle" class="form-textarea">{{ b.content.subtitle|default:'Заполните данные участника. Билет и ссылка на конференцию будут высланы на ваш e-mail.' }}</textarea>
+                    </div>
+                    <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 14px; font-size: 12px; color: #1e40af;">
+                        <i class="fas fa-info-circle"></i> Поля формы (Имя, Фамилия, Телефон, Telegram, Email, Загрузка чека) встроены автоматически. Для авторизованных пользователей данные подтягиваются из профиля KCLC.
+                    </div>
+
+                    <!-- ──────────────────────────────────────────────
+                         СЛАЙД 9: СВОБОДНЫЙ ТЕКСТ И ТЕЗИСЫ (TEXT)
+                         ────────────────────────────────────────────── -->
+                    {% elif b.block_type == 'text' %}
+                    <div class="form-group">
+                        <label class="form-label">Заголовок текстового раздела</label>
+                        <input type="text" name="block_{{ b.id }}_title" value="{{ b.content.title|default:'Важная информация' }}" class="form-input-text form-input-lg">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Вводный акцентный абзац (Лид)</label>
+                        <input type="text" name="block_{{ b.id }}_lead" value="{{ b.content.lead|default:'' }}" class="form-input-text">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Основной текст</label>
+                        <textarea name="block_{{ b.id }}_body" class="form-textarea" style="min-height: 120px;">{{ b.content.body|default:'' }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Цитата / Выделенная мысль</label>
+                        <input type="text" name="block_{{ b.id }}_quote" value="{{ b.content.quote|default:'' }}" class="form-input-text" placeholder="«Слово Божье...»">
+                    </div>
+
+                    <!-- ──────────────────────────────────────────────
+                         СЛАЙД 10: КАСТОМНЫЙ HTML / CSS БЛОК
+                         ────────────────────────────────────────────── -->
+                    {% elif b.block_type == 'custom_html' %}
+                    <div class="form-group">
+                        <label class="form-label">Название элемента</label>
+                        <input type="text" name="block_{{ b.id }}_title" value="{{ b.content.title|default:'Кастомный HTML / CSS блок' }}" class="form-input-text">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">HTML разметка (поддерживаются любые теги, iframe, svg, виджеты):</label>
+                        <textarea name="block_{{ b.id }}_html" class="code-editor-area" style="min-height: 180px;">{{ b.content.html|default:'' }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">CSS стили для этого блока:</label>
+                        <textarea name="block_{{ b.id }}_css" class="code-editor-area" style="min-height: 100px; color: #a7f3d0;" placeholder="/* CSS правила */">{{ b.content.css|default:'' }}</textarea>
+                    </div>
+
+                    <!-- ──────────────────────────────────────────────
+                         СЛАЙД 11: ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ (FAQ)
+                         ────────────────────────────────────────────── -->
+                    {% elif b.block_type == 'faq' %}
+                    <div class="form-group">
+                        <label class="form-label">Заголовок FAQ</label>
+                        <input type="text" name="block_{{ b.id }}_title" value="{{ b.content.title|default:'Часто задаваемые вопросы' }}" class="form-input-text form-input-lg">
+                    </div>
+                    <div id="faq-list-{{ b.id }}">
+                        {% for f in b.content.faq_items %}
+                        <div class="item-card">
+                            <button type="button" class="item-card-del" onclick="this.closest('.item-card').remove()"><i class="fas fa-times"></i></button>
+                            <div class="form-group">
+                                <label class="form-label">Вопрос</label>
+                                <input type="text" name="block_{{ b.id }}_faq_q" value="{{ f.question }}" class="form-input-text font-bold" placeholder="Вопрос участника" required>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label">Ответ</label>
+                                <textarea name="block_{{ b.id }}_faq_a" class="form-textarea" placeholder="Ответ..."></textarea>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button type="button" class="btn-cms btn-cms-light btn-cms-sm" onclick="addFaqRow({{ b.id }})">
+                        <i class="fas fa-plus"></i> + Добавить вопрос
+                    </button>
+
+                    {% endif %}
+                    </div>
+                    <!-- КОНЕЦ ВКЛАДКИ 1: ВИЗУАЛЬНЫЙ ХОЛСТ -->
+
+                    <!-- ВКЛАДКА 2: ПРЯМОЙ HTML/CSS КОД СЛАЙДА -->
+                    <div id="slide-code-{{ b.id }}" style="{% if not b.content.custom_html_override %}display:none;{% endif %}">
+                        <div class="code-mode-notice">
+                            <div>
+                                <strong style="display:block; margin-bottom:2px;"><i class="fas fa-code"></i> Прямой HTML/CSS код слайда (полная свобода верстки):</strong>
+                                <span>Вставьте любую разметку, видеоплеер, кастомные кнопки или анимацию. Если здесь введен HTML, этот слайд на сайте будет отрисован строго по вашей верстке.</span>
+                            </div>
+                            <button type="button" class="btn-cms btn-cms-light btn-cms-sm" onclick="clearSlideCode({{ b.id }})" style="shrink-0; white-space:nowrap;">
+                                <i class="fas fa-undo"></i> Вернуться к визуальным полям
+                            </button>
+                        </div>
+
+                        <div class="form-group">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                                <label class="form-label" style="margin:0;">HTML разметка слайда:</label>
+                                <button type="button" class="btn-cms btn-cms-light btn-cms-sm" onclick="insertSampleCode({{ b.id }}, '{{ b.block_type }}')" style="font-size:11px; padding:3px 8px;">
+                                    <i class="fas fa-magic"></i> Вставить образец разметки
+                                </button>
+                            </div>
+                            <textarea name="block_{{ b.id }}_custom_html_override" id="slide-code-html-{{ b.id }}" class="code-editor-area" style="min-height: 240px;" placeholder="<div class=&quot;custom-slide&quot;>
+  <h2>Заголовок слайда</h2>
+  <p>Произвольный текст или верстка...</p>
+</div>">{{ b.content.custom_html_override|default:'' }}</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">CSS стили для этого слайда (локальные стили блока):</label>
+                            <textarea name="block_{{ b.id }}_custom_css" id="slide-code-css-{{ b.id }}" class="code-editor-area" style="min-height: 120px; color: #a7f3d0;" placeholder="/* Например: */
+#block-{{ b.id }} {
+  padding: 80px 20px;
+}">{{ b.content.custom_css|default:'' }}</textarea>
+                        </div>
+                    </div>
+                    <!-- КОНЕЦ ВКЛАДКИ 2: КОД -->
+
+                    <!-- Кнопка быстрого сохранения слайда -->
+                    <div style="margin-top: 24px; padding-top: 18px; border-top: 1px solid #f1f5f9; display: flex; justify-content: flex-end;">
+                        <button type="submit" class="btn-cms btn-cms-primary">
+                            <i class="fas fa-save"></i> Сохранить изменения
+                        </button>
+                    </div>
+
+                </div>
+                {% endfor %}
+            </form>
+        </div>
+
+    </div>
+
+    <!-- Плавающая кнопка быстрого сохранения -->
+    <div class="floating-bar">
+        {% if event.slug %}
+        <a href="{% url 'event_detail' event.slug %}" target="_blank" class="btn-cms btn-cms-light btn-cms-sm">
+            <i class="fas fa-eye"></i> Просмотр
+        </a>
+        {% endif %}
+        <button type="button" class="btn-cms btn-cms-primary btn-cms-sm" onclick="document.getElementById('main-builder-form').submit()">
+            <i class="fas fa-save"></i> Сохранить все слайды
+        </button>
+    </div>
+
+</div>
+
+<!-- МОДАЛЬНОЕ ОКНО: НАСТРОЙКИ СТИЛЯ, ТЕМЫ И КАСТОМНОГО HTML/CSS -->
+<div class="cms-modal-overlay" id="theme-modal">
+    <div class="cms-modal">
+        <div class="cms-modal-header">
+            <h3>🎨 Оформление, стиль и кастомный CSS</h3>
+            <button type="button" onclick="closeThemeModal()" style="background:none; border:none; font-size:18px; cursor:pointer; color:#64748b;">✕</button>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="save_theme">
+
+            <div class="form-group">
+                <label class="form-label">Цветовая тема конференции</label>
+                <select name="theme" class="form-input-text">
+                    <option value="clean_light" {% if theme_config.theme == 'clean_light' or not theme_config.theme %}selected{% endif %}>
+                        ☀️ Clean Light (Чистый светлый, свободный воздух — Apple & Notion)
+                    </option>
+                    <option value="editorial_warm" {% if theme_config.theme == 'editorial_warm' %}selected{% endif %}>
+                        📖 Editorial Warm (Теплый бежевый / Журнальный)
+                    </option>
+                    <option value="modern_dark" {% if theme_config.theme == 'modern_dark' %}selected{% endif %}>
+                        🌑 Modern Dark (Сдержанный графитовый темный)
+                    </option>
+                    <option value="minimal_slate" {% if theme_config.theme == 'minimal_slate' %}selected{% endif %}>
+                        ⚪ Minimal Slate (Серый ультра-минимализм)
+                    </option>
+                </select>
+            </div>
+
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">Акцентный цвет (кнопки, плашки)</label>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <input type="color" name="accent_color" value="{{ theme_config.accent_color|default:'#2563eb' }}" style="width: 44px; height: 42px; border-radius: 8px; border: 1px solid #cbd5e1; cursor: pointer; padding: 2px;">
+                        <span style="font-size: 13px; color: #64748b;">Любой цвет визитки</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Высота первого экрана (Hero)</label>
+                    <select name="hero_height" class="form-input-text">
+                        <option value="fullscreen" {% if theme_config.hero_height == 'fullscreen' or not theme_config.hero_height %}selected{% endif %}>
+                            🖥️ На весь экран (100vh / Fullscreen)
+                        </option>
+                        <option value="standard" {% if theme_config.hero_height == 'standard' %}selected{% endif %}>
+                            📱 Стандартная высота
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Шрифт заголовков</label>
+                <select name="font_family" class="form-input-text">
+                    <option value="sans" {% if theme_config.font_family == 'sans' or not theme_config.font_family %}selected{% endif %}>Современный гротеск (Inter / Sans-serif)</option>
+                    <option value="serif" {% if theme_config.font_family == 'serif' %}selected{% endif %}>Элегантный с засечками (Serif)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Кастомный CSS код (применится ко всей странице лендинга):</label>
+                <textarea name="custom_css" class="code-editor-area" style="min-height: 120px;" placeholder="/* Например: .conference-hero { border-radius: 40px; } */">{{ theme_config.custom_css|default:'' }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Кастомные скрипты / HTML в &lt;head&gt;:</label>
+                <textarea name="custom_head_html" class="code-editor-area" style="min-height: 80px;" placeholder="<!-- Например: счетчики, виджеты -->">{{ theme_config.custom_head_html|default:'' }}</textarea>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                <button type="button" class="btn-cms btn-cms-light" onclick="closeThemeModal()">Отмена</button>
+                <button type="submit" class="btn-cms btn-cms-primary">Применить тему и стили</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- МОДАЛЬНОЕ ОКНО: ПОЛНЫЙ HTML/CSS КОД ВСЕЙ СТРАНИЦЫ (FULL-PAGE CODE) -->
+<div class="cms-modal-overlay" id="full-code-modal">
+    <div class="cms-modal" style="max-width: 860px;">
+        <div class="cms-modal-header">
+            <div>
+                <h3 style="display:flex; align-items:center; gap:8px;">
+                    <i class="fas fa-code" style="color:#2563eb;"></i>
+                    <span>⚡ Полный HTML/CSS код страницы лендинга</span>
+                </h3>
+                <p style="margin:4px 0 0 0; font-size:12px; color:#64748b;">
+                    Вставьте сюда готовую верстку страницы целиком (Figma, Webflow, Tilda, Bootstrap).
+                </p>
+            </div>
+            <button type="button" onclick="closeFullCodeModal()" style="background:none; border:none; font-size:18px; cursor:pointer; color:#64748b;">✕</button>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="save_full_page_code">
+
+            <div class="code-mode-notice">
+                <div>
+                    <strong>⚡ Режим абсолютной свободы без ограничений:</strong>
+                    <span>Если поле полного HTML заполнено, сайт полностью отобразит эту разметку вместо стандартных блоков. Чтобы вернуться к блокам, просто очистите это поле.</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Полный HTML код страницы:</label>
+                <textarea name="full_page_html" id="full-page-html-input" class="code-editor-area" style="min-height: 280px;" placeholder="<div class=&quot;landing-root&quot;>
+  <!-- Любая разметка, блоки, секции, скрипты -->
+</div>">{{ theme_config.full_page_html|default:'' }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Глобальные CSS стили:</label>
+                <textarea name="custom_css" class="code-editor-area" style="min-height: 110px; color: #a7f3d0;" placeholder="/* Глобальные CSS правила */">{{ theme_config.custom_css|default:'' }}</textarea>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                <button type="button" class="btn-cms btn-cms-light" onclick="if(confirm('Очистить полный код страницы и вернуться к блочной структуре?')){document.getElementById('full-page-html-input').value='';}">
+                    <i class="fas fa-trash-alt"></i> Очистить полный код
+                </button>
+                <div style="display: flex; gap: 10px;">
+                    <button type="button" class="btn-cms btn-cms-light" onclick="closeFullCodeModal()">Отмена</button>
+                    <button type="submit" class="btn-cms btn-cms-primary">
+                        <i class="fas fa-save"></i> Сохранить код страницы
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- МОДАЛЬНОЕ ОКНО: ВСТРОЕННЫЙ ИНТЕРАКТИВНЫЙ LIVE PREVIEW -->
+<div class="preview-modal-overlay" id="live-preview-modal">
+    <div class="preview-modal">
+        <div class="preview-modal-header">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <span style="font-weight: 800; font-size: 15px; letter-spacing: 0.5px;">👁️ LIVE PREVIEW: {{ event.title }}</span>
+                <span class="cms-badge-soft" style="background: rgba(37,99,235,0.2); color: #60a5fa;">Интерактивный просмотр</span>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <!-- Переключатели адаптивности -->
+                <button type="button" class="preview-device-btn active" onclick="setPreviewDevice('100%', this)">
+                    <i class="fas fa-desktop"></i> 100% Десктоп
+                </button>
+                <button type="button" class="preview-device-btn" onclick="setPreviewDevice('768px', this)">
+                    <i class="fas fa-tablet-alt"></i> Планшет (768px)
+                </button>
+                <button type="button" class="preview-device-btn" onclick="setPreviewDevice('375px', this)">
+                    <i class="fas fa-mobile-alt"></i> Смартфон (375px)
+                </button>
+                <button type="button" class="preview-device-btn" onclick="refreshPreview()" title="Перезагрузить превью">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+                <button type="button" onclick="closeLivePreview()" style="background:none; border:none; color:#94a3b8; font-size:20px; cursor:pointer; margin-left:10px;">✕</button>
+            </div>
+        </div>
+
+        <div class="preview-frame-wrapper">
+            {% if event.slug %}
+            <iframe id="live-preview-iframe" class="preview-iframe" src="{% url 'event_detail' event.slug %}" referrerpolicy="strict-origin-when-cross-origin" style="width: 100%;"></iframe>
+            {% else %}
+            <div style="color: #94a3b8; text-align: center; padding: 40px;">
+                Сначала сохраните событие, чтобы сгенерировалась ссылка для предпросмотра.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+function selectSlide(paneId, thumbEl) {
+    document.querySelectorAll('.canvas-pane').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.slide-item').forEach(el => el.classList.remove('active'));
+
+    const target = document.getElementById(paneId);
+    if (target) {
+        target.classList.add('active');
+        thumbEl.classList.add('active');
+    }
+}
+
+function openThemeModal() {
+    document.getElementById('theme-modal').style.display = 'flex';
+}
+function closeThemeModal() {
+    document.getElementById('theme-modal').style.display = 'none';
+}
+
+function openFullCodeModal() {
+    document.getElementById('full-code-modal').style.display = 'flex';
+}
+function closeFullCodeModal() {
+    document.getElementById('full-code-modal').style.display = 'none';
+}
+
+function openLivePreview() {
+    const modal = document.getElementById('live-preview-modal');
+    if (modal) {
+        modal.style.display = 'flex';
+        refreshPreview();
+    }
+}
+function closeLivePreview() {
+    const modal = document.getElementById('live-preview-modal');
+    if (modal) modal.style.display = 'none';
+}
+function refreshPreview() {
+    const iframe = document.getElementById('live-preview-iframe');
+    if (iframe && iframe.src) {
+        iframe.src = iframe.src;
+    }
+}
+function setPreviewDevice(width, btn) {
+    const iframe = document.getElementById('live-preview-iframe');
+    if (iframe) {
+        iframe.style.width = width;
+    }
+    document.querySelectorAll('.preview-device-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+}
+
+function setSlideMode(blockId, mode) {
+    const visualBox = document.getElementById('slide-visual-' + blockId);
+    const codeBox = document.getElementById('slide-code-' + blockId);
+    const btnVisual = document.getElementById('btn-mode-visual-' + blockId);
+    const btnCode = document.getElementById('btn-mode-code-' + blockId);
+    if (!visualBox || !codeBox) return;
+
+    if (mode === 'visual') {
+        visualBox.style.display = 'block';
+        codeBox.style.display = 'none';
+        if (btnVisual) btnVisual.classList.add('active');
+        if (btnCode) btnCode.classList.remove('active');
+    } else {
+        visualBox.style.display = 'none';
+        codeBox.style.display = 'block';
+        if (btnVisual) btnVisual.classList.remove('active');
+        if (btnCode) btnCode.classList.add('active');
+    }
+}
+
+function clearSlideCode(blockId) {
+    if (confirm('Очистить кастомный HTML/CSS этого слайда и вернуться к полям визуального редактора?')) {
+        const htmlInput = document.getElementById('slide-code-html-' + blockId);
+        const cssInput = document.getElementById('slide-code-css-' + blockId);
+        if (htmlInput) htmlInput.value = '';
+        if (cssInput) cssInput.value = '';
+        setSlideMode(blockId, 'visual');
+    }
+}
+
+function insertSampleCode(blockId, blockType) {
+    const htmlInput = document.getElementById('slide-code-html-' + blockId);
+    if (!htmlInput) return;
+
+    let sample = '';
+    if (blockType === 'hero') {
+        sample = `<div style="text-align: center; padding: 70px 20px;">
+  <span style="display:inline-block; padding:6px 16px; border-radius:20px; background:#eff6ff; color:#2563eb; font-weight:700; font-size:12px; text-transform:uppercase;">Практическая школа</span>
+  <h1 style="font-size: 48px; font-weight: 900; margin: 20px 0 16px 0; line-height: 1.15;">Название вашей конференции</h1>
+  <p style="font-size: 18px; color: #475569; max-width: 680px; margin: 0 auto 30px auto; line-height: 1.6;">Практическое обучение, глубокое слово и вдохновение для каждого служителя.</p>
+  <div style="display:flex; justify-content:center; gap:14px; flex-wrap:wrap;">
+    <a href="#reg" style="background:#2563eb; color:#fff; padding:14px 32px; border-radius:12px; font-weight:700; text-decoration:none;">Зарегистрироваться</a>
+    <a href="#about" style="border:1px solid #cbd5e1; color:#334155; padding:14px 26px; border-radius:12px; font-weight:700; text-decoration:none;">О программе</a>
+  </div>
+</div>`;
+    } else if (blockType === 'concept') {
+        sample = `<div style="max-width: 800px; margin: 0 auto; padding: 50px 20px; text-align: center;">
+  <span style="font-size: 12px; font-weight: 800; color: #2563eb; text-transform: uppercase; letter-spacing: 1px;">Видение и послание</span>
+  <h2 style="font-size: 38px; font-weight: 900; margin: 12px 0 24px 0;">О СОБЫТИИ</h2>
+  <p style="font-size: 18px; line-height: 1.7; color: #334155; margin-bottom: 20px;">Бог поместил тебя в определенном месте и сезоне не случайно. Время двигаться в согласии с Его замыслом.</p>
+</div>`;
+    } else {
+        sample = `<div style="max-width: 900px; margin: 0 auto; padding: 50px 20px; text-align: center;">
+  <h2 style="font-size: 34px; font-weight: 800; margin-bottom: 16px;">Кастомный блок слайда</h2>
+  <p style="font-size: 16px; color: #64748b; line-height: 1.6;">Вставьте сюда любой HTML: видеоплеер, карточки, интерактивные кнопки или таймеры.</p>
+</div>`;
+    }
+
+    if (!htmlInput.value.trim() || confirm('Заменить текущий код шаблоном?')) {
+        htmlInput.value = sample;
+    }
+}
+
+function addSpeakerRow(blockId) {
+    const list = document.getElementById('speakers-list-' + blockId);
+    const div = document.createElement('div');
+    div.className = 'item-card';
+    div.innerHTML = `
+        <button type="button" class="item-card-del" onclick="this.closest('.item-card').remove()"><i class="fas fa-times"></i></button>
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">Имя и фамилия спикера</label>
+                <input type="text" name="block_${blockId}_sp_name" value="" class="form-input-text font-bold" placeholder="Имя Фамилия" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Роль / служение</label>
+                <input type="text" name="block_${blockId}_sp_role" value="Спикер конференции" class="form-input-text">
+            </div>
+        </div>
+        <div class="grid-3">
+            <div class="form-group">
+                <label class="form-label">Инициалы</label>
+                <input type="text" name="block_${blockId}_sp_initials" value="" class="form-input-text" placeholder="ИФ">
+            </div>
+            <div class="form-group" style="grid-column: span 2;">
+                <label class="form-label">URL фотографии</label>
+                <input type="url" name="block_${blockId}_sp_image" value="" class="form-input-text" placeholder="https://...">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Книги / труды спикера</label>
+            <input type="text" name="block_${blockId}_sp_books" value="" class="form-input-text" placeholder="Автор книг...">
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label">Биография спикера</label>
+            <textarea name="block_${blockId}_sp_bio" class="form-textarea" placeholder="Информация о служении спикера..."></textarea>
+        </div>
+    `;
+    list.appendChild(div);
+}
+
+function addTopicRow(blockId) {
+    const list = document.getElementById('topics-list-' + blockId);
+    const div = document.createElement('div');
+    div.className = 'item-card';
+    const count = list.children.length + 1;
+    const numStr = count < 10 ? '0' + count : count;
+    div.innerHTML = `
+        <button type="button" class="item-card-del" onclick="this.closest('.item-card').remove()"><i class="fas fa-times"></i></button>
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">Номер темы</label>
+                <input type="text" name="block_${blockId}_topic_num" value="${numStr}" class="form-input-text">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Название темы</label>
+                <input type="text" name="block_${blockId}_topic_title" value="" class="form-input-text font-bold" placeholder="Тема выступления" required>
+            </div>
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label">Описание темы</label>
+            <textarea name="block_${blockId}_topic_desc" class="form-textarea" placeholder="Кратко о чем пойдет речь..."></textarea>
+        </div>
+    `;
+    list.appendChild(div);
+}
+
+function addScheduleRow(blockId) {
+    const list = document.getElementById('schedule-list-' + blockId);
+    const div = document.createElement('div');
+    div.className = 'item-card';
+    div.innerHTML = `
+        <button type="button" class="item-card-del" onclick="this.closest('.item-card').remove()"><i class="fas fa-times"></i></button>
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">Время (МСК)</label>
+                <input type="text" name="block_${blockId}_session_time" value="18:00–20:00 МСК" class="form-input-text font-mono" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">День / дата</label>
+                <input type="text" name="block_${blockId}_session_day" value="День" class="form-input-text">
+            </div>
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label">Название сессии / тема</label>
+            <input type="text" name="block_${blockId}_session_title" value="" class="form-input-text font-bold" placeholder="Название служения или сессии" required>
+        </div>
+    `;
+    list.appendChild(div);
+}
+
+function addAudienceRow(blockId) {
+    const list = document.getElementById('audience-list-' + blockId);
+    const div = document.createElement('div');
+    div.className = 'item-card';
+    const count = list.children.length + 1;
+    const numStr = count < 10 ? '0' + count : count;
+    div.innerHTML = `
+        <button type="button" class="item-card-del" onclick="this.closest('.item-card').remove()"><i class="fas fa-times"></i></button>
+        <div class="grid-2">
+            <div class="form-group">
+                <label class="form-label">Номер карточки</label>
+                <input type="text" name="block_${blockId}_card_num" value="${numStr}" class="form-input-text">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Для кого (Категория)</label>
+                <input type="text" name="block_${blockId}_card_title" value="" class="form-input-text font-bold" placeholder="Для служителей..." required>
+            </div>
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label">Описание</label>
+            <textarea name="block_${blockId}_card_desc" class="form-textarea" placeholder="Подробности..."></textarea>
+        </div>
+    `;
+    list.appendChild(div);
+}
+
+function addFaqRow(blockId) {
+    const list = document.getElementById('faq-list-' + blockId);
+    const div = document.createElement('div');
+    div.className = 'item-card';
+    div.innerHTML = `
+        <button type="button" class="item-card-del" onclick="this.closest('.item-card').remove()"><i class="fas fa-times"></i></button>
+        <div class="form-group">
+            <label class="form-label">Вопрос</label>
+            <input type="text" name="block_${blockId}_faq_q" value="" class="form-input-text font-bold" placeholder="Вопрос участника" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label">Ответ</label>
+            <textarea name="block_${blockId}_faq_a" class="form-textarea" placeholder="Ответ..."></textarea>
+        </div>
+    `;
+    list.appendChild(div);
+}
+</script>
+{% endblock %}

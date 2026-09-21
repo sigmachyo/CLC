@@ -59,6 +59,46 @@
             </p>
             <div class="h-[2px] w-12 bg-primary/60 rounded-full"></div>
         </div>
+
+        {% if user.is_authenticated %}
+        <!-- Кнопка сохранить стих в избранное профиля -->
+        <div class="mt-10">
+            <button id="save-daily-verse-btn"
+                onclick="saveDailyVerse(this)"
+                data-reference="{{ daily_verse.reference }}"
+                data-verse="{{ daily_verse.verse_text }}"
+                class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/80 hover:bg-primary/20 hover:text-primary hover:border-primary/40 transition-all text-sm font-semibold">
+                <span class="material-symbols-outlined text-[20px]" id="save-verse-icon">bookmark</span>
+                <span id="save-verse-text">Сохранить в мой профиль</span>
+            </button>
+        </div>
+        <script>
+        function saveDailyVerse(btn) {
+            const reference = btn.dataset.reference;
+            const verse = btn.dataset.verse;
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value ||
+                              document.cookie.split('; ').find(c => c.startsWith('csrftoken='))?.split('=')[1];
+            if (!csrfToken) { window.location.href = '/login/'; return; }
+            
+            btn.disabled = true;
+            fetch('/api/verses/favorite/add/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
+                body: JSON.stringify({ reference, verse_text: verse, note: 'Стих дня' })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('save-verse-icon').textContent = 'bookmark_added';
+                    document.getElementById('save-verse-text').textContent = data.created ? 'Сохранено в профиле!' : 'Уже в профиле';
+                    btn.classList.add('bg-primary/20', 'text-primary', 'border-primary/40');
+                    if (window.showNotification) showNotification(data.message, 'success');
+                }
+            })
+            .catch(() => { btn.disabled = false; });
+        }
+        </script>
+        {% endif %}
     </div>
 </div>
 {% else %}
@@ -103,9 +143,71 @@
                         </div>
                     </div>
                     <h3 class="text-white font-medium text-lg mb-1 line-clamp-2">{{ video.title }}</h3>
-                    <p class="text-white/50 text-sm flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[14px]">visibility</span>
-                        {{ video.views_count }} просмотров
+                    <p class="text-white/50 text-xs flex items-center justify-between mt-2">
+                        <span class="flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[14px]">visibility</span>
+                            {{ video.get_views_display }}
+                        </span>
+                        <span>{{ video.get_effective_date|date:"d M Y" }}</span>
+                    </p>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- ПЕСНИ ПРОСЛАВЛЕНИЯ (KCLC WORSHIP) -->
+        {% if worship_songs %}
+        <div id="sec-worship" class="scroll-mt-24">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-500/20 to-red-500/20 border border-amber-500/30 flex items-center justify-center text-amber-300">
+                        <span class="material-symbols-outlined text-lg">music_note</span>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h2 class="text-2xl font-bold text-white tracking-wide">Песни прославления</h2>
+                            <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-red-500/20 text-red-300 border border-red-500/30">KCLC Worship</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="{% url 'worship_songs' %}" class="inline-flex items-center gap-1.5 text-amber-400/80 hover:text-amber-300 transition-colors text-sm font-semibold group">
+                    <span>Все песни ({{ worship_songs|length }}+)</span>
+                    <span class="material-symbols-outlined text-[16px] group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+                </a>
+            </div>
+
+            <!-- Горизонтальная карусель карточек прославления -->
+            <div class="flex sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 overflow-x-auto snap-x snap-mandatory no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 pb-4">
+                {% for song in worship_songs %}
+                <a href="{% url 'video_detail' song.id %}" class="group block flex-none w-[70vw] sm:w-auto snap-center bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.05] hover:border-white/15 rounded-2xl p-3 transition-all duration-300">
+                    <div class="aspect-square bg-black/40 rounded-xl overflow-hidden mb-2.5 relative group-hover:scale-[1.02] transition-transform">
+                        {% if song.thumbnail %}
+                        <img src="{{ song.thumbnail.url }}" alt="{{ song.title }}" loading="lazy" class="w-full h-full object-cover">
+                        {% else %}
+                        <div class="w-full h-full flex items-center justify-center opacity-30">
+                            <span class="material-symbols-outlined text-5xl text-white">music_note</span>
+                        </div>
+                        {% endif %}
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60"></div>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <div class="w-11 h-11 rounded-full bg-red-600 text-white flex items-center justify-center shadow-lg transform scale-90 group-hover:scale-100 transition-transform">
+                                <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                            </div>
+                        </div>
+                        {% if song.duration %}
+                        <span class="absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-black/70 text-[10px] font-medium text-white/90">
+                            {{ song.get_duration_display }}
+                        </span>
+                        {% endif %}
+                    </div>
+                    <h3 class="text-white font-medium text-sm mb-1 line-clamp-2 leading-snug group-hover:text-amber-300 transition-colors">{{ song.title }}</h3>
+                    <p class="text-white/40 text-xs flex items-center justify-between mt-2">
+                        <span class="flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[12px]">visibility</span>
+                            {{ song.get_views_display }}
+                        </span>
+                        <span>{{ song.get_effective_date|date:"d M Y" }}</span>
                     </p>
                 </a>
                 {% endfor %}
@@ -120,31 +222,7 @@
         </div>
         {% endif %}
 
-        <!-- ДЕТСКИЙ РАЗДЕЛ -->
-        {% if kids_content %}
-        <div id="sec-kids" class="scroll-mt-24">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl font-bold text-white tracking-wide">Детский раздел</h2>
-                <a href="{% url 'kids_home' %}" class="text-white/50 hover:text-white transition-colors text-sm font-medium">Весь контент</a>
-            </div>
-            <div class="flex sm:grid sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 pb-4">
-                {% for item in kids_content %}
-                <a href="{% url 'kids_content_detail' item.id %}" class="group block flex-none w-[60vw] sm:w-auto snap-center">
-                    <div class="aspect-square bg-white/5 rounded-2xl overflow-hidden mb-3 group-hover:scale-[1.02] transition-transform duration-300 relative border border-white/5">
-                        {% if item.thumbnail %}
-                        <img src="{{ item.thumbnail.url }}" alt="{{ item.title }}" loading="lazy" class="w-full h-full object-cover">
-                        {% else %}
-                        <div class="w-full h-full flex items-center justify-center opacity-30">
-                            <span class="material-symbols-outlined text-4xl text-white">child_care</span>
-                        </div>
-                        {% endif %}
-                    </div>
-                    <h3 class="text-white font-medium text-sm sm:text-base line-clamp-2">{{ item.title }}</h3>
-                </a>
-                {% endfor %}
-            </div>
-        </div>
-        {% endif %}
+
 
     </div>
 </div>

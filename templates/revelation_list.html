@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ title|default:"Откровения и свидетельства | KCLC" }}{% endblock %}
+
+{% block main_class %}flex-grow relative bg-[#faf8f5] overflow-x-hidden{% endblock %}
+
+{% block content %}
+<div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-28 pb-28">
+
+    <!-- Заголовок и кнопка добавить -->
+    <div class="text-center mb-10 sm:mb-14">
+        <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-[#c9a84c]/15 text-[#c9a84c] mb-6 shadow-sm border border-[#c9a84c]/25 backdrop-blur-sm">
+            <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+        </div>
+        <h1 class="text-3xl sm:text-5xl font-serif font-bold text-navy mb-4 tracking-tight">
+            Откровения и свидетельства
+        </h1>
+        <p class="text-navy/75 text-sm sm:text-base max-w-2xl mx-auto font-serif italic mb-8 leading-relaxed">
+            «Они победили его кровию Агнца и словом свидетельства своего»
+        </p>
+        
+        <div class="flex items-center justify-center gap-3">
+            <a href="{% url 'prayer_list' %}" class="px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm text-navy/70 hover:text-navy bg-white hover:bg-white/90 border border-navy/10 transition-all shadow-sm flex items-center gap-2">
+                <span class="material-symbols-outlined text-lg">arrow_back</span>
+                <span>К молитвам</span>
+            </a>
+            <a href="{% url 'revelation_add' %}" class="flex items-center gap-2 bg-[#c9a84c] hover:bg-[#b59540] text-white font-bold px-6 py-3 rounded-2xl shadow-[0_4px_16px_rgba(201,168,76,0.3)] transition-all hover:-translate-y-0.5 active:translate-y-0 text-xs sm:text-sm">
+                <span class="material-symbols-outlined text-lg sm:text-xl">edit</span>
+                <span>Поделиться откровением</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Список откровений -->
+    <div class="space-y-6 max-w-3xl mx-auto">
+        {% if not revelations_data %}
+        <div class="bg-white/85 backdrop-blur-md rounded-[2rem] p-10 sm:p-14 text-center border border-dashed border-navy/15 max-w-xl mx-auto shadow-sm">
+            <div class="w-16 h-16 mx-auto bg-[#c9a84c]/15 rounded-full flex items-center justify-center mb-5 text-[#c9a84c]">
+                <span class="material-symbols-outlined text-3xl">auto_stories</span>
+            </div>
+            <h3 class="text-xl sm:text-2xl font-serif font-bold text-navy mb-2">Пока нет свидетельств</h3>
+            <p class="text-navy/65 text-sm sm:text-base mb-6 leading-relaxed">
+                Будьте первыми, кто поделится тем, что Бог совершил в вашей жизни!
+            </p>
+            <a href="{% url 'revelation_add' %}" class="inline-flex items-center gap-2 bg-[#c9a84c] hover:bg-[#b59540] text-white font-bold px-6 py-3 rounded-2xl shadow-md transition-all">
+                <span class="material-symbols-outlined text-lg">edit</span>
+                <span>Написать свидетельство</span>
+            </a>
+        </div>
+        {% endif %}
+
+        {% for item in revelations_data %}
+        {% with rev=item.revelation reactions=item.reactions %}
+        <div class="bg-white/90 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-navy/5 transition-all">
+            
+            <div class="flex items-start justify-between gap-4 mb-4">
+                <div>
+                    <h3 class="text-lg sm:text-xl font-bold font-serif text-navy mb-1.5 leading-snug">
+                        {{ rev.title }}
+                    </h3>
+                    <div class="text-xs text-navy/50 flex items-center gap-2 flex-wrap">
+                        <span class="inline-flex items-center gap-1 font-semibold text-navy/70">
+                            <span class="material-symbols-outlined text-[15px]">person</span>
+                            {% if rev.is_anonymous %}
+                            {{ rev.get_author_display }}
+                            {% else %}
+                            <a href="{% url 'user_public_profile' rev.user.username %}" class="hover:text-primary transition-colors">{{ rev.get_author_display }}</a>
+                            {% endif %}
+                        </span>
+                        <span>•</span>
+                        <span class="inline-flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[14px]">schedule</span>
+                            {{ rev.created_at|date:"d.m.Y" }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-navy/80 text-sm sm:text-base leading-relaxed mb-6 whitespace-pre-line font-normal">
+                {{ rev.content }}
+            </p>
+
+            <!-- Реакции -->
+            <div class="pt-4 border-t border-navy/5 flex items-center gap-2 flex-wrap reactions-container" data-rev-id="{{ rev.id }}">
+                <button type="button" 
+                        class="reaction-pill px-3.5 py-1.5 rounded-full text-xs font-bold transition-all border flex items-center gap-1.5 cursor-pointer {% if item.user_reaction == 'amen' %}bg-[#c9a84c] text-white border-[#c9a84c] shadow-sm{% else %}bg-navy/5 text-navy/75 border-navy/10 hover:bg-navy/10{% endif %}" 
+                        data-type="amen" onclick="toggleReaction({{ rev.id }}, 'amen')">
+                    <span>🙏</span> <span>Аминь</span> <span class="count opacity-80">{{ reactions.amen }}</span>
+                </button>
+                <button type="button" 
+                        class="reaction-pill px-3.5 py-1.5 rounded-full text-xs font-bold transition-all border flex items-center gap-1.5 cursor-pointer {% if item.user_reaction == 'glory' %}bg-[#c9a84c] text-white border-[#c9a84c] shadow-sm{% else %}bg-navy/5 text-navy/75 border-navy/10 hover:bg-navy/10{% endif %}" 
+                        data-type="glory" onclick="toggleReaction({{ rev.id }}, 'glory')">
+                    <span>❤️</span> <span>Слава Богу</span> <span class="count opacity-80">{{ reactions.glory }}</span>
+                </button>
+                <button type="button" 
+                        class="reaction-pill px-3.5 py-1.5 rounded-full text-xs font-bold transition-all border flex items-center gap-1.5 cursor-pointer {% if item.user_reaction == 'fire' %}bg-[#c9a84c] text-white border-[#c9a84c] shadow-sm{% else %}bg-navy/5 text-navy/75 border-navy/10 hover:bg-navy/10{% endif %}" 
+                        data-type="fire" onclick="toggleReaction({{ rev.id }}, 'fire')">
+                    <span>🔥</span> <span>Вдохновляет</span> <span class="count opacity-80">{{ reactions.fire }}</span>
+                </button>
+                <button type="button" 
+                        class="reaction-pill px-3.5 py-1.5 rounded-full text-xs font-bold transition-all border flex items-center gap-1.5 cursor-pointer {% if item.user_reaction == 'grace' %}bg-[#c9a84c] text-white border-[#c9a84c] shadow-sm{% else %}bg-navy/5 text-navy/75 border-navy/10 hover:bg-navy/10{% endif %}" 
+                        data-type="grace" onclick="toggleReaction({{ rev.id }}, 'grace')">
+                    <span>🕊️</span> <span>Благодать</span> <span class="count opacity-80">{{ reactions.grace }}</span>
+                </button>
+            </div>
+        </div>
+        {% endwith %}
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+function toggleReaction(revId, type) {
+    {% if not user.is_authenticated %}
+    if (confirm('Пожалуйста, войдите в систему, чтобы оставлять реакции. Перейти к авторизации?')) {
+        window.location.href = "{% url 'account_login' %}?next={{ request.path }}";
+    }
+    return;
+    {% endif %}
+
+    const csrfToken = '{{ csrf_token }}';
+    const container = document.querySelector(`.reactions-container[data-rev-id="${revId}"]`);
+    
+    fetch(`/prayer/revelations/${revId}/react/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': csrfToken,
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: `reaction_type=${type}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            container.querySelectorAll('.reaction-pill').forEach(btn => {
+                btn.className = 'reaction-pill px-3.5 py-1.5 rounded-full text-xs font-bold transition-all border flex items-center gap-1.5 cursor-pointer bg-navy/5 text-navy/75 border-navy/10 hover:bg-navy/10';
+                const btnType = btn.dataset.type;
+                btn.querySelector('.count').textContent = data.counts[btnType];
+            });
+            
+            if (data.action !== 'removed') {
+                const activeBtn = container.querySelector(`.reaction-pill[data-type="${type}"]`);
+                if (activeBtn) {
+                    activeBtn.className = 'reaction-pill px-3.5 py-1.5 rounded-full text-xs font-bold transition-all border flex items-center gap-1.5 cursor-pointer bg-[#c9a84c] text-white border-[#c9a84c] shadow-sm';
+                }
+            }
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+</script>
+{% endblock %}

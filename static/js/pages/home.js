@@ -5,7 +5,7 @@
 
 // ── CONFIG ──────────────────────────────────────────────────────────────────
 const CFG = Object.freeze({
-  YT_CHANNEL_ID: 'UCUntqEjTbvNznwBpRN-4wLw',
+  YT_CHANNEL_ID: 'UCgroLbpNBJ4f1CDiF6HLWJw',
   YT_CHANNEL_URL: 'https://www.youtube.com/@kclcfamily',
   YT_NS: 'http://www.youtube.com/xml/schemas/2015',
   BCAST_H: 11,
@@ -132,7 +132,7 @@ document.addEventListener('keydown', e => {
 });
 
 // ── СЕКЦИИ / НАВИГАЦИЯ ───────────────────────────────────────────────────────
-const SECTIONS = ['sec-hero', 'sec-events', 'sec-timer', 'sec-footer'];
+const SECTIONS = ['sec-hero', 'sec-events', 'sec-timer', 'sec-calendar', 'sec-footer'];
 
 const scrollToSection = idx => {
   const sec = $(SECTIONS[idx]);
@@ -295,12 +295,14 @@ const buildIframe = (container, videoId, autoplay = false) => {
   if (!/^[a-zA-Z0-9_-]{1,20}$/.test(videoId)) return;
   const iframe = document.createElement('iframe');
   const origin = encodeURIComponent(window.location.origin);
-  let src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?rel=0&modestbranding=1&enablejsapi=1&origin=${origin}`;
+  const widgetRef = encodeURIComponent(window.location.href);
+  let src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?rel=0&modestbranding=1&enablejsapi=1&origin=${origin}&widget_referrer=${widgetRef}`;
   if (autoplay) src += '&autoplay=1&mute=1';
   iframe.setAttribute('src', src);
   iframe.title = 'YouTube видео';
   iframe.loading = 'lazy';
   iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+  iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
   iframe.allowFullscreen = true;
   iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:none';
 
@@ -310,7 +312,8 @@ const buildIframe = (container, videoId, autoplay = false) => {
       const msg = JSON.parse(e.data);
       if (msg?.event === 'onError' || msg?.info?.errorCode) {
         const errCode = msg?.info?.errorCode ?? 0;
-        if (errCode === 101 || errCode === 150) {
+        if (errCode === 153 || errCode === 101 || errCode === 150 || errCode > 0) {
+          console.warn('[HOME] YouTube error code:', errCode, 'switching to RuTube fallback');
           window.removeEventListener('message', _onYTMessage);
           if (container.id === 'live-player') _liveIframeSet = false;
           container.innerHTML = '';
@@ -382,9 +385,10 @@ const buildRutubeIframe = (container, videoId, autoplay = false) => {
   let src = `https://rutube.ru/play/embed/${encodeURIComponent(videoId)}?skinColor=c9a84c`;
   if (autoplay) src += '&autoplay=true';
   iframe.setAttribute('src', src);
-  iframe.title = 'Rutube видео';
+  iframe.title = 'RuTube видео';
   iframe.loading = 'lazy';
   iframe.allow = 'autoplay; encrypted-media; fullscreen';
+  iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
   iframe.allowFullscreen = true;
   iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:none';
   container.appendChild(iframe);
@@ -446,7 +450,24 @@ const detectState = async () => {
     _showLiveFallback();
     const lp = $('live-player');
 
-    // Rutube (приоритет)
+    // YouTube (приоритет №1)
+    const ytData = await _fetchBackend();
+    const ytVid = ytData?.video_id;
+    if (ytVid) {
+      _liveVideoId = ytVid;
+      _liveIframeSet = true;
+      buildIframe(lp, ytVid, true);
+      const ld = $('live-date');
+      if (ld) ld.textContent = ytData?.title || new Date().toLocaleString('ru-RU', {
+        timeZone: CFG.TZ, hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'long',
+      });
+      const ytBtn = $('live-yt-btn');
+      if (ytBtn) ytBtn.href = `https://www.youtube.com/watch?v=${encodeURIComponent(ytVid)}`;
+      console.log('[TIMER] Loaded YouTube live stream (primary):', ytVid);
+      return;
+    }
+
+    // RuTube (резерв)
     const ruLiveData = await _fetchRutubeBackend();
     const ruLiveStreams = ruLiveData?.all_streams || [];
     const ruLiveTarget = ruLiveStreams[0] || (ruLiveData?.video_id ? ruLiveData : null);
@@ -460,23 +481,9 @@ const detectState = async () => {
       });
       const ruBtn = $('live-ru-btn');
       if (ruBtn) ruBtn.href = `https://rutube.ru/video/${encodeURIComponent(ruLiveTarget.video_id)}/`;
-      console.log('[TIMER] Loaded Rutube stream:', ruLiveTarget.video_id);
+      console.log('[TIMER] Loaded Rutube fallback stream:', ruLiveTarget.video_id);
       return;
     }
-
-    // YouTube (резерв)
-    const vid = await fetchLiveVideoId();
-    if (vid) {
-      _liveVideoId = vid;
-      _liveIframeSet = true;
-      buildIframe(lp, vid, true);
-      const ld = $('live-date');
-      if (ld) ld.textContent = new Date().toLocaleString('ru-RU', {
-        timeZone: CFG.TZ, hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'long',
-      });
-      console.log('[TIMER] Loaded YouTube stream:', vid);
-    }
-    return;
   }
 
   if (_liveIframeSet) {

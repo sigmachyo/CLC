@@ -36,3 +36,10 @@ class CustomAccountAdapter(DefaultAccountAdapter):
             request.session['otp_email'] = user.email
         return redirect(reverse('verify_otp'))
 
+    def add_message(self, request, level, message_template=None, message_context=None, extra_tags="", message=None):
+        """
+        Отключаем системный спам Allauth в сессии ('Вы вышли.', 'Успешный вход под именем...', etc.),
+        чтобы они не накапливались и не висели на страницах.
+        """
+        return
+

@@ -1,0 +1,1069 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Интерактивная карта церкви — KCLC{% endblock %}
+
+{% block extra_css %}
+<!-- Yandex Maps API v2.1 (Full Russian map with house numbers, clustering, navigation) -->
+<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+<!-- Leaflet CSS (Fallback) -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<style>
+/* ── COMMUNITY MAP STYLES (Clean Light Apple Aesthetic) ── */
+:root {
+  --map-gold: #a88734;
+  --map-gold-glow: rgba(168, 135, 52, 0.4);
+  --map-bg: #f5f0e8;
+  --map-card: #ffffff;
+  --map-border: rgba(26, 31, 54, 0.08);
+}
+
+body {
+  background: var(--map-bg);
+}
+
+.map-page-wrapper {
+  min-height: calc(100vh - 72px);
+  padding: 88px 24px 60px;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* Header */
+.map-header {
+  margin-bottom: 28px;
+}
+
+.map-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--map-gold);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.map-title {
+  font-size: clamp(2rem, 3.8vw, 3.2rem);
+  font-weight: 800;
+  color: #1a1f36;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin: 0 0 10px 0;
+}
+
+.map-subtitle {
+  color: #5a5f7a;
+  font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+  max-width: 720px;
+  line-height: 1.5;
+  margin: 0 0 20px 0;
+}
+
+/* Stat badges */
+.map-stats-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.map-stat-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid #d5d8e6;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a1f36;
+  box-shadow: 0 2px 6px rgba(26, 31, 54, 0.04);
+}
+
+.map-stat-badge strong {
+  color: var(--map-gold);
+}
+
+/* Controls Toolbar */
+.map-controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  background: #ffffff;
+  border: 1px solid var(--map-border);
+  border-radius: 20px;
+  padding: 12px 18px;
+  box-shadow: 0 4px 16px rgba(26, 31, 54, 0.04);
+}
+
+.map-search-box {
+  position: relative;
+  flex: 1;
+  min-width: 240px;
+  max-width: 360px;
+}
+
+.map-search-box .material-symbols-outlined {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #8b8fa8;
+  pointer-events: none;
+}
+
+.map-search-input {
+  width: 100%;
+  padding: 9px 14px 9px 40px;
+  border-radius: 999px;
+  background: #f0f2f8;
+  border: 1px solid #d5d8e6;
+  color: #1a1f36;
+  font-size: 13px;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.map-search-input:focus {
+  background: #ffffff;
+  border-color: var(--map-gold);
+  box-shadow: 0 0 12px rgba(168, 135, 52, 0.2);
+}
+
+.map-search-input::placeholder {
+  color: #8b8fa8;
+}
+
+/* Filter pills */
+.map-filter-pills {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.map-filter-pills::-webkit-scrollbar { display: none; }
+
+.map-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid #dcdfe8;
+  background: #f0f2f8;
+  color: #3d4260;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.map-filter-btn:hover {
+  color: #1a1f36;
+  background: #e2e6f0;
+}
+
+.map-filter-btn.active {
+  background: #1a1f36;
+  color: #ffffff;
+  border-color: #1a1f36;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(26, 31, 54, 0.18);
+}
+
+/* View Mode Switcher: Map vs List */
+.map-view-switcher {
+  display: flex;
+  align-items: center;
+  background: #e9eaf2;
+  border-radius: 999px;
+  padding: 3px;
+  border: 1px solid #d5d8e6;
+}
+
+.view-mode-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #5a5f7a;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.view-mode-btn.active {
+  background: #ffffff;
+  color: #1a1f36;
+  box-shadow: 0 2px 8px rgba(26, 31, 54, 0.08);
+  font-weight: 700;
+}
+
+/* Main Map & Sidebar Layout */
+.map-main-container {
+  display: flex;
+  gap: 20px;
+  height: 640px;
+  position: relative;
+}
+
+/* Sidebar List */
+.map-sidebar {
+  width: 380px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid var(--map-border);
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(26, 31, 54, 0.05);
+  overflow: hidden;
+}
+
+.map-sidebar-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid #e8e5df;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.map-sidebar-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1f36;
+}
+
+.map-sidebar-count {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #f0f2f8;
+  color: var(--map-gold);
+  font-weight: 700;
+}
+
+.map-locations-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: #c4c8da transparent;
+}
+
+/* Location Card in Sidebar */
+.map-loc-item {
+  padding: 14px 16px;
+  background: #fafaf9;
+  border: 1px solid #eae7e1;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: left;
+}
+
+.map-loc-item:hover, .map-loc-item.selected {
+  background: #f0f2f8;
+  border-color: #c9a84c;
+  transform: translateX(3px);
+}
+
+.loc-item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.loc-badge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+.loc-badge-central { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+.loc-badge-branch { background: #f0f9ff; color: #0369a1; border: 1px solid #bae6fd; }
+.loc-badge-homegroup { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+.loc-badge-event { background: #faf5ff; color: #6b21a8; border: 1px solid #e9d5ff; }
+
+.loc-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1f36;
+  margin: 0 0 4px 0;
+  line-height: 1.3;
+}
+
+.loc-address {
+  font-size: 12px;
+  color: #5a5f7a;
+  margin: 0 0 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.loc-address .material-symbols-outlined {
+  font-size: 14px;
+  color: var(--map-gold);
+}
+
+.loc-schedule {
+  font-size: 11px;
+  color: #8b8fa8;
+}
+
+/* Map Canvas Container */
+.map-canvas-container {
+  flex: 1;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid var(--map-border);
+  box-shadow: 0 10px 40px rgba(26, 31, 54, 0.05);
+  position: relative;
+  background: #f0f2f8;
+}
+
+#leafletMap {
+  width: 100%;
+  height: 100%;
+  background: #f0f2f8;
+}
+
+/* Leaflet Customizations */
+.leaflet-container {
+  font-family: inherit;
+  background: #f0f2f8 !important;
+}
+
+.leaflet-bar {
+  border: 1px solid #d5d8e6 !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(26,31,54,0.1) !important;
+}
+
+.leaflet-bar a {
+  background-color: #ffffff !important;
+  color: #1a1f36 !important;
+  border-bottom: 1px solid #e2e6f0 !important;
+}
+.leaflet-bar a:hover {
+  background-color: #f0f2f8 !important;
+  color: var(--map-gold) !important;
+}
+
+/* Custom Marker Pins */
+.custom-pin-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-pin {
+  width: 36px;
+  height: 36px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(26,31,54,0.25);
+  border: 2px solid #fff;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.custom-pin:hover {
+  transform: rotate(-45deg) scale(1.15);
+}
+
+.custom-pin-inner {
+  transform: rotate(45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-pin-inner .material-symbols-outlined {
+  font-size: 18px;
+  color: #fff;
+}
+
+.pin-central {
+  background: linear-gradient(135deg, #e5c158, #b8860b);
+  border-color: #ffe699;
+  width: 44px; height: 44px;
+}
+.pin-central-pulse {
+  position: absolute;
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  background: rgba(201,168,76,0.3);
+  animation: mapPulse 2s infinite ease-out;
+}
+
+.pin-branch {
+  background: linear-gradient(135deg, #38bdf8, #0284c7);
+  border-color: #bae6fd;
+}
+
+.pin-homegroup {
+  background: linear-gradient(135deg, #34d399, #059669);
+  border-color: #a7f3d0;
+}
+
+.pin-event {
+  background: linear-gradient(135deg, #c084fc, #7c3aed);
+  border-color: #ddd6fe;
+}
+
+@keyframes mapPulse {
+  0% { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+/* Custom Popup */
+.leaflet-popup-content-wrapper {
+  background: #ffffff !important;
+  border: 1px solid rgba(26, 31, 54, 0.1) !important;
+  border-radius: 20px !important;
+  color: #1a1f36 !important;
+  box-shadow: 0 16px 40px rgba(26, 31, 54, 0.12) !important;
+  padding: 0 !important;
+}
+
+.leaflet-popup-content {
+  margin: 16px 18px !important;
+  line-height: 1.4 !important;
+}
+
+.leaflet-popup-tip {
+  background: #ffffff !important;
+  border: 1px solid rgba(26, 31, 54, 0.1) !important;
+}
+
+.popup-card {
+  min-width: 240px;
+  max-width: 320px;
+}
+
+.popup-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+}
+
+.popup-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #1a1f36;
+  margin: 0 0 6px 0;
+  line-height: 1.25;
+}
+
+.popup-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12px;
+  color: #5a5f7a;
+  margin-bottom: 6px;
+}
+
+.popup-row .material-symbols-outlined {
+  font-size: 15px;
+  color: var(--map-gold);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.popup-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #e8e5df;
+}
+
+.popup-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.popup-btn-primary {
+  background: var(--map-gold);
+  color: #ffffff;
+}
+.popup-btn-primary:hover {
+  background: #b08e35;
+}
+
+.popup-btn-secondary {
+  background: #f0f2f8;
+  color: #1a1f36;
+}
+.popup-btn-secondary:hover {
+  background: #1a1f36;
+  color: #ffffff;
+}
+
+/* List Mode Container */
+.map-list-mode-container {
+  display: none;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.list-loc-card {
+  background: #ffffff;
+  border: 1px solid var(--map-border);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 16px rgba(26, 31, 54, 0.04);
+  transition: all 0.25s;
+}
+
+.list-loc-card:hover {
+  transform: translateY(-2px);
+  border-color: #c9a84c;
+  box-shadow: 0 16px 36px rgba(26, 31, 54, 0.08);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .map-page-wrapper {
+    padding: 80px 16px 40px;
+  }
+  .map-main-container {
+    flex-direction: column-reverse;
+    height: auto;
+  }
+  .map-canvas-container {
+    height: 420px;
+  }
+  .map-sidebar {
+    width: 100%;
+    height: 320px;
+  }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="map-page-wrapper">
+  
+  <!-- Header -->
+  <header class="map-header">
+    <span class="map-eyebrow">
+      <span class="material-symbols-outlined" style="font-size:16px;">explore</span>
+      ГЕОГРАФИЯ ЦЕРКВИ
+    </span>
+    <h1 class="map-title">Интерактивная карта KCLC</h1>
+    <p class="map-subtitle">
+      Найдите ближайшую домашнюю группу в Красноярске, посетите богослужение в центральном зале или найдите региональную церковь KCLC в вашем городе.
+    </p>
+
+    <!-- Stats -->
+    <div class="map-stats-row">
+      <div class="map-stat-badge">
+        <span class="material-symbols-outlined" style="color:var(--map-gold);">church</span>
+        <span>Центральная церковь: <strong>Красноярск</strong></span>
+      </div>
+      <div class="map-stat-badge">
+        <span class="material-symbols-outlined" style="color:#34d399;">cottage</span>
+        <span>Домашних групп: <strong>{{ homegroups_count }}</strong></span>
+      </div>
+      <div class="map-stat-badge">
+        <span class="material-symbols-outlined" style="color:#38bdf8;">domain</span>
+        <span>Городов и филиалов: <strong>{{ branches_count }}</strong></span>
+      </div>
+      <div class="map-stat-badge">
+        <span class="material-symbols-outlined" style="color:#c084fc;">event</span>
+        <span>Офлайн-событий: <strong>{{ events_count }}</strong></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Controls Toolbar -->
+  <div class="map-controls-bar">
+    <!-- Search Input -->
+    <div class="map-search-box">
+      <span class="material-symbols-outlined">search</span>
+      <input type="text" id="mapSearchInput" class="map-search-input" placeholder="Поиск по городу, адресу, району...">
+    </div>
+
+    <!-- Category Filters -->
+    <div class="map-filter-pills" id="mapFilterPills">
+      <button type="button" class="map-filter-btn active" data-type="all">Все локации</button>
+      <button type="button" class="map-filter-btn" data-type="central">
+        <span class="material-symbols-outlined" style="font-size:15px; color:var(--map-gold);">church</span>
+        Главная церковь
+      </button>
+      <button type="button" class="map-filter-btn" data-type="homegroup">
+        <span class="material-symbols-outlined" style="font-size:15px; color:#34d399;">cottage</span>
+        Домашние группы ({{ homegroups_count }})
+      </button>
+      <button type="button" class="map-filter-btn" data-type="branch">
+        <span class="material-symbols-outlined" style="font-size:15px; color:#38bdf8;">public</span>
+        Региональные церкви
+      </button>
+      <button type="button" class="map-filter-btn" data-type="event">
+        <span class="material-symbols-outlined" style="font-size:15px; color:#c084fc;">event</span>
+        События
+      </button>
+    </div>
+
+    <!-- View Mode Switcher -->
+    <div class="map-view-switcher">
+      <button type="button" class="view-mode-btn active" id="btnViewMap">
+        <span class="material-symbols-outlined" style="font-size:16px;">map</span>
+        На карте
+      </button>
+      <button type="button" class="view-mode-btn" id="btnViewList">
+        <span class="material-symbols-outlined" style="font-size:16px;">view_list</span>
+        Списком
+      </button>
+    </div>
+  </div>
+
+  <!-- Map + Sidebar Layout -->
+  <div class="map-main-container" id="mapMainContainer">
+    
+    <!-- Sidebar -->
+    <aside class="map-sidebar">
+      <div class="map-sidebar-header">
+        <span class="map-sidebar-title">Локации</span>
+        <span class="map-sidebar-count" id="sidebarCount">{{ total_locations }}</span>
+      </div>
+      <div class="map-locations-scroll" id="mapLocationsScroll">
+        <!-- Rendered dynamically by JS -->
+      </div>
+    </aside>
+
+    <!-- Map Canvas (Yandex Maps primary, Leaflet fallback) -->
+    <main class="map-canvas-container">
+      <div id="yandexMap" style="width: 100%; height: 100%; border-radius: 20px; overflow: hidden;"></div>
+      <div id="leafletMap" style="width: 100%; height: 100%; border-radius: 20px; overflow: hidden; display: none;"></div>
+    </main>
+  </div>
+
+  <!-- List Mode Container -->
+  <div class="map-list-mode-container" id="mapListModeContainer">
+    <!-- Rendered dynamically by JS in list mode -->
+  </div>
+
+</div>
+
+<!-- Leaflet JS (Fallback) -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+<script>
+(function() {
+  const rawLocations = {{ locations_json|safe }};
+  let activeFilter = 'all';
+  let searchQuery = '';
+
+  // ── YANDEX MAP STATE ──
+  let yMap = null;
+  let yClusterer = null;
+  let yMarkerMap = new Map(); // id -> ymaps.Placemark
+  let isYandexActive = false;
+
+  // ── LEAFLET FALLBACK STATE ──
+  let leafletMap = null;
+  let leafletMarkersLayer = null;
+  let leafletMarkerMap = new Map(); // id -> leaflet marker
+
+  // ── PRESETS FOR YANDEX PLACEMARKS ──
+  function getYandexPreset(type) {
+    switch (type) {
+      case 'central': return 'islands#redChurchCircleIcon';
+      case 'homegroup': return 'islands#darkGreenHomeCircleIcon';
+      case 'branch': return 'islands#blueDotIconWithCaption';
+      case 'event': return 'islands#violetEventCircleIcon';
+      default: return 'islands#goldDotIconWithCaption';
+    }
+  }
+
+  // ── YANDEX BALLOON HTML ──
+  function buildYandexBalloonContent(loc) {
+    const yandexRouteUrl = `https://yandex.ru/maps/?rtext=~${loc.lat},${loc.lng}`;
+    const gisUrl = `https://2gis.ru/krasnoyarsk/search/${encodeURIComponent(loc.city + ' ' + loc.address)}`;
+
+    let contacts = '';
+    if (loc.pastors) {
+      contacts += `<div style="font-size:12px; margin-bottom:4px; color:#334155;"><strong>Служители:</strong> ${loc.pastors}</div>`;
+    }
+    if (loc.phone) {
+      contacts += `<div style="font-size:12px; margin-bottom:4px;"><strong>Телефон:</strong> <a href="tel:${loc.phone}" style="color:#b08e35; font-weight:700; text-decoration:none;">${loc.phone}</a></div>`;
+    }
+    if (loc.telegram) {
+      contacts += `<div style="font-size:12px; margin-bottom:4px;"><strong>Telegram:</strong> <a href="https://t.me/${loc.telegram.replace('@','')}" target="_blank" rel="noopener" style="color:#0284c7; text-decoration:none;">${loc.telegram}</a></div>`;
+    }
+
+    return `
+      <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; min-width:240px; max-width:320px; line-height:1.45; color:#0f172a; padding:4px;">
+        <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#b08e35; margin-bottom:4px;">${loc.type_label}</div>
+        <h3 style="font-size:16px; font-weight:800; margin:0 0 6px; color:#080c14; line-height:1.25;">${loc.title}</h3>
+        <div style="font-size:12px; color:#475569; margin-bottom:6px;">📍 ${loc.city}, ${loc.address}</div>
+        ${loc.schedule ? `<div style="font-size:12px; color:#1e293b; margin-bottom:6px;">🕒 <strong>Расписание:</strong> ${loc.schedule}</div>` : ''}
+        ${contacts}
+        ${loc.description ? `<p style="font-size:11px; color:#64748b; margin:6px 0 10px; line-height:1.4;">${loc.description}</p>` : ''}
+        <div style="display:flex; gap:8px; margin-top:10px; padding-top:8px; border-top:1px solid #e2e8f0;">
+          <a href="${yandexRouteUrl}" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:4px; padding:6px 12px; background:#c9a84c; color:#080c14; border-radius:8px; font-size:12px; font-weight:700; text-decoration:none;">Маршрут (Яндекс)</a>
+          <a href="${gisUrl}" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:4px; padding:6px 12px; background:#f1f5f9; color:#1e293b; border-radius:8px; font-size:12px; font-weight:600; text-decoration:none;">2ГИС</a>
+        </div>
+      </div>
+    `;
+  }
+
+  // ── FILTER DATA ──
+  function getFilteredLocations() {
+    return rawLocations.filter(loc => {
+      // Type match
+      let matchType = (activeFilter === 'all') || (loc.type === activeFilter);
+      if (activeFilter === 'central' && (loc.type === 'central' || (loc.id && loc.id.includes('central')))) {
+        matchType = true;
+      }
+
+      // Search match
+      let matchSearch = true;
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        matchSearch = (
+          (loc.title && loc.title.toLowerCase().includes(q)) ||
+          (loc.city && loc.city.toLowerCase().includes(q)) ||
+          (loc.address && loc.address.toLowerCase().includes(q)) ||
+          (loc.pastors && loc.pastors.toLowerCase().includes(q))
+        );
+      }
+
+      return matchType && matchSearch;
+    });
+  }
+
+  // ── RENDER SIDEBAR & LIST MODE ──
+  function renderSidebarAndList(filtered) {
+    const scrollContainer = document.getElementById('mapLocationsScroll');
+    const countEl = document.getElementById('sidebarCount');
+    const listModeContainer = document.getElementById('mapListModeContainer');
+
+    if (countEl) countEl.textContent = filtered.length;
+    if (scrollContainer) scrollContainer.innerHTML = '';
+    if (listModeContainer) listModeContainer.innerHTML = '';
+
+    filtered.forEach(loc => {
+      // Sidebar Item
+      if (scrollContainer) {
+        const item = document.createElement('div');
+        item.className = 'map-loc-item';
+        item.innerHTML = `
+          <div class="loc-item-top">
+            <span class="loc-badge loc-badge-${loc.type}">${loc.type_label}</span>
+            <span style="font-size:11px; color:rgba(255,255,255,0.5);">${loc.city}</span>
+          </div>
+          <h4 class="loc-title">${loc.title}</h4>
+          <div class="loc-address">
+            <span class="material-symbols-outlined">location_on</span>
+            <span>${loc.address}</span>
+          </div>
+          ${loc.schedule ? `<div class="loc-schedule">${loc.schedule}</div>` : ''}
+        `;
+
+        item.addEventListener('click', () => {
+          document.querySelectorAll('.map-loc-item').forEach(el => el.classList.remove('selected'));
+          item.classList.add('selected');
+
+          if (loc.lat && loc.lng) {
+            if (isYandexActive && yMap) {
+              yMap.panTo([loc.lat, loc.lng], { flying: true, duration: 800 }).then(() => {
+                const pm = yMarkerMap.get(loc.id);
+                if (pm) {
+                  pm.balloon.open();
+                }
+              });
+            } else if (leafletMap) {
+              leafletMap.flyTo([loc.lat, loc.lng], 14, { duration: 1 });
+              const lm = leafletMarkerMap.get(loc.id);
+              if (lm) setTimeout(() => lm.openPopup(), 400);
+            }
+          }
+        });
+
+        scrollContainer.appendChild(item);
+      }
+
+      // List Mode Card
+      if (listModeContainer) {
+        const yandexRouteUrl = `https://yandex.ru/maps/?rtext=~${loc.lat},${loc.lng}`;
+        const card = document.createElement('div');
+        card.className = 'list-loc-card';
+        card.innerHTML = `
+          <div class="loc-item-top" style="margin-bottom:8px;">
+            <span class="loc-badge loc-badge-${loc.type}">${loc.type_label}</span>
+            <span style="font-size:12px; color:rgba(255,255,255,0.6);">${loc.city}</span>
+          </div>
+          <h3 style="font-size:17px; font-weight:700; color:#fff; margin:0 0 6px;">${loc.title}</h3>
+          <div class="loc-address" style="margin-bottom:6px;">
+            <span class="material-symbols-outlined">location_on</span>
+            <span>${loc.address}</span>
+          </div>
+          ${loc.schedule ? `<div class="loc-schedule" style="margin-bottom:8px;"><strong>Расписание:</strong> ${loc.schedule}</div>` : ''}
+          ${loc.pastors ? `<div style="font-size:12px; color:rgba(255,255,255,0.7); margin-bottom:4px;"><strong>Служитель:</strong> ${loc.pastors}</div>` : ''}
+          ${loc.phone ? `<div style="font-size:12px; margin-bottom:8px;"><a href="tel:${loc.phone}" style="color:var(--map-gold); text-decoration:none;">${loc.phone}</a></div>` : ''}
+          <div style="display:flex; gap:8px; margin-top:12px;">
+            <a href="${yandexRouteUrl}" target="_blank" rel="noopener" class="popup-btn popup-btn-primary">Маршрут (Яндекс)</a>
+            <a href="https://2gis.ru/krasnoyarsk/search/${encodeURIComponent(loc.city + ' ' + loc.address)}" target="_blank" rel="noopener" class="popup-btn popup-btn-secondary">2ГИС</a>
+          </div>
+        `;
+        listModeContainer.appendChild(card);
+      }
+    });
+  }
+
+  // ── RENDER YANDEX MAP PLACEMARKS ──
+  function renderYandexMarkers() {
+    if (!yMap) return;
+
+    if (yClusterer) {
+      yClusterer.removeAll();
+      yMap.geoObjects.remove(yClusterer);
+    }
+    yMap.geoObjects.removeAll();
+    yMarkerMap.clear();
+
+    const filtered = getFilteredLocations();
+    renderSidebarAndList(filtered);
+
+    // Yandex Clusterer for optimal performance with Russian placemarks
+    yClusterer = new ymaps.Clusterer({
+      preset: 'islands#invertedGoldClusterIcons',
+      groupByCoordinates: false,
+      clusterDisableClickZoom: false,
+      clusterHideIconOnBalloonOpen: false,
+      geoObjectHideIconOnBalloonOpen: false
+    });
+
+    const placemarks = [];
+
+    filtered.forEach(loc => {
+      if (loc.lat && loc.lng) {
+        const isBranch = loc.type === 'branch';
+        const isCentral = loc.type === 'central';
+        
+        const pm = new ymaps.Placemark([loc.lat, loc.lng], {
+          balloonContent: buildYandexBalloonContent(loc),
+          hintContent: loc.title,
+          iconCaption: isBranch ? loc.city : (isCentral ? 'Главная церковь' : '')
+        }, {
+          preset: getYandexPreset(loc.type),
+          hideIconOnBalloonOpen: false
+        });
+
+        yMarkerMap.set(loc.id, pm);
+        placemarks.push(pm);
+      }
+    });
+
+    yClusterer.add(placemarks);
+    yMap.geoObjects.add(yClusterer);
+
+    // Auto center / bounds
+    if (placemarks.length > 0 && !searchQuery) {
+      if (activeFilter === 'branch') {
+        try {
+          const b = yClusterer.getBounds();
+          if (b) yMap.setBounds(b, { checkZoomRange: true, zoomMargin: 40 });
+        } catch(e) {}
+      } else {
+        yMap.setCenter([56.0153, 92.8932], (activeFilter === 'central' ? 14 : 11), { duration: 400 });
+      }
+    }
+  }
+
+  // ── INIT YANDEX MAPS ──
+  function initYandex() {
+    try {
+      yMap = new ymaps.Map('yandexMap', {
+        center: [56.0153, 92.8932],
+        zoom: 11,
+        controls: ['zoomControl', 'fullscreenControl', 'typeSelector', 'geolocationControl']
+      }, {
+        searchControlProvider: 'yandex#search'
+      });
+
+      isYandexActive = true;
+      renderYandexMarkers();
+    } catch(err) {
+      console.warn('Yandex Maps initialization error, falling back to Leaflet:', err);
+      initLeafletFallback();
+    }
+  }
+
+  // ── LEAFLET FALLBACK ──
+  function initLeafletFallback() {
+    isYandexActive = false;
+    const yContainer = document.getElementById('yandexMap');
+    const lContainer = document.getElementById('leafletMap');
+    if (yContainer) yContainer.style.display = 'none';
+    if (lContainer) lContainer.style.display = 'block';
+
+    if (typeof L === 'undefined') return;
+
+    leafletMap = L.map('leafletMap', {
+      zoomControl: true,
+      scrollWheelZoom: true,
+    }).setView([56.0153, 92.8932], 11);
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; OpenStreetMap &copy; CARTO',
+      subdomains: 'abcd',
+      maxZoom: 19
+    }).addTo(leafletMap);
+
+    leafletMarkersLayer = L.layerGroup().addTo(leafletMap);
+    renderLeafletMarkers();
+  }
+
+  function renderLeafletMarkers() {
+    if (!leafletMarkersLayer) return;
+    leafletMarkersLayer.clearLayers();
+    leafletMarkerMap.clear();
+
+    const filtered = getFilteredLocations();
+    renderSidebarAndList(filtered);
+
+    filtered.forEach(loc => {
+      if (loc.lat && loc.lng) {
+        const marker = L.marker([loc.lat, loc.lng]);
+        marker.bindPopup(`
+          <div style="font-family:sans-serif; min-width:220px;">
+            <h4 style="margin:0 0 4px; color:#c9a84c;">${loc.title}</h4>
+            <p style="margin:0 0 4px; font-size:12px;">${loc.city}, ${loc.address}</p>
+            ${loc.schedule ? `<p style="margin:0; font-size:11px; color:#666;">${loc.schedule}</p>` : ''}
+          </div>
+        `);
+        marker.addTo(leafletMarkersLayer);
+        leafletMarkerMap.set(loc.id, marker);
+      }
+    });
+  }
+
+  // ── DISPATCH RENDER ──
+  function refreshMap() {
+    if (isYandexActive) {
+      renderYandexMarkers();
+    } else if (leafletMap) {
+      renderLeafletMarkers();
+    }
+  }
+
+  // ── SETUP CONTROLS ──
+  function setupControls() {
+    // Category Filter Buttons
+    const filterBtns = document.querySelectorAll('#mapFilterPills .map-filter-btn');
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        activeFilter = this.getAttribute('data-type');
+        refreshMap();
+      });
+    });
+
+    // Search Input
+    const searchInput = document.getElementById('mapSearchInput');
+    if (searchInput) {
+      searchInput.addEventListener('input', function(e) {
+        searchQuery = e.target.value.trim();
+        refreshMap();
+      });
+    }
+
+    // View Switcher (Map vs List)
+    const btnMap = document.getElementById('btnViewMap');
+    const btnList = document.getElementById('btnViewList');
+    const mapContainer = document.getElementById('mapMainContainer');
+    const listContainer = document.getElementById('mapListModeContainer');
+
+    if (btnMap && btnList) {
+      btnMap.addEventListener('click', () => {
+        btnMap.classList.add('active');
+        btnList.classList.remove('active');
+        mapContainer.style.display = 'flex';
+        listContainer.style.display = 'none';
+        if (yMap && yMap.container) {
+          yMap.container.fitToViewport();
+        } else if (leafletMap) {
+          leafletMap.invalidateSize();
+        }
+      });
+
+      btnList.addEventListener('click', () => {
+        btnList.classList.add('active');
+        btnMap.classList.remove('active');
+        mapContainer.style.display = 'none';
+        listContainer.style.display = 'grid';
+      });
+    }
+  }
+
+  // ── INITIALIZATION ──
+  document.addEventListener('DOMContentLoaded', () => {
+    setupControls();
+
+    if (typeof ymaps !== 'undefined' && ymaps.ready) {
+      ymaps.ready(initYandex);
+    } else {
+      // Fallback timer if ymaps script takes too long or fails
+      let waited = 0;
+      const timer = setInterval(() => {
+        waited += 100;
+        if (typeof ymaps !== 'undefined' && ymaps.ready) {
+          clearInterval(timer);
+          ymaps.ready(initYandex);
+        } else if (waited >= 1800) {
+          clearInterval(timer);
+          initLeafletFallback();
+        }
+      }, 100);
+    }
+  });
+})();
+</script>
+{% endblock %}
+

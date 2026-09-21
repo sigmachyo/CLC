@@ -281,7 +281,16 @@ class LoginForm(forms.Form):
 
 
 class ProfileEditForm(forms.Form):
-    """Форма редактирования профиля."""
+    """Форма редактирования профиля с социальными сетями и личными данными."""
+    avatar = forms.ImageField(
+        required=False,
+        label='Фото профиля',
+        widget=forms.FileInput(attrs={'accept': 'image/*', 'id': 'avatar-input', 'class': 'hidden'}),
+    )
+    delete_avatar = forms.BooleanField(
+        required=False,
+        widget=forms.HiddenInput(),
+    )
     first_name = forms.CharField(
         max_length=150, required=False, label='Имя',
         widget=forms.TextInput(attrs={'placeholder': 'Имя'}),
@@ -294,6 +303,41 @@ class ProfileEditForm(forms.Form):
         label='Email',
         widget=forms.EmailInput(attrs={'placeholder': 'Email'}),
     )
+    phone = forms.CharField(
+        max_length=30, required=False, label='Телефон',
+        widget=forms.TextInput(attrs={'placeholder': '+7 (999) 000-00-00'}),
+    )
+    telegram = forms.CharField(
+        max_length=100, required=False, label='Telegram',
+        widget=forms.TextInput(attrs={'placeholder': '@username или t.me/...'}),
+    )
+    vk = forms.CharField(
+        max_length=100, required=False, label='ВКонтакте',
+        widget=forms.TextInput(attrs={'placeholder': 'vk.com/username или id...'}),
+    )
+    city = forms.CharField(
+        max_length=100, required=False, label='Город / Район',
+        widget=forms.TextInput(attrs={'placeholder': 'Красноярск (напр. Советский р-н)'}),
+    )
+    home_group = forms.CharField(
+        max_length=150, required=False, label='Домашняя группа',
+        widget=forms.TextInput(attrs={'placeholder': 'Название или район вашей группы'}),
+    )
+    baptism_date = forms.DateField(
+        required=False, label='Духовный день рождения / Крещение',
+        widget=forms.DateInput(attrs={'type': 'date'}),
+    )
+    bio = forms.CharField(
+        max_length=500, required=False, label='О себе / Мое свидетельство',
+        widget=forms.Textarea(attrs={'rows': 3, 'placeholder': 'Расскажите немного о себе или как вы пришли к Богу...'}),
+    )
+    is_public = forms.BooleanField(
+        required=False, initial=True, label='Открытый профиль',
+        help_text='Показывать ваш профиль и свидетельства другим прихожанам',
+    )
+    notify_daily_verse = forms.BooleanField(required=False, initial=True, label='Стих дня каждое утро')
+    notify_prayer_answers = forms.BooleanField(required=False, initial=True, label='Ответы на молитвы')
+    notify_events = forms.BooleanField(required=False, initial=True, label='Церковные события и служения')
 
     def clean_email(self):
         email = self.cleaned_data['email'].strip().lower()
@@ -303,6 +347,23 @@ class ProfileEditForm(forms.Form):
         except ValidationError as e:
             raise ValidationError(e.message)
         return email
+
+
+class FavoriteVerseForm(forms.Form):
+    """Форма добавления стиха в избранное"""
+    reference = forms.CharField(
+        max_length=150, label='Место Писания',
+        widget=forms.TextInput(attrs={'placeholder': 'Например: Иоанна 3:16 или Псалом 22:1'}),
+    )
+    verse_text = forms.CharField(
+        label='Текст стиха',
+        widget=forms.Textarea(attrs={'rows': 3, 'placeholder': 'Ибо так возлюбил Бог мир...'}),
+    )
+    note = forms.CharField(
+        max_length=255, required=False, label='Личная заметка',
+        widget=forms.TextInput(attrs={'placeholder': 'Мой стих ободрения на каждый день'}),
+    )
+
 
 
 class ChangePasswordForm(forms.Form):
@@ -425,3 +486,115 @@ class PrayerRequestForm(forms.Form):
         if len(description) > 5000:
             raise ValidationError('Описание слишком длинное (максимум 5000 символов).')
         return description
+class RevelationForm(forms.Form):
+    """Форма добавления откровения или свидетельства."""
+    title = forms.CharField(
+        max_length=200,
+        label='Заголовок',
+        widget=forms.TextInput(attrs={'placeholder': 'Тема вашего свидетельства'}),
+        error_messages={
+            'required': 'Пожалуйста, укажите заголовок.',
+            'max_length': 'Заголовок не должен превышать 200 символов.',
+        }
+    )
+    content = forms.CharField(
+        label='Текст свидетельства/откровения',
+        widget=forms.Textarea(attrs={
+            'placeholder': 'Поделитесь тем, что Бог сделал в вашей жизни...',
+            'rows': 5,
+        }),
+        error_messages={
+            'required': 'Пожалуйста, напишите текст свидетельства.',
+        }
+    )
+    is_public = forms.BooleanField(
+        required=False,
+        initial=True,
+        label='Сделать публичным',
+    )
+    is_anonymous = forms.BooleanField(
+        required=False,
+        initial=False,
+        label='Опубликовать анонимно',
+    )
+    consent_152fz = forms.BooleanField(
+        required=True,
+        initial=True,
+        label='Согласие на обработку персональных данных (152-ФЗ)',
+        error_messages={
+            'required': 'Для отправки необходимо подтвердить согласие на обработку данных.'
+        }
+    )
+
+    def clean_title(self):
+        title = self.cleaned_data['title'].strip()
+        if len(title) < 3:
+            raise ValidationError('Заголовок должен содержать минимум 3 символа.')
+        return title
+
+    def clean_content(self):
+        content = self.cleaned_data['content'].strip()
+        if len(content) < 10:
+            raise ValidationError('Текст должен содержать минимум 10 символов.')
+        return content
+
+
+class ConferenceRegistrationForm(forms.Form):
+    """Форма регистрации на конференции и школы с загрузкой чека пожертвования"""
+    first_name = forms.CharField(
+        max_length=150,
+        required=True,
+        label='Имя',
+        widget=forms.TextInput(attrs={'placeholder': 'Ваше имя', 'class': 'form-input'}),
+        error_messages={'required': 'Пожалуйста, укажите ваше имя.'}
+    )
+    last_name = forms.CharField(
+        max_length=150,
+        required=True,
+        label='Фамилия',
+        widget=forms.TextInput(attrs={'placeholder': 'Ваша фамилия', 'class': 'form-input'}),
+        error_messages={'required': 'Пожалуйста, укажите вашу фамилию.'}
+    )
+    email = forms.EmailField(
+        required=True,
+        label='E-mail',
+        widget=forms.EmailInput(attrs={'placeholder': 'example@mail.ru', 'class': 'form-input'}),
+        error_messages={'required': 'Пожалуйста, укажите ваш email для получения билета.'}
+    )
+    phone = forms.CharField(
+        max_length=50,
+        required=True,
+        label='Телефон',
+        widget=forms.TextInput(attrs={'placeholder': '+7 (999) 000-00-00', 'class': 'form-input'}),
+        error_messages={'required': 'Пожалуйста, укажите номер телефона для связи.'}
+    )
+    telegram = forms.CharField(
+        max_length=100,
+        required=False,
+        label='Telegram',
+        widget=forms.TextInput(attrs={'placeholder': '@username', 'class': 'form-input'}),
+    )
+    payment_receipt = forms.FileField(
+        required=False,
+        label='Чек о внесении регистрационного пожертвования',
+        help_text='Форматы: JPG, PNG или PDF (до 10 МБ)',
+        widget=forms.FileInput(attrs={'accept': '.jpg,.jpeg,.png,.pdf,.webp'})
+    )
+    consent_152fz = forms.BooleanField(
+        required=True,
+        initial=True,
+        label='Согласие на обработку персональных данных (152-ФЗ)',
+        error_messages={'required': 'Для участия необходимо согласие на обработку персональных данных.'}
+    )
+
+    def clean_payment_receipt(self):
+        file = self.cleaned_data.get('payment_receipt')
+        if file:
+            # Проверка размера (10 МБ)
+            if file.size > 10 * 1024 * 1024:
+                raise ValidationError('Размер файла чека не должен превышать 10 МБ.')
+            # Проверка расширения
+            ext = file.name.split('.')[-1].lower()
+            if ext not in ['jpg', 'jpeg', 'png', 'pdf', 'webp']:
+                raise ValidationError('Разрешены только файлы форматов JPG, PNG, WEBP или PDF.')
+        return file

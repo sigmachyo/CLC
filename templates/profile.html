@@ -1,358 +1,1158 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Личный кабинет{% endblock %}
-{% block main_class %}flex-grow relative bg-background-light{% endblock %}
+
+{% block title %}Личный кабинет | KCLC{% endblock %}
+{% block main_class %}flex-grow relative bg-[#080c14] min-h-screen text-white{% endblock %}
+
 {% block content %}
-<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 mb-20">
-    <!-- Header Card -->
-    <div
-        class="relative rounded-[2rem] overflow-hidden mb-8 bg-white shadow-[0_8px_40px_rgba(0,0,0,0.04)] border border-navy/5">
-        <!-- Cover Image -->
-        <div class="h-32 sm:h-48 bg-gradient-to-tr from-navy to-navy-light relative overflow-hidden">
-            <div
-                class="absolute inset-0 bg-[url('/static/img/stardust.png')] opacity-20">
-            </div>
-            <div class="absolute -top-24 -right-24 w-64 h-64 bg-primary rounded-full blur-[80px] opacity-20"></div>
-            <div class="absolute -bottom-24 -left-12 w-48 h-48 bg-primary rounded-full blur-[60px] opacity-20"></div>
-        </div>
-        <!-- Profile Info -->
-        <div class="px-6 sm:px-10 pb-8 relative mt-16 sm:mt-20">
-            <!-- Avatar -->
-            <div
-                class="absolute -top-32 sm:-top-36 left-1/2 -translate-x-1/2 sm:left-10 sm:translate-x-0 w-32 h-32 sm:w-40 sm:h-40 rounded-full bg-navy border-4 border-white flex items-center justify-center shadow-xl overflow-hidden z-10">
-                <span
-                    class="material-symbols-outlined text-primary text-6xl group-hover:scale-110 transition-transform duration-500">account_circle</span>
-            </div>
+<!-- Ultra-lightweight CSS Background (Zero GPU Blur Lag) -->
+<style>
+    .profile-bg-pattern {
+        background-color: #080c14;
+        background-image: 
+            radial-gradient(at 0% 0%, rgba(201, 168, 76, 0.07) 0px, transparent 50%),
+            radial-gradient(at 100% 100%, rgba(30, 58, 138, 0.08) 0px, transparent 50%);
+    }
+    .apple-card {
+        background-color: #0e1422;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .apple-card:hover {
+        border-color: rgba(255, 255, 255, 0.14);
+    }
+    .apple-subcard {
+        background-color: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .apple-subcard:hover {
+        border-color: rgba(255, 255, 255, 0.12);
+    }
+</style>
 
-            <div
-                class="pt-2 sm:pt-0 sm:pl-[12rem] flex flex-col sm:flex-row justify-between items-center sm:items-start gap-6">
-                <!-- Text Info -->
-                <div class="text-center sm:text-left flex-grow">
-                    <h1 class="text-3xl sm:text-4xl font-display font-bold text-navy mb-1">{{ user.username }}</h1>
-                    <p class="text-txt-sub text-base sm:text-lg mb-4">{{ user.email|default:"Нет email" }}</p>
-                    <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-                        {% if user.first_name or user.last_name %}
-                        <span
-                            class="inline-flex items-center px-4 py-1.5 rounded-full bg-primary/10 text-primary font-semibold text-sm border border-primary/20">
-                            {{ user.first_name }} {{ user.last_name }}
-                        </span>
-                        {% endif %}
-                        <span
-                            class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-green-50 text-green-600 font-semibold text-sm border border-green-100">
-                            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                            В сети
-                        </span>
-                    </div>
-                </div>
-                <!-- Buttons -->
-                <div class="w-full sm:w-auto mt-2 sm:mt-0 flex justify-center sm:justify-end shrink-0">
-                    <a href="{% url 'profile_edit' %}"
-                        class="flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-navy font-bold py-3 px-6 rounded-xl transition-all shadow-[0_4px_12px_rgba(201,168,76,0.3)] hover:-translate-y-1 w-full sm:w-auto">
-                        <span class="material-symbols-outlined text-xl">edit</span>
-                        <span>Редактировать</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="profile-bg-pattern min-h-screen">
+<div class="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 mb-20">
+    {% csrf_token %}
 
-    <!-- Grid Layout for Data -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-
-        <!-- Left Column (Stats & Settings) -->
-        <div class="lg:col-span-4 flex flex-col gap-8">
-
-            <!-- Quick Stats -->
-            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-navy/5">
-                <h3 class="text-xl font-bold text-navy mb-6">Ваша активность</h3>
-                <div class="grid grid-cols-3 lg:grid-cols-1 gap-4">
-                    <div
-                        class="p-4 rounded-2xl bg-gray-50 border border-gray-100 text-center lg:text-left flex flex-col lg:flex-row items-center gap-2 lg:gap-4">
-                        <div
-                            class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                            <span class="material-symbols-outlined text-xl">volunteer_activism</span>
-                        </div>
-                        <div>
-                            <span class="block text-2xl font-display font-bold text-navy leading-tight">{{ prayers_count}}</span>
-                            <span class="text-[10px] text-txt-sub font-bold uppercase tracking-wider">Молитв</span>
-                        </div>
-                    </div>
-                    <div
-                        class="p-4 rounded-2xl bg-gray-50 border border-gray-100 text-center lg:text-left flex flex-col lg:flex-row items-center gap-2 lg:gap-4">
-                        <div
-                            class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                            <span class="material-symbols-outlined text-xl">library_books</span>
-                        </div>
-                        <div>
-                            <span class="block text-2xl font-display font-bold text-navy leading-tight">{{ plans_count}}</span>
-                            <span class="text-[10px] text-txt-sub font-bold uppercase tracking-wider">Изучено</span>
-                        </div>
-                    </div>
-                    <div
-                        class="p-4 rounded-2xl bg-gray-50 border border-gray-100 text-center lg:text-left flex flex-col lg:flex-row items-center gap-2 lg:gap-4">
-                        <div
-                            class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                            <span class="material-symbols-outlined text-xl">event_available</span>
-                        </div>
-                        <div>
-                            <span class="block text-2xl font-display font-bold text-navy leading-tight">{{ events_count }}</span>
-                            <span class="text-[10px] text-txt-sub font-bold uppercase tracking-wider">События</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Settings -->
-            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-navy/5">
-                <h3 class="text-xl font-bold text-navy mb-6">Настройки</h3>
-
-                <div class="space-y-4">
-                    <!-- Notifications Toggle -->
-                    <div class="p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                        <div class="flex items-center justify-between mb-2">
-                            <div class="flex items-center gap-3">
-                                <div
-                                    class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                                    <span class="material-symbols-outlined text-[20px]">notifications_active</span>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-navy text-sm">Уведомления</h4>
-                                    <p class="text-[10px] text-txt-sub font-semibold uppercase tracking-wider">
-                                        Push-сообщения</p>
-                                </div>
-                            </div>
-                            <button onclick="togglePushNotifications()"
-                                class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none bg-gray-200"
-                                role="switch" aria-checked="false" id="push-toggle">
-                                <span aria-hidden="true"
-                                    class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out translate-x-0"
-                                    id="push-toggle-knob"></span>
-                            </button>
-                        </div>
-                        <div id="notifications-blocked-msg"
-                            class="hidden mt-3 p-3 bg-red-50 rounded-xl border border-red-100 flex items-start gap-2.5">
-                            <span class="material-symbols-outlined text-red-500 text-[18px]">warning</span>
-                            <p class="text-[11px] text-red-600 leading-tight">
-                                <strong>Уведомления заблокированы.</strong> Включите их в настройках браузера (иконка
-                                замка в адресной строке), чтобы получать новости.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Reset PWA Banner -->
-                    <div id="pwa-reset-container"
-                        class="hidden flex items-center justify-between p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-navy/5 flex items-center justify-center text-navy">
-                                <span class="material-symbols-outlined text-[20px]">get_app</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-navy text-sm">Установить приложение</h4>
-                                <p class="text-xs text-txt-sub">KCLC на главный экран</p>
-                            </div>
-                        </div>
-                        <button onclick="resetPWABanner()"
-                            class="bg-primary/10 hover:bg-primary/20 text-primary font-bold text-sm px-4 py-2 rounded-lg transition-colors border border-primary/20">
-                            Включить
-                        </button>
-                    </div>
-
-                    <a href="{% url 'change_password' %}"
-                        class="flex items-center justify-between p-4 rounded-2xl hover:bg-gray-50 border border-transparent hover:border-gray-100 transition-colors group">
-                        <div class="flex items-center gap-3">
-                            <div
-                                class="w-10 h-10 rounded-full bg-navy/5 flex items-center justify-center text-navy group-hover:text-primary transition-colors">
-                                <span class="material-symbols-outlined text-[20px]">key</span>
-                            </div>
-                            <h4 class="font-bold text-navy text-sm group-hover:text-primary transition-colors">Сменить
-                                пароль</h4>
-                        </div>
-                        <span
-                            class="material-symbols-outlined text-gray-400 group-hover:text-primary transition-colors">chevron_right</span>
-                    </a>
-                </div>
-
-                <div class="mt-8 pt-6 border-t border-gray-100">
-                    <form method="post" action="{% url 'account_logout' %}">
-                        {% csrf_token %}
-                        <button type="submit"
-                            class="w-full flex items-center justify-center gap-2 bg-red-50 hover:bg-red-100 border border-red-100 text-red-600 font-bold py-3 px-5 rounded-xl transition-all">
-                            <span class="material-symbols-outlined text-xl">logout</span>
-                            Выйти из аккаунта
-                        </button>
-                    </form>
-                </div>
+    <!-- ═══════════════════════════════════════════════════════════
+         1. HERO КАРТОЧКА ПРОФИЛЯ (CLEAN APPLE DESIGN)
+         ═══════════════════════════════════════════════════════════ -->
+    <div class="apple-card rounded-[2.25rem] shadow-2xl overflow-hidden mb-8">
+        <!-- Шапка-баннер -->
+        <div class="relative h-36 sm:h-48 bg-gradient-to-r from-[#0c121e] via-[#151d30] to-[#0f1728] overflow-hidden">
+            <div class="absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:24px_24px] opacity-5 pointer-events-none"></div>
+            
+            <div class="absolute top-4 right-5 flex items-center gap-2 px-3 py-1 rounded-full bg-black/50 border border-white/10 text-[11px] font-semibold text-white/70">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span>В сети • KCLC Family</span>
             </div>
         </div>
 
-        <!-- Right Column (Activity & Content) -->
-        <div class="lg:col-span-8 flex flex-col gap-8">
-
-            <!-- Dashboard Banner (Continue Learning) -->
-            <div
-                class="bg-gradient-to-r from-navy to-navy-light rounded-3xl p-8 shadow-lg relative overflow-hidden group">
-                <div
-                    class="absolute right-0 top-0 w-64 h-64 bg-primary rounded-full blur-[80px] opacity-10 -translate-y-1/2 translate-x-1/3">
-                </div>
-                <div class="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6">
-                    <div class="text-center sm:text-left">
-                        {% if current_progress %}
-                        <h2 class="text-2xl font-display font-bold text-white mb-2">Продолжите обучение</h2>
-                        <p class="text-white/70 max-w-md">Вы остановились на плане: <strong>«{{ current_progress.plan.title }}»</strong>. Ваш прогресс: {{ current_progress.current_day }} день.</p>
-                        {% else %}
-                        <h2 class="text-2xl font-display font-bold text-white mb-2">Начните свой путь</h2>
-                        <p class="text-white/70 max-w-md">В нашей библиотеке вы найдете сотни видео, планов чтения Библии и материалов для духовного роста.</p>
-                        {% endif %}
-                    </div>
-                    <a href="{% if current_progress %}{% url 'bible_plan_detail' current_progress.plan.id %}{% else %}{% url 'library_home' %}{% endif %}"
-                        class="shrink-0 bg-primary hover:bg-primary-hover text-navy font-bold py-3.5 px-8 rounded-xl transition-all transform hover:-translate-y-1 shadow-lg flex items-center gap-2">
-                        <span>{% if current_progress %}Продолжить{% else %}В библиотеку{% endif %}</span>
-                        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Recent Prayers -->
-            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-navy/5">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-xl font-bold text-navy">Ваши молитвенные нужды</h3>
-                    <a href="{% url 'my_prayers' %}"
-                        class="text-sm font-bold text-primary hover:text-primary-hover transition-colors">Смотреть
-                        все</a>
-                </div>
-
-                <div class="space-y-4">
-                    {% for prayer in recent_prayers %}
-                    <div
-                        class="p-5 rounded-2xl border border-gray-100 hover:border-primary/30 hover:shadow-md transition-all group {% if prayer.is_answered %}bg-primary/5{% endif %}">
-                        <div class="flex justify-between items-start gap-4 mb-3">
-                            <h4 class="font-bold text-navy text-lg group-hover:text-primary transition-colors">{{prayer.title }}</h4>
-                            {% if prayer.is_answered %}
-                            <span
-                                class="shrink-0 px-3 py-1 rounded-full bg-green-50 text-green-600 text-xs font-bold border border-green-100 flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[14px]">check</span> Отвечено
-                            </span>
+        <!-- Тело профиля -->
+        <div class="px-6 sm:px-10 pb-7 -mt-16 sm:-mt-20 relative z-10">
+            <div class="flex flex-col sm:flex-row items-center sm:items-end justify-between gap-6 pb-6 border-b border-white/[0.06]">
+                <!-- Аватар и базовая информация -->
+                <div class="flex flex-col sm:flex-row items-center sm:items-end gap-5 text-center sm:text-left">
+                    <!-- Аватар с идеальным масштабированием и быстрой загрузкой -->
+                    <div class="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full p-1 bg-gradient-to-b from-white/30 via-white/10 to-transparent border border-white/20 shadow-xl group/avatar shrink-0">
+                        <div class="w-full h-full rounded-full overflow-hidden relative bg-[#101726]">
+                            {% if profile.avatar %}
+                            <img id="profile-avatar-img" src="{{ profile.avatar.url }}" alt="{{ profile.get_display_name }}" class="w-full h-full object-cover">
                             {% else %}
-                            <span
-                                class="shrink-0 px-3 py-1 rounded-full bg-orange-50 text-orange-600 text-xs font-bold border border-orange-100 flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[14px]">hourglass_empty</span> В процессе
+                            <div id="profile-avatar-placeholder" class="w-full h-full bg-[#121929] border border-primary/30 flex items-center justify-center text-primary font-serif font-bold text-3xl select-none">
+                                <span id="profile-initials">{{ profile.get_initials }}</span>
+                            </div>
+                            {% endif %}
+                            
+                            <!-- Кнопка быстрой смены фото (Hover overlay) -->
+                            <label for="quick-avatar-input" class="absolute inset-0 rounded-full bg-black/70 opacity-0 group-hover/avatar:opacity-100 flex flex-col items-center justify-center text-white cursor-pointer transition-opacity duration-200" title="Нажмите, чтобы сменить фото профиля">
+                                <span class="material-symbols-outlined text-xl mb-0.5">photo_camera</span>
+                                <span class="text-[9px] font-bold tracking-wider uppercase">Сменить</span>
+                            </label>
+                            <input type="file" id="quick-avatar-input" accept="image/*" class="hidden">
+                        </div>
+
+                        <!-- Индикатор статуса -->
+                        <div class="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-[#080c14] flex items-center justify-center shadow" title="Онлайн">
+                            <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                        </div>
+                    </div>
+
+                    <!-- Текстовая информация -->
+                    <div class="space-y-2">
+                        <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2.5">
+                            <h1 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">{{ profile.get_display_name }}</h1>
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-white/10 text-white/70 border border-white/10">@{{ user.username }}</span>
+                        </div>
+
+                        <!-- Бейджи статуса -->
+                        <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 text-xs">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-300 font-medium border border-amber-500/20">
+                                <span class="material-symbols-outlined text-[15px] text-[#c9a84c]">church</span>
+                                {{ profile.get_days_in_church }} дн. с KCLC
+                            </span>
+                            {% if profile.home_group %}
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 text-white/80 font-medium border border-white/10">
+                                <span class="material-symbols-outlined text-[15px] text-[#c9a84c]">groups</span>
+                                {{ profile.home_group }}
+                            </span>
+                            {% endif %}
+                            {% if profile.city %}
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 text-white/80 font-medium border border-white/10">
+                                <span class="material-symbols-outlined text-[15px] text-[#c9a84c]">location_on</span>
+                                {{ profile.city }}
                             </span>
                             {% endif %}
                         </div>
-                        <p class="text-txt-sub text-sm line-clamp-2 mb-4">{{ prayer.description }}</p>
-                        <div class="flex items-center gap-4 text-xs font-semibold text-gray-500">
-                            <div class="flex items-center gap-1.5">
-                                <span class="material-symbols-outlined text-[16px]">calendar_today</span>
-                                {{ prayer.created_at|date:"d M Y" }}
-                            </div>
-                            <div class="flex items-center gap-1.5">
-                                <span class="material-symbols-outlined text-[16px]">front_hand</span>
-                                {{ prayer.prayer_count }} молятся
-                            </div>
-                        </div>
                     </div>
-                    {% empty %}
-                    <div class="p-6 text-center text-txt-sub bg-gray-50 rounded-2xl border border-gray-100">
-                        <p>У вас пока нет созданных молитвенных нужд.</p>
-                        <a href="{% url 'prayer_add' %}"
-                            class="inline-block mt-3 text-primary font-bold hover:underline">Оставить нужду</a>
-                    </div>
-                    {% endfor %}
+                </div>
+
+                <!-- Единственная чистая кнопка действия (без лишних кнопок) -->
+                <div class="shrink-0 w-full sm:w-auto flex justify-center sm:justify-end">
+                    <a href="{% url 'profile_edit' %}" class="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-white text-black font-semibold text-sm hover:bg-white/90 active:scale-95 transition-all shadow-md">
+                        <span class="material-symbols-outlined text-base">edit</span>
+                        <span>Редактировать профиль</span>
+                    </a>
                 </div>
             </div>
 
+            <!-- Биография (если указана) -->
+            {% if profile.bio %}
+            <div class="mt-4 pt-3 text-center sm:text-left">
+                <p class="text-sm text-white/75 italic leading-relaxed max-w-2xl">«{{ profile.bio }}»</p>
+            </div>
+            {% endif %}
+
+            <!-- Социальные сети и контакты -->
+            <div class="mt-4 flex flex-wrap items-center justify-center sm:justify-start gap-2.5">
+                {% if profile.telegram %}
+                <a href="{{ profile.get_telegram_url }}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#229ED9]/15 text-[#54b9eb] border border-[#229ED9]/30 text-xs font-semibold hover:bg-[#229ED9]/25 transition-colors">
+                    <i class="fab fa-telegram text-sm"></i>
+                    <span>Telegram: @{{ profile.telegram|cut:"@"|cut:"https://t.me/" }}</span>
+                </a>
+                {% endif %}
+
+                {% if profile.vk %}
+                <a href="{{ profile.get_vk_url }}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#2787F5]/15 text-[#6ca5f0] border border-[#2787F5]/30 text-xs font-semibold hover:bg-[#2787F5]/25 transition-colors">
+                    <i class="fab fa-vk text-sm"></i>
+                    <span>ВКонтакте</span>
+                </a>
+                {% endif %}
+
+                {% if profile.phone %}
+                <a href="tel:{{ profile.phone }}" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-xs font-semibold hover:bg-emerald-500/25 transition-colors">
+                    <span class="material-symbols-outlined text-[15px]">call</span>
+                    <span>{{ profile.phone }}</span>
+                </a>
+                {% endif %}
+
+                {% if not profile.telegram and not profile.vk and not profile.phone %}
+                <a href="{% url 'profile_edit' %}" class="text-xs text-white/40 hover:text-white transition-colors flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[14px]">add_circle</span>
+                    <span>Добавить контакты</span>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         2. СТИХ ДНЯ (DAILY INSPIRATION)
+         ═══════════════════════════════════════════════════════════ -->
+    {% if daily_verse %}
+    <div class="apple-subcard rounded-2xl p-5 sm:p-6 mb-8 relative">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="space-y-1.5 flex-grow">
+                <div class="flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[#c9a84c] text-sm">local_florist</span>
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-[#c9a84c]">Стих дня</span>
+                </div>
+                <p class="text-base sm:text-lg font-serif italic text-white/90 leading-relaxed max-w-3xl">
+                    «{{ daily_verse.verse_text }}»
+                </p>
+                <p class="text-xs font-bold text-white/50 tracking-wider">
+                    {{ daily_verse.reference }}
+                </p>
+            </div>
+            
+            <div class="flex items-center gap-2 shrink-0">
+                <button type="button"
+                        onclick="saveVerseFromProfile('{{ daily_verse.reference }}', '{{ daily_verse.verse_text|escapejs }}')"
+                        id="save-daily-btn"
+                        class="px-4 py-2 rounded-full text-xs font-semibold transition-colors flex items-center gap-2 {% if is_daily_saved %}bg-primary/20 text-primary border border-primary/30{% else %}bg-white/10 hover:bg-white/15 text-white border border-white/10{% endif %}">
+                    <span class="material-symbols-outlined text-sm">{% if is_daily_saved %}bookmark_added{% else %}bookmark_add{% endif %}</span>
+                    <span>{% if is_daily_saved %}В избранном{% else %}Сохранить{% endif %}</span>
+                </button>
+                <button type="button" 
+                        onclick="copyVerseText(this, '«{{ daily_verse.verse_text|escapejs }}» — {{ daily_verse.reference }}')"
+                        class="p-2 rounded-full bg-white/5 hover:bg-white/10 text-white/60 hover:text-white border border-white/10 transition-colors"
+                        title="Скопировать стих">
+                    <span class="material-symbols-outlined text-base">content_copy</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- ═══════════════════════════════════════════════════════════
+         3. СТАТИСТИКА (4 ACTIVITY WIDGETS)
+         ═══════════════════════════════════════════════════════════ -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
+        <!-- Конференции -->
+        <div class="apple-card rounded-2xl p-4 sm:p-5 shadow transition-all">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-semibold text-white/50 uppercase tracking-wider">Билеты</span>
+                <div class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-300 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[17px]">confirmation_number</span>
+                </div>
+            </div>
+            <p class="text-2xl sm:text-3xl font-bold text-white mb-0.5">{{ events_count }}</p>
+            <p class="text-[11px] text-white/45">Регистраций</p>
+        </div>
+
+        <!-- Молитвы -->
+        <div class="apple-card rounded-2xl p-4 sm:p-5 shadow transition-all">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-semibold text-white/50 uppercase tracking-wider">Молитвы</span>
+                <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-300 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[17px]">volunteer_activism</span>
+                </div>
+            </div>
+            <p class="text-2xl sm:text-3xl font-bold text-white mb-0.5">{{ total_prayers }}</p>
+            <p class="text-[11px] text-emerald-400 font-medium">✓ {{ answered_prayers_count }} ответов Бога</p>
+        </div>
+
+        <!-- Молитвенные друзья -->
+        <div class="apple-card rounded-2xl p-4 sm:p-5 shadow transition-all">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-semibold text-white/50 uppercase tracking-wider">Друзья в молитве</span>
+                <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-300 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[17px]">diversity_1</span>
+                </div>
+            </div>
+            <p class="text-2xl sm:text-3xl font-bold text-white mb-0.5">{{ mutual_friends_count }}</p>
+            <p class="text-[11px] text-emerald-400 font-medium">{{ total_followers_count }} молятся за вас</p>
+        </div>
+
+        <!-- Сохраненные стихи -->
+        <div class="apple-card rounded-2xl p-4 sm:p-5 shadow transition-all">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-semibold text-white/50 uppercase tracking-wider">Любимые стихи</span>
+                <div class="w-8 h-8 rounded-full bg-blue-500/20 text-blue-300 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[17px]">bookmark</span>
+                </div>
+            </div>
+            <p class="text-2xl sm:text-3xl font-bold text-white mb-0.5">{{ favorite_verses_count }}</p>
+            <p class="text-[11px] text-white/45">Сохранено в профиле</p>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         4. APPLE SEGMENTED CONTROL (ТАБЫ С ПЕРЕКЛЮЧЕНИЕМ)
+         ═══════════════════════════════════════════════════════════ -->
+    <div class="mb-8">
+        <div class="inline-flex p-1 bg-[#0e1422] border border-white/10 rounded-full gap-1 overflow-x-auto max-w-full no-scrollbar shadow-lg">
+            <button type="button" onclick="switchTab('events')" id="btn-tab-events"
+                    class="tab-btn px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 bg-white text-black shadow-sm">
+                <span class="material-symbols-outlined text-[17px]">confirmation_number</span>
+                <span>Мои билеты</span>
+                {% if events_count > 0 %}
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-black/10 text-black">{{ events_count }}</span>
+                {% endif %}
+            </button>
+
+            <button type="button" onclick="switchTab('verses')" id="btn-tab-verses"
+                    class="tab-btn px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 text-white/70 hover:text-white">
+                <span class="material-symbols-outlined text-[17px]">bookmark</span>
+                <span>Любимые стихи</span>
+            </button>
+
+            <button type="button" onclick="switchTab('prayers')" id="btn-tab-prayers"
+                    class="tab-btn px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 text-white/70 hover:text-white">
+                <span class="material-symbols-outlined text-[17px]">volunteer_activism</span>
+                <span>Молитвы</span>
+            </button>
+
+            <button type="button" onclick="switchTab('connections')" id="btn-tab-connections"
+                    class="tab-btn px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 text-white/70 hover:text-white">
+                <span class="material-symbols-outlined text-[17px]">diversity_1</span>
+                <span>Молитвенные друзья</span>
+                {% if mutual_friends_count > 0 %}
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-500/20 text-emerald-300">{{ mutual_friends_count }}</span>
+                {% endif %}
+            </button>
+
+            <button type="button" onclick="switchTab('revelations')" id="btn-tab-revelations"
+                    class="tab-btn px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 text-white/70 hover:text-white">
+                <span class="material-symbols-outlined text-[17px]">auto_awesome</span>
+                <span>Свидетельства</span>
+            </button>
+
+            <button type="button" onclick="switchTab('ministries')" id="btn-tab-ministries"
+                    class="tab-btn px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 text-white/70 hover:text-white">
+                <span class="material-symbols-outlined text-[17px]">how_to_reg</span>
+                <span>Служения</span>
+                {% if ministry_applications_count > 0 %}
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-[#c9a84c]/20 text-[#c9a84c]">{{ ministry_applications_count }}</span>
+                {% endif %}
+            </button>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         ВКЛАДКА 1: МОИ БИЛЕТЫ И РЕГИСТРАЦИИ (БЕЗ ПРЕДСТОЯЩИХ КОНФЕРЕНЦИЙ)
+         ═══════════════════════════════════════════════════════════ -->
+    <div id="tab-content-events" class="tab-pane space-y-6">
+        <div class="apple-card rounded-[2rem] p-6 sm:p-8 shadow-xl">
+            <div class="flex items-center justify-between gap-4 mb-6">
+                <div>
+                    <h3 class="text-xl font-bold text-white">Мои электронные билеты</h3>
+                    <p class="text-xs text-white/50">Регистрации на конференции, билеты и ссылки на онлайн-трансляции</p>
+                </div>
+                <a href="{% url 'events_catalog' %}" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/15 text-white text-xs font-semibold border border-white/10 transition-colors">
+                    <span class="material-symbols-outlined text-[16px]">calendar_month</span>
+                    <span>Каталог событий</span>
+                </a>
+            </div>
+
+            {% if registered_events %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {% for reg in registered_events %}
+                <!-- Apple Pass Style Ticket Card -->
+                <div class="apple-subcard rounded-2xl overflow-hidden hover:border-[#c9a84c]/40 transition-colors flex flex-col">
+                    <!-- Баннер конференции -->
+                    <div class="relative h-44 overflow-hidden bg-black/60">
+                        {% if reg.event.image %}
+                        <img src="{{ reg.event.image.url }}" alt="{{ reg.event.title }}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0e1422] via-black/40 to-transparent"></div>
+                        {% else %}
+                        <div class="w-full h-full bg-gradient-to-br from-[#121929] to-[#1a233a] flex items-center justify-center">
+                            <span class="material-symbols-outlined text-5xl text-white/20">confirmation_number</span>
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0e1422] to-transparent"></div>
+                        {% endif %}
+
+                        <!-- Верхние плавающие бейджи -->
+                        <div class="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-black/70 border border-white/20 text-white">
+                                {{ reg.event.get_event_type_display|default:"Конференция" }}
+                            </span>
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold {% if reg.payment_status == 'confirmed' or reg.is_confirmed %}bg-emerald-500/20 text-emerald-300 border border-emerald-500/40{% elif reg.payment_status == 'pending' %}bg-amber-500/20 text-amber-300 border border-amber-500/40{% else %}bg-white/10 text-white/80 border border-white/20{% endif %}">
+                                {% if reg.payment_status == 'confirmed' or reg.is_confirmed %}
+                                ✓ Подтверждено
+                                {% elif reg.payment_status == 'pending' %}
+                                ⏳ Ожидает оплаты
+                                {% else %}
+                                Зарегистрирован
+                                {% endif %}
+                            </span>
+                        </div>
+
+                        <!-- Дата на баннере -->
+                        <div class="absolute bottom-2.5 left-4 right-4 flex items-center justify-between text-xs font-semibold text-white/90">
+                            <span class="flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-[#c9a84c] text-[15px]">calendar_today</span>
+                                {{ reg.event.start_date|date:"d M Y, H:i" }}
+                            </span>
+                            <span class="text-white/60">Билет #{{ reg.id }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Детали билета -->
+                    <div class="p-5 flex flex-col flex-grow">
+                        <h4 class="text-base font-bold text-white mb-2 leading-snug">
+                            {{ reg.event.title }}
+                        </h4>
+
+                        <div class="space-y-1 mb-4 text-xs text-white/60">
+                            {% if reg.event.location %}
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[14px] text-[#c9a84c]">location_on</span>
+                                <span class="truncate">{{ reg.event.location }}</span>
+                            </div>
+                            {% endif %}
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[14px] text-[#c9a84c]">person</span>
+                                <span>Участник: {{ reg.full_name|default:user.get_full_name|default:user.username }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Кнопки билета -->
+                        <div class="mt-auto pt-3 border-t border-white/[0.06] flex items-center gap-2">
+                            <a href="{% url 'event_detail' reg.event.slug %}" class="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-full bg-white/10 hover:bg-white/15 text-white font-semibold text-xs border border-white/10 transition-colors">
+                                <span>Страница события</span>
+                                <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                            </a>
+                            {% if reg.event.stream_link %}
+                            <a href="{{ reg.event.stream_link }}" target="_blank" class="inline-flex items-center justify-center gap-1.5 py-2 px-4 rounded-full bg-red-600 hover:bg-red-500 text-white font-semibold text-xs transition-colors shadow">
+                                <span class="material-symbols-outlined text-xs">play_circle</span>
+                                <span>Эфир</span>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <!-- Пустое состояние билетов -->
+            <div class="p-10 text-center rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+                <div class="w-14 h-14 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto mb-3 border border-primary/20">
+                    <span class="material-symbols-outlined text-2xl">confirmation_number</span>
+                </div>
+                <h4 class="font-bold text-white text-base mb-1">У вас пока нет зарегистрированных билетов</h4>
+                <p class="text-xs text-white/50 max-w-sm mx-auto mb-5">
+                    Зарегистрируйтесь на события церкви, чтобы билеты и ссылки на онлайн-трансляции появились здесь.
+                </p>
+                <a href="{% url 'events_catalog' %}" class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white text-black font-semibold text-xs hover:bg-white/90 transition-all shadow">
+                    <span class="material-symbols-outlined text-sm">explore</span>
+                    <span>Открыть события церкви</span>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         ВКЛАДКА 2: ЛЮБИМЫЕ СТИХИ (БЕЗ ПЛАНОВ ЧТЕНИЯ)
+         ═══════════════════════════════════════════════════════════ -->
+    <div id="tab-content-verses" class="tab-pane hidden space-y-6">
+        <div class="apple-card rounded-[2rem] p-6 sm:p-8 shadow-xl">
+            <div class="flex items-center justify-between gap-4 mb-6">
+                <div>
+                    <h3 class="text-xl font-bold text-white">Мои любимые стихи</h3>
+                    <p class="text-xs text-white/50">Слова Писания, сохраненные для ежедневного размышления и молитвы</p>
+                </div>
+                <button type="button" onclick="openAddVerseModal()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-black text-xs font-semibold hover:bg-white/90 transition-all shadow">
+                    <span class="material-symbols-outlined text-sm">add</span>
+                    <span>Добавить стих</span>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="verses-list">
+                {% for verse in favorite_verses %}
+                <div class="p-5 rounded-2xl apple-subcard hover:border-[#c9a84c]/30 transition-colors flex flex-col justify-between" id="verse-{{ verse.id }}">
+                    <div class="mb-3">
+                        <p class="text-sm sm:text-base font-serif italic text-white/90 leading-relaxed mb-2.5">
+                            «{{ verse.verse_text }}»
+                        </p>
+                        <p class="text-xs font-bold text-[#c9a84c] tracking-wide">
+                            — {{ verse.reference }}
+                        </p>
+                        {% if verse.note %}
+                        <p class="text-xs text-white/40 mt-2 pt-2 border-t border-white/[0.06] italic">
+                            {{ verse.note }}
+                        </p>
+                        {% endif %}
+                    </div>
+
+                    <div class="flex items-center justify-end gap-1.5 pt-2.5 border-t border-white/[0.06]">
+                        <button type="button" onclick="copyVerseText(this, '«{{ verse.verse_text|escapejs }}» — {{ verse.reference }}')"
+                                class="p-1.5 rounded-full bg-white/5 hover:bg-white/10 text-white/50 hover:text-white transition-colors" title="Скопировать">
+                            <span class="material-symbols-outlined text-[15px]">content_copy</span>
+                        </button>
+                        <button type="button" onclick="deleteVerse({{ verse.id }})"
+                                class="p-1.5 rounded-full bg-white/5 hover:bg-red-500/20 text-white/40 hover:text-red-400 transition-colors" title="Удалить">
+                            <span class="material-symbols-outlined text-[15px]">delete</span>
+                        </button>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-span-full p-10 text-center rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+                    <div class="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto mb-2.5">
+                        <span class="material-symbols-outlined text-xl">bookmark</span>
+                    </div>
+                    <h4 class="font-bold text-white text-sm mb-1">У вас пока нет сохраненных стихов</h4>
+                    <p class="text-xs text-white/50 max-w-sm mx-auto mb-4">
+                        Сохраняйте стих дня или добавляйте любые места из Библии, чтобы они всегда были под рукой.
+                    </p>
+                    <button onclick="openAddVerseModal()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-black font-semibold text-xs hover:bg-white/90 transition-all">
+                        <span class="material-symbols-outlined text-xs">add</span>Добавить первый стих
+                    </button>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         ВКЛАДКА 3: МОЛИТВЕННЫЕ НУЖДЫ
+         ═══════════════════════════════════════════════════════════ -->
+    <div id="tab-content-prayers" class="tab-pane hidden space-y-6">
+        <div class="apple-card rounded-[2rem] p-6 sm:p-8 shadow-xl">
+            <div class="flex items-center justify-between gap-4 mb-6">
+                <div>
+                    <h3 class="text-xl font-bold text-white">Мои молитвенные нужды</h3>
+                    <p class="text-xs text-white/50">Нужды, за которые молится церковь и ваши молитвенные друзья</p>
+                </div>
+                <a href="{% url 'prayer_add' %}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-black font-semibold text-xs hover:bg-white/90 transition-all shadow">
+                    <span class="material-symbols-outlined text-sm">add</span>
+                    <span>Новая нужда</span>
+                </a>
+            </div>
+
+            <div class="space-y-3.5">
+                {% for prayer in user_prayers %}
+                <div class="p-5 rounded-2xl apple-subcard hover:border-primary/30 transition-colors">
+                    <div class="flex items-start justify-between gap-4 mb-2">
+                        <h4 class="text-base font-bold text-white leading-snug">{{ prayer.title }}</h4>
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold shrink-0 {% if prayer.is_answered %}bg-emerald-500/20 text-emerald-300 border border-emerald-500/30{% else %}bg-amber-500/20 text-amber-300 border border-amber-500/30{% endif %}">
+                            {% if prayer.is_answered %}✓ Ответ получен{% else %}В молитве{% endif %}
+                        </span>
+                    </div>
+
+                    <p class="text-xs sm:text-sm text-white/70 leading-relaxed mb-3.5 whitespace-pre-line">{{ prayer.description }}</p>
+
+                    <div class="flex items-center justify-between pt-3 border-t border-white/[0.06] text-xs">
+                        <div class="flex items-center gap-3 text-white/40">
+                            <span>{{ prayer.created_at|date:"d.m.Y" }}</span>
+                            <span class="text-[#c9a84c] font-semibold flex items-center gap-1">
+                                <span class="material-symbols-outlined text-xs">groups</span>
+                                {{ prayer.prayer_count }} молятся
+                            </span>
+                        </div>
+
+                        <form method="post" action="{% url 'prayer_toggle_answered' prayer.id %}" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="px-3.5 py-1 rounded-full text-xs font-semibold transition-colors {% if prayer.is_answered %}bg-white/10 text-white/60 hover:bg-white/15{% else %}bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 border border-emerald-500/30{% endif %}">
+                                {% if prayer.is_answered %}↩ Вернуть в молитву{% else %}✓ Бог ответил!{% endif %}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="p-10 text-center rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+                    <p class="text-xs text-white/50 mb-3">У вас пока нет активных молитвенных нужд.</p>
+                    <a href="{% url 'prayer_add' %}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-black font-semibold text-xs hover:bg-white/90 transition-all">
+                        <span class="material-symbols-outlined text-xs">add</span>Оставить нужду
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         ВКЛАДКА 4: СВИДЕТЕЛЬСТВА
+         ═══════════════════════════════════════════════════════════ -->
+    <div id="tab-content-revelations" class="tab-pane hidden space-y-6">
+        <div class="apple-card rounded-[2rem] p-6 sm:p-8 shadow-xl">
+            <div class="flex items-center justify-between gap-4 mb-6">
+                <div>
+                    <h3 class="text-xl font-bold text-white">Свидетельства славы Божьей</h3>
+                    <p class="text-xs text-white/50">Истории Божьих ответов на молитвы и свидетельства</p>
+                </div>
+                <a href="{% url 'revelation_add' %}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-black font-semibold text-xs hover:bg-white/90 transition-all shadow">
+                    <span class="material-symbols-outlined text-sm">add</span>
+                    <span>Поделиться</span>
+                </a>
+            </div>
+
+            <div class="space-y-3.5">
+                {% for rev in user_revelations %}
+                <div class="p-5 rounded-2xl apple-subcard hover:border-primary/30 transition-colors">
+                    <h4 class="text-base font-bold text-white mb-1.5">{{ rev.title }}</h4>
+                    <p class="text-xs sm:text-sm text-white/70 leading-relaxed mb-3 whitespace-pre-line">{{ rev.content }}</p>
+                    <div class="flex items-center justify-between pt-2.5 border-t border-white/[0.06] text-xs text-white/40">
+                        <span>{{ rev.created_at|date:"d.m.Y" }}</span>
+                        <a href="{% url 'revelation_list' %}" class="text-[#c9a84c] font-semibold hover:underline flex items-center gap-1">
+                            <span>На стене общины</span>
+                            <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="p-10 text-center rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+                    <p class="text-xs text-white/50 mb-3">Вы еще не делились свидетельствами.</p>
+                    <a href="{% url 'revelation_add' %}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-black font-semibold text-xs hover:bg-white/90 transition-all">
+                        <span class="material-symbols-outlined text-xs">edit</span>Написать свидетельство
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         ВКЛАДКА 5: МОЛИТВЕННЫЕ ДРУЗЬЯ (СИСТЕМА ВЗАИМНОСТИ)
+         ═══════════════════════════════════════════════════════════ -->
+    <div id="tab-content-connections" class="tab-pane hidden space-y-6">
+        <div class="apple-card rounded-[2rem] p-6 sm:p-8 shadow-xl">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-8">
+                <div>
+                    <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                        <span class="material-symbols-outlined text-emerald-400">diversity_1</span>
+                        <span>Молитвенные друзья и община</span>
+                    </h3>
+                    <p class="text-xs text-white/50 mt-1">Взаимная молитвенная связь верующих — единство и сила церкви</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/15 text-emerald-300 font-bold text-xs border border-emerald-500/25">
+                        <span class="material-symbols-outlined text-[15px]">handshake</span>
+                        <span>{{ mutual_friends_count }} взаимных друзей</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- 1. ВЗАИМНЫЕ МОЛИТВЕННЫЕ ДРУЗЬЯ -->
+            <div class="mb-8">
+                <div class="flex items-center justify-between mb-3">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-white/60 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-emerald-400 text-sm">handshake</span>
+                        <span>Взаимные молитвенные друзья ({{ mutual_friends|length }})</span>
+                    </h4>
+                    <span class="text-[11px] text-white/40">Вы молитесь друг за друга</span>
+                </div>
+
+                {% if mutual_friends %}
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {% for u in mutual_friends %}
+                    <div class="flex items-center justify-between p-3.5 rounded-2xl apple-subcard hover:border-emerald-500/30 transition-all group">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-10 h-10 rounded-full overflow-hidden bg-emerald-500/20 text-emerald-300 font-bold text-xs flex items-center justify-center shrink-0 border border-emerald-500/30">
+                                {% if u.profile.avatar %}
+                                <img src="{{ u.profile.avatar.url }}" alt="{{ u.username }}" class="w-full h-full object-cover">
+                                {% else %}
+                                <span>{{ u.profile.get_initials }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <a href="{% url 'user_public_profile' u.username %}" class="text-xs font-bold text-white group-hover:text-primary transition-colors truncate block">
+                                    {{ u.get_full_name|default:u.username }}
+                                </a>
+                                <div class="flex items-center gap-1.5 text-[10px] text-white/40 truncate">
+                                    <span>@{{ u.username }}</span>
+                                    {% if u.profile.city %}
+                                    <span>•</span>
+                                    <span class="truncate">{{ u.profile.city }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1.5 shrink-0 pl-2">
+                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-300 text-[10px] font-bold border border-emerald-500/25">
+                                <span>Друг</span>
+                            </span>
+                            <a href="{% url 'user_public_profile' u.username %}" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-white/60 hover:text-white flex items-center justify-center transition-colors" title="Открыть профиль">
+                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="p-6 text-center rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+                    <div class="w-10 h-10 rounded-full bg-white/5 text-white/40 flex items-center justify-center mx-auto mb-2">
+                        <span class="material-symbols-outlined text-lg">diversity_1</span>
+                    </div>
+                    <p class="text-xs font-semibold text-white/70 mb-0.5">Пока нет взаимных молитвенных друзей</p>
+                    <p class="text-[11px] text-white/40 max-w-sm mx-auto">Когда вы молитесь за брата или сестру, а они молятся за вас — вы становитесь взаимными молитвенными друзьями.</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-6 border-t border-white/[0.06]">
+                <!-- 2. МОЛЯТСЯ ЗА ВАС (ОЖИДАЮТ ВЗАИМНОСТИ) -->
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-amber-300/90 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-amber-400 text-sm">favorite</span>
+                            <span>Молятся за вас ({{ only_followers|length }})</span>
+                        </h4>
+                        <span class="text-[10px] text-amber-300/60 font-medium">Ждут молитвы в ответ</span>
+                    </div>
+
+                    {% if only_followers %}
+                    <div class="space-y-2.5">
+                        {% for u in only_followers %}
+                        <div class="flex items-center justify-between p-3.5 rounded-2xl apple-subcard border-amber-500/20 bg-amber-500/[0.03] hover:border-amber-500/35 transition-all">
+                            <div class="flex items-center gap-3 min-w-0">
+                                <div class="w-9 h-9 rounded-full overflow-hidden bg-amber-500/20 text-amber-300 font-bold text-xs flex items-center justify-center shrink-0 border border-amber-500/30">
+                                    {% if u.profile.avatar %}
+                                    <img src="{{ u.profile.avatar.url }}" alt="{{ u.username }}" class="w-full h-full object-cover">
+                                    {% else %}
+                                    <span>{{ u.profile.get_initials }}</span>
+                                    {% endif %}
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <a href="{% url 'user_public_profile' u.username %}" class="text-xs font-bold text-white hover:text-amber-300 transition-colors truncate block">
+                                        {{ u.get_full_name|default:u.username }}
+                                    </a>
+                                    <p class="text-[10px] text-white/40 truncate">@{{ u.username }}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 shrink-0 pl-2">
+                                <button type="button" onclick="toggleFriendInProfile('{{ u.username }}', this)"
+                                        class="px-3.5 py-1.5 rounded-xl bg-[#c9a84c] hover:bg-[#d9b85c] text-[#0a0f18] text-xs font-bold transition-all shadow-[0_2px_12px_rgba(201,168,76,0.25)] flex items-center gap-1.5 active:scale-95">
+                                    <span class="material-symbols-outlined text-sm">volunteer_activism</span>
+                                    <span>Молиться в ответ</span>
+                                </button>
+                                <a href="{% url 'user_public_profile' u.username %}" class="w-7 h-7 rounded-full bg-white/5 hover:bg-white/10 text-white/50 hover:text-white flex items-center justify-center transition-colors" title="Профиль">
+                                    <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-xs text-white/40 p-4 rounded-2xl bg-white/[0.02] border border-white/[0.04]">Все, кто молятся за вас, уже являются вашими взаимными молитвенными друзьями.</p>
+                    {% endif %}
+                </div>
+
+                <!-- 3. ВЫ МОЛИТЕСЬ ЗА НИХ (ОЖИДАНИЕ ВЗАИМНОСТИ) -->
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-white/60 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary text-sm">volunteer_activism</span>
+                            <span>Вы молитесь за них ({{ only_following|length }})</span>
+                        </h4>
+                        <span class="text-[10px] text-white/40">Ожидание взаимности</span>
+                    </div>
+
+                    {% if only_following %}
+                    <div class="space-y-2.5">
+                        {% for u in only_following %}
+                        <div class="flex items-center justify-between p-3.5 rounded-2xl apple-subcard hover:border-white/20 transition-all">
+                            <div class="flex items-center gap-3 min-w-0">
+                                <div class="w-9 h-9 rounded-full overflow-hidden bg-primary/20 text-primary font-bold text-xs flex items-center justify-center shrink-0 border border-primary/30">
+                                    {% if u.profile.avatar %}
+                                    <img src="{{ u.profile.avatar.url }}" alt="{{ u.username }}" class="w-full h-full object-cover">
+                                    {% else %}
+                                    <span>{{ u.profile.get_initials }}</span>
+                                    {% endif %}
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <a href="{% url 'user_public_profile' u.username %}" class="text-xs font-bold text-white hover:text-primary transition-colors truncate block">
+                                        {{ u.get_full_name|default:u.username }}
+                                    </a>
+                                    <p class="text-[10px] text-white/40 truncate">@{{ u.username }}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 shrink-0 pl-2">
+                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/5 text-white/40 text-[10px] font-medium border border-white/10" title="Ожидание ответа">
+                                    <span class="material-symbols-outlined text-[11px]">hourglass_top</span>
+                                    <span>Ожидание</span>
+                                </span>
+                                <a href="{% url 'user_public_profile' u.username %}" class="w-7 h-7 rounded-full bg-white/5 hover:bg-white/10 text-white/50 hover:text-white flex items-center justify-center transition-colors" title="Открыть профиль">
+                                    <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-xs text-white/40 p-4 rounded-2xl bg-white/[0.02] border border-white/[0.04]">Вы молитесь только за тех, кто уже ответил взаимностью.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- ПОДСКАЗКА ДЛЯ ПОИСКА ДРУЗЕЙ -->
+            <div class="mt-8 p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-xl bg-[#c9a84c]/15 text-[#c9a84c] flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-base">church</span>
+                    </div>
+                    <p class="text-xs text-white/70">Поддерживайте братьев и сестер в молитве на Молитвенной стене или в профиле прихожан.</p>
+                </div>
+                <a href="{% url 'prayer_list' %}" class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-semibold shrink-0 transition-colors self-start sm:self-auto">
+                    <span class="material-symbols-outlined text-sm">favorite</span>
+                    <span>Молитвенная стена</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         ВКЛАДКА 6: МОИ ЗАЯВКИ НА СЛУЖЕНИЕ
+         ═══════════════════════════════════════════════════════════ -->
+    <div id="tab-content-ministries" class="tab-pane hidden space-y-6">
+        <div class="apple-card rounded-[2rem] p-6 sm:p-8 shadow-xl">
+            <div class="flex items-center justify-between gap-4 mb-6">
+                <div>
+                    <h3 class="text-xl font-bold text-white">Мои заявки на служение</h3>
+                    <p class="text-xs text-white/50">Статус рассмотрения ваших заявок в команды церкви</p>
+                </div>
+                <a href="{% url 'ministries' %}" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#c9a84c]/15 hover:bg-[#c9a84c]/25 text-[#c9a84c] text-xs font-bold border border-[#c9a84c]/30 transition-colors">
+                    <span class="material-symbols-outlined text-[16px]">volunteer_activism</span>
+                    <span>Каталог служений</span>
+                </a>
+            </div>
+
+            {% if ministry_applications %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {% for app in ministry_applications %}
+                <div class="apple-subcard rounded-2xl p-5 flex flex-col justify-between border border-white/10 hover:border-[#c9a84c]/30 transition-all">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-3">
+                            <span class="text-xs font-bold uppercase tracking-wider text-[#c9a84c] flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-[16px]">{{ app.ministry.icon|default:"favorite" }}</span>
+                                {{ app.ministry.title }}
+                            </span>
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold {% if app.status == 'approved' or app.status == 'completed' %}bg-emerald-500/20 text-emerald-300 border border-emerald-500/30{% elif app.status == 'contact_made' %}bg-blue-500/20 text-blue-300 border border-blue-500/30{% else %}bg-amber-500/20 text-amber-300 border border-amber-500/30{% endif %}">
+                                {{ app.get_status_display }}
+                            </span>
+                        </div>
+                        <p class="text-sm text-white/80 mb-3">{{ app.ministry.short_description|truncatechars:100 }}</p>
+                        {% if app.message %}
+                        <div class="text-xs text-white/50 italic bg-white/[0.02] p-2.5 rounded-xl mb-3">
+                            «{{ app.message }}»
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="pt-3 border-t border-white/5 flex items-center justify-between text-[11px] text-white/40">
+                        <span>Подана: {{ app.created_at|date:"d M Y" }}</span>
+                        {% if app.ministry.leader_name %}
+                        <span class="text-white/60">Лидер: {{ app.ministry.leader_name }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-12 px-4 rounded-2xl bg-white/[0.02] border border-white/[0.04]">
+                <span class="material-symbols-outlined text-4xl text-white/20 mb-3">volunteer_activism</span>
+                <p class="text-sm font-semibold text-white/70 mb-1">Вы еще не подавали заявок в команды служений</p>
+                <p class="text-xs text-white/40 mb-5">У каждого есть свой дар для созидания церкви</p>
+                <a href="{% url 'ministries' %}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#c9a84c] text-navy text-xs font-bold shadow-md hover:bg-[#deb853] transition-all">
+                    <span>Выбрать служение</span>
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         5. НАСТРОЙКИ УВЕДОМЛЕНИЙ И БЕЗОПАСНОСТИ
+         ═══════════════════════════════════════════════════════════ -->
+    <div class="mt-8 apple-card rounded-[2rem] p-6 shadow-lg">
+        <h4 class="text-xs font-bold uppercase tracking-wider text-white/50 mb-4 flex items-center gap-2">
+            <span class="material-symbols-outlined text-sm">settings</span>
+            <span>Настройки аккаунта и безопасность</span>
+        </h4>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            <!-- Push-уведомления -->
+            <div class="p-3.5 rounded-xl apple-subcard flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-semibold text-white">Push-уведомления</p>
+                    <p class="text-[10px] text-white/40">О молитвах и событиях</p>
+                </div>
+                <button type="button" id="push-toggle" onclick="togglePushNotifications()"
+                        class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-white/20 transition-colors duration-200 focus:outline-none"
+                        role="switch" aria-checked="false">
+                    <span id="push-toggle-knob" class="pointer-events-none inline-block h-4 w-4 translate-x-0 rounded-full bg-white shadow transform transition duration-200"></span>
+                </button>
+            </div>
+
+            <!-- Смена пароля -->
+            <a href="{% url 'change_password' %}" class="p-3.5 rounded-xl apple-subcard hover:bg-white/[0.06] flex items-center justify-between transition-colors group">
+                <div>
+                    <p class="text-xs font-semibold text-white group-hover:text-primary transition-colors">Пароль и вход</p>
+                    <p class="text-[10px] text-white/40">Сменить пароль аккаунта</p>
+                </div>
+                <span class="material-symbols-outlined text-white/20 group-hover:text-primary text-sm">lock</span>
+            </a>
+
+            <!-- Выход -->
+            <a href="{% url 'account_logout' %}" class="p-3.5 rounded-xl bg-red-500/5 hover:bg-red-500/10 border border-red-500/10 flex items-center justify-between transition-colors group">
+                <div>
+                    <p class="text-xs font-semibold text-red-400">Выйти из аккаунта</p>
+                    <p class="text-[10px] text-white/40">Завершить сеанс</p>
+                </div>
+                <span class="material-symbols-outlined text-red-400/50 group-hover:text-red-400 text-sm">logout</span>
+            </a>
         </div>
     </div>
 </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     МОДАЛЬНОЕ ОКНО: ДОБАВЛЕНИЕ СТИХА В ИЗБРАННОЕ
+     ═══════════════════════════════════════════════════════════ -->
+<div id="add-verse-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80">
+    <div class="bg-[#0e1422] rounded-3xl max-w-md w-full p-6 border border-white/10 shadow-2xl relative">
+        <button type="button" onclick="closeAddVerseModal()" class="absolute top-5 right-5 text-white/40 hover:text-white transition-colors">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+        <div class="flex items-center gap-3 mb-4">
+            <div class="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+                <span class="material-symbols-outlined text-lg">bookmark</span>
+            </div>
+            <div>
+                <h3 class="text-base font-bold text-white">Добавить стих в профиль</h3>
+                <p class="text-xs text-white/50">Сохраните место Писания</p>
+            </div>
+        </div>
+        <form onsubmit="submitAddVerse(event)" class="space-y-3">
+            <div>
+                <label class="text-xs font-semibold text-white/60 mb-1 block">Место Писания</label>
+                <input type="text" id="modal-verse-ref" required placeholder="Например: Римлянам 8:28"
+                       class="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/30 text-sm focus:border-primary focus:outline-none">
+            </div>
+            <div>
+                <label class="text-xs font-semibold text-white/60 mb-1 block">Текст стиха</label>
+                <textarea id="modal-verse-text" required rows="3" placeholder="Притом знаем, что любящим Бога..."
+                          class="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/30 text-sm focus:border-primary focus:outline-none"></textarea>
+            </div>
+            <div>
+                <label class="text-xs font-semibold text-white/60 mb-1 block">Личная заметка (необязательно)</label>
+                <input type="text" id="modal-verse-note" placeholder="Слово в трудный день"
+                       class="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/30 text-sm focus:border-primary focus:outline-none">
+            </div>
+            <div class="flex items-center justify-end gap-2 pt-2">
+                <button type="button" onclick="closeAddVerseModal()" class="px-4 py-2 rounded-full text-xs font-semibold text-white/60 hover:text-white transition-colors">
+                    Отмена
+                </button>
+                <button type="submit" class="px-5 py-2 rounded-full bg-white text-black font-semibold text-xs hover:bg-white/90 transition-all shadow">
+                    Сохранить стих
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Toast Container -->
+<div id="profile-toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const toggle = document.getElementById('push-toggle');
-        const knob = document.getElementById('push-toggle-knob');
-        const blockedMsg = document.getElementById('notifications-blocked-msg');
+function getCSRFToken() {
+    return document.querySelector('[name=csrfmiddlewaretoken]')?.value ||
+           document.cookie.split('; ').find(c => c.startsWith('csrftoken='))?.split('=')[1] || '';
+}
 
-        function updateToggleUI(isGranted) {
-            if (isGranted) {
-                toggle.classList.remove('bg-gray-200');
-                toggle.classList.add('bg-primary');
-                toggle.setAttribute('aria-checked', 'true');
-                knob.classList.replace('translate-x-0', 'translate-x-5');
-            } else {
-                toggle.classList.add('bg-gray-200');
-                toggle.classList.remove('bg-primary');
-                toggle.setAttribute('aria-checked', 'false');
-                knob.classList.replace('translate-x-5', 'translate-x-0');
-            }
+function showToast(msg, type = 'info') {
+    if (window.showNotification) {
+        window.showNotification(msg, type);
+        return;
+    }
+    const container = document.getElementById('profile-toast-container');
+    if (!container) return;
+    const toast = document.createElement('div');
+    const isSuccess = type === 'success';
+    toast.className = `px-4 py-3 rounded-2xl text-xs font-semibold shadow-2xl backdrop-blur-2xl border transition-all duration-300 transform translate-y-2 pointer-events-auto flex items-center gap-2 ${
+        isSuccess ? 'bg-emerald-950/90 text-emerald-200 border-emerald-500/40' : 'bg-[#0e1422]/95 text-white border-white/20'
+    }`;
+    toast.innerHTML = `<span class="material-symbols-outlined text-base">${isSuccess ? 'check_circle' : 'info'}</span><span>${msg}</span>`;
+    container.appendChild(toast);
+    requestAnimationFrame(() => { toast.classList.remove('translate-y-2'); toast.classList.add('translate-y-0'); });
+    setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+    }, 3200);
+}
+
+// ── Молитвенный ответ прямо из вкладки связей ──
+function toggleFriendInProfile(username, btn) {
+    btn.disabled = true;
+    const origHtml = btn.innerHTML;
+    btn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin">progress_activity</span>';
+
+    fetch(`/api/user/${username}/toggle-friend/`, {
+        method: 'POST',
+        headers: { 'X-CSRFToken': getCSRFToken() }
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            btn.className = "shrink-0 px-3.5 py-1.5 rounded-xl bg-emerald-600/30 text-emerald-200 border border-emerald-500/40 text-xs font-bold flex items-center gap-1.5";
+            btn.innerHTML = '<span class="material-symbols-outlined text-[15px]">diversity_1</span><span>Взаимные друзья! 🤝</span>';
+            showToast(data.message, 'success');
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+        } else {
+            alert(data.error || 'Произошла ошибка');
+            btn.disabled = false;
+            btn.innerHTML = origHtml;
         }
+    })
+    .catch(() => {
+        btn.disabled = false;
+        btn.innerHTML = origHtml;
+    });
+}
 
-        // Check actual notification permission and subscription state
-        if ('Notification' in window && 'serviceWorker' in navigator) {
-            if (Notification.permission === 'denied') {
-                blockedMsg.classList.remove('hidden');
-                updateToggleUI(false);
-            } else if (Notification.permission === 'granted') {
-                navigator.serviceWorker.ready.then(reg => {
-                    reg.pushManager.getSubscription().then(sub => {
-                        if (sub) {
-                            updateToggleUI(true);
-                        } else {
-                            updateToggleUI(false);
-                        }
-                    });
-                });
-            }
+// ── Переключение вкладок Apple Segmented Control ──
+function switchTab(tabId) {
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden'));
+    document.querySelectorAll('.tab-btn').forEach(b => {
+        b.className = "tab-btn px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 text-white/70 hover:text-white";
+    });
+    const targetPane = document.getElementById('tab-content-' + tabId);
+    const targetBtn = document.getElementById('btn-tab-' + tabId);
+    if (targetPane) targetPane.classList.remove('hidden');
+    if (targetBtn) targetBtn.className = "tab-btn px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 bg-white text-black shadow-sm";
+}
+
+// ── Быстрая смена аватара (Apple 1-Click Upload) ──
+document.getElementById('quick-avatar-input')?.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.size > 10 * 1024 * 1024) {
+        alert('Файл слишком большой. Максимальный размер 10 МБ.');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+        let img = document.getElementById('profile-avatar-img');
+        const placeholder = document.getElementById('profile-avatar-placeholder');
+        if (!img && placeholder) {
+            img = document.createElement('img');
+            img.id = 'profile-avatar-img';
+            img.className = 'w-full h-full object-cover';
+            placeholder.parentNode.appendChild(img);
+            placeholder.remove();
         }
+        if (img) img.src = evt.target.result;
+    };
+    reader.readAsDataURL(file);
 
-        // Proxy the subscribeToPush to handle UI update and blocking
-        window.togglePushNotifications = async function () {
-            if (Notification.permission === 'denied') {
-                blockedMsg.classList.remove('hidden');
-                // Shake effect on message
-                blockedMsg.classList.add('animate-shake');
-                setTimeout(() => blockedMsg.classList.remove('animate-shake'), 500);
-                return;
-            }
+    fetch('/profile/avatar/upload/', {
+        method: 'POST',
+        headers: { 'X-CSRFToken': getCSRFToken() },
+        body: formData
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            showToast(data.message, 'success');
+        } else {
+            alert(data.error || 'Ошибка при загрузке аватара');
+        }
+    })
+    .catch(() => {
+        alert('Не удалось загрузить фото. Попробуйте еще раз.');
+    });
+});
 
-            const isChecked = toggle.getAttribute('aria-checked') === 'true';
-            toggle.disabled = true;
+// ── Модальное окно стиха ──
+function openAddVerseModal() {
+    document.getElementById('add-verse-modal').classList.remove('hidden');
+}
+function closeAddVerseModal() {
+    document.getElementById('add-verse-modal').classList.add('hidden');
+}
 
-            if (isChecked) {
-                // Отписываемся
-                if (window.unsubscribeFromPush) {
-                    const success = await window.unsubscribeFromPush();
-                    if (success) {
-                        updateToggleUI(false);
-                    }
-                }
-            } else {
-                // Подписываемся
-                if (window.subscribeToPush) {
-                    const success = await window.subscribeToPush();
-                    if (success) {
-                        updateToggleUI(true);
-                        blockedMsg.classList.add('hidden');
-                    }
-                }
-            }
+function submitAddVerse(e) {
+    e.preventDefault();
+    const reference = document.getElementById('modal-verse-ref').value;
+    const verse_text = document.getElementById('modal-verse-text').value;
+    const note = document.getElementById('modal-verse-note').value;
 
-            toggle.disabled = false;
-        };
-
-        // Reset PWA Install logic
-        if (localStorage.getItem('pwa-never-show') === 'true' || sessionStorage.getItem('pwa-dismissed-session') === 'true') {
-            const resetContainer = document.getElementById('pwa-reset-container');
-            if (resetContainer) {
-                resetContainer.classList.remove('hidden');
-                resetContainer.classList.add('flex');
-            }
+    fetch('/api/verses/favorite/add/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCSRFToken()
+        },
+        body: JSON.stringify({ reference, verse_text, note })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            closeAddVerseModal();
+            location.reload();
+        } else {
+            alert(data.error || 'Не удалось сохранить стих');
         }
     });
+}
 
-    function resetPWABanner() {
-        localStorage.removeItem('pwa-never-show');
-        sessionStorage.removeItem('pwa-dismissed-session');
-        alert('Приложение снова предложит установку при обновлении страницы!');
-        location.reload();
+function saveVerseFromProfile(reference, verse_text) {
+    const btn = document.getElementById('save-daily-btn');
+    fetch('/api/verses/favorite/add/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCSRFToken()
+        },
+        body: JSON.stringify({ reference, verse_text, note: 'Стих дня' })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success && btn) {
+            btn.innerHTML = '<span class="material-symbols-outlined text-sm">bookmark_added</span><span>В избранном</span>';
+            btn.className = "px-4 py-2 rounded-full text-xs font-semibold transition-colors flex items-center gap-2 bg-primary/20 text-primary border border-primary/30";
+            showToast('Стих дня сохранен в избранное!', 'success');
+        }
+    });
+}
+
+function copyVerseText(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+        const icon = btn.querySelector('.material-symbols-outlined');
+        if (icon) {
+            const orig = icon.textContent;
+            icon.textContent = 'check';
+            setTimeout(() => icon.textContent = orig, 1500);
+        }
+    });
+}
+
+function deleteVerse(id) {
+    if (!confirm('Удалить этот стих из профиля?')) return;
+    fetch('/api/verses/favorite/' + id + '/delete/', {
+        method: 'POST',
+        headers: { 'X-CSRFToken': getCSRFToken() }
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            const el = document.getElementById('verse-' + id);
+            if (el) el.remove();
+        }
+    });
+}
+
+// ── PUSH-УВЕДОМЛЕНИЯ ──
+document.addEventListener('DOMContentLoaded', () => {
+    const toggle = document.getElementById('push-toggle');
+    const knob = document.getElementById('push-toggle-knob');
+
+    function updateToggleUI(isActive) {
+        if (!toggle || !knob) return;
+        if (isActive) {
+            toggle.classList.remove('bg-white/20');
+            toggle.classList.add('bg-primary');
+            toggle.setAttribute('aria-checked', 'true');
+            knob.classList.replace('translate-x-0', 'translate-x-4');
+        } else {
+            toggle.classList.add('bg-white/20');
+            toggle.classList.remove('bg-primary');
+            toggle.setAttribute('aria-checked', 'false');
+            knob.classList.replace('translate-x-4', 'translate-x-0');
+        }
     }
+
+    if ('Notification' in window && 'serviceWorker' in navigator) {
+        if (Notification.permission === 'granted') {
+            navigator.serviceWorker.ready.then(reg => {
+                reg.pushManager.getSubscription().then(sub => updateToggleUI(!!sub));
+            });
+        }
+    }
+
+    window.togglePushNotifications = async function() {
+        const isChecked = toggle.getAttribute('aria-checked') === 'true';
+        toggle.disabled = true;
+        if (isChecked) {
+            if (window.unsubscribeFromPush) {
+                const ok = await window.unsubscribeFromPush();
+                if (ok) updateToggleUI(false);
+            }
+        } else {
+            if (window.subscribeToPush) {
+                const ok = await window.subscribeToPush();
+                if (ok) updateToggleUI(true);
+            }
+        }
+        toggle.disabled = false;
+    };
+});
 </script>
 {% endblock %}

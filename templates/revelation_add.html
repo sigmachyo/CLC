@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ title|default:"Поделиться откровением | KCLC" }}{% endblock %}
+
+{% block main_class %}flex-grow relative bg-[#faf8f5] overflow-x-hidden{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-32 pb-24">
+    
+    <div class="bg-white/85 backdrop-blur-2xl rounded-[2.5rem] p-6 sm:p-12 shadow-[0_12px_40px_rgba(0,0,0,0.06)] border border-white/60 relative overflow-hidden">
+        
+        <!-- Декоративные мягкие круги -->
+        <div class="absolute -top-16 -right-16 w-48 h-48 bg-[#c9a84c]/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="absolute -bottom-16 -left-16 w-48 h-48 bg-navy/5 rounded-full blur-2xl pointer-events-none"></div>
+
+        <div class="relative z-10">
+            
+            <div class="mb-6">
+                <a href="{% url 'revelation_list' %}" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-navy/60 hover:text-navy transition-colors">
+                    <span class="material-symbols-outlined text-base">arrow_back</span>
+                    <span>К списку свидетельств</span>
+                </a>
+            </div>
+
+            <!-- Заголовок -->
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#c9a84c]/10 text-[#c9a84c] mb-4 border border-[#c9a84c]/20">
+                    <span class="material-symbols-outlined text-3xl">auto_awesome</span>
+                </div>
+                <h1 class="text-2xl sm:text-4xl font-serif font-bold text-navy mb-2 tracking-tight">
+                    Поделиться откровением
+                </h1>
+                <p class="text-navy/70 text-sm sm:text-base font-serif italic max-w-lg mx-auto leading-relaxed">
+                    Расскажите, как Бог коснулся вашей жизни или ответил на молитву
+                </p>
+            </div>
+
+            <!-- Ошибки формы -->
+            {% if form.errors %}
+            <div class="bg-red-500/10 border border-red-400/30 text-red-700 rounded-2xl p-4 text-sm mb-6 flex flex-col gap-1">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <span>• {{ field.label }}: {{ error }}</span>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form method="post" class="space-y-6 max-w-xl mx-auto">
+                {% csrf_token %}
+
+                <!-- Тема / Заголовок -->
+                <div class="space-y-2">
+                    <label for="{{ form.title.id_for_label }}" class="block text-xs font-bold text-navy uppercase tracking-wider">
+                        Заголовок свидетельства *
+                    </label>
+                    <input type="text" id="{{ form.title.id_for_label }}" name="title" value="{{ form.title.value|default_if_none:'' }}" required 
+                           placeholder="Краткая суть (например: Исцеление и Божий мир)" 
+                           class="w-full bg-white/70 backdrop-blur-md border border-navy/15 text-navy text-base rounded-2xl focus:ring-2 focus:ring-[#c9a84c]/50 focus:border-[#c9a84c] block p-4 transition-all outline-none font-medium">
+                </div>
+
+                <!-- Содержание -->
+                <div class="space-y-2">
+                    <label for="{{ form.content.id_for_label }}" class="block text-xs font-bold text-navy uppercase tracking-wider">
+                        Ваше откровение или свидетельство *
+                    </label>
+                    <textarea id="{{ form.content.id_for_label }}" name="content" rows="6" required
+                              placeholder="Опишите, что сделал Бог, чтобы вдохновить других..." 
+                              class="w-full bg-white/70 backdrop-blur-md border border-navy/15 text-navy text-base rounded-2xl focus:ring-2 focus:ring-[#c9a84c]/50 focus:border-[#c9a84c] block p-4 transition-all outline-none leading-relaxed">{{ form.content.value|default_if_none:'' }}</textarea>
+                </div>
+
+                <!-- Переключатели -->
+                <div class="space-y-3 pt-2">
+                    <label class="flex items-center gap-3 p-3.5 bg-navy/5 rounded-2xl cursor-pointer hover:bg-navy/10 transition-colors">
+                        <input type="checkbox" name="is_public" id="{{ form.is_public.id_for_label }}" {% if form.is_public.value != False %}checked{% endif %} class="w-5 h-5 text-[#c9a84c] rounded focus:ring-[#c9a84c]">
+                        <span class="text-sm font-medium text-navy">Опубликовать в общем списке свидетельств</span>
+                    </label>
+
+                    <label class="flex items-center gap-3 p-3.5 bg-navy/5 rounded-2xl cursor-pointer hover:bg-navy/10 transition-colors">
+                        <input type="checkbox" name="is_anonymous" id="{{ form.is_anonymous.id_for_label }}" {% if form.is_anonymous.value %}checked{% endif %} class="w-5 h-5 text-[#c9a84c] rounded focus:ring-[#c9a84c]">
+                        <span class="text-sm font-medium text-navy">Опубликовать анонимно (скрыть имя)</span>
+                    </label>
+
+                    <label class="flex items-start gap-3 p-3.5 bg-navy/5 rounded-2xl cursor-pointer hover:bg-navy/10 transition-colors">
+                        <input type="checkbox" name="consent_152fz" id="{{ form.consent_152fz.id_for_label }}" required class="w-5 h-5 text-[#c9a84c] rounded focus:ring-[#c9a84c] mt-0.5">
+                        <span class="text-xs text-navy/70 leading-normal">Я даю согласие на обработку персональных данных в соответствии с 152-ФЗ РФ и подтверждаю, что свидетельство не содержит оскорбительных высказываний.</span>
+                    </label>
+                </div>
+
+                <!-- Кнопка отправки -->
+                <div class="pt-4">
+                    <button type="submit" class="w-full py-4 px-6 rounded-2xl bg-[#c9a84c] hover:bg-[#b59540] text-white font-bold text-base shadow-[0_4px_20px_rgba(201,168,76,0.35)] transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-xl">send</span>
+                        <span>Опубликовать свидетельство</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

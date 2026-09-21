@@ -1,0 +1,615 @@
+{% load static %}
+<section class="snap-sec" id="sec-podcast" aria-label="Аудиоподкаст">
+  <div class="snap-sec-inner">
+    <div class="podcast-container">
+      
+      <div class="podcast-header-basic">
+        <h2 class="kclc-section-title">АУДИОПОДКАСТ ПРОПОВЕДЕЙ</h2>
+        <div class="podcast-header-accent"></div>
+      </div>
+
+      <!-- KCLC Style Player (Apple Music Layout, Theme Colors) -->
+      <div class="ym-player-wrap">
+        <audio id="customAudioPlayer" preload="metadata"></audio>
+
+        <div class="ym-layout">
+            <!-- Left Column: Big Cover (Desktop) / Top Cover (Mobile) -->
+            <div class="ym-cover-col">
+                <div class="ym-cover" id="playerCover">
+                    <span class="material-symbols-outlined placeholder-icon">podcasts</span>
+                </div>
+            </div>
+
+            <!-- Right Column: Info & Playlist -->
+            <div class="ym-info-col">
+                <div class="ym-album-info">
+                    <h3 class="ym-album-title" id="playerTitle">{% if podcast_episodes %}{{ podcast_episodes.0.title }}{% else %}Подкаст проповедей{% endif %}</h3>
+                    <p class="ym-album-meta" id="playerArtist">{% if podcast_episodes %}{{ podcast_episodes.0.speaker }}{% else %}Церковь Христианской Жизни{% endif %}</p>
+                    <div class="ym-album-actions">
+                        <button class="ym-btn-main" id="btnMainPlay">
+                            <span class="material-symbols-outlined" id="mainPlayIcon" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                            Воспроизвести
+                        </button>
+                    </div>
+                </div>
+
+                <div class="ym-playlist-container">
+                    <div class="ym-playlist-header desktop-only">
+                        <span class="col-track">Проповедь</span>
+                        <span class="col-artist">Спикер</span>
+                        <span class="col-time"><span class="material-symbols-outlined">schedule</span></span>
+                    </div>
+                    
+                    <div class="ym-playlist" id="applePlaylist">
+                        {% for episode in podcast_episodes %}
+                        <button class="ym-track{% if forloop.first %} active{% endif %}"
+                                data-src="{{ episode.audio_url }}"
+                                data-episode-url="{{ episode.episode_url }}"
+                                data-title="{{ episode.title }}"
+                                data-artist="{{ episode.speaker }}">
+                            <div class="track-status"><span class="material-symbols-outlined">{% if forloop.first %}graphic_eq{% else %}play_arrow{% endif %}</span></div>
+                            <div class="track-info">
+                                <div class="track-title">{{ episode.title }}</div>
+                                <div class="track-artist-mobile mobile-only">{{ episode.speaker }}</div>
+                            </div>
+                            <div class="track-artist-col desktop-only">{{ episode.speaker }}</div>
+                            <div class="track-duration desktop-only">{{ episode.duration|default:'--:--' }}</div>
+                        </button>
+                        {% empty %}
+                        <div class="ym-empty">Подкасты пока не загружены.</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Player Bar -->
+        <div class="ym-player-bar">
+            <!-- Scrubber line at the very top of the bar -->
+            <div class="ym-progress-container" id="audioProgressContainer">
+                <div class="ym-progress-fill" id="audioProgressFill"></div>
+                <div class="ym-progress-thumb" id="audioProgressThumb"></div>
+            </div>
+            
+            <div class="ym-bar-content">
+                <div class="ym-bar-controls">
+                    <button class="ym-ctrl-btn" id="btnSkipBack" aria-label="Назад"><span class="material-symbols-outlined">fast_rewind</span></button>
+                    <button class="ym-ctrl-btn ym-play-pause" id="btnPlayPause" aria-label="Play/Pause">
+                        <span class="material-symbols-outlined" id="playIcon" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                    </button>
+                    <button class="ym-ctrl-btn" id="btnSkipForward" aria-label="Вперед"><span class="material-symbols-outlined">fast_forward</span></button>
+                </div>
+                
+                <div class="ym-bar-timing">
+                    <span id="audioCurrentTime">0:00</span>
+                    <span class="ym-time-divider">/</span>
+                    <span id="audioDuration">-:--</span>
+                </div>
+                
+                <label class="ym-bar-volume" for="audioVolume">
+                    <span class="material-symbols-outlined" aria-hidden="true">volume_up</span>
+                    <input id="audioVolume" type="range" min="0" max="1" step="0.05" value="1" aria-label="Громкость">
+                </label>
+            </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+.ym-player-wrap {
+    width: 100%;
+    max-width: 1000px;
+    min-width: 0;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-radius: 40px;
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.ym-layout {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    padding: 40px;
+    min-width: 0;
+}
+
+/* Left Column */
+.ym-cover-col {
+    flex: 0 0 300px;
+}
+.ym-cover {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--gold), #7a652a);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.4s var(--spring-easing);
+    will-change: transform;
+}
+.placeholder-icon {
+    font-size: 80px;
+    color: var(--navy);
+    opacity: 0.8;
+}
+
+/* Right Column */
+.ym-info-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+}
+.ym-album-info {
+    margin-bottom: 32px;
+}
+.ym-album-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 8px;
+    line-height: 1.2;
+    /* FIX: Жёстко фиксируем 1 строку, чтобы плеер не прыгал по высоте */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 1.2em; 
+}
+.ym-album-meta {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 24px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 1.5em;
+}
+.ym-btn-main {
+    background: var(--gold);
+    color: var(--navy);
+    border: none;
+    border-radius: 100px;
+    padding: 12px 32px;
+    font-size: 1rem;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: transform 0.2s var(--spring-easing), opacity 0.2s;
+    -webkit-tap-highlight-color: transparent;
+}
+.ym-btn-main:active { transform: scale(0.95); opacity: 0.9; }
+
+/* Playlist */
+.ym-playlist-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0; /* Важно для скролла в flex-контейнере */
+}
+.ym-playlist-header {
+    display: flex;
+    align-items: center;
+    padding: 0 16px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.4);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+}
+.col-track { flex: 1; }
+.col-artist { width: 150px; }
+.col-time { width: 60px; text-align: right; }
+.col-time .material-symbols-outlined { font-size: 16px; }
+
+.ym-playlist {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 250px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold) transparent;
+    -webkit-overflow-scrolling: touch;
+}
+.ym-playlist::-webkit-scrollbar { width: 6px; }
+.ym-playlist::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+.ym-track {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 8px;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    transition: background 0.2s ease;
+    text-align: left;
+}
+.ym-track:hover { background: rgba(255,255,255,0.05); }
+.ym-track:active { background: rgba(255,255,255,0.08); }
+.track-status {
+    width: 32px;
+    display: flex; align-items: center; justify-content: flex-start;
+    color: rgba(255,255,255,0.3);
+}
+.track-info {
+    flex: 1;
+    overflow: hidden;
+    padding-right: 16px;
+}
+.track-title {
+    font-size: 0.95rem;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #fff;
+}
+.track-artist-col {
+    width: 150px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.track-artist-mobile {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.4);
+    margin-top: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.track-duration {
+    width: 60px;
+    text-align: right;
+    font-size: 0.9rem;
+    font-variant-numeric: tabular-nums;
+}
+.mobile-only { display: none; }
+
+.ym-track.active { background: rgba(255,255,255,0.05); }
+.ym-track.active .track-status { color: var(--gold); }
+.ym-track.active .track-title { color: var(--gold); font-weight: 600; }
+.ym-empty {
+    padding: 24px 16px;
+    color: rgba(255,255,255,0.55);
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+/* Bottom Bar */
+.ym-player-bar {
+    background: rgba(255,255,255,0.02);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    position: relative;
+    padding: 0 40px;
+}
+.ym-progress-container {
+    position: absolute;
+    top: -3px; 
+    left: 0; right: 0;
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    cursor: pointer;
+    touch-action: none;
+}
+.ym-progress-fill {
+    height: 100%;
+    background: var(--gold);
+    width: 0%;
+    will-change: width;
+    position: relative;
+}
+.ym-progress-thumb {
+    position: absolute;
+    top: 50%; right: -6px;
+    transform: translateY(-50%);
+    width: 12px; height: 12px;
+    background: #fff;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+.ym-progress-container:hover .ym-progress-thumb { opacity: 1; }
+
+.ym-bar-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+}
+.ym-bar-controls {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex: 1;
+}
+.ym-ctrl-btn {
+    background: none; border: none;
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px;
+    cursor: pointer;
+    transition: transform 0.2s var(--spring-easing), opacity 0.2s;
+}
+.ym-ctrl-btn .material-symbols-outlined { font-size: 28px; }
+.ym-ctrl-btn:active { transform: scale(0.85); opacity: 0.7; }
+.ym-play-pause {
+    width: 48px; height: 48px;
+    background: #fff; color: var(--navy);
+    border-radius: 50%;
+}
+.ym-play-pause .material-symbols-outlined { font-size: 32px; }
+
+.ym-bar-timing {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.6);
+    font-variant-numeric: tabular-nums;
+    flex: 1;
+    justify-content: center;
+}
+.ym-bar-volume {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-end;
+    color: rgba(255,255,255,0.5);
+}
+.ym-bar-volume input {
+    width: 84px;
+    accent-color: var(--gold);
+    cursor: pointer;
+}
+
+/* ── MOBILE ADAPTATION (Horizontal scroll) ── */
+@media (max-width: 768px) {
+    .desktop-only { display: none !important; }
+    .mobile-only { display: block; }
+    
+    .ym-layout {
+        flex-direction: column;
+        padding: 24px 24px 0 24px; /* Убрал нижний отступ */
+        gap: 24px;
+    }
+    .ym-cover-col {
+        display: flex;
+        justify-content: center;
+        flex: none;
+    }
+    .ym-cover {
+        width: 160px;
+        height: 160px;
+    }
+    .ym-album-title {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+    .ym-album-meta {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .ym-btn-main {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* FIX: Горизонтальный свайп-слайдер для карточек (влево-вправо) */
+    .ym-playlist-container {
+        margin: 0 -24px; /* Растягиваем за пределы padding контейнера */
+    }
+    .ym-playlist {
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        gap: 12px;
+        padding: 12px 24px 24px 24px; /* Отступы для теней и скролла */
+        max-height: none;
+        scrollbar-width: none; /* Скрываем скроллбар */
+    }
+    .ym-playlist::-webkit-scrollbar { display: none; }
+    
+    .ym-track {
+        flex: 0 0 clamp(220px, 70vw, 300px);
+        scroll-snap-align: center;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.05);
+        flex-direction: row;
+        padding: 16px;
+        border-radius: 16px;
+    }
+    .ym-track.active {
+        background: rgba(255,255,255,0.1);
+        border-color: var(--gold);
+    }
+    .track-status {
+        width: 24px;
+    }
+    .track-info {
+        padding-right: 0;
+    }
+
+    .ym-player-bar {
+        padding: 0 24px;
+    }
+    .ym-bar-volume { display: none; }
+    .ym-bar-timing { justify-content: flex-end; }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const audio = document.getElementById('customAudioPlayer');
+    if(!audio) return;
+    
+    const btnPlay = document.getElementById('btnPlayPause');
+    const mainPlayIcon = document.getElementById('mainPlayIcon');
+    const playIcon = document.getElementById('playIcon');
+    const btnMainPlay = document.getElementById('btnMainPlay');
+    const btnSkipFwd = document.getElementById('btnSkipForward');
+    const btnSkipBack = document.getElementById('btnSkipBack');
+    
+    const progressContainer = document.getElementById('audioProgressContainer');
+    const progressFill = document.getElementById('audioProgressFill');
+    
+    const timeCurrent = document.getElementById('audioCurrentTime');
+    const timeTotal = document.getElementById('audioDuration');
+    
+    const titleEl = document.getElementById('playerTitle');
+    const artistEl = document.getElementById('playerArtist');
+    const coverEl = document.getElementById('playerCover');
+    const volumeEl = document.getElementById('audioVolume');
+    
+    const playlistItems = document.querySelectorAll('.ym-track');
+
+    const formatTime = (time) => {
+        if (isNaN(time) || !isFinite(time)) return "-:--";
+        const m = Math.floor(time / 60);
+        const s = Math.floor(time % 60);
+        return m + ":" + (s < 10 ? "0" + s : s);
+    };
+
+    const updatePlayState = (isPlaying) => {
+        const iconName = isPlaying ? 'pause' : 'play_arrow';
+        playIcon.textContent = iconName;
+        mainPlayIcon.textContent = iconName;
+        if (isPlaying) {
+            coverEl.style.transform = 'scale(1)';
+        } else {
+            coverEl.style.transform = 'scale(0.95)';
+        }
+    };
+
+    const setEpisode = (item, autoplay = false) => {
+        titleEl.textContent = item.dataset.title;
+        artistEl.textContent = item.dataset.artist;
+        audio.src = item.dataset.src || '';
+        progressFill.style.width = '0%';
+        timeCurrent.textContent = '0:00';
+        timeTotal.textContent = '-:--';
+        btnMainPlay.disabled = !item.dataset.src;
+        btnPlay.disabled = !item.dataset.src;
+        if (autoplay && item.dataset.src) {
+            audio.play().catch(e => console.warn('Auto-play prevented', e));
+        }
+    };
+
+    if (playlistItems.length) setEpisode(playlistItems[0]);
+
+    audio.addEventListener('loadedmetadata', () => {
+        timeTotal.textContent = formatTime(audio.duration);
+    });
+
+    let isDragging = false;
+    audio.addEventListener('timeupdate', () => {
+        if (!isDragging) {
+            timeCurrent.textContent = formatTime(audio.currentTime);
+            if(audio.duration) {
+                const percent = (audio.currentTime / audio.duration) * 100;
+                progressFill.style.width = percent + '%';
+            }
+        }
+    });
+
+    const togglePlay = () => {
+        if (audio.paused) {
+            audio.play().catch(e => console.warn('Play error', e));
+        } else {
+            audio.pause();
+        }
+    };
+
+    btnPlay.addEventListener('click', togglePlay);
+    btnMainPlay.addEventListener('click', togglePlay);
+
+    audio.addEventListener('play', () => updatePlayState(true));
+    audio.addEventListener('pause', () => updatePlayState(false));
+    volumeEl?.addEventListener('input', () => {
+        audio.volume = Number(volumeEl.value);
+    });
+
+    btnSkipFwd.addEventListener('click', () => { audio.currentTime = Math.min(audio.currentTime + 15, audio.duration); });
+    btnSkipBack.addEventListener('click', () => { audio.currentTime = Math.max(audio.currentTime - 15, 0); });
+
+    const seek = (e) => {
+        const rect = progressContainer.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        let pos = (clientX - rect.left) / rect.width;
+        pos = Math.max(0, Math.min(1, pos));
+        
+        progressFill.style.width = (pos * 100) + '%';
+        
+        if (e.type === 'mouseup' || e.type === 'touchend') {
+            audio.currentTime = pos * audio.duration;
+            isDragging = false;
+        } else {
+            timeCurrent.textContent = formatTime(pos * audio.duration);
+            isDragging = true;
+        }
+    };
+    
+    progressContainer.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        seek(e);
+        document.addEventListener('mousemove', seek);
+        document.addEventListener('mouseup', (e) => {
+            seek(e);
+            document.removeEventListener('mousemove', seek);
+        }, {once:true});
+    });
+    
+    progressContainer.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        seek(e);
+        const touchMove = (e) => seek(e);
+        document.addEventListener('touchmove', touchMove, {passive: true});
+        document.addEventListener('touchend', (e) => {
+            document.removeEventListener('touchmove', touchMove);
+            isDragging = false;
+        }, {once:true});
+    }, {passive: true});
+
+    playlistItems.forEach(item => {
+        item.addEventListener('click', () => {
+            if (!item.dataset.src) {
+                if (item.dataset.episodeUrl) window.open(item.dataset.episodeUrl, '_blank', 'noopener');
+                return;
+            }
+            playlistItems.forEach(el => {
+                el.classList.remove('active');
+                el.querySelector('.track-status .material-symbols-outlined').textContent = 'play_arrow';
+            });
+            item.classList.add('active');
+            item.querySelector('.track-status .material-symbols-outlined').textContent = 'graphic_eq';
+
+            setEpisode(item, true);
+        });
+    });
+});
+</script>

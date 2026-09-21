@@ -18,10 +18,11 @@
 .prayer-glow-orb {
     position: absolute;
     border-radius: 50%;
-    filter: blur(80px);
+    filter: blur(20px);
     opacity: 0.45;
     animation: floatGlow 18s ease-in-out infinite alternate;
     will-change: transform;
+    transform: translate3d(0,0,0);
 }
 .prayer-glow-1 {
     top: 5%;
@@ -34,11 +35,14 @@
 .prayer-glow-2 {
     top: 25%;
     right: 5%;
-    width: 550px;
-    height: 550px;
-    background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, rgba(59,130,246,0.03) 70%, transparent 100%);
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, rgba(234,179,8,0.18) 0%, rgba(201,168,76,0.02) 70%, transparent 100%);
     animation-duration: 24s;
     animation-delay: -5s;
+}
+@media (max-width: 768px) {
+    .prayer-bg-glow { display: none !important; }
 }
 .prayer-glow-3 {
     bottom: 10%;
@@ -109,17 +113,6 @@
 
 <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-32 pb-28">
 
-    <!-- Flash-сообщения -->
-    {% if messages %}
-    <div class="mb-8 space-y-3">
-        {% for message in messages %}
-        <div class="bg-white/90 backdrop-blur-md border-l-4 border-[#c9a84c] text-navy p-4 rounded-2xl shadow-sm flex items-center gap-3">
-            <span class="material-symbols-outlined text-[#c9a84c]">check_circle</span>
-            <span class="font-medium text-sm sm:text-base">{{ message }}</span>
-        </div>
-        {% endfor %}
-    </div>
-    {% endif %}
 
     <!-- Заголовок и библейский стих -->
     <div class="text-center mb-10 sm:mb-14">
@@ -138,41 +131,50 @@
     </div>
 
     <!-- Верхняя панель: Статистика, фильтры вкладок и кнопки действий -->
-    <div class="bg-white/80 backdrop-blur-xl border border-white/80 p-4 sm:p-6 rounded-[2rem] shadow-[0_8px_32px_rgba(0,0,0,0.04)] mb-8 flex flex-col md:flex-row items-center justify-between gap-5">
+    <div class="bg-white/80 backdrop-blur-xl border border-white/80 p-4 sm:p-6 rounded-[2rem] shadow-[0_8px_32px_rgba(0,0,0,0.04)] mb-8 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 sm:gap-5">
         
         <!-- Вкладки (Все / Ожидают молитвы / Отвечено) с мгновенным переключением -->
-        <div class="flex items-center p-1.5 bg-navy/5 rounded-2xl w-full md:w-auto overflow-x-auto no-scrollbar" id="tab-filter-group">
+        <div class="flex items-center p-1.5 bg-navy/5 rounded-2xl w-full md:w-auto overflow-x-auto no-scrollbar shrink-0" id="tab-filter-group">
             <button type="button" data-tab-filter="all"
-                    class="tab-btn px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all whitespace-nowrap cursor-pointer {% if current_tab == 'all' or not current_tab %}bg-white text-navy shadow-sm{% else %}text-navy/60 hover:text-navy{% endif %}">
-                Все нужды <span class="ml-1 opacity-60">({{ total_public }})</span>
+                    class="tab-btn flex-1 md:flex-initial text-center px-3.5 sm:px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all whitespace-nowrap cursor-pointer {% if current_tab == 'all' or not current_tab %}bg-white text-navy shadow-sm{% else %}text-navy/60 hover:text-navy{% endif %}">
+                Все <span class="opacity-60">({{ total_public }})</span>
             </button>
             <button type="button" data-tab-filter="active"
-                    class="tab-btn px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all whitespace-nowrap cursor-pointer {% if current_tab == 'active' %}bg-white text-navy shadow-sm{% else %}text-navy/60 hover:text-navy{% endif %}">
-                Ожидают молитвы <span class="ml-1 opacity-60">({{ active_count }})</span>
+                    class="tab-btn flex-1 md:flex-initial text-center px-3.5 sm:px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all whitespace-nowrap cursor-pointer {% if current_tab == 'active' %}bg-white text-navy shadow-sm{% else %}text-navy/60 hover:text-navy{% endif %}">
+                Ожидают <span class="opacity-60">({{ active_count }})</span>
             </button>
             <button type="button" data-tab-filter="answered"
-                    class="tab-btn px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all whitespace-nowrap cursor-pointer {% if current_tab == 'answered' %}bg-white text-emerald-700 shadow-sm{% else %}text-navy/60 hover:text-emerald-700{% endif %} flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    class="tab-btn flex-1 md:flex-initial text-center px-3.5 sm:px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all whitespace-nowrap cursor-pointer {% if current_tab == 'answered' %}bg-white text-emerald-700 shadow-sm{% else %}text-navy/60 hover:text-emerald-700{% endif %} flex items-center justify-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
                 <span>Отвечено</span>
-                <span class="ml-1 opacity-60">({{ answered_count }})</span>
+                <span class="opacity-60">({{ answered_count }})</span>
             </button>
         </div>
 
         <!-- Кнопки действий -->
-        <div class="flex items-center gap-3 w-full md:w-auto justify-end">
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full md:w-auto">
+            <div class="grid grid-cols-2 gap-2 w-full sm:flex sm:w-auto">
+                <a href="{% url 'revelation_list' %}" class="px-3.5 sm:px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm text-navy/80 hover:text-navy bg-white hover:bg-white/90 border border-navy/10 transition-all shadow-sm flex items-center justify-center gap-1.5">
+                    <span class="material-symbols-outlined text-lg text-[#c9a84c]">auto_awesome</span>
+                    <span class="truncate">Свидетельства</span>
+                </a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'my_prayers' %}" class="px-3.5 sm:px-5 py-3 rounded-2xl font-bold text-xs sm:text-sm text-navy/80 hover:text-navy bg-white hover:bg-white/90 border border-navy/10 transition-all shadow-sm flex items-center justify-center gap-1.5">
+                    <span class="material-symbols-outlined text-lg">book</span>
+                    <span class="truncate">Мои нужды</span>
+                </a>
+                {% endif %}
+            </div>
+
             {% if user.is_authenticated %}
-            <a href="{% url 'my_prayers' %}" class="px-5 py-3 rounded-2xl font-bold text-sm text-navy/70 hover:text-navy bg-white hover:bg-white/90 border border-navy/10 transition-all shadow-sm flex items-center gap-2">
-                <span class="material-symbols-outlined text-lg">book</span>
-                <span>Мои нужды</span>
-            </a>
-            <a href="{% url 'prayer_add' %}" class="flex items-center gap-2 bg-[#c9a84c] hover:bg-[#b59540] text-white font-bold px-6 py-3 rounded-2xl shadow-[0_4px_16px_rgba(201,168,76,0.3)] transition-all hover:-translate-y-0.5 active:translate-y-0 text-sm">
+            <a href="{% url 'prayer_add' %}" class="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#c9a84c] hover:bg-[#b59540] text-white font-bold px-6 py-3 rounded-2xl shadow-[0_4px_16px_rgba(201,168,76,0.3)] transition-all hover:-translate-y-0.5 active:translate-y-0 text-sm">
                 <span class="material-symbols-outlined text-xl">add</span>
                 <span>Оставить нужду</span>
             </a>
             {% else %}
-            <a href="{% url 'account_login' %}?next={% url 'prayer_add' %}" class="flex items-center gap-2 bg-[#c9a84c] hover:bg-[#b59540] text-white font-bold px-6 py-3 rounded-2xl shadow-[0_4px_16px_rgba(201,168,76,0.3)] transition-all hover:-translate-y-0.5 active:translate-y-0 text-sm">
-                <span class="material-symbols-outlined text-xl">login</span>
-                <span>Войти и оставить нужду</span>
+            <a href="{% url 'account_login' %}?next={% url 'prayer_add' %}" class="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#c9a84c] hover:bg-[#b59540] text-white font-bold px-5 py-3 rounded-2xl shadow-[0_4px_16px_rgba(201,168,76,0.3)] transition-all hover:-translate-y-0.5 active:translate-y-0 text-sm text-center">
+                <span class="material-symbols-outlined text-xl shrink-0">login</span>
+                <span class="truncate">Войти и оставить нужду</span>
             </a>
             {% endif %}
         </div>
@@ -244,7 +246,7 @@
                         <div class="w-7 h-7 rounded-full bg-[#c9a84c]/15 text-[#c9a84c] flex items-center justify-center font-bold text-xs shrink-0">
                             {{ prayer.user.username|first|upper }}
                         </div>
-                        <span class="font-semibold text-navy truncate max-w-[130px]">{{ prayer.user.username }}</span>
+                        <a href="{% url 'user_public_profile' prayer.user.username %}" class="font-semibold text-navy truncate max-w-[130px] hover:text-primary transition-colors">{{ prayer.user.username }}</a>
                         {% endif %}
                     </div>
 
@@ -313,13 +315,13 @@
     const ctx = canvas.getContext('2d');
     let width, height;
     let particles = [];
-    const PARTICLE_COUNT = 32;
+    const PARTICLE_COUNT = 18;
 
     function resize() {
         width = canvas.width = window.innerWidth;
         height = canvas.height = window.innerHeight;
     }
-    window.addEventListener('resize', resize);
+    window.addEventListener('resize', resize, { passive: true });
     resize();
 
     class PrayerParticle {
@@ -329,14 +331,12 @@
         reset(initial = false) {
             this.x = Math.random() * width;
             this.y = initial ? Math.random() * height : height + 20;
-            this.radius = Math.random() * 2.2 + 0.8;
-            this.speedY = Math.random() * 0.45 + 0.2;
-            this.speedX = (Math.random() - 0.5) * 0.3;
-            this.opacity = Math.random() * 0.5 + 0.2;
+            this.radius = Math.random() * 2.0 + 0.8;
+            this.speedY = Math.random() * 0.4 + 0.15;
+            this.speedX = (Math.random() - 0.5) * 0.25;
+            this.opacity = Math.random() * 0.45 + 0.15;
             this.maxOpacity = this.opacity;
-            this.fadeSpeed = Math.random() * 0.003 + 0.001;
-            // Тёплый золотистый оттенок молитвенного огня
-            const colors = ['201, 168, 76', '234, 179, 8', '245, 158, 11', '217, 119, 6'];
+            const colors = ['201, 168, 76', '234, 179, 8', '245, 158, 11'];
             this.color = colors[Math.floor(Math.random() * colors.length)];
         }
         update() {
@@ -350,8 +350,6 @@
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
             ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = `rgba(${this.color}, 0.8)`;
             ctx.fill();
         }
     }

@@ -1,0 +1,784 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ event.title }} | KCLC{% endblock %}
+
+{% block extra_css %}
+<!-- Пользовательские стили и скрипты из CMS конструктора -->
+<style>
+    :root {
+        --conf-accent: {{ event.theme_config.accent_color|default:"#2563eb" }};
+    }
+    .btn-conf-accent {
+        background-color: var(--conf-accent);
+        color: #ffffff;
+        transition: all 0.2s ease;
+    }
+    .btn-conf-accent:hover {
+        filter: brightness(1.1);
+        transform: translateY(-1px);
+        color: #ffffff;
+    }
+    .text-conf-accent {
+        color: var(--conf-accent);
+    }
+    .border-conf-accent {
+        border-color: var(--conf-accent);
+    }
+    .bg-conf-accent-soft {
+        background-color: color-mix(in srgb, var(--conf-accent) 12%, transparent);
+    }
+</style>
+
+{% if event.theme_config.custom_css %}
+<style>
+/* Кастомный CSS код лендинга */
+{{ event.theme_config.custom_css|safe }}
+</style>
+{% endif %}
+{% endblock %}
+
+{% block main_class %}
+flex-grow relative
+{% if event.theme_config.theme == 'modern_dark' %}
+bg-[#090d16] text-slate-100
+{% elif event.theme_config.theme == 'editorial_warm' %}
+bg-[#faf8f5] text-stone-900
+{% elif event.theme_config.theme == 'minimal_slate' %}
+bg-[#f8fafc] text-slate-900
+{% else %}
+bg-[#ffffff] text-slate-900
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{% if event.theme_config.custom_head_html %}
+{{ event.theme_config.custom_head_html|safe }}
+{% endif %}
+<div class="relative w-full overflow-hidden {% if event.theme_config.font_family == 'serif' %}font-serif{% endif %}">
+
+    <!-- ═════════════════════════════════════════════════════════════
+         ВЕРХНЯЯ СВЕТЛАЯ МИКРО-НАВИГАЦИЯ (ВОЗДУХ И ЧИСТОТА)
+         ═════════════════════════════════════════════════════════════ -->
+    <nav class="sticky top-0 z-40 backdrop-blur-md py-3.5 px-4 sm:px-8 border-b
+        {% if event.theme_config.theme == 'modern_dark' %}
+        bg-[#090d16]/85 border-slate-800 text-slate-200
+        {% elif event.theme_config.theme == 'editorial_warm' %}
+        bg-[#faf8f5]/90 border-stone-200 text-stone-800
+        {% else %}
+        bg-white/90 border-slate-200/80 text-slate-800
+        {% endif %}">
+        <div class="max-w-6xl mx-auto flex items-center justify-between gap-4">
+            <a href="{% url 'events_catalog' %}" class="flex items-center gap-2 text-xs font-bold opacity-70 hover:opacity-100 transition-opacity">
+                <span class="material-symbols-outlined text-base">arrow_back</span>
+                <span class="hidden sm:inline">Все события церкви</span>
+                <span class="sm:hidden">События</span>
+            </a>
+            <div class="flex items-center gap-4 sm:gap-6 text-xs font-semibold">
+                <a href="#about" class="opacity-70 hover:opacity-100 transition-opacity hidden md:inline">О событии</a>
+                <a href="#topics" class="opacity-70 hover:opacity-100 transition-opacity hidden md:inline">Программа</a>
+                <a href="#speakers" class="opacity-70 hover:opacity-100 transition-opacity hidden md:inline">Спикеры</a>
+                <a href="#schedule" class="opacity-70 hover:opacity-100 transition-opacity hidden md:inline">Расписание</a>
+                <a href="#reg" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl btn-conf-accent font-bold text-xs shadow-md">
+                    <span>Регистрация</span>
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ═════════════════════════════════════════════════════════════
+         ДИНАМИЧЕСКИЙ РЕНДЕРЕР СЛАЙДОВ / БЛОКОВ
+         ═════════════════════════════════════════════════════════════ -->
+    {% if event.theme_config.full_page_html %}
+        <!-- Режим чистого кастомного HTML кода всей страницы -->
+        <div class="custom-full-page-container relative z-10">
+            {{ event.theme_config.full_page_html|safe }}
+        </div>
+    {% elif blocks %}
+        {% for block in blocks %}
+            {% if block.is_active %}
+
+            <!-- ПРОВЕРКА НА ПРЯМОЙ КАСТОМНЫЙ HTML КОД СЛАЙДА -->
+            {% if block.content.custom_html_override %}
+            <section class="py-12 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto relative z-10 {% if block.content.text_align == 'left' %}text-left{% elif block.content.text_align == 'right' %}text-right{% else %}text-center{% endif %} {% if block.content.bg_style == 'white' %}bg-white text-slate-900 shadow-sm rounded-3xl my-6 border border-slate-100{% elif block.content.bg_style == 'slate' %}bg-slate-50 text-slate-900 rounded-3xl my-6 border border-slate-200/80{% elif block.content.bg_style == 'dark' %}bg-slate-900 text-white rounded-3xl my-6{% elif block.content.bg_style == 'accent' %}bg-conf-accent-soft rounded-3xl my-6 border border-conf-accent/20{% endif %}" id="block-{{ block.id }}">
+                {% if block.content.custom_css %}
+                <style>
+                    {{ block.content.custom_css|safe }}
+                </style>
+                {% endif %}
+                {{ block.content.custom_html_override|safe }}
+            </section>
+
+            <!-- ──────────────────────────────────────────────
+                 1. HERO & БАННЕР НА ВЕСЬ ЭКРАН (ЧТО / КОГДА / ГДЕ / СТОИМОСТЬ)
+                 ────────────────────────────────────────────── -->
+            {% elif block.block_type == 'hero' %}
+            <section class="relative min-h-screen flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8 pt-12 pb-20 z-10 text-center">
+                <!-- Верхний бейдж -->
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-conf-accent-soft border border-conf-accent/20 mb-6">
+                    <span class="w-2 h-2 rounded-full" style="background-color: var(--conf-accent);"></span>
+                    <span class="text-xs font-bold uppercase tracking-wider text-conf-accent">
+                        {{ block.content.badge|default:"Конференция / Школа" }}
+                    </span>
+                </div>
+
+                <!-- Главный заголовок -->
+                <h1 class="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight max-w-5xl leading-[1.14] mb-6">
+                    {{ block.content.title|default:event.title }}
+                </h1>
+
+                <!-- Подзаголовок -->
+                {% if block.content.subtitle or event.description %}
+                <p class="text-base sm:text-xl opacity-75 max-w-3xl leading-relaxed mb-8 font-normal">
+                    {{ block.content.subtitle|default:event.description }}
+                </p>
+                {% endif %}
+
+                <!-- БАННЕР НА ВЕСЬ ЭКРАН / ОБЛОЖКА -->
+                <div class="w-full max-w-5xl mx-auto mb-10 relative">
+                    {% if block.content.banner_url %}
+                        <div class="rounded-3xl overflow-hidden shadow-2xl border border-slate-200/60">
+                            <img src="{{ block.content.banner_url }}" alt="{{ event.title }}" class="w-full h-auto max-h-[520px] object-cover">
+                        </div>
+                    {% elif event.image %}
+                        <div class="rounded-3xl overflow-hidden shadow-2xl border border-slate-200/60">
+                            <img src="{{ event.image.url }}" alt="{{ event.title }}" class="w-full h-auto max-h-[520px] object-cover">
+                        </div>
+                    {% else %}
+                        <div class="w-full py-16 sm:py-24 px-6 sm:px-12 rounded-3xl border border-slate-200/60 shadow-xl bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 text-white flex flex-col items-center justify-center text-center relative overflow-hidden">
+                            <div class="absolute inset-0 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:24px_24px] opacity-15"></div>
+                            <span class="w-16 h-16 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-3xl mb-4 shadow-lg backdrop-blur-md">🕊️</span>
+                            <span class="text-xs uppercase font-mono tracking-[0.25em] text-cyan-300 mb-2 font-bold">KCLC CONFERENCES & EVENTS</span>
+                            <h2 class="text-2xl sm:text-4xl font-extrabold text-white max-w-2xl leading-tight mb-4">{{ event.title }}</h2>
+                            <div class="inline-flex items-center gap-4 px-4 py-2 rounded-xl bg-white/10 border border-white/15 text-xs text-white/90 font-mono">
+                                <span>📅 {{ event.start_date|date:"d E Y" }}</span>
+                                <span>•</span>
+                                <span>📍 {{ event.location }}</span>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- 4 КЛЮЧЕВЫХ ПЛАШКИ: ЧТО, КОГДА, ГДЕ, СТОИМОСТЬ -->
+                <div class="w-full max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10 text-left">
+                    <!-- ЧТО -->
+                    <div class="p-5 rounded-2xl border
+                        {% if event.theme_config.theme == 'modern_dark' %}
+                        bg-slate-900/60 border-slate-800
+                        {% else %}
+                        bg-slate-50 border-slate-200/80 shadow-sm
+                        {% endif %}">
+                        <div class="flex items-center gap-2 text-xs font-bold text-conf-accent uppercase tracking-wider mb-1.5">
+                            <span class="material-symbols-outlined text-base">label</span>
+                            <span>Что</span>
+                        </div>
+                        <p class="text-sm font-bold leading-snug">
+                            {{ block.content.what_text|default:event.title }}
+                        </p>
+                    </div>
+
+                    <!-- КОГДА -->
+                    <div class="p-5 rounded-2xl border
+                        {% if event.theme_config.theme == 'modern_dark' %}
+                        bg-slate-900/60 border-slate-800
+                        {% else %}
+                        bg-slate-50 border-slate-200/80 shadow-sm
+                        {% endif %}">
+                        <div class="flex items-center gap-2 text-xs font-bold text-conf-accent uppercase tracking-wider mb-1.5">
+                            <span class="material-symbols-outlined text-base">calendar_today</span>
+                            <span>Когда</span>
+                        </div>
+                        <p class="text-sm font-bold leading-snug">
+                            {{ block.content.when_text|default:event.start_date|date:"d E Y" }}
+                        </p>
+                    </div>
+
+                    <!-- ГДЕ -->
+                    <div class="p-5 rounded-2xl border
+                        {% if event.theme_config.theme == 'modern_dark' %}
+                        bg-slate-900/60 border-slate-800
+                        {% else %}
+                        bg-slate-50 border-slate-200/80 shadow-sm
+                        {% endif %}">
+                        <div class="flex items-center gap-2 text-xs font-bold text-conf-accent uppercase tracking-wider mb-1.5">
+                            <span class="material-symbols-outlined text-base">location_on</span>
+                            <span>Где</span>
+                        </div>
+                        <p class="text-sm font-bold leading-snug">
+                            {{ block.content.where_text|default:event.location }}
+                        </p>
+                    </div>
+
+                    <!-- СТОИМОСТЬ -->
+                    <div class="p-5 rounded-2xl border
+                        {% if event.theme_config.theme == 'modern_dark' %}
+                        bg-slate-900/60 border-slate-800
+                        {% else %}
+                        bg-slate-50 border-slate-200/80 shadow-sm
+                        {% endif %}">
+                        <div class="flex items-center gap-2 text-xs font-bold text-conf-accent uppercase tracking-wider mb-1.5">
+                            <span class="material-symbols-outlined text-base">payments</span>
+                            <span>Стоимость</span>
+                        </div>
+                        <p class="text-sm font-bold leading-snug">
+                            {{ block.content.price_text|default:event.registration_fee|default:"Добровольный взнос" }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Быстрые плашки спикеров (если указаны) -->
+                {% if block.content.featured_speakers %}
+                <div class="flex flex-wrap items-center justify-center gap-4 mb-10">
+                    {% for sp in block.content.featured_speakers %}
+                    <div class="flex items-center gap-3 px-5 py-2.5 rounded-2xl border
+                        {% if event.theme_config.theme == 'modern_dark' %}
+                        bg-slate-900/60 border-slate-800
+                        {% else %}
+                        bg-slate-50 border-slate-200
+                        {% endif %}">
+                        <div class="w-10 h-10 rounded-full btn-conf-accent flex items-center justify-center font-bold text-sm shadow-sm">
+                            {{ sp.initials|default:"СП" }}
+                        </div>
+                        <div class="text-left">
+                            <p class="text-[11px] font-bold text-conf-accent uppercase tracking-wider">{{ sp.role|default:"Спикер" }}</p>
+                            <p class="text-sm font-bold">{{ sp.name }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <!-- Кнопки перехода -->
+                <div class="flex flex-col sm:flex-row items-center gap-4">
+                    <a href="#reg" class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl btn-conf-accent font-bold text-base shadow-lg hover:-translate-y-0.5">
+                        <span>Зарегистрироваться на событие</span>
+                        <span class="material-symbols-outlined text-xl">arrow_forward</span>
+                    </a>
+                    <a href="#about" class="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl border font-bold text-sm opacity-80 hover:opacity-100 transition-opacity">
+                        <span>Подробнее о программе</span>
+                        <span class="material-symbols-outlined text-lg">expand_more</span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- ──────────────────────────────────────────────
+                 2. КОНЦЕПЦИЯ / МАНИФЕСТ
+                 ────────────────────────────────────────────── -->
+            {% elif block.block_type == 'concept' %}
+            <section id="about" class="py-20 sm:py-28 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto z-10 relative">
+                <div class="rounded-3xl border p-8 sm:p-14 text-center
+                    {% if event.theme_config.theme == 'modern_dark' %}
+                    bg-slate-900/50 border-slate-800
+                    {% elif event.theme_config.theme == 'editorial_warm' %}
+                    bg-white border-stone-200 shadow-sm
+                    {% else %}
+                    bg-slate-50 border-slate-200/80 shadow-sm
+                    {% endif %}">
+
+                    <span class="text-xs font-bold uppercase tracking-widest text-conf-accent block mb-3">
+                        {{ block.content.subtitle|default:"Видение и цели" }}
+                    </span>
+                    <h2 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight mb-6">
+                        {{ block.content.title|default:"О СОБЫТИИ" }}
+                    </h2>
+                    <div class="h-1 w-20 mx-auto rounded-full mb-8" style="background-color: var(--conf-accent);"></div>
+
+                    <div class="max-w-3xl mx-auto space-y-6 text-base sm:text-lg opacity-85 leading-relaxed">
+                        {% if block.content.text_1 %}
+                        <p>{{ block.content.text_1 }}</p>
+                        {% endif %}
+                        {% if block.content.text_2 %}
+                        <p>{{ block.content.text_2 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+
+            <!-- ──────────────────────────────────────────────
+                 3. ДЛЯ КОГО ЭТО СОБЫТИЕ (AUDIENCE)
+                 ────────────────────────────────────────────── -->
+            {% elif block.block_type == 'audience' %}
+            <section class="py-20 sm:py-28 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto z-10 relative">
+                <div class="text-center mb-14">
+                    <span class="text-xs font-bold uppercase tracking-widest text-conf-accent block mb-2">{{ block.content.subtitle|default:"Целевая аудитория" }}</span>
+                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold">{{ block.content.title|default:"Для кого эта школа" }}</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {% for card in block.content.cards %}
+                    <div class="rounded-3xl border p-8 transition-all hover:-translate-y-1
+                        {% if event.theme_config.theme == 'modern_dark' %}
+                        bg-slate-900/50 border-slate-800
+                        {% elif event.theme_config.theme == 'editorial_warm' %}
+                        bg-white border-stone-200 shadow-sm
+                        {% else %}
+                        bg-slate-50 border-slate-200/80 shadow-sm
+                        {% endif %}">
+                        <span class="text-3xl font-extrabold text-conf-accent opacity-40 block mb-4">{{ card.num|default:forloop.counter }}</span>
+                        <h3 class="text-xl font-bold mb-3">{{ card.title }}</h3>
+                        <p class="text-sm opacity-75 leading-relaxed">{{ card.desc }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- ──────────────────────────────────────────────
+                 4. ТЕМЫ И МОДУЛИ ОБУЧЕНИЯ (TOPICS)
+                 ────────────────────────────────────────────── -->
+            {% elif block.block_type == 'topics' %}
+            <section id="topics" class="py-20 sm:py-28 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto z-10 relative">
+                <div class="text-center mb-14">
+                    <span class="text-xs font-bold uppercase tracking-widest text-conf-accent block mb-2">{{ block.content.subtitle|default:"Программа обучения" }}</span>
+                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold">{{ block.content.title|default:"Ключевые темы" }}</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {% for topic in block.content.topics %}
+                    <div class="rounded-3xl border p-8 flex flex-col justify-between transition-all hover:-translate-y-1
+                        {% if event.theme_config.theme == 'modern_dark' %}
+                        bg-slate-900/50 border-slate-800
+                        {% elif event.theme_config.theme == 'editorial_warm' %}
+                        bg-white border-stone-200 shadow-sm
+                        {% else %}
+                        bg-slate-50 border-slate-200/80 shadow-sm
+                        {% endif %}">
+                        <div>
+                            <div class="w-10 h-10 rounded-xl bg-conf-accent-soft text-conf-accent flex items-center justify-center font-bold text-sm mb-5">
+                                {{ topic.num|default:forloop.counter }}
+                            </div>
+                            <h3 class="text-xl font-bold mb-3">{{ topic.title }}</h3>
+                            {% if topic.desc %}
+                            <p class="text-sm opacity-75 leading-relaxed">{{ topic.desc }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- ──────────────────────────────────────────────
+                 5. РАСПИСАНИЕ И ТАЙМИНГ (SCHEDULE)
+                 ────────────────────────────────────────────── -->
+            {% elif block.block_type == 'schedule' %}
+            <section id="schedule" class="py-20 sm:py-28 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto z-10 relative">
+                <div class="text-center mb-14">
+                    <span class="text-xs font-bold uppercase tracking-widest text-conf-accent block mb-2">{{ block.content.subtitle|default:"Формат и тайминг" }}</span>
+                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold">{{ block.content.title|default:"Расписание" }}</h2>
+                </div>
+
+                <div class="space-y-4">
+                    {% if block.content.days %}
+                        {% for d in block.content.days %}
+                        <div class="rounded-2xl border p-6
+                            {% if event.theme_config.theme == 'modern_dark' %}
+                            bg-slate-900/50 border-slate-800
+                            {% elif event.theme_config.theme == 'editorial_warm' %}
+                            bg-white border-stone-200 shadow-sm
+                            {% else %}
+                            bg-slate-50 border-slate-200/80 shadow-sm
+                            {% endif %}">
+                            <h4 class="text-base font-bold text-conf-accent mb-4 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-lg">event</span>
+                                <span>{{ d.day }}</span>
+                            </h4>
+                            <div class="space-y-3">
+                                {% for s in d.sessions %}
+                                <div class="flex items-center justify-between p-3.5 rounded-xl border
+                                    {% if event.theme_config.theme == 'modern_dark' %}
+                                    bg-slate-800/60 border-slate-700/60
+                                    {% else %}
+                                    bg-white border-slate-200/60
+                                    {% endif %}">
+                                    <span class="text-sm font-semibold">{{ s.title }}</span>
+                                    <span class="text-xs font-mono font-bold text-conf-accent">{{ s.time }}</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% elif block.content.sessions %}
+                        {% for s in block.content.sessions %}
+                        <div class="flex items-center justify-between p-5 rounded-2xl border
+                            {% if event.theme_config.theme == 'modern_dark' %}
+                            bg-slate-900/50 border-slate-800
+                            {% elif event.theme_config.theme == 'editorial_warm' %}
+                            bg-white border-stone-200 shadow-sm
+                            {% else %}
+                            bg-slate-50 border-slate-200/80 shadow-sm
+                            {% endif %}">
+                            <div class="flex items-center gap-4">
+                                <span class="w-2.5 h-2.5 rounded-full" style="background-color: var(--conf-accent);"></span>
+                                <span class="font-bold text-sm sm:text-base">{{ s.title }}</span>
+                            </div>
+                            <span class="text-xs sm:text-sm font-mono font-bold text-conf-accent">{{ s.time }}</span>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </section>
+
+            <!-- ──────────────────────────────────────────────
+                 6. СПИКЕРЫ КОНФЕРЕНЦИИ (SPEAKERS)
+                 ────────────────────────────────────────────── -->
+            {% elif block.block_type == 'speakers' %}
+            <section id="speakers" class="py-20 sm:py-28 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto z-10 relative">
+                <div class="text-center mb-14">
+                    <span class="text-xs font-bold uppercase tracking-widest text-conf-accent block mb-2">{{ block.content.subtitle|default:"Наставники" }}</span>
+                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold">{{ block.content.title|default:"Спикеры конференции" }}</h2>
+                </div>
+
+                <div class="space-y-8">
+                    {% for sp in block.content.speakers %}
+                    <div class="rounded-3xl border p-8 sm:p-10 transition-all
+                        {% if event.theme_config.theme == 'modern_dark' %}
+                        bg-slate-900/50 border-slate-800
+                        {% elif event.theme_config.theme == 'editorial_warm' %}
+                        bg-white border-stone-200 shadow-sm
+                        {% else %}
+                        bg-slate-50 border-slate-200/80 shadow-sm
+                        {% endif %}">
+                        <div class="flex flex-col sm:flex-row items-start gap-6">
+                            {% if sp.image_url %}
+                            <img src="{{ sp.image_url }}" alt="{{ sp.name }}" class="w-24 h-24 rounded-2xl object-cover shrink-0 shadow-md border border-slate-200">
+                            {% else %}
+                            <div class="w-24 h-24 rounded-2xl btn-conf-accent flex items-center justify-center font-bold text-3xl shrink-0 shadow-md">
+                                {{ sp.initials|default:"СП" }}
+                            </div>
+                            {% endif %}
+                            <div class="space-y-3">
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-conf-accent">{{ sp.role|default:"Спикер" }}</span>
+                                    <h3 class="text-2xl sm:text-3xl font-extrabold">{{ sp.name }}</h3>
+                                </div>
+                                {% if sp.bio %}
+                                <p class="text-sm opacity-80 leading-relaxed">{{ sp.bio }}</p>
+                                {% endif %}
+                                {% if sp.books %}
+                                <p class="text-xs font-semibold text-conf-accent">{{ sp.books }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- ──────────────────────────────────────────────
+                 7. РЕКВИЗИТЫ И ПОЖЕРТВОВАНИЕ (PRICING)
+                 ────────────────────────────────────────────── -->
+            {% elif block.block_type == 'pricing' %}
+            <section class="py-20 sm:py-28 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto z-10 relative">
+                <div class="text-center mb-14">
+                    <span class="text-xs font-bold uppercase tracking-widest text-conf-accent block mb-2">{{ block.content.subtitle|default:"Условия участия" }}</span>
+                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold">{{ block.content.title|default:"Регистрационный взнос и реквизиты" }}</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- СБП (Россия) -->
+                    <div class="rounded-3xl border p-8 sm:p-10 flex flex-col justify-between
+                        {% if event.theme_config.theme == 'modern_dark' %}
+                        bg-slate-900/50 border-slate-800
+                        {% elif event.theme_config.theme == 'editorial_warm' %}
+                        bg-white border-stone-200 shadow-sm
+                        {% else %}
+                        bg-slate-50 border-slate-200/80 shadow-sm
+                        {% endif %}">
+                        <div>
+                            <span class="px-3.5 py-1.5 rounded-full bg-conf-accent-soft text-conf-accent text-xs font-bold tracking-wider uppercase inline-block mb-4">
+                                Карты РФ / СБП
+                            </span>
+                            <div class="text-3xl sm:text-4xl font-extrabold mb-3">
+                                {{ block.content.sbp_amount|default:event.registration_fee|default:"5 000 ₽" }}
+                            </div>
+                            <p class="text-xs opacity-70 mb-6 leading-relaxed">
+                                Регистрационное добровольное пожертвование через Систему Быстрых Платежей (СБП) без комиссии любого банка РФ.
+                            </p>
+                        </div>
+                        {% if block.content.sbp_url %}
+                        <a href="{{ block.content.sbp_url }}" target="_blank"
+                           class="w-full py-4 rounded-xl btn-conf-accent font-bold text-sm text-center shadow-md">
+                            Перейти к пожертвованию по СБП →
+                        </a>
+                        {% endif %}
+                    </div>
+
+                    <!-- PayPal / Зарубежные участники -->
+                    <div class="rounded-3xl border p-8 sm:p-10 flex flex-col justify-between
+                        {% if event.theme_config.theme == 'modern_dark' %}
+                        bg-slate-900/50 border-slate-800
+                        {% elif event.theme_config.theme == 'editorial_warm' %}
+                        bg-white border-stone-200 shadow-sm
+                        {% else %}
+                        bg-slate-50 border-slate-200/80 shadow-sm
+                        {% endif %}">
+                        <div>
+                            <span class="px-3.5 py-1.5 rounded-full bg-slate-200 text-slate-800 text-xs font-bold tracking-wider uppercase inline-block mb-4">
+                                Зарубежные карты / PayPal
+                            </span>
+                            <div class="text-3xl sm:text-4xl font-extrabold mb-3">
+                                {{ block.content.paypal_amount|default:"60 €" }}
+                            </div>
+                            <p class="text-xs opacity-70 mb-6 leading-relaxed">
+                                Для участников из других стран через международную платежную систему PayPal.
+                            </p>
+                        </div>
+                        {% if block.content.paypal_url %}
+                        <a href="{{ block.content.paypal_url }}" target="_blank"
+                           class="w-full py-4 rounded-xl border font-bold text-sm text-center opacity-90 hover:opacity-100">
+                            Оплатить через PayPal →
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Контакт куратора -->
+                {% if block.content.support_telegram or event.support_telegram %}
+                <div class="mt-8 p-6 rounded-2xl border flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left
+                    {% if event.theme_config.theme == 'modern_dark' %}
+                    bg-slate-900/40 border-slate-800
+                    {% else %}
+                    bg-slate-50 border-slate-200
+                    {% endif %}">
+                    <div>
+                        <h4 class="font-bold text-sm">Возникли вопросы по оплате или участию?</h4>
+                        <p class="text-xs opacity-70">Куратор конференции всегда на связи в Telegram</p>
+                    </div>
+                    <a href="https://t.me/{{ block.content.support_telegram|default:event.support_telegram|cut:'@' }}" target="_blank"
+                       class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#229ED9]/15 hover:bg-[#229ED9]/25 text-[#229ED9] font-bold text-xs border border-[#229ED9]/30 transition-colors">
+                        <span class="material-symbols-outlined text-base">send</span>
+                        <span>Написать куратору ({{ block.content.support_telegram|default:event.support_telegram }})</span>
+                    </a>
+                </div>
+                {% endif %}
+            </section>
+
+            <!-- ──────────────────────────────────────────────
+                 8. ФОРМА РЕГИСТРАЦИИ СО СТОИМОСТЬЮ (REGISTRATION)
+                 ────────────────────────────────────────────── -->
+            {% elif block.block_type == 'registration' %}
+            <section id="reg" class="py-20 sm:py-28 px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto z-10 relative">
+                <div class="rounded-3xl border p-8 sm:p-12 shadow-xl relative
+                    {% if event.theme_config.theme == 'modern_dark' %}
+                    bg-slate-900/60 border-slate-800
+                    {% elif event.theme_config.theme == 'editorial_warm' %}
+                    bg-white border-stone-200
+                    {% else %}
+                    bg-white border-slate-200/90
+                    {% endif %}">
+
+                    <div class="text-center mb-8">
+                        <span class="text-xs font-bold uppercase tracking-widest text-conf-accent block mb-2">Электронный билет</span>
+                        <h2 class="text-2xl sm:text-4xl font-extrabold">{{ block.content.title|default:"Регистрация на событие" }}</h2>
+                        <p class="text-xs sm:text-sm opacity-75 mt-2">
+                            {{ block.content.subtitle|default:"Заполните данные участника. Билет и ссылка на материалы будут высланы на ваш e-mail." }}
+                        </p>
+                    </div>
+
+                    <!-- СТОИМОСТЬ УЧАСТИЯ В ШАПКЕ ФОРМЫ -->
+                    <div class="p-4 rounded-2xl bg-conf-accent-soft border border-conf-accent/30 text-center mb-6">
+                        <span class="text-xs font-bold uppercase tracking-wider text-conf-accent block mb-1">Регистрационный взнос</span>
+                        <span class="text-2xl sm:text-3xl font-extrabold text-conf-accent">
+                            {{ event.registration_fee|default:"Добровольное пожертвование" }}
+                        </span>
+                    </div>
+
+                    {% if is_registered %}
+                    <!-- Уведомление если уже зарегистрирован -->
+                    <div class="p-6 rounded-2xl bg-emerald-50 border border-emerald-200 text-center mb-8 text-emerald-900">
+                        <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto mb-3">
+                            <span class="material-symbols-outlined text-2xl">confirmation_number</span>
+                        </div>
+                        <h4 class="font-bold text-lg mb-1">Вы уже зарегистрированы!</h4>
+                        <p class="text-xs opacity-80 mb-3">Ваш электронный билет: <strong class="font-mono text-emerald-800">{{ user_registration.ticket_number }}</strong></p>
+                        <a href="{% url 'profile' %}" class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-xs">
+                            Перейти в личный кабинет →
+                        </a>
+                    </div>
+                    {% endif %}
+
+                    <!-- Форма отправки -->
+                    <form method="post" action="{% url 'event_register' event.slug %}" enctype="multipart/form-data" class="space-y-4">
+                        {% csrf_token %}
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs font-bold opacity-75 uppercase tracking-wider mb-1.5 block">Имя *</label>
+                                <input type="text" name="first_name" required value="{{ form.first_name.value|default:'' }}" placeholder="Ваше имя"
+                                       class="w-full px-4 py-3 rounded-xl border text-sm outline-none transition-all
+                                       {% if event.theme_config.theme == 'modern_dark' %}bg-slate-800/80 border-slate-700 text-white{% else %}bg-slate-50 border-slate-200 text-slate-900{% endif %} focus:border-blue-500">
+                                {% if form.first_name.errors %}<p class="text-xs text-red-500 mt-1">{{ form.first_name.errors.0 }}</p>{% endif %}
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold opacity-75 uppercase tracking-wider mb-1.5 block">Фамилия *</label>
+                                <input type="text" name="last_name" required value="{{ form.last_name.value|default:'' }}" placeholder="Ваша фамилия"
+                                       class="w-full px-4 py-3 rounded-xl border text-sm outline-none transition-all
+                                       {% if event.theme_config.theme == 'modern_dark' %}bg-slate-800/80 border-slate-700 text-white{% else %}bg-slate-50 border-slate-200 text-slate-900{% endif %} focus:border-blue-500">
+                                {% if form.last_name.errors %}<p class="text-xs text-red-500 mt-1">{{ form.last_name.errors.0 }}</p>{% endif %}
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs font-bold opacity-75 uppercase tracking-wider mb-1.5 block">Телефон *</label>
+                                <input type="tel" name="phone" required value="{{ form.phone.value|default:'' }}" placeholder="+7 (999) 000-00-00"
+                                       class="w-full px-4 py-3 rounded-xl border text-sm outline-none transition-all
+                                       {% if event.theme_config.theme == 'modern_dark' %}bg-slate-800/80 border-slate-700 text-white{% else %}bg-slate-50 border-slate-200 text-slate-900{% endif %} focus:border-blue-500">
+                                {% if form.phone.errors %}<p class="text-xs text-red-500 mt-1">{{ form.phone.errors.0 }}</p>{% endif %}
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold opacity-75 uppercase tracking-wider mb-1.5 block">Telegram (без @)</label>
+                                <input type="text" name="telegram" value="{{ form.telegram.value|default:'' }}" placeholder="username"
+                                       class="w-full px-4 py-3 rounded-xl border text-sm outline-none transition-all
+                                       {% if event.theme_config.theme == 'modern_dark' %}bg-slate-800/80 border-slate-700 text-white{% else %}bg-slate-50 border-slate-200 text-slate-900{% endif %} focus:border-blue-500">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="text-xs font-bold opacity-75 uppercase tracking-wider mb-1.5 block">E-mail адрес *</label>
+                            <input type="email" name="email" required value="{{ form.email.value|default:'' }}" placeholder="example@mail.ru"
+                                   class="w-full px-4 py-3 rounded-xl border text-sm outline-none transition-all
+                                   {% if event.theme_config.theme == 'modern_dark' %}bg-slate-800/80 border-slate-700 text-white{% else %}bg-slate-50 border-slate-200 text-slate-900{% endif %} focus:border-blue-500">
+                            <p class="text-[11px] opacity-60 mt-1">На этот адрес придет электронный билет и ссылка на конференцию</p>
+                            {% if form.email.errors %}<p class="text-xs text-red-500 mt-1">{{ form.email.errors.0 }}</p>{% endif %}
+                        </div>
+
+                        <!-- Загрузка чека пожертвования -->
+                        <div class="pt-2">
+                            <label class="text-xs font-bold opacity-75 uppercase tracking-wider mb-1.5 block">
+                                Чек о внесении регистрационного пожертвования
+                            </label>
+                            <div class="relative border-2 border-dashed rounded-2xl p-5 text-center transition-colors border-slate-300 hover:border-blue-500">
+                                <input type="file" name="payment_receipt" id="payment_receipt" accept=".jpg,.jpeg,.png,.pdf,.webp"
+                                       class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onchange="updateReceiptFileName(this)">
+                                <span class="material-symbols-outlined text-3xl text-conf-accent mb-1 block">upload_file</span>
+                                <p class="text-xs font-bold" id="receipt-file-label">Нажмите для выбора файла чека</p>
+                                <p class="text-[11px] opacity-60">JPG, PNG, PDF или WEBP — до 10 МБ</p>
+                            </div>
+                            {% if form.payment_receipt.errors %}<p class="text-xs text-red-500 mt-1">{{ form.payment_receipt.errors.0 }}</p>{% endif %}
+                        </div>
+
+                        <!-- Согласие 152-ФЗ -->
+                        <div class="pt-2">
+                            <label class="flex items-start gap-3 cursor-pointer">
+                                <input type="checkbox" name="consent_152fz" required checked class="mt-1 rounded">
+                                <span class="text-xs opacity-75 leading-relaxed">
+                                    Даю согласие на обработку персональных данных в соответствии с Политикой конфиденциальности церкви KCLC.
+                                </span>
+                            </label>
+                        </div>
+
+                        <!-- Кнопка отправки -->
+                        <button type="submit"
+                                class="w-full py-4 rounded-xl btn-conf-accent font-bold text-base shadow-lg flex items-center justify-center gap-2 mt-4">
+                            <span>Завершить регистрацию и получить билет</span>
+                            <span class="material-symbols-outlined text-xl">arrow_forward</span>
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- ──────────────────────────────────────────────
+                 9. ПРОИЗВОЛЬНЫЙ ТЕКСТ И ТЕЗИСЫ (TEXT)
+                 ────────────────────────────────────────────── -->
+            {% elif block.block_type == 'text' %}
+            <section class="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto z-10 relative">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold">{{ block.content.title }}</h2>
+                </div>
+                {% if block.content.lead %}
+                <p class="text-lg sm:text-xl font-medium opacity-90 leading-relaxed mb-6 text-center max-w-2xl mx-auto">
+                    {{ block.content.lead }}
+                </p>
+                {% endif %}
+                {% if block.content.body %}
+                <div class="text-base opacity-80 leading-relaxed space-y-4 mb-8">
+                    {{ block.content.body|linebreaks }}
+                </div>
+                {% endif %}
+                {% if block.content.quote %}
+                <blockquote class="p-6 rounded-2xl bg-conf-accent-soft border-l-4 border-conf-accent text-base sm:text-lg font-medium italic my-6">
+                    {{ block.content.quote }}
+                </blockquote>
+                {% endif %}
+            </section>
+
+            <!-- ──────────────────────────────────────────────
+                 10. КАСТОМНЫЙ HTML / CSS КОД (EMBED)
+                 ────────────────────────────────────────────── -->
+            {% elif block.block_type == 'custom_html' %}
+            <section class="py-12 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto z-10 relative">
+                {% if block.content.css %}
+                <style>
+                    {{ block.content.css|safe }}
+                </style>
+                {% endif %}
+                {{ block.content.html|safe }}
+            </section>
+
+            <!-- ──────────────────────────────────────────────
+                 11. FAQ (ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ)
+                 ────────────────────────────────────────────── -->
+            {% elif block.block_type == 'faq' %}
+            <section class="py-20 sm:py-28 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto z-10 relative">
+                <div class="text-center mb-14">
+                    <span class="text-xs font-bold uppercase tracking-widest text-conf-accent block mb-2">Вопросы и ответы</span>
+                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold">{{ block.content.title|default:"Часто задаваемые вопросы" }}</h2>
+                </div>
+                <div class="space-y-4">
+                    {% for item in block.content.faq_items %}
+                    <details class="group rounded-2xl border p-6 transition-all
+                        {% if event.theme_config.theme == 'modern_dark' %}
+                        bg-slate-900/50 border-slate-800
+                        {% elif event.theme_config.theme == 'editorial_warm' %}
+                        bg-white border-stone-200 shadow-sm
+                        {% else %}
+                        bg-slate-50 border-slate-200/80 shadow-sm
+                        {% endif %}">
+                        <summary class="font-bold text-base cursor-pointer flex justify-between items-center list-none">
+                            <span>{{ item.question }}</span>
+                            <span class="material-symbols-outlined text-conf-accent group-open:rotate-180 transition-transform">expand_more</span>
+                        </summary>
+                        <p class="text-sm opacity-75 leading-relaxed mt-4 pt-4 border-t border-slate-200/50">
+                            {{ item.answer }}
+                        </p>
+                    </details>
+                    {% endfor %}
+                </div>
+            </section>
+
+            {% endif %}
+            {% endif %}
+        {% endfor %}
+
+    {% else %}
+        <!-- Если у события еще нет добавленных блоков -->
+        <section class="py-32 px-4 max-w-4xl mx-auto text-center z-10 relative">
+            <h1 class="text-4xl sm:text-6xl font-extrabold mb-6">{{ event.title }}</h1>
+            <p class="text-lg opacity-75 mb-10 max-w-2xl mx-auto">{{ event.description }}</p>
+            <a href="{% url 'events_catalog' %}" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl btn-conf-accent font-bold text-sm">
+                Вернуться к событиям церкви
+            </a>
+        </section>
+    {% endif %}
+
+    <!-- Подвал визитки -->
+    <footer class="py-14 px-4 border-t border-slate-200/50 text-center text-xs opacity-50 z-10 relative">
+        <p class="mb-2">© {% now "Y" %} Христианская Церковь «Краеугольный Камень» (KCLC)</p>
+        <p><a href="{% url 'events_catalog' %}" class="text-conf-accent hover:underline">Каталог всех событий и конференций церкви</a></p>
+    </footer>
+</div>
+
+<script>
+function updateReceiptFileName(input) {
+    const label = document.getElementById('receipt-file-label');
+    if (input.files && input.files[0]) {
+        label.innerText = 'Выбран файл: ' + input.files[0].name;
+        label.classList.add('text-conf-accent');
+    } else {
+        label.innerText = 'Нажмите для выбора файла чека';
+        label.classList.remove('text-conf-accent');
+    }
+}
+</script>
+{% endblock %}

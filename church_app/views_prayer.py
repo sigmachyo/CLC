@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
 from django.utils import timezone
-from .models import PrayerRequest
-from .forms import PrayerRequestForm
+from .models import PrayerRequest, Revelation, RevelationReaction
+from .forms import PrayerRequestForm, RevelationForm
 
 
 def prayer_list(request):
@@ -173,3 +173,107 @@ def prayer_toggle_answered(request, prayer_id):
         status = '«Отвечена» (Слава Богу!)' if prayer.is_answered else '«Активна»'
         messages.success(request, f'Статус нужды обновлён на: {status}')
     return redirect('my_prayers')
+def revelation_list(request):
+    """Список публичных откровений и свидетельств с подсчетом реакций."""
+    qs = Revelation.objects.filter(is_public=True).order_by('-created_at')
+    
+    revelations = []
+
+    for rev in qs:
+        # Считаем количество каждой реакции
+        reactions = {
+            'amen': rev.reactions.filter(reaction_type='amen').count(),
+            'glory': rev.reactions.filter(reaction_type='glory').count(),
+            'fire': rev.reactions.filter(reaction_type='fire').count(),
+            'grace': rev.reactions.filter(reaction_type='grace').count(),
+        }
+        user_reaction = None
+        if request.user.is_authenticated:
+            user_react = rev.reactions.filter(user=request.user).first()
+            if user_react:
+                user_reaction = user_react.reaction_type
+
+        revelations.append({
+            'revelation': rev,
+            'reactions': reactions,
+            'user_reaction': user_reaction
+        })
+
+    context = {
+        'revelations_data': revelations,
+        'title': 'Откровения и свидетельства | KCLC'
+    }
+    return render(request, 'revelation_list.html', context)
+
+
+@login_required
+def revelation_add(request):
+    """Добавление нового откровения."""
+    if request.method == 'POST':
+        form = RevelationForm(request.POST)
+        if form.is_valid():
+            is_public = form.cleaned_data['is_public']
+            is_anonymous = form.cleaned_data['is_anonymous']
+            
+            Revelation.objects.create(
+                user=request.user,
+                title=form.cleaned_data['title'],
+                content=form.cleaned_data['content'],
+                is_public=is_public,
+                is_anonymous=is_anonymous,
+            )
+
+            messages.success(request, 'Слава Богу! Ваше свидетельство опубликовано.')
+            return redirect('revelation_list')
+    else:
+        form = RevelationForm()
+
+    return render(request, 'revelation_add.html', {
+        'title': 'Поделиться откровением | KCLC',
+        'form': form,
+    })
+
+
+@login_required
+def revelation_react(request, pk):
+    """AJAX-реакции (Toggle: добавить/убрать)"""
+    if request.method == 'POST' and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        revelation = get_object_or_404(Revelation, pk=pk, is_public=True)
+        reaction_type = request.POST.get('reaction_type')
+        
+        valid_types = dict(RevelationReaction.REACTION_CHOICES).keys()
+        if reaction_type not in valid_types:
+            return JsonResponse({'success': False, 'error': 'Invalid reaction type'}, status=400)
+            
+        # У пользователя может быть только одна реакция на пост
+        existing_reaction = RevelationReaction.objects.filter(revelation=revelation, user=request.user).first()
+        
+        if existing_reaction:
+            if existing_reaction.reaction_type == reaction_type:
+                # Если нажал на ту же - удаляем
+                existing_reaction.delete()
+                action = 'removed'
+            else:
+                # Меняем реакцию
+                existing_reaction.reaction_type = reaction_type
+                existing_reaction.save()
+                action = 'updated'
+        else:
+            RevelationReaction.objects.create(revelation=revelation, user=request.user, reaction_type=reaction_type)
+            action = 'added'
+            
+        # Пересчитываем
+        counts = {
+            'amen': revelation.reactions.filter(reaction_type='amen').count(),
+            'glory': revelation.reactions.filter(reaction_type='glory').count(),
+            'fire': revelation.reactions.filter(reaction_type='fire').count(),
+            'grace': revelation.reactions.filter(reaction_type='grace').count(),
+        }
+        
+        return JsonResponse({
+            'success': True,
+            'action': action,
+            'counts': counts,
+            'current_reaction': reaction_type if action != 'removed' else None
+        })
+    return JsonResponse({'success': False}, status=400)

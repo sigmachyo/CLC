@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Регистрация завершена | {{ event.title }}{% endblock %}
+{% block main_class %}flex-grow relative bg-[#0d111d] text-white{% endblock %}
+
+{% block content %}
+<div class="min-h-[85vh] flex items-center justify-center px-4 sm:px-6 py-16 relative">
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#c9a84c]/10 rounded-full blur-[160px] pointer-events-none"></div>
+
+    <div class="max-w-xl w-full bg-[#14192b] border border-[#c9a84c]/40 rounded-[2.5rem] p-6 sm:p-10 shadow-2xl relative text-center">
+        <!-- Иконка успеха -->
+        <div class="w-20 h-20 rounded-full bg-gradient-to-br from-[#c9a84c] to-[#b08e35] text-[#1a1f36] flex items-center justify-center mx-auto mb-6 shadow-xl animate-bounce">
+            <span class="material-symbols-outlined text-4xl font-bold">check</span>
+        </div>
+
+        <span class="text-xs font-bold uppercase tracking-[0.2em] text-[#c9a84c] block mb-2">
+            Церковь KCLC Красноярск
+        </span>
+        <h1 class="text-2xl sm:text-3xl font-serif font-bold text-white mb-2">
+            {% if already_registered %}Вы уже зарегистрированы!{% else %}Регистрация принята!{% endif %}
+        </h1>
+        <p class="text-xs sm:text-sm text-white/70 mb-8 leading-relaxed">
+            Подтверждение и копия билета также отправлены на ваш email: <strong class="text-white">{{ registration.email }}</strong>
+        </p>
+
+        <!-- Карточка билета -->
+        <div class="rounded-2xl bg-white/[0.04] border-2 border-dashed border-[#c9a84c]/50 p-6 text-left mb-8 relative overflow-hidden">
+            <div class="absolute -right-8 -bottom-8 w-28 h-28 bg-[#c9a84c]/10 rounded-full blur-xl pointer-events-none"></div>
+
+            <div class="space-y-3.5 relative z-10">
+                <div class="flex items-center justify-between pb-3 border-b border-white/10">
+                    <div>
+                        <span class="text-[10px] font-bold text-white/40 uppercase tracking-wider block">Номер билета</span>
+                        <span class="text-lg font-mono font-bold text-[#c9a84c] tracking-wider">{{ registration.ticket_number }}</span>
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-500/40">
+                        {{ registration.get_payment_status_display }}
+                    </span>
+                </div>
+
+                <div>
+                    <span class="text-[10px] font-bold text-white/40 uppercase tracking-wider block">Событие</span>
+                    <strong class="text-sm text-white">{{ event.title }}</strong>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <div>
+                        <span class="text-[10px] font-bold text-white/40 uppercase tracking-wider block">Участник</span>
+                        <span class="text-white font-medium">{{ registration.get_full_name }}</span>
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-bold text-white/40 uppercase tracking-wider block">Дата начала</span>
+                        <span class="text-white font-medium">{{ event.start_date|date:"d.m.Y в H:i" }} (МСК)</span>
+                    </div>
+                </div>
+
+                {% if registration.payment_receipt %}
+                <div class="pt-2 border-t border-white/10 flex items-center gap-2 text-xs text-emerald-400">
+                    <span class="material-symbols-outlined text-base">receipt_long</span>
+                    <span>Чек пожертвования прикреплен и отправлен куратору</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Кнопки действий -->
+        <div class="space-y-3">
+            <a href="{% url 'profile' %}"
+               class="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#c9a84c] to-[#e0be5a] text-[#1a1f36] font-bold text-sm shadow-md transition-all hover:scale-[1.02]">
+                <span class="material-symbols-outlined text-lg">account_circle</span>
+                <span>Открыть билет в моем профиле</span>
+            </a>
+
+            <div class="flex items-center gap-2">
+                <a href="https://t.me/{{ event.support_telegram|cut:'@' }}" target="_blank"
+                   class="flex-1 inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#229ED9]/20 hover:bg-[#229ED9]/30 text-[#229ED9] font-bold text-xs border border-[#229ED9]/30 transition-all">
+                    <i class="fab fa-telegram"></i>
+                    <span>Куратор: {{ event.support_telegram }}</span>
+                </a>
+                <a href="{% url 'event_detail' event.slug %}"
+                   class="flex-1 inline-flex items-center justify-center gap-1 py-3 px-4 rounded-xl bg-white/5 hover:bg-white/10 text-white/80 font-bold text-xs border border-white/10 transition-all">
+                    <span>О конференции</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

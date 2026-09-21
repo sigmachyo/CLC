@@ -31,13 +31,16 @@ _allowed_hosts = os.environ.get('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost,*')
 ALLOWED_HOSTS = [host.strip() for host in _allowed_hosts.split(',') if host.strip()]
 ALLOWED_HOSTS.extend(['*'])
 
-# Web Push — ключи из .env
-VAPID_PUBLIC_KEY = os.environ.get('VAPID_PUBLIC_KEY', '')
-VAPID_PRIVATE_KEY = os.environ.get('VAPID_PRIVATE_KEY', '')
-VAPID_ADMIN_EMAIL = os.environ.get('VAPID_ADMIN_EMAIL', 'mailto:webmaster@localhost')
+# Web Push — ключи из .env (с надежными дефолтами)
+VAPID_PUBLIC_KEY = os.environ.get('VAPID_PUBLIC_KEY', 'BPWzM8Sg21koEirpUOKjfqqqUeOL6c4PrF3KwT32QYT9pQP6R1Da9u8jSS0UMTkx4DL_75iOadzTAPNSOJVGlpo')
+VAPID_PRIVATE_KEY = os.environ.get('VAPID_PRIVATE_KEY', 'a4IVr9jA_SyFG-cohYOfztaM0Ul3xrXZI8qgl6a_KKk')
+VAPID_ADMIN_EMAIL = os.environ.get('VAPID_ADMIN_EMAIL', 'mailto:bot.kclc@mail.ru')
 
 INSTALLED_APPS = [
-    'jazzmin',
+    'unfold',
+    'unfold.contrib.filters',
+    'unfold.contrib.forms',
+    'unfold.contrib.inlines',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -61,6 +64,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'django.middleware.gzip.GZipMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -186,83 +190,7 @@ SESSION_SAVE_EVERY_REQUEST = True
 # -------------------------------------------------------------
 # JAZZMIN ADMIN CONFIGURATION (Midnight Gold Theme)
 # -------------------------------------------------------------
-JAZZMIN_SETTINGS = {
-    "site_title": "CLC Panel",
-    "site_header": "CLC Admin",
-    "site_brand": "CLC Красноярск",
-    "site_icon": "fas fa-church",
-    "site_logo_classes": "img-circle",
-    "welcome_sign": "Добро пожаловать в панель CLC",
-    "copyright": "CLC Krasnoyarsk",
-    "search_model": ["auth.User", "church_app.Event"],
-    "user_avatar": None,
-    "topmenu_links": [
-        {"name": "На сайт", "url": "/", "new_window": True},
-    ],
-    "show_sidebar": True,
-    "navigation_expanded": True,
-    "icons": {
-        "auth": "fas fa-users-cog",
-        "auth.user": "fas fa-user",
-        "auth.Group": "fas fa-users",
-        "church_app.Video": "fas fa-video",
-        "church_app.Announcement": "fas fa-bullhorn",
-        "church_app.SpiritualLevel": "fas fa-route",
-        "church_app.DailyVerse": "fas fa-book-open",
-        "church_app.Event": "fas fa-calendar-check",
-        "church_app.EventRegistration": "fas fa-ticket-alt",
-        "church_app.PrayerRequest": "fas fa-pray",
-        "church_app.KidsContent": "fas fa-child",
-        "church_app.KidsProgress": "fas fa-star",
-        "church_app.ChatRoom": "fas fa-comments",
-        "church_app.ChatMessage": "fas fa-comment-dots",
-        "church_app.Category": "fas fa-tags",
-        "church_app.BiblePlan": "fas fa-book",
-        "church_app.BibleReading": "fas fa-bookmark",
-        "church_app.UserProgress": "fas fa-chart-line",
-        "church_app.UserBibleProgress": "fas fa-tasks",
-        "church_app.PushSubscription": "fas fa-bell",
-    },
-    "default_icon_parents": "fas fa-chevron-circle-right",
-    "default_icon_children": "fas fa-circle",
-    "related_modal_active": False,
-    "custom_css": None,
-    "custom_js": None,
-    "show_ui_builder": False,
-    "order_with_respect_to": ["church_app", "church_app.DailyVerse", "church_app.Event", "church_app.Announcement", "church_app.Video", "church_app.PrayerRequest"],
-}
 
-JAZZMIN_UI_TWEAKS = {
-    "navbar_small_text": False,
-    "footer_small_text": False,
-    "body_small_text": False,
-    "brand_small_text": False,
-    "brand_colour": "navbar-navy",
-    "accent": "accent-warning",
-    "navbar": "navbar-white navbar-light",
-    "no_navbar_border": False,
-    "navbar_fixed": True,
-    "layout_boxed": False,
-    "footer_fixed": False,
-    "sidebar_fixed": True,
-    "sidebar": "sidebar-dark-navy",
-    "sidebar_nav_small_text": False,
-    "sidebar_disable_expand": False,
-    "sidebar_nav_child_indent": False,
-    "sidebar_nav_compact_style": False,
-    "sidebar_nav_legacy_style": False,
-    "sidebar_nav_flat_style": True,
-    "theme": "default",
-    "dark_mode_theme": None,
-    "button_classes": {
-        "primary": "btn-outline-primary",
-        "secondary": "btn-outline-secondary",
-        "info": "btn-info",
-        "warning": "btn-warning",
-        "danger": "btn-danger",
-        "success": "btn-success"
-    }
-}
 
 # ---------------------------------------------------------
 # DJANGO-ALLAUTH SETTINGS (v65+)
@@ -350,3 +278,17 @@ SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
 # ---------------------------------------------------------
 HCAPTCHA_SITEKEY = os.environ.get('HCAPTCHA_SITEKEY', '10000000-ffff-ffff-ffff-000000000001')
 HCAPTCHA_SECRET = os.environ.get('HCAPTCHA_SECRET', '0x0000000000000000000000000000000000000000')
+
+# Fast in-memory caching to prevent server blocking/freezing
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'kclc-cache',
+        'TIMEOUT': 300,
+    }
+}
+
+# ── Referrer-Policy HTTP Header (YouTube Embedded Player API Requirement)
+# Sends "Referrer-Policy: strict-origin-when-cross-origin" on all HTTP responses
+SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+

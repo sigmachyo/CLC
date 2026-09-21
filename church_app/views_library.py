@@ -5,13 +5,16 @@ from django.http import JsonResponse
 from django.utils import timezone
 from django.db.models import Q, Count
 from .models import Category, Video, BiblePlan, BibleReading, UserBibleProgress, Event, EventRegistration, KidsContent, KidsProgress, DailyVerse, PodcastEpisode
+from .forms import ConferenceRegistrationForm
+from .services_email import send_conference_registration_email
 import json
+
 def library_home(request):
     """Главная страница библиотеки"""
     categories = Category.objects.filter(is_active=True).order_by('order')
-    recent_videos = Video.objects.filter(is_active=True).order_by('-created_at')[:6]
-    kids_content = KidsContent.objects.filter(is_active=True).order_by('-is_featured', '-created_at')[:4]
-    podcast_episodes = PodcastEpisode.objects.filter(is_active=True).order_by('order')
+    recent_videos = Video.objects.filter(is_active=True).exclude(category__slug='proslavlenie').select_related('category')[:8]
+    worship_songs = Video.objects.filter(category__slug='proslavlenie', is_active=True).select_related('category')[:8]
+    podcast_episodes = PodcastEpisode.objects.filter(is_active=True).order_by('order')[:25]
     
     today = timezone.localdate()
     day_of_year = today.toordinal()
@@ -22,24 +25,12 @@ def library_home(request):
     daily_bg_url = f"/static/img/daily_verses/verse_{verse_bg_num}.jpg"
     
     # 2. Verse Logic
-    daily_verse = DailyVerse.objects.filter(date=today).first()
-    if not daily_verse:
-        # Если в базе нет стиха для конкретной даты, используемFallback из нашего красивого списка
-        verse_index = day_of_year % len(VERSES)
-        verse_data = VERSES[verse_index]
-        
-        # Создаем "mock" объект, чтобы шаблон мог вызывать .verse_text и .reference
-        class MockVerse:
-            def __init__(self, text, reference):
-                self.verse_text = text
-                self.reference = reference
-        
-        daily_verse = MockVerse(verse_data['text'], verse_data['ref'])
+    daily_verse = DailyVerse.get_today_verse()
     
     context = {
         'categories': categories,
         'recent_videos': recent_videos,
-        'kids_content': kids_content,
+        'worship_songs': worship_songs,
         'podcast_episodes': podcast_episodes,
         'daily_verse': daily_verse,
         'daily_bg_url': daily_bg_url,
@@ -55,22 +46,21 @@ def library_category(request, category_slug):
         context['videos'] = videos
         return render(request, 'library/category_video.html', context)
     elif category.category_type == 'bible':
-        plans = BiblePlan.objects.filter(is_active=True).order_by('order')
-        if request.user.is_authenticated:
-            user_progress = {p.plan_id: p for p in UserBibleProgress.objects.filter(user=request.user)}
-            for plan in plans:
-                plan.user_progress = user_progress.get(plan.id)
-                if plan.user_progress:
-                    plan.progress_percentage = plan.user_progress.get_progress_percentage()
-        context['plans'] = plans
-        return render(request, 'library/category_bible.html', context)
+        return redirect('library_home')
     elif category.category_type == 'events':
-        events = Event.objects.filter(is_active=True).order_by('start_date')
-        context['events'] = events
+        now = timezone.now()
+        upcoming_events = Event.objects.filter(is_active=True).filter(
+            Q(end_date__gte=now) | (Q(end_date__isnull=True) & Q(start_date__gte=now))
+        ).order_by('start_date')
+        past_events = Event.objects.filter(is_active=True).filter(
+            Q(end_date__lt=now) | (Q(end_date__isnull=True) & Q(start_date__lt=now))
+        ).order_by('-start_date')
+        context['upcoming_events'] = upcoming_events
+        context['past_events'] = past_events
+        context['events'] = upcoming_events
         return render(request, 'library/category_events.html', context)
     elif category.category_type == 'kids':
-        # Перенаправляем на красивую главную детскую страницу вместо обычной сетки
-        return redirect('kids_home')
+        return redirect('library_home')
         
     # Default fallback
     context['items'] = []
@@ -89,67 +79,20 @@ def video_detail(request, video_id):
     }
     return render(request, 'library/video_detail.html', context)
 def bible_home(request):
-    """Страница чтения Библии"""
-    plans = BiblePlan.objects.filter(is_active=True).order_by('order')
-    if request.user.is_authenticated:
-        user_progress = {p.plan_id: p for p in UserBibleProgress.objects.filter(user=request.user)}
-        for plan in plans:
-            plan.user_progress = user_progress.get(plan.id)
-            if plan.user_progress:
-                plan.progress_percentage = plan.user_progress.get_progress_percentage()
-    popular_plans = BiblePlan.objects.filter(is_active=True).annotate(
-        users_count=Count('userbibleprogress')
-    ).order_by('-users_count')[:3]
-    context = {
-        'plans': plans,
-        'popular_plans': popular_plans,
-    }
-    return render(request, 'library/bible_home.html', context)
-@login_required
+    """Страница чтения Библии (перенаправление, планы чтения отключены)"""
+    return redirect('library_home')
+
 def bible_plan_detail(request, plan_id):
-    """Детали плана чтения"""
-    plan = get_object_or_404(BiblePlan, id=plan_id, is_active=True)
-    readings = plan.readings.all().order_by('day_number')
-    progress, created = UserBibleProgress.objects.get_or_create(
-        user=request.user,
-        plan=plan
-    )
-    context = {
-        'plan': plan,
-        'readings': readings,
-        'progress': progress,
-    }
-    return render(request, 'library/bible_plan_detail.html', context)
-@login_required
+    """Детали плана чтения (перенаправление, планы чтения отключены)"""
+    return redirect('library_home')
+
 def bible_read_day(request, plan_id, day):
-    """Чтение конкретного дня"""
-    plan = get_object_or_404(BiblePlan, id=plan_id, is_active=True)
-    reading = get_object_or_404(BibleReading, plan=plan, day_number=day)
-    progress = UserBibleProgress.objects.get_or_create(user=request.user, plan=plan)[0]
-    if request.method == 'POST':
-        progress.mark_day_completed(day)
-        messages.success(request, f'День {day} отмечен как прочитанный!')
-        return redirect('bible_plan_detail', plan_id=plan.id)
-    context = {
-        'plan': plan,
-        'reading': reading,
-        'progress': progress,
-        'is_completed': day in progress.completed_days,
-    }
-    return render(request, 'library/bible_read_day.html', context)
-@login_required
+    """Чтение конкретного дня (перенаправление, планы чтения отключены)"""
+    return redirect('library_home')
+
 def complete_bible_day(request, plan_id, day):
-    """API для отметки дня как прочитанного"""
-    if request.method == 'POST':
-        plan = get_object_or_404(BiblePlan, id=plan_id)
-        progress = UserBibleProgress.objects.get_or_create(user=request.user, plan=plan)[0]
-        progress.mark_day_completed(day)
-        return JsonResponse({
-            'success': True,
-            'progress': progress.get_progress_percentage(),
-            'completed_days': progress.completed_days,
-        })
-    return JsonResponse({'success': False}, status=400)
+    """API для отметки дня как прочитанного (отключено)"""
+    return JsonResponse({'success': False, 'message': 'Планы чтения отключены'}, status=404)
 def events_list(request):
     """Список событий"""
     event_type = request.GET.get('type', '')
@@ -166,8 +109,13 @@ def events_list(request):
             )
         except (ValueError, TypeError):
             pass
-    upcoming_events = events.filter(end_date__gte=timezone.now()).order_by('start_date')
-    past_events = events.filter(end_date__lt=timezone.now()).order_by('-start_date')[:6]
+    now = timezone.now()
+    upcoming_events = events.filter(
+        Q(end_date__gte=now) | (Q(end_date__isnull=True) & Q(start_date__gte=now))
+    ).order_by('start_date')
+    past_events = events.filter(
+        Q(end_date__lt=now) | (Q(end_date__isnull=True) & Q(start_date__lt=now))
+    ).order_by('-start_date')[:12]
     from django.db.models.functions import TruncMonth
     from django.db.models import Count
     months = events.annotate(
@@ -186,38 +134,161 @@ def events_list(request):
     }
     return render(request, 'library/events_list.html', context)
 def event_detail(request, slug):
-    """Детали события"""
+    """Детали события или сложный лендинг конференции"""
     event = get_object_or_404(Event, slug=slug, is_active=True)
+    
+    # Проверяем, есть ли у события блоки конструктора лендингов
+    blocks = event.blocks.filter(is_active=True).order_by('order')
+    is_conference_landing = event.is_conference or blocks.exists()
+
     user_registration = None
     if request.user.is_authenticated:
         user_registration = EventRegistration.objects.filter(event=event, user=request.user).first()
+
+    if is_conference_landing:
+        # Предзаполнение формы регистрации из профиля
+        initial_data = {}
+        if request.user.is_authenticated:
+            initial_data['first_name'] = request.user.first_name
+            initial_data['last_name'] = request.user.last_name
+            initial_data['email'] = request.user.email
+            if hasattr(request.user, 'profile'):
+                p = request.user.profile
+                initial_data['phone'] = p.phone or ''
+                initial_data['telegram'] = p.telegram or ''
+
+        form = ConferenceRegistrationForm(initial=initial_data)
+
+        # Карта блоков по типу для быстрого доступа в шаблоне
+        blocks_by_type = {}
+        for b in blocks:
+            blocks_by_type[b.block_type] = b.content
+
+        context = {
+            'event': event,
+            'blocks': blocks,
+            'blocks_by_type': blocks_by_type,
+            'user_registration': user_registration,
+            'is_registered': bool(user_registration),
+            'form': form,
+        }
+        return render(request, 'events/conference_landing.html', context)
+
+    # Обычное простое событие
     similar_events = Event.objects.filter(
         event_type=event.event_type,
         is_active=True
     ).exclude(id=event.id).order_by('start_date')[:3]
+
     context = {
         'event': event,
         'user_registration': user_registration,
         'similar_events': similar_events,
     }
     return render(request, 'library/event_detail.html', context)
-@login_required
+
+
 def event_register(request, slug):
-    """Регистрация на событие"""
+    """Регистрация на событие или конференцию с чеком пожертвования и квитанцией"""
     event = get_object_or_404(Event, slug=slug, is_active=True)
+    
     if request.method == 'POST':
+        # Проверка лимита участников
         if event.max_participants > 0 and event.registrations.count() >= event.max_participants:
-            messages.error(request, 'Достигнут лимит участников')
+            messages.error(request, 'К сожалению, достигнут лимит участников на это событие.')
             return redirect('event_detail', slug=event.slug)
-        registration, created = EventRegistration.objects.get_or_create(
-            event=event,
-            user=request.user
-        )
-        if created:
-            messages.success(request, f'Вы зарегистрированы на "{event.title}"')
+
+        form = ConferenceRegistrationForm(request.POST, request.FILES)
+        if form.is_valid():
+            first_name = form.cleaned_data['first_name'].strip()
+            last_name = form.cleaned_data['last_name'].strip()
+            email = form.cleaned_data['email'].strip().lower()
+            phone = form.cleaned_data['phone'].strip()
+            telegram = form.cleaned_data.get('telegram', '').strip()
+            payment_receipt = form.cleaned_data.get('payment_receipt')
+
+            user = request.user if request.user.is_authenticated else None
+
+            # Проверка существующей регистрации (по пользователю или email)
+            existing = None
+            if user:
+                existing = EventRegistration.objects.filter(event=event, user=user).first()
+            if not existing and email:
+                existing = EventRegistration.objects.filter(event=event, email__iexact=email).first()
+
+            if existing:
+                # Если уже был зарегистрирован, но досылает чек
+                if payment_receipt and not existing.payment_receipt:
+                    existing.payment_receipt = payment_receipt
+                    existing.payment_status = 'pending'
+                    existing.save()
+                    messages.success(request, 'Чек успешно прикреплен к вашей регистрации!')
+                else:
+                    messages.info(request, f'Вы уже зарегистрированы на это событие! Номер вашего билета: {existing.ticket_number}')
+                
+                return render(request, 'events/registration_success.html', {
+                    'event': event,
+                    'registration': existing,
+                    'already_registered': True,
+                })
+
+            # Создание новой регистрации
+            status = 'pending' if payment_receipt else ('free' if not event.registration_fee else 'pending')
+            registration = EventRegistration.objects.create(
+                event=event,
+                user=user,
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                phone=phone,
+                telegram=telegram,
+                payment_receipt=payment_receipt,
+                payment_status=status,
+                is_confirmed=(status == 'free'),
+            )
+
+            # Обновление контактов в профиле пользователя, если они не были заполнены
+            if user and hasattr(user, 'profile'):
+                p = user.profile
+                changed = False
+                if not p.phone and phone:
+                    p.phone = phone
+                    changed = True
+                if not p.telegram and telegram:
+                    p.telegram = telegram
+                    changed = True
+                if not user.first_name and first_name:
+                    user.first_name = first_name
+                    user.save()
+                if not user.last_name and last_name:
+                    user.last_name = last_name
+                    user.save()
+                if changed:
+                    p.save()
+
+            # Отправка электронного билета и квитанции на email
+            send_conference_registration_email(registration, request.get_host())
+
+            messages.success(request, f'Регистрация успешно завершена! Ваш билет: {registration.ticket_number}')
+            return render(request, 'events/registration_success.html', {
+                'event': event,
+                'registration': registration,
+                'already_registered': False,
+            })
         else:
-            messages.info(request, 'Вы уже зарегистрированы на это событие')
-        return redirect('event_detail', slug=event.slug)
+            # Ошибки формы
+            messages.error(request, 'Пожалуйста, проверьте правильность заполнения формы регистрации.')
+            # Повторный рендеринг лендинга с ошибками
+            blocks = event.blocks.filter(is_active=True).order_by('order')
+            blocks_by_type = {b.block_type: b.content for b in blocks}
+            return render(request, 'events/conference_landing.html', {
+                'event': event,
+                'blocks': blocks,
+                'blocks_by_type': blocks_by_type,
+                'form': form,
+                'scroll_to_reg': True,
+            })
+
     return redirect('event_detail', slug=event.slug)
 def kids_home(request):
     """Детская страница"""
@@ -288,7 +359,80 @@ def kids_content_detail(request, content_id):
     return render(request, template_map.get(content.content_type, 'library/kids_detail.html'), context)
 
 def video_list(request):
-    """Страница со всеми видео"""
-    videos = Video.objects.filter(is_active=True).order_by('-created_at')
-    return render(request, 'library/video_list.html', {'videos': videos})
+    """Страница со всеми видео (плейлисты: воскресные служения, проповеди, конференции)"""
+    playlist = request.GET.get('playlist', 'all').strip()
+    q = request.GET.get('q', '').strip()
+
+    # Исключаем прославление из общего каталога видео, так как для него есть отдельный раздел
+    base_qs = Video.objects.filter(is_active=True).exclude(category__slug='proslavlenie').select_related('category')
+
+    if playlist == 'services':
+        videos = base_qs.filter(Q(category__slug='voskresnye-sluzheniya') | Q(title__icontains='служение') | Q(title__icontains='наделение'))
+    elif playlist == 'sermons':
+        videos = base_qs.filter(category__slug='propovedi')
+    elif playlist == 'conferences':
+        videos = base_qs.filter(Q(category__slug='konferencii') | Q(title__icontains='конференция') | Q(title__icontains='семинар') | Q(title__icontains='два источника'))
+    else:
+        playlist = 'all'
+        videos = base_qs
+
+    if q:
+        videos = videos.filter(Q(title__icontains=q) | Q(description__icontains=q))
+
+    counts = {
+        'all': base_qs.count(),
+        'services': base_qs.filter(Q(category__slug='voskresnye-sluzheniya') | Q(title__icontains='служение') | Q(title__icontains='наделение')).count(),
+        'sermons': base_qs.filter(category__slug='propovedi').count(),
+        'conferences': base_qs.filter(Q(category__slug='konferencii') | Q(title__icontains='конференция') | Q(title__icontains='семинар') | Q(title__icontains='два источника')).count(),
+    }
+
+    context = {
+        'videos': videos,
+        'playlist': playlist,
+        'q': q,
+        'counts': counts,
+    }
+    return render(request, 'library/video_list.html', context)
+
+
+def worship_songs_list(request):
+    """Отдельная страница всех песен прославления KCLC Worship (@kclcworship) с плейлистами"""
+    playlist = request.GET.get('playlist', 'all').strip()
+    q = request.GET.get('q', '').strip()
+    
+    base_songs = Video.objects.filter(category__slug='proslavlenie', is_active=True).select_related('category')
+
+    if playlist == 'praise':
+        songs = base_songs.filter(Q(title__icontains='хвал') | Q(title__icontains='яхве') | Q(title__icontains='лев') | Q(title__icontains='башня') | Q(title__icontains='царь'))
+    elif playlist == 'worship':
+        songs = base_songs.filter(Q(title__icontains='поклонен') | Q(title__icontains='елей') | Q(title__icontains='тьмы') | Q(title__icontains='милости') | Q(title__icontains='иешуа'))
+    elif playlist == 'acoustic':
+        songs = base_songs.filter(Q(title__icontains='акусти') | Q(title__icontains='групп') | Q(title__icontains='версия'))
+    elif playlist == 'covers':
+        songs = base_songs.filter(Q(title__icontains='cover') | Q(title__icontains='кавер'))
+    else:
+        playlist = 'all'
+        songs = base_songs
+
+    if q:
+        songs = songs.filter(Q(title__icontains=q) | Q(description__icontains=q))
+
+    all_count = base_songs.count()
+    counts = {
+        'all': all_count,
+        'praise': base_songs.filter(Q(title__icontains='хвал') | Q(title__icontains='яхве') | Q(title__icontains='лев') | Q(title__icontains='башня') | Q(title__icontains='царь')).count(),
+        'worship': base_songs.filter(Q(title__icontains='поклонен') | Q(title__icontains='елей') | Q(title__icontains='тьмы') | Q(title__icontains='милости') | Q(title__icontains='иешуа')).count(),
+        'acoustic': base_songs.filter(Q(title__icontains='акусти') | Q(title__icontains='групп') | Q(title__icontains='версия')).count(),
+        'covers': base_songs.filter(Q(title__icontains='cover') | Q(title__icontains='кавер')).count(),
+    }
+
+    context = {
+        'songs': songs,
+        'playlist': playlist,
+        'q': q,
+        'total_count': all_count,
+        'filtered_count': songs.count(),
+        'counts': counts,
+    }
+    return render(request, 'library/worship_list.html', context)
 

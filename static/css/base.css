@@ -6,7 +6,10 @@
     --navy: #1a1f36;
     --navy-light: #252b48;
     --navy-hover: #2c335a;
+    --navy-l: #e2e6f0;
+    --navy-ll: #f0f2f8;
     --gold: #c9a84c;
+    --gold-d: #a88734;
     --gold-hover: #b08e35;
     --bg: #f5f0e8;
     --txt: #1a1f36;
@@ -441,8 +444,18 @@ a {
 }
 /* Отключение "резинового" скролла (overscroll bounce) на macOS и iOS */
 html, body {
+    width: 100%;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+    position: relative;
     overscroll-behavior-y: none;
     overscroll-behavior-x: none;
+}
+
+main, .main-content {
+    width: 100%;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
 }
 
 /* Утилита для красивого отображения Библейских стихов */
