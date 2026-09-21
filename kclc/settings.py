@@ -38,18 +38,37 @@ if _allowed_hosts:
 elif DEBUG:
     ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', '*']
 else:
-    ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0']
+    ALLOWED_HOSTS = [
+        '127.0.0.1', 'localhost', '0.0.0.0',
+        'new.kclc.ru', 'kclc.ru', 'www.new.kclc.ru', 'www.kclc.ru',
+        'newkclc.ru', 'www.newkclc.ru',
+        'new.kclc.tw1.ru', 'cr89358.tw1.ru', 'vh458.timeweb.ru',
+    ]
 
 # Web Push — ключи из .env (с надежными дефолтами)
 VAPID_PUBLIC_KEY = os.environ.get('VAPID_PUBLIC_KEY', 'BPWzM8Sg21koEirpUOKjfqqqUeOL6c4PrF3KwT32QYT9pQP6R1Da9u8jSS0UMTkx4DL_75iOadzTAPNSOJVGlpo')
 VAPID_PRIVATE_KEY = os.environ.get('VAPID_PRIVATE_KEY', 'a4IVr9jA_SyFG-cohYOfztaM0Ul3xrXZI8qgl6a_KKk')
 VAPID_ADMIN_EMAIL = os.environ.get('VAPID_ADMIN_EMAIL', 'mailto:bot.kclc@mail.ru')
 
-INSTALLED_APPS = [
-    'unfold',
-    'unfold.contrib.filters',
-    'unfold.contrib.forms',
-    'unfold.contrib.inlines',
+INSTALLED_APPS = []
+
+# Admin theme: unfold if available, otherwise jazzmin
+try:
+    import unfold
+    INSTALLED_APPS.extend([
+        'unfold',
+        'unfold.contrib.filters',
+        'unfold.contrib.forms',
+        'unfold.contrib.inlines',
+    ])
+except ImportError:
+    try:
+        import jazzmin
+        INSTALLED_APPS.append('jazzmin')
+    except ImportError:
+        pass
+
+INSTALLED_APPS.extend([
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -70,7 +89,7 @@ INSTALLED_APPS = [
     'hcaptcha',
 
     'church_app',  # Ваше приложение
-]
+])
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -108,15 +127,37 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'kclc.wsgi.application'
 
-# Database — автоматическая поддержка PostgreSQL (DATABASE_URL) с откатом на SQLite
-_default_db_url = f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
-DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL', _default_db_url),
-        conn_max_age=600,
-        conn_health_checks=True,
-    )
-}
+# Database: поддержка Timeweb MySQL, PostgreSQL (DATABASE_URL) и откат на SQLite
+if os.environ.get('DB_ENGINE') or (os.environ.get('DB_NAME') and not os.environ.get('DATABASE_URL')):
+    DATABASES = {
+        'default': {
+            'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.mysql'),
+            'NAME': os.environ.get('DB_NAME', 'cr89358_new'),
+            'USER': os.environ.get('DB_USER', 'cr89358_new'),
+            'PASSWORD': os.environ.get('DB_PASSWORD', 'ChurchPass2026'),
+            'HOST': os.environ.get('DB_HOST', 'localhost'),
+            'PORT': os.environ.get('DB_PORT', '3306'),
+            'OPTIONS': {
+                'charset': 'utf8mb4',
+            },
+        }
+    }
+elif 'DATABASE_URL' in os.environ:
+    DATABASES = {
+        'default': dj_database_url.config(
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
+    }
+else:
+    _default_db_url = f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=_default_db_url,
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
