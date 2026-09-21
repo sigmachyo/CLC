@@ -1,6 +1,7 @@
 import os
 import ipaddress
 from pathlib import Path
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,9 +28,17 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-local-dev-key-
 
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False').lower() in ('true', '1', 'yes')
 
-_allowed_hosts = os.environ.get('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost,*')
-ALLOWED_HOSTS = [host.strip() for host in _allowed_hosts.split(',') if host.strip()]
-ALLOWED_HOSTS.extend(['*'])
+if not DEBUG and SECRET_KEY.startswith('django-insecure-'):
+    import warnings
+    warnings.warn("DJANGO_SECRET_KEY is using a default insecure key. Please set a random secret key in production!", RuntimeWarning)
+
+_allowed_hosts = os.environ.get('DJANGO_ALLOWED_HOSTS', '')
+if _allowed_hosts:
+    ALLOWED_HOSTS = [host.strip() for host in _allowed_hosts.split(',') if host.strip()]
+elif DEBUG:
+    ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', '*']
+else:
+    ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0']
 
 # Web Push — ключи из .env (с надежными дефолтами)
 VAPID_PUBLIC_KEY = os.environ.get('VAPID_PUBLIC_KEY', 'BPWzM8Sg21koEirpUOKjfqqqUeOL6c4PrF3KwT32QYT9pQP6R1Da9u8jSS0UMTkx4DL_75iOadzTAPNSOJVGlpo')
@@ -47,6 +56,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
 
     # allauth
@@ -64,6 +74,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.gzip.GZipMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -97,12 +108,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'kclc.wsgi.application'
 
-# Database
+# Database — автоматическая поддержка PostgreSQL (DATABASE_URL) с откатом на SQLite
+_default_db_url = f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL', _default_db_url),
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
 }
 
 # Password validation
@@ -130,13 +143,16 @@ TIME_ZONE = 'Asia/Krasnoyarsk'
 USE_I18N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']  # Для разработки
-STATIC_ROOT = BASE_DIR / 'staticfiles'    # Для продакшена
+# Static files (CSS, JavaScript, Images) — раздача через WhiteNoise сжатие и кеш
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_MAX_AGE = 31536000
 
 # Media files (загружаемые пользователями)
-MEDIA_URL = 'media/'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
@@ -153,32 +169,51 @@ handler404 = 'church_app.views.custom_404'
 handler500 = 'church_app.views.custom_500'
 
 # -------------------------------------------------------
-# Безопасность
+# Безопасность и SSL
 # -------------------------------------------------------
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', 'False').lower() in ('true', '1', 'yes')
-SESSION_COOKIE_SECURE = os.environ.get('SESSION_COOKIE_SECURE', 'False').lower() in ('true', '1', 'yes')
-CSRF_COOKIE_SECURE = os.environ.get('CSRF_COOKIE_SECURE', 'False').lower() in ('true', '1', 'yes')
-SECURE_HSTS_SECONDS = int(os.environ.get('SECURE_HSTS_SECONDS', '0'))
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
+SESSION_COOKIE_SECURE = SECURE_SSL_REDIRECT or os.environ.get('SESSION_COOKIE_SECURE', 'False').lower() in ('true', '1', 'yes')
+CSRF_COOKIE_SECURE = SECURE_SSL_REDIRECT or os.environ.get('CSRF_COOKIE_SECURE', 'False').lower() in ('true', '1', 'yes')
+
+if SECURE_SSL_REDIRECT:
+    SECURE_HSTS_SECONDS = int(os.environ.get('SECURE_HSTS_SECONDS', '31536000'))
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+else:
+    SECURE_HSTS_SECONDS = int(os.environ.get('SECURE_HSTS_SECONDS', '0'))
 
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_HTTPONLY = True
-X_FRAME_OPTIONS = 'DENY'
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
-# CSRF trusted origins (добавь свой домен в .env и здесь в production)
+# ── Referrer-Policy HTTP Header (YouTube Embedded Player API Requirement)
+SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+
+# CSRF trusted origins (добавь свой домен в .env или переменные окружения)
 CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1',
     'http://localhost',
+    'https://127.0.0.1',
+    'https://localhost',
 ]
 _extra_origins = os.environ.get('CSRF_TRUSTED_ORIGINS', '')
 if _extra_origins:
-    CSRF_TRUSTED_ORIGINS += [o.strip() for o in _extra_origins.split(',') if o.strip()]
+    for origin in _extra_origins.split(','):
+        origin = origin.strip()
+        if origin:
+            if not origin.startswith(('http://', 'https://')):
+                CSRF_TRUSTED_ORIGINS.extend([f'https://{origin}', f'http://{origin}'])
+            else:
+                CSRF_TRUSTED_ORIGINS.append(origin)
 
-# CSP отключён — подключается позже после стабилизации через django-csp
-# (при необходимости раскомментировать и добавить 'csp.middleware.CSPMiddleware' в MIDDLEWARE)
+for host in ALLOWED_HOSTS:
+    if host and host not in ('*', '127.0.0.1', 'localhost', '0.0.0.0'):
+        CSRF_TRUSTED_ORIGINS.extend([f'https://{host}', f'http://{host}'])
+# Удаляем дубликаты
+CSRF_TRUSTED_ORIGINS = list(dict.fromkeys(CSRF_TRUSTED_ORIGINS))
 
 # -------------------------------------------------------
 # Session
@@ -288,7 +323,44 @@ CACHES = {
     }
 }
 
-# ── Referrer-Policy HTTP Header (YouTube Embedded Player API Requirement)
-# Sends "Referrer-Policy: strict-origin-when-cross-origin" on all HTTP responses
-SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
+# ---------------------------------------------------------
+# Production Logging (Console / Docker / Gunicorn friendly)
+# ---------------------------------------------------------
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '[{asctime}] {levelname} {name}: {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING' if not DEBUG else 'INFO',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.environ.get('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': False,
+        },
+        'church_app': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
+
 
