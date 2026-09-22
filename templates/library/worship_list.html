@@ -164,12 +164,12 @@
                     <div class="absolute top-2.5 right-2.5 flex items-center gap-1.5">
                         {% if song.youtube_url %}
                         <span class="w-6 h-6 rounded-full bg-red-600/90 backdrop-blur-md flex items-center justify-center text-white text-[10px] shadow" title="Доступно на YouTube">
-                            <i class="fab fa-youtube text-[11px]"></i>
+                            {% include 'icons/youtube.html' with class="w-[12px] h-[12px]" %}
                         </span>
                         {% endif %}
                         {% if song.rutube_url %}
                         <span class="w-6 h-6 rounded-full bg-blue-600/90 backdrop-blur-md flex items-center justify-center text-white text-[10px] shadow" title="Доступно на RuTube">
-                            <span class="font-bold text-[9px]">RT</span>
+                            {% include 'icons/rutube.html' with class="w-[12px] h-[12px]" %}
                         </span>
                         {% endif %}
                     </div>

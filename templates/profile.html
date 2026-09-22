@@ -126,14 +126,14 @@
             <div class="mt-4 flex flex-wrap items-center justify-center sm:justify-start gap-2.5">
                 {% if profile.telegram %}
                 <a href="{{ profile.get_telegram_url }}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#229ED9]/15 text-[#54b9eb] border border-[#229ED9]/30 text-xs font-semibold hover:bg-[#229ED9]/25 transition-colors">
-                    <i class="fab fa-telegram text-sm"></i>
+                    {% include 'icons/telegram.html' with class="w-[14px] h-[14px]" %}
                     <span>Telegram: @{{ profile.telegram|cut:"@"|cut:"https://t.me/" }}</span>
                 </a>
                 {% endif %}
 
                 {% if profile.vk %}
                 <a href="{{ profile.get_vk_url }}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#2787F5]/15 text-[#6ca5f0] border border-[#2787F5]/30 text-xs font-semibold hover:bg-[#2787F5]/25 transition-colors">
-                    <i class="fab fa-vk text-sm"></i>
+                    {% include 'icons/vk.html' with class="w-[14px] h-[14px]" %}
                     <span>ВКонтакте</span>
                 </a>
                 {% endif %}

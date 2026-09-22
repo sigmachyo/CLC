@@ -137,7 +137,7 @@
                 <!-- Telegram -->
                 <div>
                     <label class="text-xs font-bold uppercase tracking-wider text-white/50 mb-2 flex items-center gap-2">
-                        <i class="fab fa-telegram text-[#229ED9]"></i>
+                        {% include 'icons/telegram.html' with class="w-4 h-4" %}
                         <span>Telegram</span>
                     </label>
                     <div class="relative flex items-center">
@@ -150,7 +150,7 @@
                 <!-- ВКонтакте -->
                 <div>
                     <label class="text-xs font-bold uppercase tracking-wider text-white/50 mb-2 flex items-center gap-2">
-                        <i class="fab fa-vk text-[#2787F5]"></i>
+                        {% include 'icons/vk.html' with class="w-4 h-4" %}
                         <span>ВКонтакте</span>
                     </label>
                     <input type="text" name="vk" value="{{ profile.vk }}" placeholder="vk.com/username или ссылка"

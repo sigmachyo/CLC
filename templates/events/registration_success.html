@@ -75,7 +75,7 @@
             <div class="flex items-center gap-2">
                 <a href="https://t.me/{{ event.support_telegram|cut:'@' }}" target="_blank"
                    class="flex-1 inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#229ED9]/20 hover:bg-[#229ED9]/30 text-[#229ED9] font-bold text-xs border border-[#229ED9]/30 transition-all">
-                    <i class="fab fa-telegram"></i>
+                    {% include 'icons/telegram.html' with class="w-5 h-5" %}
                     <span>Куратор: {{ event.support_telegram }}</span>
                 </a>
                 <a href="{% url 'event_detail' event.slug %}"

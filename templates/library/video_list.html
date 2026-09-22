@@ -81,11 +81,11 @@
                 <!-- Channel direct links -->
                 <div class="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0">
                     <a href="https://www.youtube.com/@kclcfamily" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-600/15 hover:bg-red-600/25 border border-red-500/20 text-red-400 text-xs font-medium transition-all shrink-0">
-                        <i class="fab fa-youtube text-[13px]"></i>
+                        {% include 'icons/youtube.html' with class="w-[14px] h-[14px]" %}
                         <span>YouTube @kclcfamily</span>
                     </a>
                     <a href="https://rutube.ru" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-600/15 hover:bg-blue-600/25 border border-blue-500/20 text-blue-400 text-xs font-medium transition-all shrink-0">
-                        <span class="font-bold text-[10px]">RT</span>
+                        {% include 'icons/rutube.html' with class="w-[14px] h-[14px]" %}
                         <span>RuTube канал</span>
                     </a>
                 </div>
@@ -164,12 +164,12 @@
                     <div class="absolute top-2.5 right-2.5 flex items-center gap-1.5">
                         {% if video.youtube_url %}
                         <span class="w-6 h-6 rounded-full bg-red-600/90 backdrop-blur-md flex items-center justify-center text-white text-[10px] shadow" title="Доступно на YouTube">
-                            <i class="fab fa-youtube text-[11px]"></i>
+                            {% include 'icons/youtube.html' with class="w-[12px] h-[12px]" %}
                         </span>
                         {% endif %}
                         {% if video.rutube_url %}
                         <span class="w-6 h-6 rounded-full bg-blue-600/90 backdrop-blur-md flex items-center justify-center text-white text-[10px] shadow" title="Доступно на RuTube">
-                            <span class="font-bold text-[9px]">RT</span>
+                            {% include 'icons/rutube.html' with class="w-[12px] h-[12px]" %}
                         </span>
                         {% endif %}
                     </div>
