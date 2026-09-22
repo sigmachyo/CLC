@@ -334,22 +334,26 @@ else:
 # Только VK и Яндекс (Google удален по запросу)
 # ---------------------------------------------------------
 SOCIALACCOUNT_LOGIN_ON_GET = True
+SOCIALACCOUNT_ADAPTER = 'church_app.adapter.CustomSocialAccountAdapter'
+SOCIALACCOUNT_EMAIL_VERIFICATION = 'none'
 
 SOCIALACCOUNT_PROVIDERS = {
     'vk': {
         'APP': {
-            'client_id': os.environ.get('VK_CLIENT_ID', ''),
-            'secret': os.environ.get('VK_CLIENT_SECRET', ''),
+            'client_id': os.environ.get('VK_CLIENT_ID', '').strip(),
+            'secret': os.environ.get('VK_CLIENT_SECRET', '').strip(),
             'key': '',
         },
-        'SCOPE': ['email'],
+        'SCOPE': ['email', 'photos'],
+        'FIELDS': ['first_name', 'last_name', 'screen_name', 'sex', 'bdate', 'photo_200', 'photo_max_orig'],
     },
     'yandex': {
         'APP': {
-            'client_id': os.environ.get('YANDEX_CLIENT_ID', ''),
-            'secret': os.environ.get('YANDEX_CLIENT_SECRET', ''),
+            'client_id': os.environ.get('YANDEX_CLIENT_ID', '').strip(),
+            'secret': os.environ.get('YANDEX_CLIENT_SECRET', '').strip(),
             'key': '',
         },
+        'SCOPE': ['login:email', 'login:info', 'login:avatar'],
     },
 }
 
