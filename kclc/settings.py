@@ -1,7 +1,10 @@
 import os
 import ipaddress
 from pathlib import Path
-import dj_database_url
+try:
+    import dj_database_url
+except ImportError:
+    dj_database_url = None
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -142,7 +145,7 @@ if os.environ.get('DB_ENGINE') or (os.environ.get('DB_NAME') and not os.environ.
             },
         }
     }
-elif 'DATABASE_URL' in os.environ:
+elif 'DATABASE_URL' in os.environ and dj_database_url:
     DATABASES = {
         'default': dj_database_url.config(
             conn_max_age=600,
@@ -151,13 +154,21 @@ elif 'DATABASE_URL' in os.environ:
     }
 else:
     _default_db_url = f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=_default_db_url,
-            conn_max_age=600,
-            conn_health_checks=True,
-        )
-    }
+    if dj_database_url:
+        DATABASES = {
+            'default': dj_database_url.config(
+                default=_default_db_url,
+                conn_max_age=600,
+                conn_health_checks=True,
+            )
+        }
+    else:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
+        }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [

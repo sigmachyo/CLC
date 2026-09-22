@@ -1,6 +1,8 @@
 from django.contrib import admin
-from unfold.admin import ModelAdmin
-from unfold.admin import TabularInline, StackedInline
+try:
+    from unfold.admin import ModelAdmin, TabularInline, StackedInline
+except ImportError:
+    from django.contrib.admin import ModelAdmin, TabularInline, StackedInline
 from django.db import models
 from django.utils import timezone
 from .models import (

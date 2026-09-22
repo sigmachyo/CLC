@@ -11,6 +11,9 @@ import json
 
 def library_home(request):
     """Главная страница библиотеки"""
+    from .services_video_sync import trigger_background_auto_sync
+    trigger_background_auto_sync()
+
     categories = Category.objects.filter(is_active=True).order_by('order')
     recent_videos = Video.objects.filter(is_active=True).exclude(category__slug='proslavlenie').select_related('category')[:8]
     worship_songs = Video.objects.filter(category__slug='proslavlenie', is_active=True).select_related('category')[:8]

@@ -1,0 +1,5439 @@
+[
+{
+  "model": "church_app.podcastepisode",
+  "pk": 31,
+  "fields": {
+    "title": "ЧТО СКРЫВАЮТ ИНЫЕ ЯЗЫКИ?",
+    "speaker": "Данил Кононов",
+    "duration": "51:30",
+    "episode_url": "https://kclcfamily.podster.fm/e/478537/chto-skryvayut-inye-yazyki-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/a2b1ff96-9266-40ff-8a32-2e9f40c8542f/audio.mp3?media=rss",
+    "order": 0,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 32,
+  "fields": {
+    "title": "ВОСКРЕСНОЕ НАДЕЛЕНИЕ",
+    "speaker": "Михаил Зырянов",
+    "duration": "43:11",
+    "episode_url": "https://kclcfamily.podster.fm/e/478536/voskresnoe-nadelenie-mihail-zyryanov",
+    "audio_url": "https://podster.fm/episodes/a2b1fdc2-159a-4489-b748-4f8d2d878452/audio.mp3?media=rss",
+    "order": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 33,
+  "fields": {
+    "title": "БЛАГОСЛОВЕНИЯ ПО ВЕРЕ",
+    "speaker": "Алексей Лунев",
+    "duration": "37:58",
+    "episode_url": "https://kclcfamily.podster.fm/e/478004/blagosloveniya-po-vere-aleksey-lunev",
+    "audio_url": "https://podster.fm/episodes/a2a7d569-eb21-4c62-9552-b3ab0df30b04/audio.mp3?media=rss",
+    "order": 2,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 34,
+  "fields": {
+    "title": "КРИЗИС ЛЮБВИ. КРИЗИС СЛУЖИТЕЛЯ",
+    "speaker": "Владимир Ашаев",
+    "duration": "43:38",
+    "episode_url": "https://kclcfamily.podster.fm/e/476794/krizis-lyubvi-krizis-sluzhitelya-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/a28bde84-99fe-4eae-b9cd-1585013b4f11/audio.mp3?media=rss",
+    "order": 3,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 35,
+  "fields": {
+    "title": "ОБУЗА ИЛИ ВДОХНОВЕНИЕ",
+    "speaker": "Владимир Ашаев",
+    "duration": "37:48",
+    "episode_url": "https://kclcfamily.podster.fm/e/475935/obuza-ili-vdohnovenie-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/a279a0eb-8fd1-4fbd-b60d-6a75431334cb/audio.mp3?media=rss",
+    "order": 4,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 36,
+  "fields": {
+    "title": "Сокрытое принадлежит Богу. Открытое принадлежит людям",
+    "speaker": "Владимир Ашаев",
+    "duration": "38:26",
+    "episode_url": "https://kclcfamily.podster.fm/e/474994/sokrytoe-prinadlezhit-bogu-otkrytoe-prinadlezhit-lyudyam-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/a2698de2-0a0a-413c-ba99-1054663eac66/audio.mp3?media=rss",
+    "order": 5,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 37,
+  "fields": {
+    "title": "АНГЕЛЫ И РАДОСТЬ",
+    "speaker": "Юрий Юнюшкин",
+    "duration": "41:12",
+    "episode_url": "https://kclcfamily.podster.fm/e/474993/angely-i-radost-yuriy-yunyushkin",
+    "audio_url": "https://podster.fm/episodes/a2698ce7-effb-4194-95e6-9ce3debdcfa7/audio.mp3?media=rss",
+    "order": 6,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 38,
+  "fields": {
+    "title": "НЕ ЗАБУДЬ СВОЙ ИЕРУСАЛИМ",
+    "speaker": "Максим Притчин",
+    "duration": "43:23",
+    "episode_url": "https://kclcfamily.podster.fm/e/474992/ne-zabud-svoy-ierusalim-maksim-pritchin",
+    "audio_url": "https://podster.fm/episodes/a2698c73-27c8-4a18-a01a-a4ee6be3de31/audio.mp3?media=rss",
+    "order": 7,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 39,
+  "fields": {
+    "title": "В ЧЕМ СЕКРЕТ ПОКЛОНЕНИЯ?",
+    "speaker": "Елена Зуева",
+    "duration": "50:08",
+    "episode_url": "https://kclcfamily.podster.fm/e/473022/v-chem-sekret-pokloneniya-elena-zueva",
+    "audio_url": "https://podster.fm/episodes/a23f6b99-38be-412c-b826-754f01df9758/audio.mp3?media=rss",
+    "order": 8,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 40,
+  "fields": {
+    "title": "СИЛА КОТОРАЯ СЛУЖИТ",
+    "speaker": "Владимир Ашаев",
+    "duration": "24:30",
+    "episode_url": "https://kclcfamily.podster.fm/e/473021/sila-kotoraya-sluzhit-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/a23f6b12-74b1-4418-a101-bd248bd9eb16/audio.mp3?media=rss",
+    "order": 9,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 41,
+  "fields": {
+    "title": "ЗАЧЕМ Я ЗДЕСЬ?",
+    "speaker": "Елена Зуева",
+    "duration": "49:49",
+    "episode_url": "https://kclcfamily.podster.fm/e/473019/zachem-ya-zdes-elena-zueva",
+    "audio_url": "https://podster.fm/episodes/a23f69fa-351a-44e4-8def-519854954cf0/audio.mp3?media=rss",
+    "order": 10,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 42,
+  "fields": {
+    "title": "ЮБИЛЕЙНЫЙ ГОД",
+    "speaker": "Елена Зуева",
+    "duration": "17:49",
+    "episode_url": "https://kclcfamily.podster.fm/e/470906/yubileynyy-god-elena-zueva",
+    "audio_url": "https://podster.fm/episodes/a21b1df9-b69b-4cd3-984b-91ca4dd61b73/audio.mp3?media=rss",
+    "order": 11,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 43,
+  "fields": {
+    "title": "АНГЕЛЫ",
+    "speaker": "Юрий Юнюшкин",
+    "duration": "47:30",
+    "episode_url": "https://kclcfamily.podster.fm/e/470905/angely-yuriy-yunyushkin",
+    "audio_url": "https://podster.fm/episodes/a21b1db8-4f3a-4d55-9667-a3608d9b2c62/audio.mp3?media=rss",
+    "order": 12,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 44,
+  "fields": {
+    "title": "ЗАЧЕМ НУЖНА ЦЕРКОВЬ",
+    "speaker": "Елена Зуева",
+    "duration": "40:58",
+    "episode_url": "https://kclcfamily.podster.fm/e/470902/zachem-nuzhna-tserkov-elena-zueva",
+    "audio_url": "https://podster.fm/episodes/a21b0f94-0989-4ecc-af7a-ce238e225390/audio.mp3?media=rss",
+    "order": 13,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 45,
+  "fields": {
+    "title": "ВООБРАЖЕНИЕ И ВЕРА",
+    "speaker": "Данил Кононов",
+    "duration": "66:16",
+    "episode_url": "https://kclcfamily.podster.fm/e/473018/voobrazhenie-i-vera-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/a23f68f9-427c-4ae8-87fe-790e85554aca/audio.mp3?media=rss",
+    "order": 14,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 46,
+  "fields": {
+    "title": "ДРУЖБА СО СВЯТЫМ ДУХОМ",
+    "speaker": "Данил Кононов",
+    "duration": "38:57",
+    "episode_url": "https://kclcfamily.podster.fm/e/470901/druzhba-so-svyatym-duhom-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/a21b0ebd-7651-4ac5-81fb-8557f87491b3/audio.mp3?media=rss",
+    "order": 15,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 47,
+  "fields": {
+    "title": "СИЛА БОЖЬЕГО ЗАВЕТА",
+    "speaker": "Владимир Ашаев",
+    "duration": "30:19",
+    "episode_url": "https://kclcfamily.podster.fm/e/465523/sila-bozhego-zaveta-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/a1c6435f-2b4e-4ec6-ba4e-74b9842613d6/audio.mp3?media=rss",
+    "order": 16,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 48,
+  "fields": {
+    "title": "Современная церковь с древним посланием",
+    "speaker": "Алексей Романов",
+    "duration": "42:19",
+    "episode_url": "https://kclcfamily.podster.fm/e/464541/sovremennaya-tserkov-s-drevnim-poslaniem-aleksey-romanov",
+    "audio_url": "https://podster.fm/episodes/a1b6a87f-26fc-4036-961e-01d3b54fcb8b/audio.mp3?media=rss",
+    "order": 17,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 49,
+  "fields": {
+    "title": "Конференция ВЕРЫ / 05.04.2026",
+    "speaker": "Сергей Лукьянов",
+    "duration": "62:00",
+    "episode_url": "https://kclcfamily.podster.fm/e/462709/konferentsiya-very-05042026-sergey-lukyanov",
+    "audio_url": "https://podster.fm/episodes/a1a62c3d-9345-42cf-841c-81e99ce5c561/audio.mp3?media=rss",
+    "order": 18,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 50,
+  "fields": {
+    "title": "Конференция ВЕРЫ / 04.04.2026",
+    "speaker": "Илья Федоров",
+    "duration": "87:29",
+    "episode_url": "https://kclcfamily.podster.fm/e/462708/konferentsiya-very-04042026-ilya-fedorov",
+    "audio_url": "https://podster.fm/episodes/a1a62bec-b35b-43b9-9e2b-3a8c9ef47009/audio.mp3?media=rss",
+    "order": 19,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 51,
+  "fields": {
+    "title": "Конференция ВЕРЫ / 04.04.2026",
+    "speaker": "Сергей Лукьянов",
+    "duration": "93:18",
+    "episode_url": "https://kclcfamily.podster.fm/e/462707/konferentsiya-very-04042026-sergey-lukyanov",
+    "audio_url": "https://podster.fm/episodes/a1a62b59-d1a2-495d-87bd-9e67663ae9a3/audio.mp3?media=rss",
+    "order": 20,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 52,
+  "fields": {
+    "title": "Конференция ВЕРЫ / 04.04.2026",
+    "speaker": "Денис Орловский",
+    "duration": "41:10",
+    "episode_url": "https://kclcfamily.podster.fm/e/462705/konferentsiya-very-0404-1100-denis-orlovskiy",
+    "audio_url": "https://podster.fm/episodes/a1a62870-7188-425f-9208-82f2caa19cb8/audio.mp3?media=rss",
+    "order": 21,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 53,
+  "fields": {
+    "title": "Конференция ВЕРЫ / 03.04.2026",
+    "speaker": "Сергей Лукьянов",
+    "duration": "54:20",
+    "episode_url": "https://kclcfamily.podster.fm/e/462704/konferentsiya-very-0304-sergey-lukyanov",
+    "audio_url": "https://podster.fm/episodes/a1a627ce-17be-4afb-8254-91e8c5d6c02a/audio.mp3?media=rss",
+    "order": 22,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 54,
+  "fields": {
+    "title": "КАК ЛЕГКО ПЕРЕЖИТЬ КРИЗИС?",
+    "speaker": "Владимир Ашаев",
+    "duration": "44:17",
+    "episode_url": "https://kclcfamily.podster.fm/e/462733/kak-legko-perezhit-krizis-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/a1a67cc7-408b-4637-b5df-5e1ecc9fd6df/audio.mp3?media=rss",
+    "order": 23,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 55,
+  "fields": {
+    "title": "Почему Бог не спешит выдергивать сорняки?",
+    "speaker": "Владимир Ашаев",
+    "duration": "32:52",
+    "episode_url": "https://kclcfamily.podster.fm/e/462732/pochemu-bog-ne-speshit-vydergivat-sornyaki-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/a1a67be7-8f5b-4399-b9bc-9735f1bde610/audio.mp3?media=rss",
+    "order": 24,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 56,
+  "fields": {
+    "title": "ПАСХА",
+    "speaker": "Владимир Ашаев",
+    "duration": "16:06",
+    "episode_url": "https://kclcfamily.podster.fm/e/461322/pasha-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/a19a406a-318a-4a12-b0ff-93316e78c687/audio.mp3?media=rss",
+    "order": 25,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 57,
+  "fields": {
+    "title": "ИСПЫТАНИЯ",
+    "speaker": "Данил Кононов",
+    "duration": "62:34",
+    "episode_url": "https://kclcfamily.podster.fm/e/461321/ispytaniya-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/a19a3f76-088d-4bdf-9a59-9fc91adbdf8a/audio.mp3?media=rss",
+    "order": 26,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 58,
+  "fields": {
+    "title": "В твоем семени есть сила, жизнь и потенциал",
+    "speaker": "Владимир Ашаев",
+    "duration": "23:19",
+    "episode_url": "https://kclcfamily.podster.fm/e/456018/v-tvoem-semeni-est-sila-zhizn-i-potentsial-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/a155ce26-e810-4d23-bf4e-7d65b0d4e3b9/audio.mp3?media=rss",
+    "order": 27,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 59,
+  "fields": {
+    "title": "БОГ ДЕЙСТВУЕТ ЧЕРЕЗ ТЕБЯ",
+    "speaker": "Максим Притчин",
+    "duration": "24:30",
+    "episode_url": "https://kclcfamily.podster.fm/e/456017/bog-deystvuet-cherez-tebya-maksim-pritchin",
+    "audio_url": "https://podster.fm/episodes/a155ccf0-ceed-4c05-bb62-6b25bdc9f53d/audio.mp3?media=rss",
+    "order": 28,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 60,
+  "fields": {
+    "title": "ТАИНСТВО БРАКА",
+    "speaker": "Данил Кононов",
+    "duration": "38:27",
+    "episode_url": "https://kclcfamily.podster.fm/e/453143/tainstvo-braka-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/a133e720-9f1e-4d35-bb1b-bf9efd5567a8/audio.mp3?media=rss",
+    "order": 29,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 61,
+  "fields": {
+    "title": "МУДРОСТЬ ПРИНОСИТ УСТРОЙСТВО",
+    "speaker": "Владимир Ашаев",
+    "duration": "39:04",
+    "episode_url": "https://kclcfamily.podster.fm/e/452422/mudrost-prinosit-ustroystvo-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/a12a39c9-d40e-45b4-99d5-b8b3fe3bb927/audio.mp3?media=rss",
+    "order": 30,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 62,
+  "fields": {
+    "title": "ВЕРА ИЗ МИЛОСТИ",
+    "speaker": "Юрий Юнюшкин",
+    "duration": "47:07",
+    "episode_url": "https://kclcfamily.podster.fm/e/450828/vera-iz-milosti-yuriy-yunyushkin",
+    "audio_url": "https://podster.fm/episodes/a11c39e6-5fe9-42e7-8261-595bb4d44984/audio.mp3?media=rss",
+    "order": 31,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 63,
+  "fields": {
+    "title": "ЖИВАЯ ЦЕРКОВЬ, ЭТО КАКАЯ ЦЕРКОВЬ?",
+    "speaker": "Владимир Ашаев",
+    "duration": "37:03",
+    "episode_url": "https://kclcfamily.podster.fm/e/449768/zhivaya-tserkov-eto-kakaya-tserkov-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/a11172af-d9a3-42fd-b7b0-b7be8f8e70ec/audio.mp3?media=rss",
+    "order": 32,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 64,
+  "fields": {
+    "title": "ПОКЛОНЕНИЕ ГОСПОДУ: БОЛЬШЕ, ЧЕМ ПЕНИЕ",
+    "speaker": "Максим Притчин",
+    "duration": "26:07",
+    "episode_url": "https://kclcfamily.podster.fm/e/448113/poklonenie-gospodu-bolshe-chem-penie-maksim-pritchin",
+    "audio_url": "https://podster.fm/episodes/a0fb7c4c-d11f-4842-ad0c-9a7ea40fbdfd/audio.mp3?media=rss",
+    "order": 33,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 65,
+  "fields": {
+    "title": "СЛОВО СО ВЛАСТЬЮ",
+    "speaker": "Владимир Ашаев",
+    "duration": "38:13",
+    "episode_url": "https://kclcfamily.podster.fm/e/447340/slovo-so-vlastyu-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/a0ef509a-af5c-461f-9bef-db32cedde987/audio.mp3?media=rss",
+    "order": 34,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 66,
+  "fields": {
+    "title": "ПРЕОБРАЖАЮЩАЯ МИЛОСТЬ",
+    "speaker": "Юрий Юнюшкин",
+    "duration": "57:24",
+    "episode_url": "https://kclcfamily.podster.fm/e/445918/preobrazhayuschaya-milost-yuriy-yunyushkin",
+    "audio_url": "https://podster.fm/episodes/a0e0d2c5-98de-4d03-8439-7799872cd1fd/audio.mp3?media=rss",
+    "order": 35,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 67,
+  "fields": {
+    "title": "Твое новое имя - Изобилие и Богатство",
+    "speaker": "Данил Кононов",
+    "duration": "56:29",
+    "episode_url": "https://kclcfamily.podster.fm/e/445147/tvoe-novoe-imya-izobilie-i-bogatstvo-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/a0d753a5-c7ce-495b-8ea5-e0ff137a2ce6/audio.mp3?media=rss",
+    "order": 36,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 68,
+  "fields": {
+    "title": "Семя: Бог еще не закончил с тобой",
+    "speaker": "Максим Притчин",
+    "duration": "25:18",
+    "episode_url": "https://kclcfamily.podster.fm/e/445143/semya-bog-esche-ne-zakonchil-s-toboy-maksim-pritchin",
+    "audio_url": "https://podster.fm/episodes/a0d751e5-bfff-4b19-9d4f-6f886c8eabaf/audio.mp3?media=rss",
+    "order": 37,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 69,
+  "fields": {
+    "title": "ИИСУС",
+    "speaker": "Данил Кононов",
+    "duration": "16:59",
+    "episode_url": "https://kclcfamily.podster.fm/e/444666/iisus-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/a0d30a16-4c7a-40a1-9032-0950c08d38d7/audio.mp3?media=rss",
+    "order": 38,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 70,
+  "fields": {
+    "title": "ВЛАСТЬ ВЕРУЮЩЕГО",
+    "speaker": "Владимир Ашаев",
+    "duration": "32:33",
+    "episode_url": "https://kclcfamily.podster.fm/e/442291/vlast-veruyuschego-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/a0a8b74c-34b9-4fd1-966c-f18dea7fc8b4/audio.mp3?media=rss",
+    "order": 39,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 71,
+  "fields": {
+    "title": "МИКРОКОСМ И МАКРОКОСМ",
+    "speaker": "Денис Орловский",
+    "duration": "35:35",
+    "episode_url": "https://kclcfamily.podster.fm/e/441608/mikrokosm-i-makrokosm-denis-orlovskiy",
+    "audio_url": "https://podster.fm/episodes/a09f8c2c-2026-4f2e-b191-2341ce6b79d9/audio.mp3?media=rss",
+    "order": 40,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 72,
+  "fields": {
+    "title": "РОЖДЕСТВО В МОЕЙ ЖИЗНИ",
+    "speaker": "Максим Притчин",
+    "duration": "30:47",
+    "episode_url": "https://kclcfamily.podster.fm/e/440026/rozhdestvo-v-moey-zhizni-maksim-pritchin",
+    "audio_url": "https://podster.fm/episodes/a09117d3-9695-4611-bdaf-7252cec3f361/audio.mp3?media=rss",
+    "order": 41,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 73,
+  "fields": {
+    "title": "ЖАТВА. ВРЕМЯ СПАСЕНИЯ",
+    "speaker": "Владимир Ашаев",
+    "duration": "38:03",
+    "episode_url": "https://kclcfamily.podster.fm/e/438100/zhatva-vremya-spaseniya-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/a07d1b11-fc8b-4adb-8cb4-d2a71f5b42e9/audio.mp3?media=rss",
+    "order": 42,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 74,
+  "fields": {
+    "title": "ИДЕНТИЧНОСТЬ",
+    "speaker": "Владимир Ашаев",
+    "duration": "31:00",
+    "episode_url": "https://kclcfamily.podster.fm/e/437195/identichnost-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/a06ec0df-0ab1-47ed-80d9-9a2eb53f39f9/audio.mp3?media=rss",
+    "order": 43,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 75,
+  "fields": {
+    "title": "ФИНАНСЫ",
+    "speaker": "Владимир Плотников",
+    "duration": "38:50",
+    "episode_url": "https://kclcfamily.podster.fm/e/437194/finansy-vladimir-plotnikov",
+    "audio_url": "https://podster.fm/episodes/a06ec050-253e-4294-8adc-58044333cbf0/audio.mp3?media=rss",
+    "order": 44,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 76,
+  "fields": {
+    "title": "ЕЛЕЙ ДОЛЖЕН ТЕЧЬ",
+    "speaker": "Данил Кононов",
+    "duration": "46:26",
+    "episode_url": "https://kclcfamily.podster.fm/e/435379/eley-dolzhen-tech-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/a054d986-8e26-400f-96f3-30d77ba41697/audio.mp3?media=rss",
+    "order": 45,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 77,
+  "fields": {
+    "title": "КАКОЙ ОН?",
+    "speaker": "Ринат Бахтеев",
+    "duration": "42:30",
+    "episode_url": "https://kclcfamily.podster.fm/e/435377/kakoy-on-rinat-bahteev",
+    "audio_url": "https://podster.fm/episodes/a054d8ea-1d98-4148-81b6-5d1cb30481f7/audio.mp3?media=rss",
+    "order": 46,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 78,
+  "fields": {
+    "title": "БОЖИЙ ЗАМЫСЕЛ В НАШИХ ОБСТОЯТЕЛЬСТВАХ",
+    "speaker": "Владимир Ашаев",
+    "duration": "20:28",
+    "episode_url": "https://kclcfamily.podster.fm/e/433695/bozhiy-zamysel-v-nashih-obstoyatelstvah-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/a03c93ad-3c02-46e9-ad58-0888406f8d0a/audio.mp3?media=rss",
+    "order": 47,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 79,
+  "fields": {
+    "title": "ПОМАЗАНИЕ НА ВЛАДЫЧЕСТВО. СИЛА НАСЛЕДИЯ",
+    "speaker": "Владимир Ашаев",
+    "duration": "32:04",
+    "episode_url": "https://kclcfamily.podster.fm/e/433694/pomazanie-na-vladychestvo-sila-naslediya-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/a03c9324-ee02-4683-a081-7b197d2322f9/audio.mp3?media=rss",
+    "order": 48,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 80,
+  "fields": {
+    "title": "ПОМАЗАНИЕ НА ВЛАДЫЧЕСТВО",
+    "speaker": "Владимир Ашаев",
+    "duration": "34:08",
+    "episode_url": "https://kclcfamily.podster.fm/e/433692/pomazanie-na-vladychestvo-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/a03c9246-ba47-458e-8ad8-3be2bd183dc4/audio.mp3?media=rss",
+    "order": 49,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 81,
+  "fields": {
+    "title": "ДУХОВНАЯ ДЕМЕНЦИЯ",
+    "speaker": "Данил Кононов",
+    "duration": "44:28",
+    "episode_url": "https://kclcfamily.podster.fm/e/433691/duhovnaya-dementsiya-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/a03c8ee7-0809-4435-a1a5-e69fc73f8728/audio.mp3?media=rss",
+    "order": 50,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 82,
+  "fields": {
+    "title": "ВАЖНОСТЬ ЦЕРКВИ",
+    "speaker": "Владимир Ашаев",
+    "duration": "16:05",
+    "episode_url": "https://kclcfamily.podster.fm/e/429475/vazhnost-tserkvi-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/a00032aa-c46d-4a91-ba5e-21036b2ab625/audio.mp3?media=rss",
+    "order": 51,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 83,
+  "fields": {
+    "title": "МУДРОСТЬ ПРИГОТОВЛЕННАЯ ДЛЯ СЛАВЫ",
+    "speaker": "Юрий Юнюшкин",
+    "duration": "39:11",
+    "episode_url": "https://kclcfamily.podster.fm/e/427827/mudrost-prigotovlennaya-dlya-slavy-yuriy-yunyushkin",
+    "audio_url": "https://podster.fm/episodes/9fe9f742-abf3-409c-8d4a-e2181a3e70c0/audio.mp3?media=rss",
+    "order": 52,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 84,
+  "fields": {
+    "title": "Я КАЛЕНДАРЬ ПЕРЕВЕРНУ...",
+    "speaker": "Максим Притчин",
+    "duration": "29:58",
+    "episode_url": "https://kclcfamily.podster.fm/e/426700/ya-kalendar-perevernu-maksim-pritchin",
+    "audio_url": "https://podster.fm/episodes/9fd9b02c-efb2-400d-bfa9-7d72abdc3269/audio.mp3?media=rss",
+    "order": 53,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 85,
+  "fields": {
+    "title": "СЛАВА БОЖЬЯ",
+    "speaker": "Данил Кононов",
+    "duration": "40:40",
+    "episode_url": "https://kclcfamily.podster.fm/e/424554/slava-bozhya-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/9fc76dbc-5759-41b8-8895-0002cb22ab03/audio.mp3?media=rss",
+    "order": 54,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 86,
+  "fields": {
+    "title": "НЕПОНИМАНИЕ СВОЕГО ПРЕДНАЗНАЧЕНИЯ НЕ ДАЕТ УВИДЕТЬ ЖАТВУ",
+    "speaker": "Владимир Ашаев",
+    "duration": "37:47",
+    "episode_url": "https://kclcfamily.podster.fm/e/423978/neponimanie-svoego-prednaznacheniya-ne-daet-uvidet-zhatvu-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9fbdad42-6283-40eb-9ba9-17d0c97f685b/audio.mp3?media=rss",
+    "order": 55,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 87,
+  "fields": {
+    "title": "ЕВАНГЕЛИЕ СПАСЕНИЯ",
+    "speaker": "Данил Кононов",
+    "duration": "45:37",
+    "episode_url": "https://kclcfamily.podster.fm/e/423104/evangelie-spaseniya-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/9fafae75-ec64-4a6a-993f-f140a76f5eae/audio.mp3?media=rss",
+    "order": 56,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 88,
+  "fields": {
+    "title": "ИСЦЕЛЕНИЕ ИСТОЧНИКА",
+    "speaker": "Владимир Ашаев",
+    "duration": "38:47",
+    "episode_url": "https://kclcfamily.podster.fm/e/423101/istselenie-istochnika-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9fafae27-34f4-4c6c-a58c-9bba4766d459/audio.mp3?media=rss",
+    "order": 57,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 89,
+  "fields": {
+    "title": "СИЛА КРОВИ ХРИСТА",
+    "speaker": "Максим Притчин",
+    "duration": "25:46",
+    "episode_url": "https://kclcfamily.podster.fm/e/421106/sila-krovi-hrista-maksim-pritchin",
+    "audio_url": "https://podster.fm/episodes/9f8f7c33-91de-4ff4-97a5-37b9e5835c58/audio.mp3?media=rss",
+    "order": 58,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 90,
+  "fields": {
+    "title": "ОСТАВЬ СОЛЕНЫЙ СЛЕД В ИСТОРИИ",
+    "speaker": "Владимир Ашаев",
+    "duration": "45:27",
+    "episode_url": "https://kclcfamily.podster.fm/e/420542/ostav-solenyy-sled-v-istorii-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9f8523c3-3a0d-4714-b1d4-d96c7c419f1b/audio.mp3?media=rss",
+    "order": 59,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 91,
+  "fields": {
+    "title": "ПРИНИМАЙ ЗАБОТУ ОТЦА",
+    "speaker": "Юрий Юнюшкин",
+    "duration": "32:45",
+    "episode_url": "https://kclcfamily.podster.fm/e/420541/prinimay-zabotu-ottsa-yuriy-yunyushkin",
+    "audio_url": "https://podster.fm/episodes/9f852329-75c2-4c19-b0eb-a31a74e4293d/audio.mp3?media=rss",
+    "order": 60,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 92,
+  "fields": {
+    "title": "КАКОЙ О ТЕБЕ СЛУХ?",
+    "speaker": "Владимир Мокрицын",
+    "duration": "46:02",
+    "episode_url": "https://kclcfamily.podster.fm/e/418996/kakoy-o-tebe-sluh-vladimir-mokritsyn",
+    "audio_url": "https://podster.fm/episodes/9f71088b-5156-44b4-af61-834d30866d59/audio.mp3?media=rss",
+    "order": 61,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 93,
+  "fields": {
+    "title": "СНИМИ ОБУВЬ",
+    "speaker": "Владимир Ашаев",
+    "duration": "38:12",
+    "episode_url": "https://kclcfamily.podster.fm/e/418995/snimi-obuv-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9f710824-ff52-466d-8670-ae9733b0fc7d/audio.mp3?media=rss",
+    "order": 62,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 94,
+  "fields": {
+    "title": "ВЕЛИЧИЕ БОГА",
+    "speaker": "Данил Кононов",
+    "duration": "67:21",
+    "episode_url": "https://kclcfamily.podster.fm/e/418994/velichie-boga-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/9f7107c2-7640-4a49-85f2-33e65fe3748c/audio.mp3?media=rss",
+    "order": 63,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 95,
+  "fields": {
+    "title": "ГОСПОДЬ - ПАСТЫРЬ МОЙ",
+    "speaker": "Елена Зуева",
+    "duration": "34:29",
+    "episode_url": "https://kclcfamily.podster.fm/e/418992/gospod-pastyr-moy-elena-zueva",
+    "audio_url": "https://podster.fm/episodes/9f7106b8-063f-4cc6-bbb8-3dd00c8c7a21/audio.mp3?media=rss",
+    "order": 64,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 96,
+  "fields": {
+    "title": "ВОСКРЕСШАЯ ЖИЗНЬ!",
+    "speaker": "Елена Зуева",
+    "duration": "44:22",
+    "episode_url": "https://kclcfamily.podster.fm/e/418991/voskresshaya-zhizn-elena-zueva",
+    "audio_url": "https://podster.fm/episodes/9f7105eb-b97a-4730-ae2f-55b80b527924/audio.mp3?media=rss",
+    "order": 65,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 97,
+  "fields": {
+    "title": "МЫШЛЕНИЕ ИЗОБИЛИЯ",
+    "speaker": "Владимир Ашаев",
+    "duration": "49:19",
+    "episode_url": "https://kclcfamily.podster.fm/e/412893/myshlenie-izobiliya-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9f1cac0e-5cb0-48c5-bfc0-8863c7026f5d/audio.mp3?media=rss",
+    "order": 66,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 98,
+  "fields": {
+    "title": "ИСПЫТАНИЯ И ЛЮБОВЬ БОЖЬЯ",
+    "speaker": "Виктория Кононова",
+    "duration": "34:02",
+    "episode_url": "https://kclcfamily.podster.fm/e/412889/ispytaniya-i-lyubov-bozhya-viktoriya-kononova",
+    "audio_url": "https://podster.fm/episodes/9f1cab15-7f08-4e38-9ffe-9b4de9be2008/audio.mp3?media=rss",
+    "order": 67,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 99,
+  "fields": {
+    "title": "ЛЮБИШЬ ЛИ ТЫ МЕНЯ?",
+    "speaker": "Виктория Кононова",
+    "duration": "45:21",
+    "episode_url": "https://kclcfamily.podster.fm/e/410577/lyubish-li-ty-menya-viktoriya-kononova",
+    "audio_url": "https://podster.fm/episodes/9ef8e5b6-b88f-467d-aec8-c5148030b699/audio.mp3?media=rss",
+    "order": 68,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 100,
+  "fields": {
+    "title": "ТЫ КТО? ГОСПОДИН ИЛИ СЛУГА?",
+    "speaker": "Владимир Ашаев",
+    "duration": "38:32",
+    "episode_url": "https://kclcfamily.podster.fm/e/409551/ty-kto-gospodin-ili-sluga-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9eea230d-f350-4fbd-81b5-455218868b7d/audio.mp3?media=rss",
+    "order": 69,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 101,
+  "fields": {
+    "title": "УЗКИЙ ПУТЬ",
+    "speaker": "Алексей Романов",
+    "duration": "30:30",
+    "episode_url": "https://kclcfamily.podster.fm/e/408591/uzkiy-put-aleksey-romanov",
+    "audio_url": "https://podster.fm/episodes/9edc8428-1e45-4d99-a613-9681789f66c0/audio.mp3?media=rss",
+    "order": 70,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 102,
+  "fields": {
+    "title": "БЛАГОДАТЬ НА УМНОЖЕНИЕ",
+    "speaker": "Данил Кононов",
+    "duration": "47:31",
+    "episode_url": "https://kclcfamily.podster.fm/e/408590/blagodat-na-umnozhenie-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/9edc83a7-0ee3-48dc-9475-e17f4c460cc4/audio.mp3?media=rss",
+    "order": 71,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 103,
+  "fields": {
+    "title": "ПАСХА",
+    "speaker": "Владимир Ашаев",
+    "duration": "25:43",
+    "episode_url": "https://kclcfamily.podster.fm/e/408588/pasha-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9edc8327-7e21-4d27-9e8c-1911d51881bd/audio.mp3?media=rss",
+    "order": 72,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 104,
+  "fields": {
+    "title": "КАК ПО СПИРАЛИ",
+    "speaker": "Максим Притчин",
+    "duration": "17:45",
+    "episode_url": "https://kclcfamily.podster.fm/e/404406/kak-po-spirali-maksim-pritchin",
+    "audio_url": "https://podster.fm/episodes/9eadd35b-51c3-4f8e-b63e-2c9f1e585719/audio.mp3?media=rss",
+    "order": 73,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 105,
+  "fields": {
+    "title": "ЕДИНЕНИЕ С БОГОМ",
+    "speaker": "Данил Кононов",
+    "duration": "41:07",
+    "episode_url": "https://kclcfamily.podster.fm/e/404405/edinenie-s-bogom-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/9eadd2ef-8c7d-437c-a7b7-248647b6d85c/audio.mp3?media=rss",
+    "order": 74,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 106,
+  "fields": {
+    "title": "Конференция ВЕРЫ / 30.03",
+    "speaker": "Денис Орловский",
+    "duration": "60:23",
+    "episode_url": "https://kclcfamily.podster.fm/e/404403/konferentsiya-very-3003-denis-orlovskiy",
+    "audio_url": "https://podster.fm/episodes/9eadd24a-6808-4bf9-bcc3-6ede338f54e8/audio.mp3?media=rss",
+    "order": 75,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 107,
+  "fields": {
+    "title": "Конференция ВЕРЫ / 29.03 18:30",
+    "speaker": "Илья Федоров",
+    "duration": "87:13",
+    "episode_url": "https://kclcfamily.podster.fm/e/404402/konferentsiya-very-2903-1830-ilya-fedorov",
+    "audio_url": "https://podster.fm/episodes/9eadd1fe-4a3c-448d-b4c6-d7200a3344ae/audio.mp3?media=rss",
+    "order": 76,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 108,
+  "fields": {
+    "title": "Конференция ВЕРЫ / 29.03 15:00",
+    "speaker": "Данил Кононов",
+    "duration": "61:15",
+    "episode_url": "https://kclcfamily.podster.fm/e/404401/konferentsiya-very-2903-1500-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/9eadd1b4-4a88-4220-850b-35ae50c41cc4/audio.mp3?media=rss",
+    "order": 77,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 109,
+  "fields": {
+    "title": "Конференция ВЕРЫ / 29.03 11:00",
+    "speaker": "Денис Орловский",
+    "duration": "59:34",
+    "episode_url": "https://kclcfamily.podster.fm/e/404400/konferentsiya-very-2903-1100-denis-orlovskiy",
+    "audio_url": "https://podster.fm/episodes/9eadd152-d2af-4e5b-a860-7d16fdffd2fb/audio.mp3?media=rss",
+    "order": 78,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 110,
+  "fields": {
+    "title": "Конференция ВЕРЫ / 28.03",
+    "speaker": "Владимир Ашаев",
+    "duration": "27:55",
+    "episode_url": "https://kclcfamily.podster.fm/e/404398/konferentsiya-very-2803-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9eadd0f7-c2c9-4508-9870-f622eb62edfc/audio.mp3?media=rss",
+    "order": 79,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 111,
+  "fields": {
+    "title": "ИСПЫТАННАЯ ВЕРА",
+    "speaker": "Данил Кононов",
+    "duration": "55:29",
+    "episode_url": "https://kclcfamily.podster.fm/e/400271/ispytannaya-vera-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/9e7976a6-f5c0-438f-9ed9-f0888db5f111/audio.mp3?media=rss",
+    "order": 80,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 112,
+  "fields": {
+    "title": "СЧАСТЛИВАЯ СЕМЬЯ - ЭТО ВЫБОР",
+    "speaker": "Виктория Кононова",
+    "duration": "46:43",
+    "episode_url": "https://kclcfamily.podster.fm/e/400270/schastlivaya-semya-eto-vybor-viktoriya-kononova",
+    "audio_url": "https://podster.fm/episodes/9e797626-8bb6-45b4-b2a8-4f7adc81cc8f/audio.mp3?media=rss",
+    "order": 81,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 113,
+  "fields": {
+    "title": "НОВЫЕ МЫСЛИ - НОВАЯ ЖИЗНЬ",
+    "speaker": "Владимир Ашаев",
+    "duration": "20:02",
+    "episode_url": "https://kclcfamily.podster.fm/e/398135/novye-mysli-novaya-zhizn-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9e5e494a-72df-44fa-ae59-8ab8b1802b4e/audio.mp3?media=rss",
+    "order": 82,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 114,
+  "fields": {
+    "title": "БЛАГОДАТЬ ВОССТАНОВЛЕНИЯ",
+    "speaker": "Дмитрий Тычинский",
+    "duration": "33:36",
+    "episode_url": "https://kclcfamily.podster.fm/e/395617/blagodat-vosstanovleniya-dmitriy-tychinskiy",
+    "audio_url": "https://podster.fm/episodes/9e4f32f2-8910-49da-853c-36ffaf86165a/audio.mp3?media=rss",
+    "order": 83,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 115,
+  "fields": {
+    "title": "ИСЦЕЛЕНИЕ",
+    "speaker": "Данил Кононов",
+    "duration": "45:29",
+    "episode_url": "https://kclcfamily.podster.fm/e/394729/istselenie-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/9e43359c-c5a0-43e1-b835-48c67cd59c13/audio.mp3?media=rss",
+    "order": 84,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 116,
+  "fields": {
+    "title": "ИИСУС - РАЗРУШИТЕЛЬ ВСЯКИХ КОРОБОК ОГРАНИЧЕНИЙ",
+    "speaker": "Владимир Ашаев",
+    "duration": "34:29",
+    "episode_url": "https://kclcfamily.podster.fm/e/393182/iisus-razrushitel-vsyakih-korobok-ogranicheniy-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9e310342-81e2-4c94-8d06-f9343ca94e9c/audio.mp3?media=rss",
+    "order": 85,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 117,
+  "fields": {
+    "title": "ДУХОВНЫЙ ИЗМЕРИТЕЛЬ",
+    "speaker": "Максим Притчин",
+    "duration": "26:27",
+    "episode_url": "https://kclcfamily.podster.fm/e/393181/duhovnyy-izmeritel-maksim-pritchin",
+    "audio_url": "https://podster.fm/episodes/9e31020a-2083-4488-a7e2-e394d429ab0e/audio.mp3?media=rss",
+    "order": 86,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 118,
+  "fields": {
+    "title": "ИИСУС - НАШ ПЕРВОСВЯЩЕННИК",
+    "speaker": "Данил Кононов",
+    "duration": "45:21",
+    "episode_url": "https://kclcfamily.podster.fm/e/390824/iisus-nash-pervosvyaschennik-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/9e14e02a-51a1-4060-a4dc-3a26b45593a3/audio.mp3?media=rss",
+    "order": 87,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 119,
+  "fields": {
+    "title": "ОБЕСПЕЧЕНИЕ В СЛАВЕ БОЖЬЕЙ",
+    "speaker": "Владимир Ашаев",
+    "duration": "22:29",
+    "episode_url": "https://kclcfamily.podster.fm/e/390823/obespechenie-v-slave-bozhey-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9e14dffc-b9a7-49a1-be32-986ac549729b/audio.mp3?media=rss",
+    "order": 88,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 120,
+  "fields": {
+    "title": "ПЕРЕЙДИ В БОЛЬШУЮ СЛАВУ",
+    "speaker": "Владимир Ашаев",
+    "duration": "48:38",
+    "episode_url": "https://kclcfamily.podster.fm/e/388547/pereydi-v-bolshuyu-slavu-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9df70d76-730f-4ae7-8363-7662fce5fbd9/audio.mp3?media=rss",
+    "order": 89,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 121,
+  "fields": {
+    "title": "МИР БОЖИЙ",
+    "speaker": "Владимир Плотников",
+    "duration": "28:39",
+    "episode_url": "https://kclcfamily.podster.fm/e/387272/mir-bozhiy-vladimir-plotnikov",
+    "audio_url": "https://podster.fm/episodes/9decf1e5-5496-42f2-9e6b-5e2e44da72eb/audio.mp3?media=rss",
+    "order": 90,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 122,
+  "fields": {
+    "title": "РОЖДЕСТВО",
+    "speaker": "Владимир Ашаев",
+    "duration": "14:35",
+    "episode_url": "https://kclcfamily.podster.fm/e/387249/rozhdestvo-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9dece0ce-2074-41b0-9f3a-11f4e4fb6f4e/audio.mp3?media=rss",
+    "order": 91,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 123,
+  "fields": {
+    "title": "ГОРЬКИЕ КОРНИ ЛИШАЮТ БЛАГОДАТИ",
+    "speaker": "Владимир Ашаев",
+    "duration": "46:21",
+    "episode_url": "https://kclcfamily.podster.fm/e/385131/gorkie-korni-lishayut-blagodati-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9dcc8304-1664-4637-b4c4-dd31e1dda57f/audio.mp3?media=rss",
+    "order": 92,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 124,
+  "fields": {
+    "title": "КОМАНДА",
+    "speaker": "Данил Кононов",
+    "duration": "38:43",
+    "episode_url": "https://kclcfamily.podster.fm/e/384595/komanda-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/9dc27651-ce7d-45c4-9b3d-1d096aa0e471/audio.mp3?media=rss",
+    "order": 93,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 125,
+  "fields": {
+    "title": "БРЕМЯ ЕГО ЛЕГКО",
+    "speaker": "Владимир Ашаев",
+    "duration": "38:07",
+    "episode_url": "https://kclcfamily.podster.fm/e/383352/bremya-moe-legko-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9db03e2c-4904-4ac2-851f-709f82cb26c0/audio.mp3?media=rss",
+    "order": 94,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 126,
+  "fields": {
+    "title": "СОЛЬ - ДОБРАЯ ВЕЩЬ",
+    "speaker": "Денис Путилин",
+    "duration": "19:22",
+    "episode_url": "https://kclcfamily.podster.fm/e/382260/sol-dobraya-vesch-denis-putilin",
+    "audio_url": "https://podster.fm/episodes/9da23e29-e9db-4ad0-ab99-3a6fdb4f4579/audio.mp3?media=rss",
+    "order": 95,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 127,
+  "fields": {
+    "title": "ЦАРСТВО БОЖЬЕ",
+    "speaker": "Алексей Моисеев",
+    "duration": "18:06",
+    "episode_url": "https://kclcfamily.podster.fm/e/382259/tsarstvo-bozhe-aleksey-moiseev",
+    "audio_url": "https://podster.fm/episodes/9da23d5d-e377-4fb4-b168-27bb3b2bdbdb/audio.mp3?media=rss",
+    "order": 96,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 128,
+  "fields": {
+    "title": "СЛЫШАТЬ И УЗНАВАТЬ ГОЛОС БОГА",
+    "speaker": "Владимир Ашаев",
+    "duration": "28:00",
+    "episode_url": "https://kclcfamily.podster.fm/e/381245/slyshat-i-uznavat-golos-boga-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9d924d75-de69-470b-8381-e0bb4cf09acf/audio.mp3?media=rss",
+    "order": 97,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 129,
+  "fields": {
+    "title": "СЛУЖЕНИЕ СЛАВЫ",
+    "speaker": "Владимир Ашаев",
+    "duration": "27:50",
+    "episode_url": "https://kclcfamily.podster.fm/e/380378/sluzhenie-slavy-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9d863481-d1ce-4d40-824e-0f78c1d20c40/audio.mp3?media=rss",
+    "order": 98,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 130,
+  "fields": {
+    "title": "ПОМАЗАНИЕ",
+    "speaker": "Данил Кононов",
+    "duration": "53:01",
+    "episode_url": "https://kclcfamily.podster.fm/e/379474/pomazanie-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/9d77fc88-5cd1-4c11-a457-1467b6edede2/audio.mp3?media=rss",
+    "order": 99,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 131,
+  "fields": {
+    "title": "СВЕРХЪЕСТЕСТВЕННАЯ ПРАВЕДНОСТЬ БОЖЬЯ",
+    "speaker": "Юрий Юнюшкин",
+    "duration": "29:36",
+    "episode_url": "https://kclcfamily.podster.fm/e/378648/sverhestestvennaya-pravednost-bozhya-yuriy-yunyushkin",
+    "audio_url": "https://podster.fm/episodes/9d6c01ed-68e4-43c6-8ce4-ef22a27aaa9d/audio.mp3?media=rss",
+    "order": 100,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 132,
+  "fields": {
+    "title": "ЗАПАСИСЬ ПРОТИВОЯДИЕМ",
+    "speaker": "Владимир Ашаев",
+    "duration": "31:00",
+    "episode_url": "https://kclcfamily.podster.fm/e/377370/zapasis-protivoyadiem-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9d5c3886-dd0b-46e6-b9c7-caad6893ae1b/audio.mp3?media=rss",
+    "order": 101,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 133,
+  "fields": {
+    "title": "НЕСУЩИЙ",
+    "speaker": "Максим Притчин",
+    "duration": "33:07",
+    "episode_url": "https://kclcfamily.podster.fm/e/376415/nesuschiy-maksim-pritchin",
+    "audio_url": "https://podster.fm/episodes/9d4db883-4761-4460-ad98-40e8ef514d3e/audio.mp3?media=rss",
+    "order": 102,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 134,
+  "fields": {
+    "title": "ПРЕБЫВАТЬ В АТМОСФЕРЕ ЦАРСТВА",
+    "speaker": "Владимир Ашаев",
+    "duration": "35:36",
+    "episode_url": "https://kclcfamily.podster.fm/e/375544/prebyvat-v-atmosfere-tsarstva-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9d41a17d-0f3b-408e-9f14-09927a9532e6/audio.mp3?media=rss",
+    "order": 103,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 135,
+  "fields": {
+    "title": "ЕВАНГЕЛИЕ ЦАРСТВА",
+    "speaker": "Владимир Ашаев",
+    "duration": "41:02",
+    "episode_url": "https://kclcfamily.podster.fm/e/373791/evangelie-tsarstva-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9d31bf21-18d1-4a38-a002-e921dd64d59a/audio.mp3?media=rss",
+    "order": 104,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 136,
+  "fields": {
+    "title": "Данил Кононов",
+    "speaker": "ИИСУС",
+    "duration": "60:25",
+    "episode_url": "https://kclcfamily.podster.fm/e/372197/danil-kononov-iisus",
+    "audio_url": "https://podster.fm/episodes/9d2396f3-9fa2-4f52-acb5-180dd8a80b95/audio.mp3?media=rss",
+    "order": 105,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 137,
+  "fields": {
+    "title": "Данил Кононов",
+    "speaker": "ДОМАШНЯЯ ЦЕРКОВЬ",
+    "duration": "49:56",
+    "episode_url": "https://kclcfamily.podster.fm/e/372193/danil-kononov-domashnyaya-tserkov",
+    "audio_url": "https://podster.fm/episodes/9d23969c-e542-4f8a-b207-021948857bd8/audio.mp3?media=rss",
+    "order": 106,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 138,
+  "fields": {
+    "title": "ЧТО ДЕЛАЕТ ЦЕРКОВЬ СИЛЬНОЙ?",
+    "speaker": "Андрей Горновский",
+    "duration": "40:22",
+    "episode_url": "https://kclcfamily.podster.fm/e/366414/chto-delaet-tserkov-silnoy-andrey-gornovskiy",
+    "audio_url": "https://podster.fm/episodes/9d055c5f-81b5-494f-9bf2-d29bec2eb0df/audio.mp3?media=rss",
+    "order": 107,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 139,
+  "fields": {
+    "title": "БОЖЕСТВЕННАЯ И ЧЕЛОВЕЧЕСКАЯ ПРИРОДА ЦЕРКВИ",
+    "speaker": "Владимир Ашаев",
+    "duration": "37:48",
+    "episode_url": "https://kclcfamily.podster.fm/e/365675/bozhestvennaya-i-chelovecheskaya-priroda-tserkvi-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9cf9780c-0e12-48c7-a780-80f65de73346/audio.mp3?media=rss",
+    "order": 108,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 140,
+  "fields": {
+    "title": "ПОБЕДА НАД СОБОЙ В ТЯЖЕЛЫЕ ВРЕМЕНА",
+    "speaker": "Владимир Ашаев",
+    "duration": "39:10",
+    "episode_url": "https://kclcfamily.podster.fm/e/365519/pobeda-nad-soboy-v-tyazhelye-vremena-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9cf739e3-ac54-41bf-9dd1-307c77eeccc2/audio.mp3?media=rss",
+    "order": 109,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 141,
+  "fields": {
+    "title": "ЗАВЕТ И СЛУЖЕНИЕ",
+    "speaker": "Данил Кононов",
+    "duration": "65:54",
+    "episode_url": "https://kclcfamily.podster.fm/e/363912/zavet-i-sluzhenie-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/9cdf007c-b9cd-4e0e-b746-a871d5d7a49b/audio.mp3?media=rss",
+    "order": 110,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 142,
+  "fields": {
+    "title": "ЗА СОКРОВИЩЕ НАДО ПЛАТИТЬ",
+    "speaker": "Владимир Ашаев",
+    "duration": "29:25",
+    "episode_url": "https://kclcfamily.podster.fm/e/361503/za-sokrovische-nado-platit-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9cbf114e-1143-473a-98d5-4ab07851fe9e/audio.mp3?media=rss",
+    "order": 111,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 143,
+  "fields": {
+    "title": "СПАСЕНИЕ УТОПАЮЩИХ - ДЕЛО РУК САМИХ УТОПАЮЩИХ",
+    "speaker": "Максим Притчин",
+    "duration": "32:30",
+    "episode_url": "https://kclcfamily.podster.fm/e/360980/spasenie-utopayuschih-delo-ruk-samih-utopayuschih-maksim-pritchin",
+    "audio_url": "https://podster.fm/episodes/9cb2e1d5-48d0-4660-b73d-007922305448/audio.mp3?media=rss",
+    "order": 112,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 144,
+  "fields": {
+    "title": "ВЕРА И МОИ ДЕТИ",
+    "speaker": "Данил Кононов",
+    "duration": "45:53",
+    "episode_url": "https://kclcfamily.podster.fm/e/360067/vera-i-moi-deti-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/9ca30318-e8e7-4bea-af8c-029dd9399f4e/audio.mp3?media=rss",
+    "order": 113,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 145,
+  "fields": {
+    "title": "МАМ, Я ПОЗНАКОМИЛСЯ С ИИСУСОМ",
+    "speaker": "Руслан Пулатов",
+    "duration": "37:19",
+    "episode_url": "https://kclcfamily.podster.fm/e/359427/mam-ya-poznakomilsya-s-iisusom-ruslan-pulatov",
+    "audio_url": "https://podster.fm/episodes/9c96ab56-34c1-44b5-abd1-10a89085e357/audio.mp3?media=rss",
+    "order": 114,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 146,
+  "fields": {
+    "title": "В ОДНО УХО ВЛЕТЕЛО, ИЗ ДРУГОГО ВЫЛЕТЕЛО",
+    "speaker": "Максим Притчин",
+    "duration": "34:13",
+    "episode_url": "https://kclcfamily.podster.fm/e/359321/v-odno-uho-vletelo-iz-drugogo-vyletelo-maksim-pritchin",
+    "audio_url": "https://podster.fm/episodes/9c94b7e8-4289-45bc-bd75-b3298834bde3/audio.mp3?media=rss",
+    "order": 115,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 147,
+  "fields": {
+    "title": "КТО СКАЗАЛ ТЕБЕ?",
+    "speaker": "Владимир Ашаев",
+    "duration": "36:02",
+    "episode_url": "https://kclcfamily.podster.fm/e/358792/kto-skazal-tebe-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9c88a418-03f3-4118-b4c7-f1dc8ef8cc72/audio.mp3?media=rss",
+    "order": 116,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 148,
+  "fields": {
+    "title": "ВЕРНОСТЬ СВОЕМУ ПРИЗВАНИЮ",
+    "speaker": "Владимир Плотников",
+    "duration": "47:07",
+    "episode_url": "https://kclcfamily.podster.fm/e/358688/vernost-svoemu-prizvaniyu-vladimir-plotnikov",
+    "audio_url": "https://podster.fm/episodes/9c868a03-2cd7-43c5-ba30-515a829c3eca/audio.mp3?media=rss",
+    "order": 117,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 149,
+  "fields": {
+    "title": "ПЕРЕСТАНЬ БЕГАТЬ ВОКРУГ",
+    "speaker": "Владимир Ашаев",
+    "duration": "33:33",
+    "episode_url": "https://kclcfamily.podster.fm/e/358687/perestan-begat-vokrug-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9c868869-923c-423f-94bc-b62cd06cc2e3/audio.mp3?media=rss",
+    "order": 118,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 150,
+  "fields": {
+    "title": "СИЛА КРЕСТА",
+    "speaker": "Владимир Ашаев",
+    "duration": "31:48",
+    "episode_url": "https://kclcfamily.podster.fm/e/358069/sila-kresta-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9c78e2e8-a006-4e05-9ee9-f816cd3da183/audio.mp3?media=rss",
+    "order": 119,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 151,
+  "fields": {
+    "title": "ЕСТЬ ПРОБЛЕМА - ЕСТЬ ИИСУС!",
+    "speaker": "Екатерина Попова",
+    "duration": "20:46",
+    "episode_url": "https://kclcfamily.podster.fm/e/357618/est-problema-est-iisus-ekaterina-popova",
+    "audio_url": "https://podster.fm/episodes/9c6cabdd-a7ef-40e5-9d51-60760166d801/audio.mp3?media=rss",
+    "order": 120,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 152,
+  "fields": {
+    "title": "А ЧТО В КОНЦЕ?",
+    "speaker": "Максим Притчин",
+    "duration": "28:14",
+    "episode_url": "https://kclcfamily.podster.fm/e/357462/a-chto-v-kontse-maksim-pritchin",
+    "audio_url": "https://podster.fm/episodes/9c6a7f68-6dcc-4dc2-a827-25afcb64a406/audio.mp3?media=rss",
+    "order": 121,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 153,
+  "fields": {
+    "title": "РАЗУМ - ПОЛЕ БИТВЫ",
+    "speaker": "Елена Зуева",
+    "duration": "42:45",
+    "episode_url": "https://kclcfamily.podster.fm/e/356757/razum-pole-bitvy-elena-zueva",
+    "audio_url": "https://podster.fm/episodes/9c5c4cc8-912f-4587-9006-ebde8dab63c4/audio.mp3?media=rss",
+    "order": 122,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 154,
+  "fields": {
+    "title": "ЗНАЙ ВРАГА В ЛИЦО",
+    "speaker": "Елена Зуева",
+    "duration": "45:54",
+    "episode_url": "https://kclcfamily.podster.fm/e/356092/znay-vraga-v-litso-elena-zueva",
+    "audio_url": "https://podster.fm/episodes/9c4e554f-50eb-479c-957b-93483583b36f/audio.mp3?media=rss",
+    "order": 123,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 155,
+  "fields": {
+    "title": "ВЕРНОСТЬ",
+    "speaker": "Максим Притчин",
+    "duration": "38:41",
+    "episode_url": "https://kclcfamily.podster.fm/e/356091/vernost-maksim-pritchin",
+    "audio_url": "https://podster.fm/episodes/9c4e52be-ba6e-43ba-93e3-98a66b0fd3d2/audio.mp3?media=rss",
+    "order": 124,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 156,
+  "fields": {
+    "title": "БЛАГОДАРНОСТЬ",
+    "speaker": "Владимир Ашаев",
+    "duration": "25:46",
+    "episode_url": "https://kclcfamily.podster.fm/e/356086/blagodarnost-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9c4e3284-c08e-449e-8648-8640c9699818/audio.mp3?media=rss",
+    "order": 125,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 157,
+  "fields": {
+    "title": "ТЫ ПИСЬМО ХРИСТА ЭТОМУ МИРУ",
+    "speaker": "Елена Зуева",
+    "duration": "51:03",
+    "episode_url": "https://kclcfamily.podster.fm/e/355289/ty-pismo-hrista-etomu-miru-elena-zueva",
+    "audio_url": "https://podster.fm/episodes/9c40342e-e9ee-49ee-8d9a-2aada3134f90/audio.mp3?media=rss",
+    "order": 126,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 158,
+  "fields": {
+    "title": "ПРИЧАСТИЕ",
+    "speaker": "Данил Кононов",
+    "duration": "49:52",
+    "episode_url": "https://kclcfamily.podster.fm/e/354649/prichastie-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/9c34322e-d0f5-4579-a1d9-a1279236fcc5/audio.mp3?media=rss",
+    "order": 127,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 159,
+  "fields": {
+    "title": "ИИСУС",
+    "speaker": "Данил Кононов",
+    "duration": "49:31",
+    "episode_url": "https://kclcfamily.podster.fm/e/354080/iisus-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/9c280069-2322-4752-906e-26f6bcbea4e0/audio.mp3?media=rss",
+    "order": 128,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 160,
+  "fields": {
+    "title": "МИССИЯ",
+    "speaker": "Данил Кононов",
+    "duration": "26:59",
+    "episode_url": "https://kclcfamily.podster.fm/e/353174/missiya-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/9c1814cb-31c1-4dbf-bd72-86cf5583fa43/audio.mp3?media=rss",
+    "order": 129,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 161,
+  "fields": {
+    "title": "ПЕРЕЗАГРУЗКА / Андрей Горновский",
+    "speaker": "ТЫ ПИСЬМО ХРИСТОВО",
+    "duration": "42:07",
+    "episode_url": "https://kclcfamily.podster.fm/e/352535/perezagruzka-andrey-gornovskiy-ty-pismo-hristovo",
+    "audio_url": "https://podster.fm/episodes/9c0e1035-6dae-4b00-992c-a78ad4401b96/audio.mp3?media=rss",
+    "order": 130,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 162,
+  "fields": {
+    "title": "ПЕРЕЗАГРУЗКА / Владимир Ашаев",
+    "speaker": "ВОЗЛЮБИ БЛИЖНЕГО СВОЕГО",
+    "duration": "32:51",
+    "episode_url": "https://kclcfamily.podster.fm/e/352534/perezagruzka-vladimir-ashaev-vozlyubi-blizhnego-svoego",
+    "audio_url": "https://podster.fm/episodes/9c0e0fd4-0dd8-45ff-b35f-def97d85e4c9/audio.mp3?media=rss",
+    "order": 131,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 163,
+  "fields": {
+    "title": "ПЕРЕЗАГРУЗКА / Алексей Романов",
+    "speaker": "ЛЮБИТЬ БРАТСТВО",
+    "duration": "45:40",
+    "episode_url": "https://kclcfamily.podster.fm/e/352533/perezagruzka-aleksey-romanov-lyubit-bratstvo",
+    "audio_url": "https://podster.fm/episodes/9c0e0eaa-fa5e-43e6-9e3b-1c6acdf2c538/audio.mp3?media=rss",
+    "order": 132,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 164,
+  "fields": {
+    "title": "ПЕРЕЗАГРУЗКА / Владимир Плотников",
+    "speaker": "ВАЖНОСТЬ ОТНОШЕНИЙ",
+    "duration": "31:48",
+    "episode_url": "https://kclcfamily.podster.fm/e/352532/perezagruzka-vladimir-plotnikov-vazhnost-otnosheniy",
+    "audio_url": "https://podster.fm/episodes/9c0e09d3-06fc-495d-afc4-7d25dbf9705d/audio.mp3?media=rss",
+    "order": 133,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 165,
+  "fields": {
+    "title": "ВЕЛИКАНЫ - ЭТО НЕ НАШИ ВРАГИ, А НАШИ ДРУЗЬЯ",
+    "speaker": "Андрей Горновский",
+    "duration": "34:48",
+    "episode_url": "https://kclcfamily.podster.fm/e/352323/velikany-eto-ne-nashi-vragi-a-nashi-druzya-andrey-gornovskiy",
+    "audio_url": "https://podster.fm/episodes/9c09fac3-b506-4775-9c57-5bd70027d6d6/audio.mp3?media=rss",
+    "order": 134,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 166,
+  "fields": {
+    "title": "ПАСХА",
+    "speaker": "Владимир Ашаев",
+    "duration": "27:59",
+    "episode_url": "https://kclcfamily.podster.fm/e/350843/pasha-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9bf9efa9-e0c8-47f1-9d50-847541d48e9a/audio.mp3?media=rss",
+    "order": 135,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 167,
+  "fields": {
+    "title": "В УСЕРДИИ НЕ ОСЛАБЕВАЙТЕ",
+    "speaker": "Владимир Ашаев",
+    "duration": "36:28",
+    "episode_url": "https://kclcfamily.podster.fm/e/348679/v-userdii-ne-oslabevayte-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9bdd962b-338d-42d2-bd40-a0ad4d58f657/audio.mp3?media=rss",
+    "order": 136,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 168,
+  "fields": {
+    "title": "СЕКРЕТЫ БЛАГОДАРНОСТИ",
+    "speaker": "Данил Кононов",
+    "duration": "57:38",
+    "episode_url": "https://kclcfamily.podster.fm/e/348097/sekrety-blagodarnosti-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/9bd5a3f0-c52d-42ff-afe2-3bc99afc8b7a/audio.mp3?media=rss",
+    "order": 137,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 169,
+  "fields": {
+    "title": "Хуан Зуккарелли / Конференция ВЕРЫ / 07.04",
+    "speaker": "Хуан Зуккарелли",
+    "duration": "44:10",
+    "episode_url": "https://kclcfamily.podster.fm/e/347865/huan-zukkarelli-konferentsiya-very-0704",
+    "audio_url": "https://podster.fm/episodes/9bd1a7b0-ecb3-47da-a094-e5f9b00f51b5/audio.mp3?media=rss",
+    "order": 138,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 170,
+  "fields": {
+    "title": "Хуан Зуккарелли / Конференция ВЕРЫ / 06.04 / 18:30",
+    "speaker": "Хуан Зуккарелли",
+    "duration": "37:16",
+    "episode_url": "https://kclcfamily.podster.fm/e/347864/huan-zukkarelli-konferentsiya-very-0604-1830",
+    "audio_url": "https://podster.fm/episodes/9bd1a739-b18f-40f7-81d1-2cd824a64dda/audio.mp3?media=rss",
+    "order": 139,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 171,
+  "fields": {
+    "title": "Илья Федоров / Конференция ВЕРЫ / 06.04 / 15:00",
+    "speaker": "Илья Федоров",
+    "duration": "109:13",
+    "episode_url": "https://kclcfamily.podster.fm/e/347863/ilya-fedorov-konferentsiya-very-0604-1500",
+    "audio_url": "https://podster.fm/episodes/9bd1a6ce-e90f-4b76-be4b-1c90d6e2ca16/audio.mp3?media=rss",
+    "order": 140,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 172,
+  "fields": {
+    "title": "Ричард Грин / Конференция ВЕРЫ / 06.04 / 11:00",
+    "speaker": "Ричард Грин",
+    "duration": "31:35",
+    "episode_url": "https://kclcfamily.podster.fm/e/347860/richard-grin-konferentsiya-very-0604-1100",
+    "audio_url": "https://podster.fm/episodes/9bd1a26b-3760-4c92-bdaf-6b5bceb992b8/audio.mp3?media=rss",
+    "order": 141,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 173,
+  "fields": {
+    "title": "Хуан Зуккарелли / Конференция ВЕРЫ / 05.04",
+    "speaker": "Хуан Зуккарелли",
+    "duration": "38:27",
+    "episode_url": "https://kclcfamily.podster.fm/e/347859/huan-zukkarelli-konferentsiya-very-0504",
+    "audio_url": "https://podster.fm/episodes/9bd1a20d-e503-4172-92ca-ffa74a3243bb/audio.mp3?media=rss",
+    "order": 142,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 174,
+  "fields": {
+    "title": "СОЗИДАЙ В СЕБЕ ПОБЕДУ",
+    "speaker": "Данил Кононов",
+    "duration": "59:30",
+    "episode_url": "https://kclcfamily.podster.fm/e/345753/soziday-v-sebe-pobedu-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/9bb390d1-916f-4639-9d5e-7d385e1cdbb0/audio.mp3?media=rss",
+    "order": 143,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 175,
+  "fields": {
+    "title": "БУДУЩЕЕ, КОТОРОЕ БОГ ДАЕТ ЧЕРЕЗ МОЛИТВУ",
+    "speaker": "Владимир Ашаев",
+    "duration": "23:42",
+    "episode_url": "https://kclcfamily.podster.fm/e/345110/buduschee-kotoroe-bog-daet-cherez-molitvu-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9babbf70-bf91-4751-a2d8-e0345670e69a/audio.mp3?media=rss",
+    "order": 144,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 176,
+  "fields": {
+    "title": "КАК УГОДИТЬ БОГУ?",
+    "speaker": "Владимир Ашаев",
+    "duration": "33:23",
+    "episode_url": "https://kclcfamily.podster.fm/e/343991/kak-ugodit-bogu-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9b975eac-ae1b-461b-9784-8efe12c48ba3/audio.mp3?media=rss",
+    "order": 145,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 177,
+  "fields": {
+    "title": "ВЕРНОСТЬ",
+    "speaker": "Максим Притчин",
+    "duration": "28:14",
+    "episode_url": "https://kclcfamily.podster.fm/e/341359/vernost-maksim-pritchin",
+    "audio_url": "https://podster.fm/episodes/9b8924c4-0227-4161-9d8c-f90106041c6f/audio.mp3?media=rss",
+    "order": 146,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 178,
+  "fields": {
+    "title": "ПОМАЗАНИЕ",
+    "speaker": "Максим Притчин",
+    "duration": "17:31",
+    "episode_url": "https://kclcfamily.podster.fm/e/340234/pomazanie-maksim-pritchin",
+    "audio_url": "https://podster.fm/episodes/9b7d520d-7a1a-4da2-9650-e35d45181f34/audio.mp3?media=rss",
+    "order": 147,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 179,
+  "fields": {
+    "title": "ПЛОДЫ БЛАГОДАТИ",
+    "speaker": "Владимир Ашаев",
+    "duration": "38:21",
+    "episode_url": "https://kclcfamily.podster.fm/e/338537/plody-blagodati-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9b6eeb23-883a-4be2-946b-e4a5a10e18c9/audio.mp3?media=rss",
+    "order": 148,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 180,
+  "fields": {
+    "title": "СМИРЕНИЕ ПРИВЛЕКАЕТ БЛАГОДАТЬ",
+    "speaker": "Владимир Ашаев",
+    "duration": "34:23",
+    "episode_url": "https://kclcfamily.podster.fm/e/334877/smirenie-privlekaet-blagodat-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9b5ee849-34c1-4c99-bb06-396b1944cfa5/audio.mp3?media=rss",
+    "order": 149,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 181,
+  "fields": {
+    "title": "БЛАГОСТЬ И МИЛОСТЬ",
+    "speaker": "Юрий Юнюшкин",
+    "duration": "39:52",
+    "episode_url": "https://kclcfamily.podster.fm/e/333749/blagost-i-milost-yuriy-yunyushkin",
+    "audio_url": "https://podster.fm/episodes/9b50cd68-bfc8-4839-a873-ac024e812f34/audio.mp3?media=rss",
+    "order": 150,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 182,
+  "fields": {
+    "title": "ЧИСТОЕ СЕРДЦЕ - СОЗИДАТЕЛЬНО, ЛУКАВОЕ - РАЗРУШИТЕЛЬНО",
+    "speaker": "Владимир Ашаев",
+    "duration": "32:24",
+    "episode_url": "https://kclcfamily.podster.fm/e/332932/chistoe-serdtse-sozidatelno-lukavoe-razrushitelno-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9b44f2e2-aac4-459d-aff7-f0a80848e85e/audio.mp3?media=rss",
+    "order": 151,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 183,
+  "fields": {
+    "title": "ЭТА ВЕЛИКАЯ БЛАГОДАТЬ",
+    "speaker": "Владимир Ашаев",
+    "duration": "34:01",
+    "episode_url": "https://kclcfamily.podster.fm/e/332034/eta-velikaya-blagodat-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9b36a17d-a58e-4f18-891c-ab5de9878953/audio.mp3?media=rss",
+    "order": 152,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 184,
+  "fields": {
+    "title": "ИМЕТЬ БОГА В РАЗУМЕ / ОБНОВЛЕНИЕ МЫШЛЕНИЯ",
+    "speaker": "Владимир Ашаев",
+    "duration": "33:56",
+    "episode_url": "https://kclcfamily.podster.fm/e/331187/imet-boga-v-razume-obnovlenie-myshleniya-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9b28abcf-f7de-4ef5-b258-aaf238c046db/audio.mp3?media=rss",
+    "order": 153,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 185,
+  "fields": {
+    "title": "2024 - ГОД ОБНОВЛЕНИЯ",
+    "speaker": "Владимир Ашаев",
+    "duration": "30:25",
+    "episode_url": "https://kclcfamily.podster.fm/e/330261/2024-god-obnovleniya",
+    "audio_url": "https://podster.fm/episodes/9b1a8b72-425c-42b3-bed7-54b0b840d72a/audio.mp3?media=rss",
+    "order": 154,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 186,
+  "fields": {
+    "title": "ПРИЧАСТИЕ ДАЁТ НАМ ЖИЗНЬ",
+    "speaker": "Данил Кононов",
+    "duration": "22:59",
+    "episode_url": "https://kclcfamily.podster.fm/e/329377/prichastie-dayot-nam-zhizn-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/9b0c8791-4502-4bb8-b63f-aed229f8b3ae/audio.mp3?media=rss",
+    "order": 155,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 187,
+  "fields": {
+    "title": "БЛАГОДАТЬ НА БЛАГОДАТЬ",
+    "speaker": "Елена Зуева",
+    "duration": "38:12",
+    "episode_url": "https://kclcfamily.podster.fm/e/326516/blagodat-na-blagodat-elena-zueva",
+    "audio_url": "https://podster.fm/episodes/9ae27ebd-8bcf-4f28-81f4-4ef6e6222840/audio.mp3?media=rss",
+    "order": 156,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 188,
+  "fields": {
+    "title": "Я КАЖДЫЙ ДЕНЬ УМИРАЮ",
+    "speaker": "Илья Мозжерин",
+    "duration": "33:28",
+    "episode_url": "https://kclcfamily.podster.fm/e/325871/ya-kazhdyy-den-umirayu-ilya-mozzherin",
+    "audio_url": "https://podster.fm/episodes/9ad43b38-a2aa-4d41-b767-4e4cb79b950d/audio.mp3?media=rss",
+    "order": 157,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 189,
+  "fields": {
+    "title": "В ВЕРЕ ЛИ МЫ",
+    "speaker": "Максим Притчин",
+    "duration": "37:01",
+    "episode_url": "https://kclcfamily.podster.fm/e/325870/v-vere-li-my-maksim-pritchin",
+    "audio_url": "https://podster.fm/episodes/9ad4386a-27e5-4d42-9508-7aee87798e3b/audio.mp3?media=rss",
+    "order": 158,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 190,
+  "fields": {
+    "title": "ЖИЗНЬ САД",
+    "speaker": "Данил Кононов",
+    "duration": "51:01",
+    "episode_url": "https://kclcfamily.podster.fm/e/323910/zhizn-sad-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/9abc5d6a-529a-4fe1-8bae-831172984fa9/audio.mp3?media=rss",
+    "order": 159,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 191,
+  "fields": {
+    "title": "ЕСЛИ БЫ ТЫ ЗНАЛ ДАР БОЖИЙ",
+    "speaker": "Владимир Ашаев",
+    "duration": "32:58",
+    "episode_url": "https://kclcfamily.podster.fm/e/323905/esli-by-ty-znal-dar-bozhiy-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/9abc58c4-a021-4126-9775-8db637788dfb/audio.mp3?media=rss",
+    "order": 160,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 192,
+  "fields": {
+    "title": "НЕ ПОТЕРЯТЬ СЕБЯ",
+    "speaker": "Максим Притчин",
+    "duration": "32:57",
+    "episode_url": "https://kclcfamily.podster.fm/e/321403/ne-poteryat-sebya-maksim-pritchin",
+    "audio_url": "https://podster.fm/episodes/9a921a87-504d-4b8b-bf40-6665ae11f4d0/audio.mp3?media=rss",
+    "order": 161,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 193,
+  "fields": {
+    "title": "СИЛА МОЛИТВЫ",
+    "speaker": "Максим Притчин",
+    "duration": "31:15",
+    "episode_url": "https://kclcfamily.podster.fm/e/320811/sila-molitvy-maksim-pritchin",
+    "audio_url": "https://podster.fm/episodes/9a83d145-5e5e-43a2-9451-00c75cde7f04/audio.mp3?media=rss",
+    "order": 162,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 194,
+  "fields": {
+    "title": "ЧУДЕСА В СУХОЙ ЗЕМЛЕ",
+    "speaker": "Юрий Юнюшкин",
+    "duration": "44:59",
+    "episode_url": "https://kclcfamily.podster.fm/e/320810/chudesa-v-suhoy-zemle-yuriy-yunyushkin",
+    "audio_url": "https://podster.fm/episodes/9a83cfc4-c5d4-4aed-9e98-3ee7173e5e93/audio.mp3?media=rss",
+    "order": 163,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 195,
+  "fields": {
+    "title": "ПОМАЗАНИЕ НА ЕВАНГЕЛИЗМ",
+    "speaker": "Данил Кононов",
+    "duration": "64:38",
+    "episode_url": "https://kclcfamily.podster.fm/e/320703/pomazanie-na-evangelizm-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/9a8184f4-d087-4b3b-8312-8719c768e26e/audio.mp3?media=rss",
+    "order": 164,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 196,
+  "fields": {
+    "title": "СОСТОЯНИЕ ТВОЕГО СЕРДЦА",
+    "speaker": "Виктория Кононова",
+    "duration": "42:33",
+    "episode_url": "https://kclcfamily.podster.fm/e/272424/sostoyanie-tvoego-serdtsa-viktoriya-kononova",
+    "audio_url": "https://podster.fm/episodes/0f8c7bca-b14e-43be-883b-e0682769f207/audio.mp3?media=rss",
+    "order": 165,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 197,
+  "fields": {
+    "title": "БОГ СДЕЛАЕТ ЭТО И В ТВОЕЙ ЖИЗНИ",
+    "speaker": "Владимир Ашаев",
+    "duration": "33:40",
+    "episode_url": "https://kclcfamily.podster.fm/e/272423/bog-sdelaet-eto-i-v-tvoey-zhizni-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/645330a6-22aa-4570-9dbc-266169b3430f/audio.mp3?media=rss",
+    "order": 166,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 198,
+  "fields": {
+    "title": "РИСКНИ ИЗМЕНИТЬСЯ",
+    "speaker": "Ринат Бахтеев",
+    "duration": "56:06",
+    "episode_url": "https://kclcfamily.podster.fm/e/272422/riskni-izmenitsya-rinat-bahteev",
+    "audio_url": "https://podster.fm/episodes/7026f2f9-3f7d-441a-95fa-33643815c11c/audio.mp3?media=rss",
+    "order": 167,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 199,
+  "fields": {
+    "title": "ДИВИДЕНДЫ ЗА ДОВЕРИЕ БОГУ",
+    "speaker": "Владимир Ашаев",
+    "duration": "37:19",
+    "episode_url": "https://kclcfamily.podster.fm/e/272420/dividendi-za-doverie-bogu-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/710b7206-fd09-4067-8dc6-f0b1303931cc/audio.mp3?media=rss",
+    "order": 168,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 200,
+  "fields": {
+    "title": "СИЛА СВИДЕТЕЛЬСТВА",
+    "speaker": "Ринат Бахтеев",
+    "duration": "44:48",
+    "episode_url": "https://kclcfamily.podster.fm/e/272419/sila-svidetelstva-rinat-bahteev",
+    "audio_url": "https://podster.fm/episodes/354fff4a-0c3d-47a9-a171-3633ba48c2e1/audio.mp3?media=rss",
+    "order": 169,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 201,
+  "fields": {
+    "title": "ЧТО ТЫ ОЖИДАЕШЬ",
+    "speaker": "Максим Притчин",
+    "duration": "35:00",
+    "episode_url": "https://kclcfamily.podster.fm/e/272418/chto-ti-ozhidaesh-maksim-pritchin",
+    "audio_url": "https://podster.fm/episodes/2939eda0-b0d9-4ea1-8966-bce5bee4542c/audio.mp3?media=rss",
+    "order": 170,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 202,
+  "fields": {
+    "title": "БЛАГОДАРНЫЕ СЕРДЦА",
+    "speaker": "Данил Кононов",
+    "duration": "40:09",
+    "episode_url": "https://kclcfamily.podster.fm/e/272417/blagodarnie-serdtsa-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/e1420389-0afb-4b13-a357-0d5d95b2e595/audio.mp3?media=rss",
+    "order": 171,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 203,
+  "fields": {
+    "title": "МЕНЯЯ ОБРАЗЫ, ТРАНСФОРМИРУЕШЬ ЖИЗНЬ",
+    "speaker": "Юрий Юнюшкин",
+    "duration": "43:28",
+    "episode_url": "https://kclcfamily.podster.fm/e/272416/menyaya-obrazi-transformiruesh-zhizn-yuriy-yunyushkin",
+    "audio_url": "https://podster.fm/episodes/6cfe63fe-4659-4dcb-bc6b-8ba04b3a743d/audio.mp3?media=rss",
+    "order": 172,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 204,
+  "fields": {
+    "title": "КРОВЬ ИИСУСА",
+    "speaker": "Данил Кононов",
+    "duration": "37:24",
+    "episode_url": "https://kclcfamily.podster.fm/e/272409/krov-iisusa-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/94f2ae80-7d5e-4d69-b586-ad7e306ab47e/audio.mp3?media=rss",
+    "order": 173,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 205,
+  "fields": {
+    "title": "ТАЙНА ВРЕМЕНИ И ШАНСА",
+    "speaker": "Владимир Ашаев",
+    "duration": "38:49",
+    "episode_url": "https://kclcfamily.podster.fm/e/272408/tayna-vremeni-i-shansa-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/881297ba-712c-448a-9479-5bb3b9c9c1f1/audio.mp3?media=rss",
+    "order": 174,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 206,
+  "fields": {
+    "title": "МЫ И НАШИ ДЕТИ",
+    "speaker": "Светлана Притчина",
+    "duration": "20:35",
+    "episode_url": "https://kclcfamily.podster.fm/e/272407/mi-i-nashi-deti-svetlana-pritchina",
+    "audio_url": "https://podster.fm/episodes/87a434c5-2836-425b-b2f5-fbe792d10e1b/audio.mp3?media=rss",
+    "order": 175,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 207,
+  "fields": {
+    "title": "ИСЦЕЛЕНИЕ - ЭТО ХЛЕБ ДЕТЕЙ",
+    "speaker": "Владимир Ашаев",
+    "duration": "16:11",
+    "episode_url": "https://kclcfamily.podster.fm/e/272406/istselenie-eto-hleb-detey-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/cb108061-907c-44bc-8021-7d8d1b3ca5a0/audio.mp3?media=rss",
+    "order": 176,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 208,
+  "fields": {
+    "title": "ПРАВЕДНОСТЬ",
+    "speaker": "Данил Кононов",
+    "duration": "44:15",
+    "episode_url": "https://kclcfamily.podster.fm/e/272376/pravednost-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/198774d0-7ba0-4cef-b374-496c14ac89c4/audio.mp3?media=rss",
+    "order": 177,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 209,
+  "fields": {
+    "title": "ЗАКВАСКА",
+    "speaker": "Владимир Ашаев",
+    "duration": "24:11",
+    "episode_url": "https://kclcfamily.podster.fm/e/272375/zakvaska-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/a2aaf264-eeac-462c-a596-b8a837ceb25e/audio.mp3?media=rss",
+    "order": 178,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 210,
+  "fields": {
+    "title": "ДАРОМ ЛИ БОГОБОЯЗНЕН ИОВ",
+    "speaker": "Алексей Романов",
+    "duration": "43:38",
+    "episode_url": "https://kclcfamily.podster.fm/e/272374/darom-li-bogoboyaznen-iov-aleksey-romanov",
+    "audio_url": "https://podster.fm/episodes/4b8c3157-0491-4c0f-9d71-4e9b729021db/audio.mp3?media=rss",
+    "order": 179,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 211,
+  "fields": {
+    "title": "ЧТО ТЫ СЕЕШЬ В СВОЕЙ ЖИЗНИ",
+    "speaker": "Владимир Ашаев",
+    "duration": "23:40",
+    "episode_url": "https://kclcfamily.podster.fm/e/270416/chto-ti-seesh-v-svoey-zhizni-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/0aa7594a-68fd-4823-89db-72a0ee9d9196/audio.mp3?media=rss",
+    "order": 180,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 212,
+  "fields": {
+    "title": "ПАСХА",
+    "speaker": "Данил Кононов",
+    "duration": "27:49",
+    "episode_url": "https://kclcfamily.podster.fm/e/270414/pasha-danil-kononov",
+    "audio_url": "https://podster.fm/episodes/060a12c6-53c5-4533-a2e4-12edb9ea8695/audio.mp3?media=rss",
+    "order": 181,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 213,
+  "fields": {
+    "title": "НАЙДИ СЕБЯ",
+    "speaker": "Максим Притчин",
+    "duration": "41:22",
+    "episode_url": "https://kclcfamily.podster.fm/e/270413/naydi-sebya-maksim-pritchin",
+    "audio_url": "https://podster.fm/episodes/f9e7a0e6-ff16-415b-bf89-feb2a5357376/audio.mp3?media=rss",
+    "order": 182,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 214,
+  "fields": {
+    "title": "6 служение / Конференция \"Время Божьего Огня\" / Сергей Лукьянов",
+    "speaker": "6 служение",
+    "duration": "76:27",
+    "episode_url": "https://kclcfamily.podster.fm/80",
+    "audio_url": "https://kclcfamily.podster.fm/80/download/audio.mp3?media=rss",
+    "order": 183,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 215,
+  "fields": {
+    "title": "5 служение / Конференция \"Время Божьего Огня\" / Олег Попов",
+    "speaker": "5 служение",
+    "duration": "62:01",
+    "episode_url": "https://kclcfamily.podster.fm/79",
+    "audio_url": "https://kclcfamily.podster.fm/79/download/audio.mp3?media=rss",
+    "order": 184,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 216,
+  "fields": {
+    "title": "4 служение / Конференция \"Время Божьего Огня\" / Олег Попов",
+    "speaker": "4 служение",
+    "duration": "61:21",
+    "episode_url": "https://kclcfamily.podster.fm/78",
+    "audio_url": "https://kclcfamily.podster.fm/78/download/audio.mp3?media=rss",
+    "order": 185,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 217,
+  "fields": {
+    "title": "3 служение / Конференция \"Время Божьего Огня\" / Сергей Лукьянов",
+    "speaker": "3 служение",
+    "duration": "63:13",
+    "episode_url": "https://kclcfamily.podster.fm/77",
+    "audio_url": "https://kclcfamily.podster.fm/77/download/audio.mp3?media=rss",
+    "order": 186,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 218,
+  "fields": {
+    "title": "2 служение / Конференция \"Время Божьего Огня\" / Олег Попов",
+    "speaker": "2 служение",
+    "duration": "63:24",
+    "episode_url": "https://kclcfamily.podster.fm/76",
+    "audio_url": "https://kclcfamily.podster.fm/76/download/audio.mp3?media=rss",
+    "order": 187,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 219,
+  "fields": {
+    "title": "1 служение / Конференция \"Время Божьего Огня\" / Сергей Лукьянов",
+    "speaker": "1 служение",
+    "duration": "74:22",
+    "episode_url": "https://kclcfamily.podster.fm/75",
+    "audio_url": "https://kclcfamily.podster.fm/75/download/audio.mp3?media=rss",
+    "order": 188,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 220,
+  "fields": {
+    "title": "ПОД КРОВОМ ВСЕВЫШНЕГО",
+    "speaker": "Владимир Ашаев",
+    "duration": "17:43",
+    "episode_url": "https://kclcfamily.podster.fm/74",
+    "audio_url": "https://kclcfamily.podster.fm/74/download/audio.mp3?media=rss",
+    "order": 189,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 221,
+  "fields": {
+    "title": "ВОЗГРЕВАЙ ДАР БОЖИЙ",
+    "speaker": "Юрий Юнюшкин",
+    "duration": "55:03",
+    "episode_url": "https://kclcfamily.podster.fm/73",
+    "audio_url": "https://kclcfamily.podster.fm/73/download/audio.mp3?media=rss",
+    "order": 190,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 222,
+  "fields": {
+    "title": "ЛЮДИ НАДЕЖДЫ",
+    "speaker": "Максим Притчин",
+    "duration": "36:18",
+    "episode_url": "https://kclcfamily.podster.fm/72",
+    "audio_url": "https://kclcfamily.podster.fm/72/download/audio.mp3?media=rss",
+    "order": 191,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 223,
+  "fields": {
+    "title": "ВЕРЕН ОБЕЩАВШИЙ",
+    "speaker": "Виктория Кононова",
+    "duration": "29:12",
+    "episode_url": "https://kclcfamily.podster.fm/71",
+    "audio_url": "https://kclcfamily.podster.fm/71/download/audio.mp3?media=rss",
+    "order": 192,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 224,
+  "fields": {
+    "title": "ПЕРЕМЕНЫ ВСЕГДА К ЛУЧШЕМУ",
+    "speaker": "Владимир Ашаев",
+    "duration": "34:27",
+    "episode_url": "https://kclcfamily.podster.fm/70",
+    "audio_url": "https://kclcfamily.podster.fm/70/download/audio.mp3?media=rss",
+    "order": 193,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 225,
+  "fields": {
+    "title": "НЕ БОЙСЯ",
+    "speaker": "Максим Притчин",
+    "duration": "37:07",
+    "episode_url": "https://kclcfamily.podster.fm/69",
+    "audio_url": "https://kclcfamily.podster.fm/69/download/audio.mp3?media=rss",
+    "order": 194,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 226,
+  "fields": {
+    "title": "ЗА КАЖДЫМ СТРАДАНИЕМ СВОЯ ЦЕНА",
+    "speaker": "Владимир Ашаев",
+    "duration": "26:09",
+    "episode_url": "https://kclcfamily.podster.fm/68",
+    "audio_url": "https://kclcfamily.podster.fm/68/download/audio.mp3?media=rss",
+    "order": 195,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 227,
+  "fields": {
+    "title": "СЧАСТЛИВАЯ СЕМЬЯ - ЭТО ВЫБОР",
+    "speaker": "Виктория Кононова",
+    "duration": "52:21",
+    "episode_url": "https://kclcfamily.podster.fm/67",
+    "audio_url": "https://kclcfamily.podster.fm/67/download/audio.mp3?media=rss",
+    "order": 196,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 228,
+  "fields": {
+    "title": "ПОЧЕМУ ЮРА НЕ ИСЦЕЛЯЕТСЯ",
+    "speaker": "Михаил Купцов",
+    "duration": "36:00",
+    "episode_url": "https://kclcfamily.podster.fm/66",
+    "audio_url": "https://kclcfamily.podster.fm/66/download/audio.mp3?v=2&media=rss",
+    "order": 197,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 229,
+  "fields": {
+    "title": "НИ ДНЯ БЕЗ МИССИИ",
+    "speaker": "Данил Кононов",
+    "duration": "46:50",
+    "episode_url": "https://kclcfamily.podster.fm/65",
+    "audio_url": "https://kclcfamily.podster.fm/65/download/audio.mp3?media=rss",
+    "order": 198,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 230,
+  "fields": {
+    "title": "ТЫ ЭТО МОЖЕШЬ",
+    "speaker": "Максим Притчин",
+    "duration": "43:26",
+    "episode_url": "https://kclcfamily.podster.fm/64",
+    "audio_url": "https://kclcfamily.podster.fm/64/download/audio.mp3?media=rss",
+    "order": 199,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 231,
+  "fields": {
+    "title": "ТРАНСФОРМАЦИЯ ЛИЧНОСТИ",
+    "speaker": "Владимир Ашаев",
+    "duration": "22:16",
+    "episode_url": "https://kclcfamily.podster.fm/63",
+    "audio_url": "https://kclcfamily.podster.fm/63/download/audio.mp3?media=rss",
+    "order": 200,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 232,
+  "fields": {
+    "title": "МОЛИТЕСЬ",
+    "speaker": "Максим Притчин",
+    "duration": "04:56",
+    "episode_url": "https://kclcfamily.podster.fm/62",
+    "audio_url": "https://kclcfamily.podster.fm/62/download/audio.mp3?media=rss",
+    "order": 201,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 233,
+  "fields": {
+    "title": "СЛЕДУЮЩЕЕ ЧУДО, КОТОРОЕ БУДЕТ В ТВОЕЙ ЖИЗНИ, ПРИДЕТ ЧЕРЕЗ ТВОИ РУКИ",
+    "speaker": "Владимир Ашаев",
+    "duration": "17:35",
+    "episode_url": "https://kclcfamily.podster.fm/61",
+    "audio_url": "https://kclcfamily.podster.fm/61/download/audio.mp3?media=rss",
+    "order": 202,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 234,
+  "fields": {
+    "title": "О РОЖДЕСТВЕ",
+    "speaker": "Владимир Ашаев",
+    "duration": "13:33",
+    "episode_url": "https://kclcfamily.podster.fm/60",
+    "audio_url": "https://kclcfamily.podster.fm/60/download/audio.mp3?media=rss",
+    "order": 203,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 235,
+  "fields": {
+    "title": "СЕМЬЯ",
+    "speaker": "Данил Кононов",
+    "duration": "60:11",
+    "episode_url": "https://kclcfamily.podster.fm/59",
+    "audio_url": "https://kclcfamily.podster.fm/59/download/audio.mp3?media=rss",
+    "order": 204,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 236,
+  "fields": {
+    "title": "ПОМАЗАНИЕ",
+    "speaker": "Данил Кононов",
+    "duration": "55:06",
+    "episode_url": "https://kclcfamily.podster.fm/58",
+    "audio_url": "https://kclcfamily.podster.fm/58/download/audio.mp3?media=rss",
+    "order": 205,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 237,
+  "fields": {
+    "title": "ДРЕМЛЮЩИЕ ВРАГИ",
+    "speaker": "Владимир Ашаев",
+    "duration": "19:47",
+    "episode_url": "https://kclcfamily.podster.fm/57",
+    "audio_url": "https://kclcfamily.podster.fm/57/download/audio.mp3?media=rss",
+    "order": 206,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 238,
+  "fields": {
+    "title": "ХРАНИ ТРУБОПРОВОД ВЕРЫ ЧИСТЫМ",
+    "speaker": "Юрий Юнюшкин",
+    "duration": "56:09",
+    "episode_url": "https://kclcfamily.podster.fm/56",
+    "audio_url": "https://kclcfamily.podster.fm/56/download/audio.mp3?media=rss",
+    "order": 207,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 239,
+  "fields": {
+    "title": "ДОВЕРИЕ",
+    "speaker": "Ксения Бахтеева",
+    "duration": "29:49",
+    "episode_url": "https://kclcfamily.podster.fm/55",
+    "audio_url": "https://kclcfamily.podster.fm/55/download/audio.mp3?media=rss",
+    "order": 208,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 240,
+  "fields": {
+    "title": "ТРАНСФОРМАЦИЯ",
+    "speaker": "Владимир Ашаев",
+    "duration": "33:03",
+    "episode_url": "https://kclcfamily.podster.fm/54",
+    "audio_url": "https://kclcfamily.podster.fm/54/download/audio.mp3?media=rss",
+    "order": 209,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 241,
+  "fields": {
+    "title": "ВЛАСТЬ ВЕРУЮЩЕГО",
+    "speaker": "Данил Кононов",
+    "duration": "50:35",
+    "episode_url": "https://kclcfamily.podster.fm/53",
+    "audio_url": "https://kclcfamily.podster.fm/53/download/audio.mp3?media=rss",
+    "order": 210,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 242,
+  "fields": {
+    "title": "СПОСОБНОСТЬ К ДЕЙСТВИЮ",
+    "speaker": "Максим Притчин",
+    "duration": "37:45",
+    "episode_url": "https://kclcfamily.podster.fm/52",
+    "audio_url": "https://kclcfamily.podster.fm/52/download/audio.mp3?media=rss",
+    "order": 211,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 243,
+  "fields": {
+    "title": "ОТЦОВСТВО. ЧАСТЬ 2",
+    "speaker": "Данил Кононов",
+    "duration": "50:17",
+    "episode_url": "https://kclcfamily.podster.fm/51",
+    "audio_url": "https://kclcfamily.podster.fm/51/download/audio.mp3?media=rss",
+    "order": 212,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 244,
+  "fields": {
+    "title": "ОТЦОВСТВО",
+    "speaker": "Данил Кононов",
+    "duration": "44:41",
+    "episode_url": "https://kclcfamily.podster.fm/50",
+    "audio_url": "https://kclcfamily.podster.fm/50/download/audio.mp3?media=rss",
+    "order": 213,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 245,
+  "fields": {
+    "title": "В ТЕБЕ ДНК ПОБЕДИТЕЛЯ",
+    "speaker": "Владимир Ашаев",
+    "duration": "39:55",
+    "episode_url": "https://kclcfamily.podster.fm/49",
+    "audio_url": "https://kclcfamily.podster.fm/49/download/audio.mp3?media=rss",
+    "order": 214,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 246,
+  "fields": {
+    "title": "РЕЗУЛЬТАТ ЛИЧНЫХ ОТНОШЕНИЙ С БОГОМ",
+    "speaker": "Михаил Зырянов",
+    "duration": "32:43",
+    "episode_url": "https://kclcfamily.podster.fm/48",
+    "audio_url": "https://kclcfamily.podster.fm/48/download/audio.mp3?media=rss",
+    "order": 215,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 247,
+  "fields": {
+    "title": "ЖИЗНЬ В БОЖЬЕЙ ЛЮБВИ",
+    "speaker": "Дмитрий Шатров",
+    "duration": "45:34",
+    "episode_url": "https://kclcfamily.podster.fm/47",
+    "audio_url": "https://kclcfamily.podster.fm/47/download/audio.mp3?media=rss",
+    "order": 216,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 248,
+  "fields": {
+    "title": "ВПЕЧАТЛИ БОГА СВОЕЙ ВЕРОЙ",
+    "speaker": "Владимир Ашаев",
+    "duration": "34:46",
+    "episode_url": "https://kclcfamily.podster.fm/46",
+    "audio_url": "https://kclcfamily.podster.fm/46/download/audio.mp3?media=rss",
+    "order": 217,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 249,
+  "fields": {
+    "title": "МЫШЛЕНИЕ",
+    "speaker": "Максим Притчин",
+    "duration": "36:21",
+    "episode_url": "https://kclcfamily.podster.fm/45",
+    "audio_url": "https://kclcfamily.podster.fm/45/download/audio.mp3?media=rss",
+    "order": 218,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 250,
+  "fields": {
+    "title": "МЫСЛИ, МЕНЯЮЩИЕ МЫШЛЕНИЕ",
+    "speaker": "Юрий Юнюшкин",
+    "duration": "42:32",
+    "episode_url": "https://kclcfamily.podster.fm/44",
+    "audio_url": "https://kclcfamily.podster.fm/44/download/audio.mp3?media=rss",
+    "order": 219,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 251,
+  "fields": {
+    "title": "СИЛА ЦЕРКВИ",
+    "speaker": "Владимир Ашаев",
+    "duration": "37:24",
+    "episode_url": "https://kclcfamily.podster.fm/43",
+    "audio_url": "https://kclcfamily.podster.fm/43/download/audio.mp3?media=rss",
+    "order": 220,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 252,
+  "fields": {
+    "title": "МАЯТНИК ЖИЗНИ",
+    "speaker": "Дмитрий Родин",
+    "duration": "32:34",
+    "episode_url": "https://kclcfamily.podster.fm/42",
+    "audio_url": "https://kclcfamily.podster.fm/42/download/audio.mp3?media=rss",
+    "order": 221,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 253,
+  "fields": {
+    "title": "Библия",
+    "speaker": "Данил Кононов",
+    "duration": "41:41",
+    "episode_url": "https://kclcfamily.podster.fm/41",
+    "audio_url": "https://kclcfamily.podster.fm/41/download/audio.mp3?media=rss",
+    "order": 222,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 254,
+  "fields": {
+    "title": "МОЛЧАНИЕ - СИЛА ТВОЕГО ПРОРЫВА",
+    "speaker": "Владимир Ашаев",
+    "duration": "34:08",
+    "episode_url": "https://kclcfamily.podster.fm/40",
+    "audio_url": "https://kclcfamily.podster.fm/40/download/audio.mp3?media=rss",
+    "order": 223,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 255,
+  "fields": {
+    "title": "МЕСТО ТВОЕГО ПРОРЫВА",
+    "speaker": "Владимир Ашаев",
+    "duration": "37:51",
+    "episode_url": "https://kclcfamily.podster.fm/39",
+    "audio_url": "https://kclcfamily.podster.fm/39/download/audio.mp3?media=rss",
+    "order": 224,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 256,
+  "fields": {
+    "title": "ДЕРЖИ СВОЙ ФОКУС НА РАДОСТИ",
+    "speaker": "Юлия Александрова",
+    "duration": "38:54",
+    "episode_url": "https://kclcfamily.podster.fm/38",
+    "audio_url": "https://kclcfamily.podster.fm/38/download/audio.mp3?media=rss",
+    "order": 225,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 257,
+  "fields": {
+    "title": "Дилан Лонг и Бен Фитцджеральд",
+    "speaker": "Как активировать себя",
+    "duration": "59:06",
+    "episode_url": "https://kclcfamily.podster.fm/31",
+    "audio_url": "https://kclcfamily.podster.fm/31/download/audio.mp3?media=rss",
+    "order": 226,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 258,
+  "fields": {
+    "title": "Владимир Ашаев - Человек",
+    "speaker": "венец творения",
+    "duration": "28:58",
+    "episode_url": "https://kclcfamily.podster.fm/30",
+    "audio_url": "https://kclcfamily.podster.fm/30/download/audio.mp3?media=rss",
+    "order": 227,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 259,
+  "fields": {
+    "title": "Энди Мейсон",
+    "speaker": "Кем мы являемся?",
+    "duration": "40:29",
+    "episode_url": "https://kclcfamily.podster.fm/29",
+    "audio_url": "https://kclcfamily.podster.fm/29/download/audio.mp3?media=rss",
+    "order": 228,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 260,
+  "fields": {
+    "title": "Владимир Ашаев",
+    "speaker": "Семь гор",
+    "duration": "36:07",
+    "episode_url": "https://kclcfamily.podster.fm/28",
+    "audio_url": "https://kclcfamily.podster.fm/28/download/audio.mp3?media=rss",
+    "order": 229,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 261,
+  "fields": {
+    "title": "Владимир Ашаев",
+    "speaker": "Исцеление прокажённого",
+    "duration": "20:52",
+    "episode_url": "https://kclcfamily.podster.fm/27",
+    "audio_url": "https://kclcfamily.podster.fm/27/download/audio.mp3?media=rss",
+    "order": 230,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 262,
+  "fields": {
+    "title": "Юрий Юнюшкин",
+    "speaker": "О важности поклонения",
+    "duration": "36:12",
+    "episode_url": "https://kclcfamily.podster.fm/26",
+    "audio_url": "https://kclcfamily.podster.fm/26/download/audio.mp3?media=rss",
+    "order": 231,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 263,
+  "fields": {
+    "title": "Владимир Ашаев",
+    "speaker": "Божье Благоволение",
+    "duration": "41:54",
+    "episode_url": "https://kclcfamily.podster.fm/25",
+    "audio_url": "https://kclcfamily.podster.fm/25/download/audio.mp3?media=rss",
+    "order": 232,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 264,
+  "fields": {
+    "title": "Владимир Осипов",
+    "speaker": "Дети Света",
+    "duration": "34:20",
+    "episode_url": "https://kclcfamily.podster.fm/24",
+    "audio_url": "https://kclcfamily.podster.fm/24/download/audio.mp3?media=rss",
+    "order": 233,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 265,
+  "fields": {
+    "title": "Юрий Юнюшкин",
+    "speaker": "Бог тебя не оставит",
+    "duration": "24:14",
+    "episode_url": "https://kclcfamily.podster.fm/23",
+    "audio_url": "https://kclcfamily.podster.fm/23/download/audio.mp3?media=rss",
+    "order": 234,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 266,
+  "fields": {
+    "title": "Владимир Ашаев - Рождество",
+    "speaker": "праздник ли это?",
+    "duration": "28:38",
+    "episode_url": "https://kclcfamily.podster.fm/22",
+    "audio_url": "https://kclcfamily.podster.fm/22/download/audio.mp3?media=rss",
+    "order": 235,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 267,
+  "fields": {
+    "title": "Михаил Зырянов",
+    "speaker": "Безопасность в Господе",
+    "duration": "44:24",
+    "episode_url": "https://kclcfamily.podster.fm/21",
+    "audio_url": "https://kclcfamily.podster.fm/21/download/audio.mp3?media=rss",
+    "order": 236,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 268,
+  "fields": {
+    "title": "Владимир Осипов",
+    "speaker": "Что значит любить",
+    "duration": "47:59",
+    "episode_url": "https://kclcfamily.podster.fm/20",
+    "audio_url": "https://kclcfamily.podster.fm/20/download/audio.mp3?media=rss",
+    "order": 237,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 269,
+  "fields": {
+    "title": "Владимир Ашаев",
+    "speaker": "Сила надежды",
+    "duration": "38:34",
+    "episode_url": "https://kclcfamily.podster.fm/19",
+    "audio_url": "https://kclcfamily.podster.fm/19/download/audio.mp3?media=rss",
+    "order": 238,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 270,
+  "fields": {
+    "title": "Юрий Юнюшкин",
+    "speaker": "Вера, которая побеждает",
+    "duration": "42:48",
+    "episode_url": "https://kclcfamily.podster.fm/18",
+    "audio_url": "https://kclcfamily.podster.fm/18/download/audio.mp3?media=rss",
+    "order": 239,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 271,
+  "fields": {
+    "title": "Михаил Зырянов",
+    "speaker": "Мышление",
+    "duration": "41:43",
+    "episode_url": "https://kclcfamily.podster.fm/17",
+    "audio_url": "https://kclcfamily.podster.fm/17/download/audio.mp3?media=rss",
+    "order": 240,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 272,
+  "fields": {
+    "title": "Владимир Ашаев",
+    "speaker": "Мы те, кто расширяет меру",
+    "duration": "19:50",
+    "episode_url": "https://kclcfamily.podster.fm/16",
+    "audio_url": "https://kclcfamily.podster.fm/16/download/audio.mp3?media=rss",
+    "order": 241,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 273,
+  "fields": {
+    "title": "Владимир Ашаев",
+    "speaker": "Какова твоя мера",
+    "duration": "23:31",
+    "episode_url": "https://kclcfamily.podster.fm/15",
+    "audio_url": "https://kclcfamily.podster.fm/15/download/audio.mp3?media=rss",
+    "order": 242,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 274,
+  "fields": {
+    "title": "Юрий Юнюшкин",
+    "speaker": "Живи верой",
+    "duration": "34:22",
+    "episode_url": "https://kclcfamily.podster.fm/14",
+    "audio_url": "https://kclcfamily.podster.fm/14/download/audio.mp3?media=rss",
+    "order": 243,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 275,
+  "fields": {
+    "title": "Владимир Ашаев",
+    "speaker": "Ты тот, кто привлекает души",
+    "duration": "35:17",
+    "episode_url": "https://kclcfamily.podster.fm/13",
+    "audio_url": "https://kclcfamily.podster.fm/13/download/audio.mp3?media=rss",
+    "order": 244,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 276,
+  "fields": {
+    "title": "Юрий Юнюшкин",
+    "speaker": "Свобода от вины и осуждения",
+    "duration": "45:51",
+    "episode_url": "https://kclcfamily.podster.fm/12",
+    "audio_url": "https://kclcfamily.podster.fm/12/download/audio.mp3?media=rss",
+    "order": 245,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 277,
+  "fields": {
+    "title": "Владимир Осипов",
+    "speaker": "Доброе христианство",
+    "duration": "32:41",
+    "episode_url": "https://kclcfamily.podster.fm/11",
+    "audio_url": "https://kclcfamily.podster.fm/11/download/audio.mp3?media=rss",
+    "order": 246,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 278,
+  "fields": {
+    "title": "Владимир Ашаев",
+    "speaker": "Затерянные в песках",
+    "duration": "33:48",
+    "episode_url": "https://kclcfamily.podster.fm/10",
+    "audio_url": "https://kclcfamily.podster.fm/10/download/audio.mp3?media=rss",
+    "order": 247,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 279,
+  "fields": {
+    "title": "Юрий Юнюшкин",
+    "speaker": "Утверждаясь в праведности",
+    "duration": "43:00",
+    "episode_url": "https://kclcfamily.podster.fm/9",
+    "audio_url": "https://kclcfamily.podster.fm/9/download/audio.mp3?media=rss",
+    "order": 248,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 280,
+  "fields": {
+    "title": "Михаил Зырянов",
+    "speaker": "Ценности человеческой жизни",
+    "duration": "12:18",
+    "episode_url": "https://kclcfamily.podster.fm/8",
+    "audio_url": "https://kclcfamily.podster.fm/8/download/audio.mp3?media=rss",
+    "order": 249,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 281,
+  "fields": {
+    "title": "Владимир Ашаев",
+    "speaker": "Твое малое благословит многих",
+    "duration": "34:08",
+    "episode_url": "https://kclcfamily.podster.fm/7",
+    "audio_url": "https://kclcfamily.podster.fm/7/download/audio.mp3?media=rss",
+    "order": 250,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 282,
+  "fields": {
+    "title": "Юрий Юнюшкин",
+    "speaker": "Если Бог за нас, кто против нас?",
+    "duration": "36:52",
+    "episode_url": "https://kclcfamily.podster.fm/6",
+    "audio_url": "https://kclcfamily.podster.fm/6/download/audio.mp3?media=rss",
+    "order": 251,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 283,
+  "fields": {
+    "title": "Михаил Зырянов",
+    "speaker": "Что такое евангелие",
+    "duration": "59:45",
+    "episode_url": "https://kclcfamily.podster.fm/5",
+    "audio_url": "https://kclcfamily.podster.fm/5/download/audio.mp3?media=rss",
+    "order": 252,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 284,
+  "fields": {
+    "title": "Владимир Ашаев",
+    "speaker": "Финансы",
+    "duration": "49:07",
+    "episode_url": "https://kclcfamily.podster.fm/4",
+    "audio_url": "https://kclcfamily.podster.fm/4/download/audio.mp3?v=2&media=rss",
+    "order": 253,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 285,
+  "fields": {
+    "title": "Владимир Ашаев",
+    "speaker": "Великое приобретение",
+    "duration": "34:38",
+    "episode_url": "https://kclcfamily.podster.fm/3",
+    "audio_url": "https://kclcfamily.podster.fm/3/download/audio.mp3?media=rss",
+    "order": 254,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 286,
+  "fields": {
+    "title": "Михаил Зырянов",
+    "speaker": "Семья Рехавитов",
+    "duration": "52:33",
+    "episode_url": "https://kclcfamily.podster.fm/2",
+    "audio_url": "https://kclcfamily.podster.fm/2/download/audio.mp3?media=rss",
+    "order": 255,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 287,
+  "fields": {
+    "title": "Владимир Ашаев",
+    "speaker": "О почтении",
+    "duration": "25:08",
+    "episode_url": "https://kclcfamily.podster.fm/1",
+    "audio_url": "https://kclcfamily.podster.fm/1/download/audio.mp3?media=rss",
+    "order": 256,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.podcastepisode",
+  "pk": 288,
+  "fields": {
+    "title": "Не отвлекайся от своего предназначения",
+    "speaker": "Владимир Ашаев",
+    "duration": "33:53",
+    "episode_url": "https://kclcfamily.podster.fm/e/480291/ne-otvlekaysya-ot-svoego-prednaznacheniya-vladimir-ashaev",
+    "audio_url": "https://podster.fm/episodes/a2c63dbc-76ba-43e8-9fdd-78faf263007d/audio.mp3?media=rss",
+    "order": 0,
+    "is_active": true
+  }
+},
+{
+  "model": "church_app.event",
+  "pk": 29,
+  "fields": {
+    "title": "Онлайн-школа «Звуки небес» с Деном МакКоллам и Бефани Хикс",
+    "slug": "onlajn-zvuki-nebes",
+    "description": "Практическая онлайн-школа для пасторов, служителей и команд прославления о том, как приносить Небеса на землю и высвобождать Божью волю там, куда Он тебя поместил.",
+    "event_type": "special",
+    "start_date": "2026-10-03T09:39:58.845Z",
+    "end_date": "2026-10-08T09:39:58.846Z",
+    "location": "Онлайн-формат (Zoom)",
+    "address": "Платформа онлайн-вещания KCLC",
+    "image": "events/onlajn-zvuki-nebes.jpg",
+    "max_participants": 0,
+    "is_active": true,
+    "is_featured": true,
+    "created_at": "2026-09-19T09:39:58.861Z",
+    "is_conference": true,
+    "theme_config": {
+      "theme": "clean_light",
+      "hero_height": "fullscreen",
+      "accent_color": "#2563eb",
+      "font_family": "sans",
+      "custom_css": "",
+      "custom_head_html": ""
+    },
+    "registration_fee": "по СБП — 5000 руб / PayPal — 60 евро",
+    "sbp_url": "https://qr.nspk.ru/AS1A003KDIQAGT8J9TP836SFB4M5TEPQ?type=01&bank=100000000111&crc=E94F",
+    "paypal_url": "https://www.paypal.me/ElenaAshaeva",
+    "support_telegram": "@krasnkate",
+    "stream_link": "https://kclc.ru/live/",
+    "latitude": null,
+    "longitude": null,
+    "is_online": false
+  }
+},
+{
+  "model": "church_app.event",
+  "pk": 31,
+  "fields": {
+    "title": "Женская конференция «Преображение»",
+    "slug": "zhenskaya-konferentsiya",
+    "description": "Ежегодная женская конференция Церкви Христианской Жизни. Время обновления, вдохновения, глубокого Слова и личной встречи с Богом.",
+    "event_type": "conference",
+    "start_date": "2026-10-18T08:05:32.288Z",
+    "end_date": "2026-10-20T08:05:32.288Z",
+    "location": "г. Красноярск, ул. Батурина 30 / Онлайн",
+    "address": "",
+    "image": "events/zhenskaya-konferentsiya.jpg",
+    "max_participants": 0,
+    "is_active": true,
+    "is_featured": true,
+    "created_at": "2026-09-20T08:05:32.304Z",
+    "is_conference": true,
+    "theme_config": {
+      "theme": "editorial_warm",
+      "accent_color": "#e11d48",
+      "font_family": "sans"
+    },
+    "registration_fee": "1500.0",
+    "sbp_url": "",
+    "paypal_url": "",
+    "support_telegram": "@krasnkate",
+    "stream_link": "",
+    "latitude": null,
+    "longitude": null,
+    "is_online": false
+  }
+},
+{
+  "model": "church_app.event",
+  "pk": 32,
+  "fields": {
+    "title": "Альфа-тренинг: Эффективное благовестие в XXI веке",
+    "slug": "alfa-trening",
+    "description": "Практический интенсив по запуску и проведению Альфа-курса. Обучение лидеров, инструменты для живого диалога о вере и созидание малых групп.",
+    "event_type": "conference",
+    "start_date": "2026-11-04T08:26:34.872Z",
+    "end_date": "2026-11-06T08:26:34.873Z",
+    "location": "г. Красноярск, ул. Батурина 30 / Онлайн",
+    "address": "",
+    "image": "events/alfa-trening.jpg",
+    "max_participants": 0,
+    "is_active": true,
+    "is_featured": true,
+    "created_at": "2026-09-20T08:26:34.921Z",
+    "is_conference": true,
+    "theme_config": {
+      "theme": "clean_light",
+      "accent_color": "#2563eb",
+      "font_family": "sans"
+    },
+    "registration_fee": "0.0",
+    "sbp_url": "",
+    "paypal_url": "",
+    "support_telegram": "@krasnkate",
+    "stream_link": "",
+    "latitude": null,
+    "longitude": null,
+    "is_online": false
+  }
+},
+{
+  "model": "church_app.event",
+  "pk": 33,
+  "fields": {
+    "title": "Конференция «Время идти»",
+    "slug": "vremya-idti",
+    "description": "Ежегодная миссионерская конференция. Вдохновение на служение своему городу, стране и народам мира.",
+    "event_type": "service",
+    "start_date": "2026-06-30T08:26:34Z",
+    "end_date": "2026-07-04T08:26:34Z",
+    "location": "г. Красноярск, ул. Батурина 30",
+    "address": "",
+    "image": "events/vremya-idti.jpg",
+    "max_participants": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-09-20T08:26:34.973Z",
+    "is_conference": true,
+    "theme_config": {
+      "theme": "minimal_slate",
+      "accent_color": "#f59e0b",
+      "font_family": "sans"
+    },
+    "registration_fee": "1000.0",
+    "sbp_url": "",
+    "paypal_url": "",
+    "support_telegram": "@krasnkate",
+    "stream_link": "",
+    "latitude": null,
+    "longitude": null,
+    "is_online": false
+  }
+},
+{
+  "model": "church_app.event",
+  "pk": 34,
+  "fields": {
+    "title": "Сибирская Альфа конференция — Альфа в сердце города",
+    "slug": "sibirskaya-alfa-konferentsiya-2026",
+    "description": "Конференция для лидеров и команд Альфа-курсов Сибири. Обмен опытом, практические семинары и духовное вдохновение.",
+    "event_type": "conference",
+    "start_date": "2026-08-21T10:00:00Z",
+    "end_date": "2026-08-23T19:00:00Z",
+    "location": "Красноярск, ул. Вавилова 1, стр. 51",
+    "address": "ЦХЖ Красноярск, Главный зал",
+    "image": "",
+    "max_participants": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-09-20T08:48:17.343Z",
+    "is_conference": true,
+    "theme_config": {},
+    "registration_fee": "",
+    "sbp_url": "",
+    "paypal_url": "",
+    "support_telegram": "@krasnkate",
+    "stream_link": "https://rutube.ru/video/1d8b9c398f3f30b6b5bfd29f07ac167c/",
+    "latitude": null,
+    "longitude": null,
+    "is_online": false
+  }
+},
+{
+  "model": "church_app.event",
+  "pk": 35,
+  "fields": {
+    "title": "Онлайн-конференция «Два источника, одна река»",
+    "slug": "dva-istochnika-odna-reka-2026",
+    "description": "Особая межрегиональная онлайн-конференция служителей и лидеров пророческого и пасторского направления.",
+    "event_type": "conference",
+    "start_date": "2026-08-14T10:00:00Z",
+    "end_date": "2026-08-16T18:00:00Z",
+    "location": "Онлайн / Прямой эфир RuTube & YouTube",
+    "address": "",
+    "image": "",
+    "max_participants": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-09-20T08:48:17.375Z",
+    "is_conference": true,
+    "theme_config": {},
+    "registration_fee": "",
+    "sbp_url": "",
+    "paypal_url": "",
+    "support_telegram": "@krasnkate",
+    "stream_link": "https://rutube.ru/video/af676ff285183ab0e721219bfc629e8f/",
+    "latitude": null,
+    "longitude": null,
+    "is_online": false
+  }
+},
+{
+  "model": "church_app.event",
+  "pk": 36,
+  "fields": {
+    "title": "Мужская конференция «Сила братства»",
+    "slug": "sila-bratstva-2026",
+    "description": "Ежегодная мужская конференция церкви с участием приглашенных спикеров. Укрепление мужского призвания, ответственности и веры.",
+    "event_type": "conference",
+    "start_date": "2026-06-12T10:00:00Z",
+    "end_date": "2026-06-14T18:00:00Z",
+    "location": "Красноярск, ул. Вавилова 1, стр. 51",
+    "address": "ЦХЖ Красноярск, Большой зал",
+    "image": "",
+    "max_participants": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-09-20T08:48:17.397Z",
+    "is_conference": true,
+    "theme_config": {},
+    "registration_fee": "",
+    "sbp_url": "",
+    "paypal_url": "",
+    "support_telegram": "@krasnkate",
+    "stream_link": "",
+    "latitude": null,
+    "longitude": null,
+    "is_online": false
+  }
+},
+{
+  "model": "church_app.event",
+  "pk": 37,
+  "fields": {
+    "title": "Воскресное богослужение и Хвала",
+    "slug": "sunday-service-weekly",
+    "description": "Торжественное общецерковное богослужение. Вдохновляющее прославление, глубокая проповедь Слова Божьего, молитва за нужды и детское служение «Царские дети».",
+    "event_type": "service",
+    "start_date": "2026-09-20T11:49:22.890Z",
+    "end_date": "2026-09-20T13:49:22.890Z",
+    "location": "Красноярск, Центральный зал",
+    "address": "г. Красноярск, ул. Металлургов 24Д",
+    "image": "",
+    "max_participants": 0,
+    "is_active": true,
+    "is_featured": true,
+    "created_at": "2026-09-20T13:49:22.896Z",
+    "is_conference": false,
+    "theme_config": {},
+    "registration_fee": "",
+    "sbp_url": "",
+    "paypal_url": "",
+    "support_telegram": "@krasnkate",
+    "stream_link": "",
+    "latitude": 56.0573,
+    "longitude": 92.9644,
+    "is_online": true
+  }
+},
+{
+  "model": "church_app.event",
+  "pk": 38,
+  "fields": {
+    "title": "Молодёжное служение KCLC Youth",
+    "slug": "youth-friday-service",
+    "description": "Еженедельный драйвовый сбор молодежи Красноярска. Живой звук, актуальные темы для поколения Z и миллениалов, новые знакомства и вечерняя молитва.",
+    "event_type": "youth",
+    "start_date": "2026-09-25T19:49:22.890Z",
+    "end_date": "2026-09-25T21:49:22.890Z",
+    "location": "Красноярск, Малый зал",
+    "address": "г. Красноярск, ул. Металлургов 24Д",
+    "image": "",
+    "max_participants": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-09-20T13:49:22.901Z",
+    "is_conference": false,
+    "theme_config": {},
+    "registration_fee": "",
+    "sbp_url": "",
+    "paypal_url": "",
+    "support_telegram": "@krasnkate",
+    "stream_link": "",
+    "latitude": 56.0573,
+    "longitude": 92.9644,
+    "is_online": false
+  }
+},
+{
+  "model": "church_app.event",
+  "pk": 39,
+  "fields": {
+    "title": "Общецерковная молитва и Ходатайство",
+    "slug": "church-prayer-meeting",
+    "description": "Вечер совместной молитвы за наш город, край, семьи, пробуждение и служения церкви. Время духовного обновления в Божьем присутствии.",
+    "event_type": "prayer",
+    "start_date": "2026-09-23T19:49:22.890Z",
+    "end_date": "2026-09-23T21:19:22.890Z",
+    "location": "Красноярск, Малый зал / Онлайн",
+    "address": "г. Красноярск, ул. Металлургов 24Д",
+    "image": "",
+    "max_participants": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-09-20T13:49:22.907Z",
+    "is_conference": false,
+    "theme_config": {},
+    "registration_fee": "",
+    "sbp_url": "",
+    "paypal_url": "",
+    "support_telegram": "@krasnkate",
+    "stream_link": "",
+    "latitude": 56.0573,
+    "longitude": 92.9644,
+    "is_online": true
+  }
+},
+{
+  "model": "church_app.event",
+  "pk": 40,
+  "fields": {
+    "title": "Конференция «Время идти 2026»",
+    "slug": "conference-vremya-idti-2026",
+    "description": "Главная ежегодная конференция Церкви Христианской Жизни. Три дня сильного служения, специальные спикеры, семинары для лидеров и праздничный вечер поклонения.",
+    "event_type": "special",
+    "start_date": "2026-10-18T23:49:22.890Z",
+    "end_date": "2026-10-21T09:49:22.890Z",
+    "location": "Красноярск, Главная Арена",
+    "address": "г. Красноярск, ул. Металлургов 24Д",
+    "image": "",
+    "max_participants": 0,
+    "is_active": true,
+    "is_featured": true,
+    "created_at": "2026-09-20T13:49:22.913Z",
+    "is_conference": true,
+    "theme_config": {},
+    "registration_fee": "Бесплатно / добровольное пожертвование",
+    "sbp_url": "",
+    "paypal_url": "",
+    "support_telegram": "@krasnkate",
+    "stream_link": "",
+    "latitude": 56.0573,
+    "longitude": 92.9644,
+    "is_online": true
+  }
+},
+{
+  "model": "church_app.event",
+  "pk": 41,
+  "fields": {
+    "title": "Курс «Путь веры: Основы христианства»",
+    "slug": "faith-growth-course-2026",
+    "description": "Курс из 6 интерактивных встреч для тех, кто недавно пришёл к Богу или хочет систематизировать основы веры, молитвы и Писания перед водным крещением.",
+    "event_type": "study",
+    "start_date": "2026-09-20T14:19:22.890Z",
+    "end_date": "2026-09-20T15:49:22.890Z",
+    "location": "Красноярск, Учебный класс",
+    "address": "г. Красноярск, ул. Металлургов 24Д",
+    "image": "",
+    "max_participants": 0,
+    "is_active": true,
+    "is_featured": false,
+    "created_at": "2026-09-20T13:49:22.919Z",
+    "is_conference": false,
+    "theme_config": {},
+    "registration_fee": "",
+    "sbp_url": "",
+    "paypal_url": "",
+    "support_telegram": "@krasnkate",
+    "stream_link": "",
+    "latitude": 56.0573,
+    "longitude": 92.9644,
+    "is_online": false
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 1,
+  "fields": {
+    "title": "27 октября в епархиальном управлении РПЦ состоялась встреча с новым митрополитом Красноярским и Ачинским, Никитой",
+    "slug": "oktyabrya-v-eparhialnom-upravlenii-rpc-sostoyalas",
+    "short_description": "Общение проходило в прекрасной и миролюбивой атмосфере, разговор был очень дружеский и продуктивный, затронули тему отношений и взаимодействия. В конце обменялись контактами и сделали общее фото.",
+    "content": "Общение проходило в прекрасной и миролюбивой атмосфере, разговор был очень дружеский и продуктивный, затронули тему отношений и взаимодействия. В конце обменялись контактами и сделали общее фото.",
+    "image": "news/photo_2025-10-28_19-12-16-1024x768.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 2,
+    "published_at": null,
+    "created_at": "2026-05-14T07:46:39.906Z",
+    "updated_at": "2026-05-14T07:46:50.772Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 2,
+  "fields": {
+    "title": "Толкование снов",
+    "slug": "tolkovanie-snov",
+    "short_description": "17 мая в рамках пророческих курсов прошел семинар «Толкование снов». Данный семинар предоставил возможность научиться понимать язык сновидений и раскрывать их скрытый смысл. А так же все присутствующие получили знания в вопросах: как Бог говорит через сны, какие виды снов бывают, а так же библейское основание и примеры толкований снов упомянутых в писании.",
+    "content": "17 мая в рамках пророческих курсов прошел семинар «Толкование снов». Данный семинар предоставил возможность научиться понимать язык сновидений и раскрывать их скрытый смысл. А так же все присутствующие получили знания в вопросах: как Бог говорит через сны, какие виды снов бывают, а так же библейское основание и примеры толкований снов упомянутых в писании.",
+    "image": "news/photo_2025-06-03_14-49-23.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 2,
+    "published_at": null,
+    "created_at": "2025-05-18T05:34:56Z",
+    "updated_at": "2026-09-13T15:49:38.589Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 3,
+  "fields": {
+    "title": "Время Божьей славы 2025",
+    "slug": "vremya-bozhej-slavy-2025",
+    "short_description": "На прошлой неделе завершилась Конференция ВЕРЫ / Время Божьей Славы, событие, которое оставило неизгладимый след надежды и вдохновения в сердцах многих людей. В течение нескольких дней участники погружались в атмосферу поклонения, молитвы и назидания словом Божьим.",
+    "content": "На прошлой неделе завершилась Конференция ВЕРЫ / Время Божьей Славы, событие, которое оставило неизгладимый след надежды и вдохновения в сердцах многих людей. В течение нескольких дней участники погружались в атмосферу поклонения, молитвы и назидания словом Божьим.\r\n\r\nСпикеры, известные своим даром слова и глубоким пониманием Библии, делились вдохновляющими свидетельствами, откровениями и практическими наставлениями о том, как жить в Божьей Славе.\r\nПеред каждым служением зал наполнялся мощной хвалой, через прославление, вознося молитвы к небесам и ощущая присутствие Святого Духа.\r\n\r\nКонференция стала платформой для общения и укрепления духовных связей, где люди могли найти поддержку, разделить радости и печали, и вместе искать Божье направление. Многие свидетельствовали об исцелениях, чудесах и новых началах, подтверждая, что время, проведенное в Его присутствии, не проходит напрасно.\r\n\r\n\r\n\r\nОрганизаторы выразили благодарность всем участникам, служителям и партнерам, которые внесли свой вклад в успех конференции. Они надеются, что семена веры, посеянные в эти дни, принесут обильный урожай в жизни каждого, кто соприкоснулся с этим благословенным событием.",
+    "image": "news/5422615121844367541-1024x682.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 8,
+    "published_at": null,
+    "created_at": "2026-05-14T08:07:21.466Z",
+    "updated_at": "2026-05-14T08:07:21.466Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 4,
+  "fields": {
+    "title": "27 октября в епархиальном управлении РПЦ состоялась встреча с новым митрополитом Красноярским и Ачинским, Никитой",
+    "slug": "27-oktyabrya-v-eparxialnom-upravlenii-rpc-sostoyalas-vstrecha-s-novym-mitropolitom-krasnoyarskim-i-achinskim-nikitoj",
+    "short_description": "Общение проходило в прекрасной и миролюбивой атмосфере, разговор был очень дружеский и продуктивный, затронули тему отношений и взаимодействия. В конце обменялись контактами и сделали общее фото",
+    "content": "Общение проходило в прекрасной и миролюбивой атмосфере, разговор был очень дружеский и продуктивный, затронули тему отношений и взаимодействия. В конце обменялись контактами и сделали общее фото",
+    "image": "news/photo_2025-10-28_19-12-17.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 1,
+    "published_at": null,
+    "created_at": "2025-10-28T01:48:52Z",
+    "updated_at": "2026-09-13T15:49:38.576Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 5,
+  "fields": {
+    "title": "Время Божьей славы!",
+    "slug": "vremya-bozhej-slavy",
+    "short_description": "На прошлой неделе завершилась Конференция ВЕРЫ / Время Божьей Славы, событие, которое оставило неизгладимый след надежды и вдохновения в сердцах многих людей. В течение нескольких дней участники погружались в атмосферу поклонения, молитвы и назидания словом Божьим. Спикеры, известные своим даром слова и глубоким пониманием Библии, делились вдохновляющими свидетельствами, откровениями и практическими наставлениями о том, как…",
+    "content": "На прошлой неделе завершилась Конференция ВЕРЫ / Время Божьей Славы, событие, которое оставило неизгладимый след надежды и вдохновения в сердцах многих людей. В течение нескольких дней участники погружались в атмосферу поклонения, молитвы и назидания словом Божьим. Спикеры, известные своим даром слова и глубоким пониманием Библии, делились вдохновляющими свидетельствами, откровениями и практическими наставлениями о том, как жить в Божьей Славе. Перед каждым служением зал наполнялся мощной хвалой, через прославление, вознося молитвы к небесам и ощущая присутствие Святого Духа. Конференция стала платформой для общения и укрепления духовных связей, где люди могли найти поддержку, разделить радости и печали, и вместе искать Божье направление. Многие свидетельствовали об исцелениях, чудесах и новых началах, подтверждая, что время, проведенное в Его присутствии, не проходит напрасно. Организаторы выразили благодарность всем участникам, служителям и партнерам, которые внесли свой вклад в успех конференции. Они надеются, что семена веры, посеянные в эти дни, принесут обильный урожай в жизни каждого, кто соприкоснулся с этим благословенным событием.",
+    "image": "news/5422615121844367542.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2025-04-03T05:36:35Z",
+    "updated_at": "2026-09-13T15:49:38.596Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 6,
+  "fields": {
+    "title": "В церкви состоялись Пророческие курсы 2 ступень",
+    "slug": "v-cerkvi-sostoyalis-prorocheskie-kursy-2-stupen",
+    "short_description": "15 марта прошла 2 ступень Пророческих курсов, которая была направлена на расширение представления и понимания пророческой культуры. На 2 ступени каждый присутствующий: • Соприкоснулся с Духом Святым, Его понятным голосом. • Обновил ценности пророческой культуры. • Услышал разницу между служением пророка и пророческим даром. А так же все смогли обновить свои знания и через встречу…",
+    "content": "15 марта прошла 2 ступень Пророческих курсов, которая была направлена на расширение представления и понимания пророческой культуры. На 2 ступени каждый присутствующий: • Соприкоснулся с Духом Святым, Его понятным голосом. • Обновил ценности пророческой культуры. • Услышал разницу между служением пророка и пророческим даром. А так же все смогли обновить свои знания и через встречу с Богом снова зажечься для сверхъестественной жизни.",
+    "image": "news/5388782040956136467.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2025-03-16T04:30:14Z",
+    "updated_at": "2026-09-13T15:49:38.600Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 7,
+  "fields": {
+    "title": "Первые шаги с Богом",
+    "slug": "pervye-shagi-s-bogom",
+    "short_description": "Завершился курс «Первые шаги с Богом», ставший отправной точкой для многих на пути к вере. Выпускники Альфы, а также те, кто недавно пришел в нашу церковь, получили ценные знания об основах христианской веры. Этот курс помог им заложить прочный фундамент для дальнейшего духовного развития, вооружив их пониманием ключевых библейских принципов и укрепив их отношения с…",
+    "content": "Завершился курс «Первые шаги с Богом», ставший отправной точкой для многих на пути к вере. Выпускники Альфы, а также те, кто недавно пришел в нашу церковь, получили ценные знания об основах христианской веры. Этот курс помог им заложить прочный фундамент для дальнейшего духовного развития, вооружив их пониманием ключевых библейских принципов и укрепив их отношения с Богом. Мы рады видеть, как эти знания прорастают в их жизни и вдохновляют на служение и посвящение.",
+    "image": "news/5357336871690168584.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2025-03-01T04:37:27Z",
+    "updated_at": "2026-09-13T15:49:38.607Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 8,
+  "fields": {
+    "title": "Мужская конференция «Сила братства» с Дмитрием Тычинским",
+    "slug": "muzhskaya-konferenciya-sila-bratstva-s-dmitriem-tychinskim",
+    "short_description": "22 февраля состоялась мужская конференция. Конференция представила возможность мужчинам в единстве провести время в молитве и поклонении, услышать вдохновляющие проповеди и свидетельства, которые охватывали важные аспекты мужского служения, такие как ответственность, лидерство и духовный рост. Так же участники конференции отметили важность таких встреч для укрепления братских связей и поддержки друг друга в вере.",
+    "content": "22 февраля состоялась мужская конференция. Конференция представила возможность мужчинам в единстве провести время в молитве и поклонении, услышать вдохновляющие проповеди и свидетельства, которые охватывали важные аспекты мужского служения, такие как ответственность, лидерство и духовный рост. Так же участники конференции отметили важность таких встреч для укрепления братских связей и поддержки друг друга в вере.",
+    "image": "news/5393508673940221184.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2025-02-23T04:32:36Z",
+    "updated_at": "2026-09-13T15:49:38.613Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 9,
+  "fields": {
+    "title": "Как сдержать гнев и не кричать на ребенка",
+    "slug": "kak-sderzhat-gnev-i-ne-krichat-na-rebenka",
+    "short_description": "13 февраля состоялся Клуб для родителей на тему: «Как сдержать гнев и не кричать на ребенка». На мероприятии обсуждались стратегии управления эмоциями, опытные спикеры делились полезными советами и методами, которые в дальнейшем помогут создать более гармоничную атмосферу в семье. Каждый присутствующий получил возможность научиться новым подходам к воспитанию и укреплению отношений со своими детьми.",
+    "content": "13 февраля состоялся Клуб для родителей на тему: «Как сдержать гнев и не кричать на ребенка». На мероприятии обсуждались стратегии управления эмоциями, опытные спикеры делились полезными советами и методами, которые в дальнейшем помогут создать более гармоничную атмосферу в семье. Каждый присутствующий получил возможность научиться новым подходам к воспитанию и укреплению отношений со своими детьми.",
+    "image": "news/5393508673940221169.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2025-02-14T04:38:25Z",
+    "updated_at": "2026-09-13T15:49:38.617Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 10,
+  "fields": {
+    "title": "Ближе к Богу",
+    "slug": "blizhe-k-bogu",
+    "short_description": "с 13 по 17 января прошла неделя Поста и Молитвы! Дважды в год мы стараемся сделать паузу от суеты повседневной жизни и целую неделю по вечерам собираемся вместе, чтобы поразмышлять над нашими отношениями с Богом и стать еще ближе к Нему через поклонение и молитву. Первый день поста и молитвы начали с молитвы за проявление…",
+    "content": "с 13 по 17 января прошла неделя Поста и Молитвы! Дважды в год мы стараемся сделать паузу от суеты повседневной жизни и целую неделю по вечерам собираемся вместе, чтобы поразмышлять над нашими отношениями с Богом и стать еще ближе к Нему через поклонение и молитву. Первый день поста и молитвы начали с молитвы за проявление Божьей Славы в городе и стране. Эта молитва призвала каждого из нас к единству и совместным действиям во имя благополучия нашего народа и молитве о том, чтобы Его присутствие наполнило улицы, дома и сердца людей. Второй день был посвящен молитве за проявление Божьей Славы в подрастающем поколении, ведь когда мы молимся о проявлении Божьей Славы, мы просим о том, чтобы наши дети стали свидетелями Его любви и милости. Мы желаем видеть их растущими в вере, мудрости и добродетели, наполненными верой и надеждой, способными противостоять вызовам современного мира. Мы молились за то, чтобы Божья Слава проявлялась в каждом аспекте жизни наших детей: в учебе, взаимоотношениях и выборе жизненного пути. Третий день поста и молитвы мы молились о проявлении Божьей Славы в финансах! Молясь о проявлении Божьей Славы в финансах, мы приглашали Его руководство на каждый шаг нашего финансового пути, молились о мудрости в разумном управлении ресурсами, щедрости по отношению к другим и готовности следовать божественным указаниям. Четвертый день поста и молитвы посвятили молитве о проявлении Божьей Славы в наших семьях! Совместная молитва – это сила, которая может преобразовать сердца, исцелить отношения и принести благословение на каждую семью. Именно поэтому в это день в наших молитвах мы затрагивали такие аспекты семьи, как: образование новых семей; отношения между мужем и женой; восстановление разрушенных браков; укреплению духовной связи, развитию доверия и взаимопонимания между членами семьи. А так же молились, чтобы наши семьи стали местом, где вера будет укрепляться, а Божья слава будет ежедневно проявляться! В заключительный день поста и молитвы мы в единстве молились о проявлении Божьей Славы в церкви, открывая свои сердца и уста для совместного прославления Господа и молитвы о Его присутствии среди нас.",
+    "image": "news/5393508673940221160.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2025-01-18T04:39:32Z",
+    "updated_at": "2026-09-13T15:49:38.623Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 11,
+  "fields": {
+    "title": "Новая жизнь через заключение завета",
+    "slug": "novaya-zhizn-cherez-zaklyuchenie-zaveta",
+    "short_description": "7 декабря состоялось важное событие в жизни каждого верующего — водное крещение. Принятие решения о водном крещении — это шаг к очищению от грехов и новое начало, открывающее двери к духовному росту, близости с Богом и укреплению своей веры. Во время этого таинства каждый человек погружался в воду, что символизировало смерть для старой жизни и…",
+    "content": "7 декабря состоялось важное событие в жизни каждого верующего — водное крещение. Принятие решения о водном крещении — это шаг к очищению от грехов и новое начало, открывающее двери к духовному росту, близости с Богом и укреплению своей веры. Во время этого таинства каждый человек погружался в воду, что символизировало смерть для старой жизни и возрождение к новой. Это момент, когда каждый ощутил присутствие Божьей благодати и любви. Водное крещение — это лишь начало удивительного путешествия к более близким отношениям с Богом, это шаг вперед на пути к истинной жизни во Христе.",
+    "image": "news/43203d42-1e74-4a34-8065-d7d29eb48617.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2025-01-08T04:02:09Z",
+    "updated_at": "2026-09-13T15:49:38.630Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 12,
+  "fields": {
+    "title": "Рождественский квартирник",
+    "slug": "rozhdestvenskij-kvartirnik",
+    "short_description": "29 декабря в праздничной атмосфере мы собрались церковью на «Рождественском квартирнике», где в уютной атмосфере разными поколениями мы поздравляли самую главную личность — Иисуса с Днём Его Рождения. Это время было временем волшебства, тепла и уюта, которое подарило каждому праздничное настроение и заряд положительных эмоций. Празднование Рождества Христова — это не просто ежегодная формальность, это…",
+    "content": "29 декабря в праздничной атмосфере мы собрались церковью на «Рождественском квартирнике», где в уютной атмосфере разными поколениями мы поздравляли самую главную личность — Иисуса с Днём Его Рождения. Это время было временем волшебства, тепла и уюта, которое подарило каждому праздничное настроение и заряд положительных эмоций. Празднование Рождества Христова — это не просто ежегодная формальность, это возможность собрать близких людей вместе, разделив с ними радость одного из самых важных событий в году и создать незабываемые воспоминания, которые останутся в наших сердцах надолго.",
+    "image": "news/5393508673940221144.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2024-12-30T04:41:55Z",
+    "updated_at": "2026-09-13T15:49:38.637Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 13,
+  "fields": {
+    "title": "Альфа — это ответ на главные вопросы жизни",
+    "slug": "alfa-eto-otvet-na-glavnye-voprosy-zhizni",
+    "short_description": "24 декабря состоялся выпускной осеннего сезона Альфа курса! Программа заключительного вечера состояла из общения, награждения и живой музыки, которая создавала неповторимую атмосферу праздника. Все присутствующие провели тёплый вечер в кругу единомышленников, новых знакомств и ярких впечатлений, одновременно отпраздновав окончание курса и Рождество Христово. На мероприятии всем вручили сертификаты об окончании курса. За 11 недель, проведенных…",
+    "content": "24 декабря состоялся выпускной осеннего сезона Альфа курса! Программа заключительного вечера состояла из общения, награждения и живой музыки, которая создавала неповторимую атмосферу праздника. Все присутствующие провели тёплый вечер в кругу единомышленников, новых знакомств и ярких впечатлений, одновременно отпраздновав окончание курса и Рождество Христово. На мероприятии всем вручили сертификаты об окончании курса. За 11 недель, проведенных вместе, участники Альфа курса стали уже родными и близкими людьми, ведь атмосфера тепла, добра и непринужденности, которая присутствовала на каждой встрече объединяла сердца!",
+    "image": "news/61e19556-5c55-47e1-8a58-888a825327d9.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2024-12-25T03:59:11Z",
+    "updated_at": "2026-09-13T15:49:38.643Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 14,
+  "fields": {
+    "title": "Обновление заветных отношений / Супружеский курс",
+    "slug": "obnovlenie-zavetnyx-otnoshenij-supruzheskij-kurs",
+    "short_description": "13 декабря состоялась заключительная встреча, в рамках Супружеского курса! В течение 6 недель по пятницам пары собирались на романтических вечерах, где заново узнавали друг друга, учились слышать и понимать своего партнера, узнавали о принципах построения крепких отношений. Супружеские пары получили практические инструменты для созидания прочных и здоровых отношений в браке, которые сохранятся на всю жизнь….",
+    "content": "13 декабря состоялась заключительная встреча, в рамках Супружеского курса! В течение 6 недель по пятницам пары собирались на романтических вечерах, где заново узнавали друг друга, учились слышать и понимать своего партнера, узнавали о принципах построения крепких отношений. Супружеские пары получили практические инструменты для созидания прочных и здоровых отношений в браке, которые сохранятся на всю жизнь. Каждую встречу команда организаторов создавала особую романтическую атмосферу, которая сопровождалась непринужденной обстановкой, вкусным ужином и приятной музыкой!",
+    "image": "news/P1040004.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2024-12-14T03:55:32Z",
+    "updated_at": "2026-09-13T15:49:38.649Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 15,
+  "fields": {
+    "title": "Конференция «Крепкая семья – единство России» в Красноярске",
+    "slug": "konferenciya-krepkaya-semya-edinstvo-rossii-v-krasnoyarske",
+    "short_description": "31 октября в г. Красноярске состоялось значимое событие — конференция «Крепкая семья — единство России». Мероприятие данного характера было проведено впервые и как отметили высокопоставленные гости, имело федеральный уровень. В конференции в качестве спикеров приняли участие представители всех традиционных религиозных конфессий, а так же представители власти и общественности региона. Также на конференцию были приглашены представители…",
+    "content": "31 октября в г. Красноярске состоялось значимое событие — конференция «Крепкая семья — единство России». Мероприятие данного характера было проведено впервые и как отметили высокопоставленные гости, имело федеральный уровень. В конференции в качестве спикеров приняли участие представители всех традиционных религиозных конфессий, а так же представители власти и общественности региона. Также на конференцию были приглашены представители администрации города Красноярска и Красноярского края, Минздрава, образования, социальной политики, общественных организаций, отдела по военному призыву, ГУФСИН, бизнесмены и главы религиозных конфессий. Одним из важных спикеров на этой конференции был начальствующий епископ РОСХВЕ, член Общественной палаты РФ, член Совета по взаимодействию с религиозными объединениями при Президенте РФ — Ряховский Сергей Васильевич. На мероприятии обсуждались вопросы укрепления традиционной семьи, как одной из главных духовно-нравственных ценностей России, демографические проблемы, работа с подрастающим поколением, а также межнациональные и межконфессиональные отношения в год семьи. Проведение конференции было направлено на: − Обсуждение важности межконфессионального и государственно-конфессионального взаимодействия для сохранения духовно-нравственных ценностей в семье. − Обмен опытом религиозных организаций в части популяризации семейных ценностей. Обсуждение предложений о возможных совместных внутриконфессиональных, межконфессиональных и государственно-конфессиональных мероприятиях подобного плана. − Обеспечение общения и взаимодействия между разными группами общественности, объединенными общими традиционно-нравственными ценностями, для достижения единства на международной арене и межконфессионального единства внутри страны. − Выработка механизмов взаимодействия. Обсуждение роли традиционных религиозных объединений в сохранение христианских духовных ценностей в семье. Организатор конференции: Комитет Глав Христианских Церквей Енисейского региона.",
+    "image": "news/РОСХВЕ.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2024-11-01T12:11:43Z",
+    "updated_at": "2026-09-13T15:49:38.666Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 16,
+  "fields": {
+    "title": "Женская конференция «ПОД КРОВОМ ВСЕВЫШНЕГО» стала невероятным временем для всех участниц",
+    "slug": "zhenskaya-konferenciya-pod-krovom-vsevyshnego-stala-neveroyatnym-vremenem-dlya-vsex-uchastnic",
+    "short_description": "Это событие собрало женщин с разных уголков России, для вдохновения, ободрения, душевных встреч и разговоров, в атмосфере поддержки и единства. Каждая проповедь была с глубоким посланием и наполнена знаниями и практическими советами, которые помогут женщинам не только в личной жизни, но и в служении. Все участницы ушли с новыми знаниями и мотивацией продолжать свой путь…",
+    "content": "Это событие собрало женщин с разных уголков России, для вдохновения, ободрения, душевных встреч и разговоров, в атмосфере поддержки и единства. Каждая проповедь была с глубоким посланием и наполнена знаниями и практическими советами, которые помогут женщинам не только в личной жизни, но и в служении. Все участницы ушли с новыми знаниями и мотивацией продолжать свой путь к поиску своего призвания и развития в служении. Женская конференция «ПОД КРОВОМ ВСЕВЫШНЕГО» оставила неизгладимый след в сердцах всех присутствующих, напомнив о том, как важно объединяться ради общей цели. Данная конференция продемонстрировала, что вместе мы можем достичь невероятных высот!",
+    "image": "news/IMG_9832.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2024-10-27T02:06:45Z",
+    "updated_at": "2026-09-13T15:49:38.684Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 17,
+  "fields": {
+    "title": "Сибирская Альфа конференция — Альфа в сердце города",
+    "slug": "sibirskaya-alfa-konferenciya-alfa-v-serdce-goroda",
+    "short_description": "с 16 по 17 августа в городе Красноярске прошла СИБИРСКАЯ АЛЬФА КОНФЕРЕНЦИЯ! Конференция стала ежегодным важным событием для всех, кто уже проводит альфу и в этом году нам выпала часть стать организаторами данного события и собрать служителей с разных городов Сибири и даже Сахалина. На конференцию приехали представители разных городов, как в одиночку, так и…",
+    "content": "с 16 по 17 августа в городе Красноярске прошла СИБИРСКАЯ АЛЬФА КОНФЕРЕНЦИЯ! Конференция стала ежегодным важным событием для всех, кто уже проводит альфу и в этом году нам выпала часть стать организаторами данного события и собрать служителей с разных городов Сибири и даже Сахалина. На конференцию приехали представители разных городов, как в одиночку, так и с командой, горящей достижением людей, чтобы за короткий срок с максимально концентрированной программой научиться основам ведения Альфы! В рамках конференции прошло три потока для тех, кто хочет достигать взрослых людей, молодежь или служить семьям: — Обычная Альфа (классическая) — Молодежная альфа — Супружеские курсы + Родительские курсы Альфа – начало твоего пути, и начало пути спасенных людей. Будь в Альфе!",
+    "image": "news/IMG_8267.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2024-08-18T03:02:24Z",
+    "updated_at": "2026-09-13T15:49:38.692Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 18,
+  "fields": {
+    "title": "Время огня",
+    "slug": "vremya-ognya",
+    "short_description": "с 15 по 25 июля состоялся ежегодный летний молодёжный выезд «ВРЕМЯ ОГНЯ» в городе Абакан, где непосредственное участие приняла молодежная команда нашей церкви. За 10 дней на выезде было много ярких событий, откровений, помазания и вдохновения. Дух Святой касался как детей, так и самих служителей, а атмосфера, которая царила в лагере, создавала для этого благоприятную…",
+    "content": "с 15 по 25 июля состоялся ежегодный летний молодёжный выезд «ВРЕМЯ ОГНЯ» в городе Абакан, где непосредственное участие приняла молодежная команда нашей церкви. За 10 дней на выезде было много ярких событий, откровений, помазания и вдохновения. Дух Святой касался как детей, так и самих служителей, а атмосфера, которая царила в лагере, создавала для этого благоприятную обстановку. Выезд стал точкой взлета, аэродромом для того, чтобы простираться вперед к почести Вышнего звания во Христе Иисусе. Было множество новых построенных отношений и дружба с ребятами из разных городов: Горно-Алтайск, Абакан, Тюмень, Минусинск, Якутск, Дивногорск. Помимо всего, наша команда набрались массой опыта в воспитании детей, управлении и организации лагерей и прочих мероприятий, которыми возможно достигать нашу молодежь. Хороший отдых для тела, души и духа!",
+    "image": "news/5298974214667230906.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2024-07-26T04:07:44Z",
+    "updated_at": "2026-09-13T15:49:38.699Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 19,
+  "fields": {
+    "title": "Новая жизнь через водное крещение",
+    "slug": "novaya-zhizn-cherez-vodnoe-kreshhenie",
+    "short_description": "29 июня состоялось Водное крещение, где каждый присутствующий принял твёрдое решение следовать за Христом, заключив завет с Богом и начав новый этап своей духовной жизни. Водное крещение — это не обряд омовения плоти, но принятое решение каждого человека, сознательный акт навсегда расстаться со своими грехами и жить новой обновленной жизнью для Бога. Примите решение воскреснуть…",
+    "content": "29 июня состоялось Водное крещение, где каждый присутствующий принял твёрдое решение следовать за Христом, заключив завет с Богом и начав новый этап своей духовной жизни. Водное крещение — это не обряд омовения плоти, но принятое решение каждого человека, сознательный акт навсегда расстаться со своими грехами и жить новой обновленной жизнью для Бога. Примите решение воскреснуть во Христе, и идти дальше в Его силе, милости и любви.",
+    "image": "news/photo1719907561.jpeg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2024-06-30T00:41:03Z",
+    "updated_at": "2026-09-13T15:49:38.706Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 20,
+  "fields": {
+    "title": "Пикник на о. Татышев",
+    "slug": "piknik-na-o-tatyshev",
+    "short_description": "22 июня командой детского служения был организован пикник на о.Татышев. На пикнике ребята совместно со взрослыми играли в увлекательные игры, резвились на свежем воздухе, общались, кормили уток и наслаждались прекрасной погодой. Такие семейные мероприятия на природе — это отличный способ сблизиться с детьми, подарить им незабываемые эмоции, провести время с пользой и оставить массу положительных…",
+    "content": "22 июня командой детского служения был организован пикник на о.Татышев. На пикнике ребята совместно со взрослыми играли в увлекательные игры, резвились на свежем воздухе, общались, кормили уток и наслаждались прекрасной погодой. Такие семейные мероприятия на природе — это отличный способ сблизиться с детьми, подарить им незабываемые эмоции, провести время с пользой и оставить массу положительных воспоминаний.",
+    "image": "news/Татышев-min.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2024-06-23T00:07:46Z",
+    "updated_at": "2026-09-13T15:49:38.713Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 21,
+  "fields": {
+    "title": "Время обновления и духовного роста",
+    "slug": "vremya-obnovleniya-i-duxovnogo-rosta",
+    "short_description": "С 3 по 6 июня в нашей церкви прошел Пост и молитва. Каждый из четырех дней Церковь Христианской жизни собиралась вместе, чтобы поклониться Богу и помолиться за разные сферы нашей жизни. В понедельник мы молились за страну и город — при их благосостоянии и нам будет мир. Во вторник молились за детей, подростков и молодежь,…",
+    "content": "С 3 по 6 июня в нашей церкви прошел Пост и молитва. Каждый из четырех дней Церковь Христианской жизни собиралась вместе, чтобы поклониться Богу и помолиться за разные сферы нашей жизни. В понедельник мы молились за страну и город — при их благосостоянии и нам будет мир. Во вторник молились за детей, подростков и молодежь, они не только наше будущее, но и наше настоящее. В среду по традиции молились за финансы, сеяли семена прорыва и слушали чудесные свидетельства Божьей славы в этой области. А в четверг молились за церковь и семью, которая предназначена для того, чтобы преобразиться в образ Христа. Пост и молитва зарядил вдохновением, после чего мы с новыми силами можем следовать за Богом по пути обновления всех сфер нашей жизни в соответствие с Его словом.",
+    "image": "news/photo1719463518.jpeg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2024-06-07T00:11:04Z",
+    "updated_at": "2026-09-13T15:49:38.718Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 22,
+  "fields": {
+    "title": "Хорошо быть братьям вместе!",
+    "slug": "xorosho-byt-bratyam-vmeste",
+    "short_description": "с 31 мая по 1 июня состоялся Мужской выезд. Это было поистине ценное время, проведенное в Божьем присутствии, общении и вкусными шашлыками с освежающей баней. Пастор делился вдохновляющим словом, которое наполнило сердца мужчин радостью и укрепило их веру. Такие выезды — это отличная возможность для мужчин укрепить свои отношения, поделиться своими переживаниями и получить духовную…",
+    "content": "с 31 мая по 1 июня состоялся Мужской выезд. Это было поистине ценное время, проведенное в Божьем присутствии, общении и вкусными шашлыками с освежающей баней. Пастор делился вдохновляющим словом, которое наполнило сердца мужчин радостью и укрепило их веру. Такие выезды — это отличная возможность для мужчин укрепить свои отношения, поделиться своими переживаниями и получить духовную поддержку. Все вернулись домой с обновленными силами и горящими сердцами, готовые продолжать свой путь с Господом. Мы настоятельно рекомендуем всем мужчинам принимать участие в подобных мероприятиях. Это поистине ценный опыт, который позволяет нам расти и развиваться как христианам и как личностями.",
+    "image": "news/IMG_6841-1-e1718110488373.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2024-06-02T08:51:00Z",
+    "updated_at": "2026-09-13T15:49:38.723Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 23,
+  "fields": {
+    "title": "Перезагрузка. Возлюби ближнего",
+    "slug": "perezagruzka-vozlyubi-blizhnego",
+    "short_description": "С 9 по 11 мая прошло самое ожидаемое событие молодежи в этом году — конференция “Перезагрузка. Возлюби ближнего”. Приглашенными спикерами были пасторы церкви “Слово жизни” Алексей Романов г. Москва и Андрей Горновский из г.Санкт-Петербург. Множество молодых людей с разных городов и церквей приехали к нам, чтобы вместе прославить Бога и перезагрузить своего духовного человека, обновив…",
+    "content": "С 9 по 11 мая прошло самое ожидаемое событие молодежи в этом году — конференция “Перезагрузка. Возлюби ближнего”. Приглашенными спикерами были пасторы церкви “Слово жизни” Алексей Романов г. Москва и Андрей Горновский из г.Санкт-Петербург. Множество молодых людей с разных городов и церквей приехали к нам, чтобы вместе прославить Бога и перезагрузить своего духовного человека, обновив ум новыми откровениями. Это было прекрасное время близости с Богом и людьми, время знакомств и встреч с друзьями из других городов, время любви и радости. Была насыщенная программа, в которой было место не только служениям и семинарам, мастер-классам и пророческой комнате, но также прогулке по Дивногорску, настольным играм, соревнованиям и Шоу талантов, где каждый мог показать, какие дары и таланты заложил и развил в нем Бог. Все это в совокупности оставило незабываемые впечатления, чувство теплоты и ожидание следующей конференции “Перезагрузка”.",
+    "image": "news/Перезагрузка-сайт.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2024-05-12T00:22:32Z",
+    "updated_at": "2026-09-13T15:49:38.730Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 24,
+  "fields": {
+    "title": "Христос воскрес! Воистину воскрес.",
+    "slug": "xristos-voskres-voistinu-voskres",
+    "short_description": "5 мая Церковь Христианской Жизни отметила Пасху, центральный праздник в жизни нашей большой семьи. Мы провели праздничное богослужение с выступлениями: трогательной сценкой, прекрасными песнями и спектаклем, во время которых Дух Святой затрагивал сердца всех присутствующих, наполняя их благодарностью и осознанием того, что сделал для нас Иисус. 1 Кор 5:7-8: Итак очистите старую закваску, чтобы быть…",
+    "content": "5 мая Церковь Христианской Жизни отметила Пасху, центральный праздник в жизни нашей большой семьи. Мы провели праздничное богослужение с выступлениями: трогательной сценкой, прекрасными песнями и спектаклем, во время которых Дух Святой затрагивал сердца всех присутствующих, наполняя их благодарностью и осознанием того, что сделал для нас Иисус. 1 Кор 5:7-8: Итак очистите старую закваску, чтобы быть вам новым тестом, так как вы бесквасны, ибо Пасха наша, Христос, заклан за нас. Посему станем праздновать не со старою закваскою, не с закваскою порока и лукавства, но с опресноками чистоты и истины. Христос воскрес! Воистину воскрес. И мы воскресли вместе с Ним.",
+    "image": "news/Easter-2024.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2024-05-06T12:23:35Z",
+    "updated_at": "2026-09-13T15:49:38.740Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 25,
+  "fields": {
+    "title": "Альфа-выходной в объятиях природы и Духа Святого",
+    "slug": "alfa-vyxodnoj-v-obyatiyax-prirody-i-duxa-svyatogo",
+    "short_description": "13-14 апреля Альфа-курс Красноярска и Железногорска выехал на совместные выходные. Церкви: Дом Бога, Божья Благодать и Церковь «Христианской Жизни» окунулись в атмосферу загородной апрельской флоры и фауны, праздника, игр и блинчиков с вареньем, вечерние посиделки, душевные разговоры о самом дорогом, прикосновение и объятия Святого Духа, смех и слёзы, помещение, до отказа заполненное улыбками чужих, но…",
+    "content": "13-14 апреля Альфа-курс Красноярска и Железногорска выехал на совместные выходные. Церкви: Дом Бога, Божья Благодать и Церковь «Христианской Жизни» окунулись в атмосферу загородной апрельской флоры и фауны, праздника, игр и блинчиков с вареньем, вечерние посиделки, душевные разговоры о самом дорогом, прикосновение и объятия Святого Духа, смех и слёзы, помещение, до отказа заполненное улыбками чужих, но таких родных людей… — вот что такое Альфа-выходной! Всего на выезде было 75 человек. Из них: * дети до 10лет- 13 * взрослые — 32 человека * служители — 30 человек.",
+    "image": "news/IMG-20240415-WA0022.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2024-04-15T04:15:18Z",
+    "updated_at": "2026-09-13T15:49:38.753Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 26,
+  "fields": {
+    "title": "Пророческая культура в церкви. Как мы ее строим и зачем?",
+    "slug": "prorocheskaya-kultura-v-cerkvi-kak-my-eyo-stroim-i-zachem",
+    "short_description": "7 апреля прошел семинар на тему: «Пророческая культура в церкви. Как мы её строим и зачем?». Спикерами были специально приглашенный гость, пастор церкви «Христианская жизнь» г. Санкт-Петербург, сертифицированный пророческий тренер Ксения Бахтеева, пасторы Сергей и Ольга Бученик, пастор Ольга Юнюшкина и Анастасия, гость из Казахстана. Три часа были посвящены многообразию пророческого выражения и влиянию пророческого…",
+    "content": "7 апреля прошел семинар на тему: «Пророческая культура в церкви. Как мы её строим и зачем?». Спикерами были специально приглашенный гость, пастор церкви «Христианская жизнь» г. Санкт-Петербург, сертифицированный пророческий тренер Ксения Бахтеева, пасторы Сергей и Ольга Бученик, пастор Ольга Юнюшкина и Анастасия, гость из Казахстана. Три часа были посвящены многообразию пророческого выражения и влиянию пророческого движения на жизнь церкви. Была как теория, так и практика, где братья и сестры разбивались на пары, чтобы попрочествовать друг другу. И в этот волнительный для каждого момент неизвестности и риска Бог начинал говорить в жизни людей, давая им ответы на их вопросы. Время практики закончилось, но люди продолжали пророчествовать и не могли остановиться. Каждый ушел с семинара наполненным и вдохновленным, каждый получил пророчество — ответ, направление, подтверждение, ободрение или совет. Пророческая культура — важный элемент каждого служения и церкви в целом. С ее развитием пророческая атмосфера захватывает весь город, меняет множество судеб и приводит людей ко Христу.",
+    "image": "news/Пророчество.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2024-04-08T10:27:39Z",
+    "updated_at": "2026-09-13T15:49:38.759Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 27,
+  "fields": {
+    "title": "В апреле состоялась конференция Веры «Рост и умножение»",
+    "slug": "v-aprele-sostoyalas-konferenciya-very-rost-i-umnozhenie",
+    "short_description": "5-7 апреля прошла ежегодная “Конференция ВЕРЫ. Рост и умножение”, которая объединила людей с разных городов, стран и даже материков. Спикерами были приглашенный пастор из Аргентины Хуан Зуккарелли, пастор из Австралии Ричард Грин, а так же пастор из Москвы Илья Федоров. На открытии Конференции ВЕРЫ команду прославления дополнил хор, в состав которого вошли люди со всех...",
+    "content": "5-7 апреля прошла ежегодная “Конференция ВЕРЫ. Рост и умножение”, которая объединила людей с разных городов, стран и даже материков. Спикерами были приглашенный пастор из Аргентины Хуан Зуккарелли, пастор из Австралии Ричард Грин, а так же пастор из Москвы Илья Федоров. На открытии Конференции ВЕРЫ команду прославления дополнил хор, в состав которого вошли люди со всех уголков страны. Зал был переполнен людьми, которые не хотели расходиться. На каждом служении было мощное присутствие Духа Святого, которое сходило на жаждущих детей Божьих и наполняло их сердца любовью и силой, от которой искрил воздух. Это было незабываемое время прославления в единстве, время исцеления души и тела, время получения мощных пророчеств и ответов, время молитвы, смеха и веселья. И, конечно, время благодати, потому что почти каждое слово, которое мы получали от спикеров, было именно о ней. «Не живи под законом, просто бери все, что тебе нужно, у Иисуса. Он все совершил!» — Хуан Зуккарелли. Огонь конференции запомнится надолго, а добрые плоды, посеянные в ней, мы будем пожинать всю жизнь.",
+    "image": "news/3I3A3731.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2024-04-08T01:08:26Z",
+    "updated_at": "2026-09-13T15:49:38.788Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 28,
+  "fields": {
+    "title": "В церкви состоялось Таинство крещения",
+    "slug": "v-cerkvi-sostoyalos-tainstvo-kreshheniya",
+    "short_description": "23 марта стал днем особого события для всех, кто принял участие в водном крещении. Таинство крещения несет в себе глубокий символ очищения и возрождения души, открывая новую главу в вере каждого человека. Участники мероприятия имели возможность заключить завет с Богом и подтвердить свое решение следовать за Христом. Погружение в воду стало символом того, что прошлое…",
+    "content": "23 марта стал днем особого события для всех, кто принял участие в водном крещении. Таинство крещения несет в себе глубокий символ очищения и возрождения души, открывая новую главу в вере каждого человека. Участники мероприятия имели возможность заключить завет с Богом и подтвердить свое решение следовать за Христом. Погружение в воду стало символом того, что прошлое остается позади, а новый человек воскрес во Христе, наполняясь Его силой, милостью и любовью. В этот день каждый участник смог пережить важный момент в своей духовной жизни, обретая новую глубину веры и чувствуя себя частью божественного плана. Вода стала свидетельством принятого решения и нового начала. Позвольте вашей вере расцвести на новом уровне и продолжайте идти по пути духовного роста и развития.",
+    "image": "news/IMG_5434.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2024-03-24T04:25:44Z",
+    "updated_at": "2026-09-13T15:49:38.797Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 29,
+  "fields": {
+    "title": "Встреча с Богом",
+    "slug": "vstrecha-s-bogom",
+    "short_description": "В марте месяце состоялись мужской и женский выезды, где каждый смог уединиться от бытовых и жизненных проблем, чтобы разобраться в себе и вновь пережить эти трепетные чувства от встречи с Богом, которых так не хватает в нашей повседневной жизни. Время, проведенное на выезде дало возможность посмотреть на свое прошлое и настоящее глазами Бога и задуматься...",
+    "content": "В марте месяце состоялись мужской и женский выезды, где каждый смог уединиться от бытовых и жизненных проблем, чтобы разобраться в себе и вновь пережить эти трепетные чувства от встречи с Богом, которых так не хватает в нашей повседневной жизни. Время, проведенное на выезде дало возможность посмотреть на свое прошлое и настоящее глазами Бога и задуматься над тем, какие изменения Бог хочет увидеть в каждом конкретном человеке. Если вы чувствуете, что ваша жизнь стоит на месте, если вам необходимо укрепиться в вере, освободится от страхов, зависимостей, гнева и вредных привычек, и если вы желаете, чтобы Бог наполнил вас Святым Духом и использовал вас в Своих планах – тогда добро пожаловать на следующий выезд «Встреча с богом».",
+    "image": "news/IMG_4772.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2024-03-16T00:26:22Z",
+    "updated_at": "2026-09-13T15:49:38.808Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 30,
+  "fields": {
+    "title": "Февромарт",
+    "slug": "fevromart2024",
+    "short_description": "В минувшую субботу, 2 марта состоялся праздник для детей и их родителей ФЕВРОМАРТ, который был организован командой детских служителей в цирковой тематике. На празднике у детей была возможность примерить на себя роль жонглера, канатоходца, дрессировщика, повеселиться от души и просто отлично провести время.",
+    "content": "В минувшую субботу, 2 марта состоялся праздник для детей и их родителей ФЕВРОМАРТ, который был организован командой детских служителей в цирковой тематике. На празднике у детей была возможность примерить на себя роль жонглера, канатоходца, дрессировщика, повеселиться от души и просто отлично провести время.",
+    "image": "news/февромарт.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2024-03-03T04:54:16Z",
+    "updated_at": "2026-09-13T15:49:38.816Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 31,
+  "fields": {
+    "title": "Важная информация!",
+    "slug": "vazhnaya-informaciya",
+    "short_description": "По этическим и моральными соображениям, в связи с совершением поступков, несовместимых с выполнением доверенного ей служения и противоречащих христианским нормам, с 2023 г. Александрова Юлия Борисовна не является бухгалтером, иным сотрудником и служителем в Местной религиозной организации Церковь «Христианской Жизни» христиан веры евангельской (пятидесятников) г. Красноярска.",
+    "content": "По этическим и моральными соображениям, в связи с совершением поступков, несовместимых с выполнением доверенного ей служения и противоречащих христианским нормам, с 2023 г. Александрова Юлия Борисовна не является бухгалтером, иным сотрудником и служителем в Местной религиозной организации Церковь «Христианской Жизни» христиан веры евангельской (пятидесятников) г. Красноярска.",
+    "image": "news/ly9_anhzrba-scaled.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2024-02-20T10:09:47Z",
+    "updated_at": "2026-09-13T15:49:38.826Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 32,
+  "fields": {
+    "title": "Погружение в основы пророческого служения",
+    "slug": "pogruzhenie-v-osnovy-prorocheskogo-sluzheniya",
+    "short_description": "17 февраля в нашей церкви прошли Пророческие курсы, на которых каждый присутствующий смог изучить основы пророческого служения, а так же погрузиться в атмосферу, где их духовные дары были активизированы! По отзывам участников данный курс стал мощным толчком в желании двигаться в данном направлении и реализовать себя в пророческом служении.",
+    "content": "17 февраля в нашей церкви прошли Пророческие курсы, на которых каждый присутствующий смог изучить основы пророческого служения, а так же погрузиться в атмосферу, где их духовные дары были активизированы! По отзывам участников данный курс стал мощным толчком в желании двигаться в данном направлении и реализовать себя в пророческом служении.",
+    "image": "news/IMG_3697.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2024-02-20T10:03:03Z",
+    "updated_at": "2026-09-13T15:49:38.835Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 33,
+  "fields": {
+    "title": "В церкви прошел организационно-обучающий Альфа тренинг",
+    "slug": "v-cerkvi-proshel-organizacionno-obuchayushhij-alfa-trening",
+    "short_description": "17 февраля состоялся организационно-обучающий Альфа тренинг, для тех кто хотел: ▪служить на Альфа курсе ▪научиться рассказывать другим о своей вере ▪стать частью чего-то масштабного ▪понять, что такое Альфа курс и как он работает. В Альфа тренинге приняли участие 40 человек из 4-х Церквей нашего города. Тренинг состоял из теоретической, а так же практической части по…",
+    "content": "17 февраля состоялся организационно-обучающий Альфа тренинг, для тех кто хотел: ▪служить на Альфа курсе ▪научиться рассказывать другим о своей вере ▪стать частью чего-то масштабного ▪понять, что такое Альфа курс и как он работает. В Альфа тренинге приняли участие 40 человек из 4-х Церквей нашего города. Тренинг состоял из теоретической, а так же практической части по принципу аквариума, когда команда ведёт обсуждение вопросов на сцене, а все остальные наблюдают из зала, при этом у каждого из участников была своя роль.",
+    "image": "news/IMG_3695.jpg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2024-02-18T09:55:11Z",
+    "updated_at": "2026-09-13T15:49:38.840Z"
+  }
+},
+{
+  "model": "church_app.news",
+  "pk": 34,
+  "fields": {
+    "title": "О сексе начистоту",
+    "slug": "o-sekse-nachistotu",
+    "short_description": "3 февраля в уютной обстановке прошел семинар для супружеских пар «О сексе начистоту» с практикующим психологом, психологом-сексологом, а так же Готтман терапевтом — Курнавкиной Светланой! На данном семинаре пары углублялись в дневные и ночные отношения между супругами и изучали как они взаимосвязаны между собой.",
+    "content": "3 февраля в уютной обстановке прошел семинар для супружеских пар «О сексе начистоту» с практикующим психологом, психологом-сексологом, а так же Готтман терапевтом — Курнавкиной Светланой! На данном семинаре пары углублялись в дневные и ночные отношения между супругами и изучали как они взаимосвязаны между собой.",
+    "image": "news/IMG_3181.jpeg",
+    "is_featured": false,
+    "is_active": true,
+    "views_count": 0,
+    "published_at": null,
+    "created_at": "2024-02-04T09:37:03Z",
+    "updated_at": "2026-09-13T15:49:38.849Z"
+  }
+},
+{
+  "model": "church_app.pastorphoto",
+  "pk": 1,
+  "fields": {
+    "slug": "ashaev",
+    "image": "pastors/ashaev_IJqcWYe.jpg",
+    "updated_at": "2026-08-20T09:07:53.032Z"
+  }
+},
+{
+  "model": "church_app.pastorphoto",
+  "pk": 2,
+  "fields": {
+    "slug": "zyryanov",
+    "image": "pastors/zyranov_7Ess8SG.jpg",
+    "updated_at": "2026-08-20T09:08:06.750Z"
+  }
+},
+{
+  "model": "church_app.pastorphoto",
+  "pk": 3,
+  "fields": {
+    "slug": "yunyushkin",
+    "image": "pastors/yunyushkin_ZDcuoz4.jpg",
+    "updated_at": "2026-08-20T09:08:15.476Z"
+  }
+},
+{
+  "model": "church_app.pastorphoto",
+  "pk": 4,
+  "fields": {
+    "slug": "pritchin",
+    "image": "pastors/pritchin_Emc6fvg.jpg",
+    "updated_at": "2026-08-20T09:08:24.820Z"
+  }
+},
+{
+  "model": "church_app.pastorphoto",
+  "pk": 5,
+  "fields": {
+    "slug": "kononov",
+    "image": "pastors/kononov_uFwavNf.jpg",
+    "updated_at": "2026-08-20T09:08:32.644Z"
+  }
+},
+{
+  "model": "church_app.pastorphoto",
+  "pk": 6,
+  "fields": {
+    "slug": "schmidt",
+    "image": "pastors/schmidt_Z5kV4Um.jpg",
+    "updated_at": "2026-08-20T09:08:42.372Z"
+  }
+},
+{
+  "model": "church_app.pastorphoto",
+  "pk": 7,
+  "fields": {
+    "slug": "plotnikov",
+    "image": "pastors/plotnikov_4kL8dmV.jpg",
+    "updated_at": "2026-08-20T09:08:52.233Z"
+  }
+},
+{
+  "model": "church_app.pastorphoto",
+  "pk": 8,
+  "fields": {
+    "slug": "buchenik",
+    "image": "pastors/buchenik_n0AisXH.jpg",
+    "updated_at": "2026-08-20T09:09:07.133Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 1,
+  "fields": {
+    "district": "Советский район",
+    "address": "ул. 40 лет Победы, 12",
+    "group_type": "female",
+    "day": "wednesday",
+    "time": "14:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 0,
+    "created_at": "2026-08-26T16:20:23.652Z",
+    "updated_at": "2026-08-26T16:20:23.652Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 2,
+  "fields": {
+    "district": "Советский район",
+    "address": "ул. Тельмана, 18а",
+    "group_type": "mixed",
+    "day": "negotiable",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "28-70",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 1,
+    "created_at": "2026-08-26T16:20:23.656Z",
+    "updated_at": "2026-08-26T16:20:23.656Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 3,
+  "fields": {
+    "district": "Советский район",
+    "address": "ул. Краснодарская, 3",
+    "group_type": "female",
+    "day": "negotiable",
+    "time": "",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "40-70",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 2,
+    "created_at": "2026-08-26T16:20:23.660Z",
+    "updated_at": "2026-08-26T16:20:23.660Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 4,
+  "fields": {
+    "district": "Советский район",
+    "address": "пр. Металлургов, 30а",
+    "group_type": "mixed",
+    "day": "friday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 3,
+    "created_at": "2026-08-26T16:20:23.664Z",
+    "updated_at": "2026-08-26T16:20:23.664Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 5,
+  "fields": {
+    "district": "Советский район",
+    "address": "ул. Молокова, 40",
+    "group_type": "female",
+    "day": "wednesday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 4,
+    "created_at": "2026-08-26T16:20:23.668Z",
+    "updated_at": "2026-08-26T16:20:23.668Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 6,
+  "fields": {
+    "district": "Советский район",
+    "address": "пр. Металлургов, 55а",
+    "group_type": "mixed",
+    "day": "thursday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 5,
+    "created_at": "2026-08-26T16:20:23.672Z",
+    "updated_at": "2026-08-26T16:20:23.672Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 7,
+  "fields": {
+    "district": "Советский район",
+    "address": "ул. Алексеева 24/1",
+    "group_type": "mixed",
+    "day": "thursday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 6,
+    "created_at": "2026-08-26T16:20:23.676Z",
+    "updated_at": "2026-08-26T16:20:23.676Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 8,
+  "fields": {
+    "district": "Советский район",
+    "address": "ул. Партизана Железняка, 3о",
+    "group_type": "mixed",
+    "day": "thursday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 7,
+    "created_at": "2026-08-26T16:20:23.681Z",
+    "updated_at": "2026-08-26T16:20:23.681Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 9,
+  "fields": {
+    "district": "Советский район",
+    "address": "ул. П. Подзолкова, 6",
+    "group_type": "mixed",
+    "day": "thursday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "20-50",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 8,
+    "created_at": "2026-08-26T16:20:23.685Z",
+    "updated_at": "2026-08-26T16:20:23.685Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 10,
+  "fields": {
+    "district": "Советский район",
+    "address": "ул. П. Ломако, 2",
+    "group_type": "female",
+    "day": "monday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "20-50",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 9,
+    "created_at": "2026-08-26T16:20:23.688Z",
+    "updated_at": "2026-08-26T16:20:23.688Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 11,
+  "fields": {
+    "district": "Железнодорожный район",
+    "address": "пр-т Свободный, 27",
+    "group_type": "mixed",
+    "day": "friday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "20-60",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 10,
+    "created_at": "2026-08-26T16:20:23.693Z",
+    "updated_at": "2026-08-26T16:20:23.693Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 12,
+  "fields": {
+    "district": "Железнодорожный район",
+    "address": "ул. Куйбышева, 85",
+    "group_type": "mixed",
+    "day": "tuesday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 11,
+    "created_at": "2026-08-26T16:20:23.697Z",
+    "updated_at": "2026-08-26T16:20:23.697Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 13,
+  "fields": {
+    "district": "Железнодорожный район",
+    "address": "ул. Калинина, 8",
+    "group_type": "mixed",
+    "day": "friday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "25-50",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 12,
+    "created_at": "2026-08-26T16:20:23.700Z",
+    "updated_at": "2026-08-26T16:20:23.700Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 14,
+  "fields": {
+    "district": "Железнодорожный район",
+    "address": "ул. Бограда, 134",
+    "group_type": "mixed",
+    "day": "thursday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 13,
+    "created_at": "2026-08-26T16:20:23.704Z",
+    "updated_at": "2026-08-26T16:20:23.704Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 15,
+  "fields": {
+    "district": "Центральный район",
+    "address": "ул. Дм. Мартынова, 25",
+    "group_type": "mixed",
+    "day": "wednesday",
+    "time": "18:30",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "30-55",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 14,
+    "created_at": "2026-08-26T16:20:23.708Z",
+    "updated_at": "2026-08-26T16:20:23.708Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 16,
+  "fields": {
+    "district": "Центральный район",
+    "address": "ул. Пасхальная, 2",
+    "group_type": "female",
+    "day": "tuesday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 15,
+    "created_at": "2026-08-26T16:20:23.712Z",
+    "updated_at": "2026-08-26T16:20:23.712Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 17,
+  "fields": {
+    "district": "Октябрьский район",
+    "address": "ул. Вербная, 5",
+    "group_type": "female",
+    "day": "friday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 17,
+    "created_at": "2026-08-26T16:20:23.716Z",
+    "updated_at": "2026-08-26T16:20:23.716Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 18,
+  "fields": {
+    "district": "Октябрьский район",
+    "address": "ул. Словцова, 4",
+    "group_type": "mixed",
+    "day": "wednesday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 18,
+    "created_at": "2026-08-26T16:20:23.719Z",
+    "updated_at": "2026-08-26T16:20:23.719Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 19,
+  "fields": {
+    "district": "Кировский район",
+    "address": "ул. Мичурина, 3а",
+    "group_type": "female",
+    "day": "negotiable",
+    "time": "10:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 20,
+    "created_at": "2026-08-26T16:20:23.724Z",
+    "updated_at": "2026-08-26T16:20:23.724Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 20,
+  "fields": {
+    "district": "Кировский район",
+    "address": "ул. Вавилова, 48",
+    "group_type": "female",
+    "day": "tuesday",
+    "time": "18:30",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 21,
+    "created_at": "2026-08-26T16:20:23.727Z",
+    "updated_at": "2026-08-26T16:20:23.728Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 21,
+  "fields": {
+    "district": "Кировский район",
+    "address": "ул. Московская, 8",
+    "group_type": "mixed",
+    "day": "friday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 22,
+    "created_at": "2026-08-26T16:20:23.731Z",
+    "updated_at": "2026-08-26T16:20:23.731Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 22,
+  "fields": {
+    "district": "Ленинский район",
+    "address": "ул. Энергетиков, 30",
+    "group_type": "male",
+    "day": "tuesday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 23,
+    "created_at": "2026-08-26T16:20:23.736Z",
+    "updated_at": "2026-08-26T16:20:23.736Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 23,
+  "fields": {
+    "district": "Свердловский район",
+    "address": "ул. 60 лет Октября, 54",
+    "group_type": "female",
+    "day": "monday",
+    "time": "15:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "от 55",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 24,
+    "created_at": "2026-08-26T16:20:23.741Z",
+    "updated_at": "2026-08-26T16:20:23.741Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 24,
+  "fields": {
+    "district": "Свердловский район",
+    "address": "ул. Карамзина, 18",
+    "group_type": "female",
+    "day": "monday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 25,
+    "created_at": "2026-08-26T16:20:23.745Z",
+    "updated_at": "2026-08-26T16:20:23.745Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 25,
+  "fields": {
+    "district": "Молодежные",
+    "address": "ул. Вильского, 34",
+    "group_type": "mixed",
+    "day": "wednesday",
+    "time": "19:30",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "16-25",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 26,
+    "created_at": "2026-08-26T16:20:23.749Z",
+    "updated_at": "2026-08-26T16:20:23.749Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 26,
+  "fields": {
+    "district": "Молодежные",
+    "address": "ул. Линейная, 112",
+    "group_type": "mixed",
+    "day": "tuesday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "16-25",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 27,
+    "created_at": "2026-08-26T16:20:23.753Z",
+    "updated_at": "2026-08-26T16:20:23.753Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 27,
+  "fields": {
+    "district": "Молодежные",
+    "address": "ул. Перенсона, 5а",
+    "group_type": "male",
+    "day": "monday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "от 23",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 28,
+    "created_at": "2026-08-26T16:20:23.758Z",
+    "updated_at": "2026-08-26T16:20:23.758Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 28,
+  "fields": {
+    "district": "Молодежные",
+    "address": "пр-т Свободный, 76а",
+    "group_type": "male",
+    "day": "friday",
+    "time": "17:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "18-22",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 29,
+    "created_at": "2026-08-26T16:20:23.762Z",
+    "updated_at": "2026-08-26T16:20:23.762Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 29,
+  "fields": {
+    "district": "Молодежные",
+    "address": "ул. Свердловская, 3д",
+    "group_type": "mixed",
+    "day": "saturday",
+    "time": "18:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "15-25",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 30,
+    "created_at": "2026-08-26T16:20:23.766Z",
+    "updated_at": "2026-08-26T16:20:23.766Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 30,
+  "fields": {
+    "district": "Молодежные",
+    "address": "ул. Л.Шевцовой, 88",
+    "group_type": "male",
+    "day": "wednesday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "18-25",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 31,
+    "created_at": "2026-08-26T16:20:23.770Z",
+    "updated_at": "2026-08-26T16:20:23.770Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 31,
+  "fields": {
+    "district": "Молодежные",
+    "address": "ул. Бограда, 134",
+    "group_type": "female",
+    "day": "monday",
+    "time": "19:30",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "15-24",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 32,
+    "created_at": "2026-08-26T16:20:23.774Z",
+    "updated_at": "2026-08-26T16:20:23.774Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 32,
+  "fields": {
+    "district": "Молодежные",
+    "address": "ул. Алексеева, 113",
+    "group_type": "mixed",
+    "day": "monday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "18-30",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 33,
+    "created_at": "2026-08-26T16:20:23.778Z",
+    "updated_at": "2026-08-26T16:20:23.778Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 33,
+  "fields": {
+    "district": "Молодежные",
+    "address": "ул. Лесников, 31",
+    "group_type": "mixed",
+    "day": "wednesday",
+    "time": "19:30",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "16-24",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 34,
+    "created_at": "2026-08-26T16:20:23.781Z",
+    "updated_at": "2026-08-26T16:20:23.781Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 34,
+  "fields": {
+    "district": "Молодежные",
+    "address": "ул. Свердловская, 17б",
+    "group_type": "female",
+    "day": "tuesday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 36,
+    "created_at": "2026-08-26T16:20:23.786Z",
+    "updated_at": "2026-08-26T16:20:23.786Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 35,
+  "fields": {
+    "district": "Молодежные",
+    "address": "ул. Батурина",
+    "group_type": "mixed",
+    "day": "tuesday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 38,
+    "created_at": "2026-08-26T16:20:23.793Z",
+    "updated_at": "2026-08-26T16:20:23.793Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 36,
+  "fields": {
+    "district": "Молодежные",
+    "address": "ул. Авиаторов, 4е",
+    "group_type": "mixed",
+    "day": "thursday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "от 23",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 39,
+    "created_at": "2026-08-26T16:20:23.798Z",
+    "updated_at": "2026-08-26T16:20:23.798Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 37,
+  "fields": {
+    "district": "Молодежные",
+    "address": "ул. Вавилова, 48",
+    "group_type": "mixed",
+    "day": "saturday",
+    "time": "18:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "10-14",
+    "leader_name": "",
+    "leader_phone": "",
+    "leader_telegram": "",
+    "description": "",
+    "latitude": null,
+    "longitude": null,
+    "is_active": true,
+    "order": 40,
+    "created_at": "2026-08-26T16:20:23.802Z",
+    "updated_at": "2026-08-26T16:20:23.802Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 38,
+  "fields": {
+    "district": "Советский (Взлётка)",
+    "address": "ул. Молокова, 1 корп. 4",
+    "group_type": "mixed",
+    "day": "thursday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "25-45 лет",
+    "leader_name": "Алексей и Ирина Мельниковы",
+    "leader_phone": "+7 (913) 509-22-31",
+    "leader_telegram": "@alex_vzletka",
+    "description": "Семейная теплая группа на Взлётке. Изучаем Евангелие от Иоанна, пьём чай, молимся о детях и семьях.",
+    "latitude": 56.0384,
+    "longitude": 92.9095,
+    "is_active": true,
+    "order": 1,
+    "created_at": "2026-09-20T13:49:22.816Z",
+    "updated_at": "2026-09-20T13:49:22.816Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 39,
+  "fields": {
+    "district": "Центральный",
+    "address": "ул. Ленина, 118",
+    "group_type": "mixed",
+    "day": "wednesday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "Все возрасты",
+    "leader_name": "Михаил Зырянов",
+    "leader_phone": "+7 (913) 836-44-22",
+    "leader_telegram": "@zyryanov_m",
+    "description": "В самом центре города. Разбор практических вопросов христианской жизни, поддержка и молитва.",
+    "latitude": 56.0125,
+    "longitude": 92.8682,
+    "is_active": true,
+    "order": 2,
+    "created_at": "2026-09-20T13:49:22.834Z",
+    "updated_at": "2026-09-20T13:49:22.834Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 40,
+  "fields": {
+    "district": "Советский (Зеленая Роща)",
+    "address": "ул. Металлургов, 32",
+    "group_type": "mixed",
+    "day": "tuesday",
+    "time": "19:30",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "30+ лет",
+    "leader_name": "Сергей Юнюшкин",
+    "leader_phone": "+7 (902) 923-45-67",
+    "leader_telegram": "@serg_rosha",
+    "description": "Группа рядом со зданием церкви. Глубокое изучение Слова, уютная атмосфера и молитвенное предстояние.",
+    "latitude": 56.0573,
+    "longitude": 92.9644,
+    "is_active": true,
+    "order": 3,
+    "created_at": "2026-09-20T13:49:22.844Z",
+    "updated_at": "2026-09-20T13:49:22.844Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 41,
+  "fields": {
+    "district": "Октябрьский (Студгородок)",
+    "address": "ул. Киренского, 27",
+    "group_type": "youth",
+    "day": "thursday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "17-25 лет (Молодежная)",
+    "leader_name": "Илья и Анна Зыряновы",
+    "leader_phone": "+7 (950) 412-88-99",
+    "leader_telegram": "@youth_stud",
+    "description": "Молодежная группа для студентов и работающей молодежи. Пицца, настолки, честные разговоры о вере в XXI веке.",
+    "latitude": 56.0189,
+    "longitude": 92.7765,
+    "is_active": true,
+    "order": 4,
+    "created_at": "2026-09-20T13:49:22.859Z",
+    "updated_at": "2026-09-20T13:49:22.859Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 42,
+  "fields": {
+    "district": "Свердловский (Пашенный)",
+    "address": "ул. Судостроительная, 127",
+    "group_type": "female",
+    "day": "wednesday",
+    "time": "18:30",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "Женская группа",
+    "leader_name": "Светлана Кононова",
+    "leader_phone": "+7 (913) 534-11-20",
+    "leader_telegram": "@svetlana_pashenny",
+    "description": "Женская группа ободрения и молитвы на Пашенном. Вдохновение, душевная близость и взаимная забота.",
+    "latitude": 55.9863,
+    "longitude": 92.8617,
+    "is_active": true,
+    "order": 5,
+    "created_at": "2026-09-20T13:49:22.868Z",
+    "updated_at": "2026-09-20T13:49:22.868Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 43,
+  "fields": {
+    "district": "Железнодорожный",
+    "address": "ул. Железнодорожников, 14",
+    "group_type": "male",
+    "day": "monday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "Мужская группа",
+    "leader_name": "Павел Шмидт",
+    "leader_phone": "+7 (923) 301-44-55",
+    "leader_telegram": "@pavel_schmidt",
+    "description": "Мужской клуб и библейский разбор. Лидерство, семья, ответственность, бизнес и призвание мужчины по Писанию.",
+    "latitude": 56.0272,
+    "longitude": 92.8251,
+    "is_active": true,
+    "order": 6,
+    "created_at": "2026-09-20T13:49:22.878Z",
+    "updated_at": "2026-09-20T13:49:22.878Z"
+  }
+},
+{
+  "model": "church_app.homegroup",
+  "pk": 44,
+  "fields": {
+    "district": "Сосновоборск",
+    "address": "ул. Ленинского Комсомола, 19",
+    "group_type": "mixed",
+    "day": "friday",
+    "time": "19:00",
+    "age_min": 0,
+    "age_max": 0,
+    "age_display": "Все возрасты",
+    "leader_name": "Александр и Ольга Смирновы",
+    "leader_phone": "+7 (913) 830-75-93",
+    "leader_telegram": "@sosnovo_clc",
+    "description": "Домашняя группа в Сосновоборске для жителей города и окрестностей.",
+    "latitude": 56.1368,
+    "longitude": 93.3644,
+    "is_active": true,
+    "order": 7,
+    "created_at": "2026-09-20T13:49:22.885Z",
+    "updated_at": "2026-09-20T13:49:22.885Z"
+  }
+},
+{
+  "model": "church_app.dailyverse",
+  "pk": 18,
+  "fields": {
+    "verse_text": "Ибо так возлюбил Бог мир, что отдал Сына Своего Единородного, дабы всякий верующий в Него, не погиб, но имел жизнь вечную.",
+    "reference": "Иоанна 3:16",
+    "date": "2026-09-14",
+    "reflection": "Божья любовь безгранична и безусловна. Поразмышляйте сегодня о том даре, который был дан нам через Христа."
+  }
+}
+]

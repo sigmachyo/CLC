@@ -702,7 +702,9 @@ def trigger_background_auto_sync():
     cache.set(lock_key, True, 10800)  # 3 часа
 
     def _worker():
+        from django.db import connection
         try:
+            connection.close()
             print("[AUTO-SYNC] Starting background sync for videos & podcasts...")
             from church_app.services_podcast_sync import sync_podcasts
             sync_videos()
@@ -710,6 +712,8 @@ def trigger_background_auto_sync():
             print("[AUTO-SYNC] Background sync finished successfully.")
         except Exception as e:
             print(f"[AUTO-SYNC] Error during background sync: {e}")
+        finally:
+            connection.close()
 
     thread = threading.Thread(target=_worker, daemon=True)
     thread.start()

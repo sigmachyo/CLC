@@ -527,6 +527,9 @@ def _get_calendar_events_context():
 
 def home(request):
     """Главная страница с таймером воскресной трансляции и интерактивным календарем"""
+    from .services_video_sync import trigger_background_auto_sync
+    trigger_background_auto_sync()
+
     current_announcement = Announcement.objects.filter(
         is_active=True
     ).filter(
