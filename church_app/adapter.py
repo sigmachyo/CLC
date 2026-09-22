@@ -59,6 +59,20 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
     - Автоматический импорт имени, фамилии и аватара в UserProfile.
     """
 
+    def get_app(self, request, provider, client_id=None):
+        """
+        Защита от MultipleObjectsReturned, если приложение объявлено
+        одновременно в settings.py и в таблице SocialApp БД.
+        """
+        apps = self.list_apps(request, provider=provider, client_id=client_id)
+        if not apps:
+            from allauth.socialaccount.models import SocialApp
+            raise SocialApp.DoesNotExist()
+        visible_apps = [app for app in apps if not app.settings.get("hidden")]
+        if visible_apps:
+            return visible_apps[0]
+        return apps[0]
+
     def populate_user(self, request, sociallogin, data):
         user = super().populate_user(request, sociallogin, data)
         provider = sociallogin.account.provider
