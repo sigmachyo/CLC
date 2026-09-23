@@ -254,19 +254,13 @@ function initFormProtection() {
 }
 
 /**
- * Smart Header - Мягкое скрытие при скролле вниз и появление при скролле вверх
+ * Smart Header - Мягкое скрытие при скролле вниз (как на странице регистрации)
  */
 function initSmartHeader() {
     const header = document.querySelector('.kclc-header');
     if (!header) return;
 
-    let lastScrollY = 0;
-    let ticking = false;
-
-    function getScrollPos(target) {
-        if (target && target !== window && target !== document && typeof target.scrollTop === 'number' && target.scrollTop > 0) {
-            return target.scrollTop;
-        }
+    function getScrollY() {
         const snap = document.getElementById('snap-root');
         if (snap && typeof snap.scrollTop === 'number' && snap.scrollTop > 0) {
             return snap.scrollTop;
@@ -274,18 +268,18 @@ function initSmartHeader() {
         return window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
     }
 
-    function handleScroll(e) {
+    let lastScrollY = getScrollY();
+    let ticking = false;
+
+    function handleScroll() {
         if (!ticking) {
             window.requestAnimationFrame(() => {
-                const target = (e && e.target && e.target !== document) ? e.target : window;
-                const currentScrollY = getScrollPos(target);
-                const diff = currentScrollY - lastScrollY;
+                const currentScrollY = getScrollY();
 
-                // Если прокрутили вниз более чем на 8px и мы ниже шапки (> 60px)
-                if (diff > 8 && currentScrollY > 60) {
+                // Порог 80px — точно как на странице регистрации
+                if (currentScrollY > lastScrollY && currentScrollY > 80) {
                     header.classList.add('header-hidden');
-                } else if (diff < -8 || currentScrollY <= 25) {
-                    // При скролле вверх или возврате к самому верху плавно показываем
+                } else if (currentScrollY < lastScrollY) {
                     header.classList.remove('header-hidden');
                 }
 
@@ -298,9 +292,7 @@ function initSmartHeader() {
         }
     }
 
-    // Слушаем скролл и на window, и на document (capture phase для snap-root), и конкретно на #snap-root
     window.addEventListener('scroll', handleScroll, { passive: true });
-    document.addEventListener('scroll', handleScroll, { capture: true, passive: true });
 
     const snapRoot = document.getElementById('snap-root');
     if (snapRoot) {
