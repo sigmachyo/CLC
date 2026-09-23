@@ -60,7 +60,8 @@
             {% if rt %}
             <iframe id="iframe-player-rt"
                     class="w-full h-full {% if yt %}hidden{% endif %}"
-                    {% if not yt %}src="{{ rt }}"{% else %}src="" data-src="{{ rt }}"{% endif %}
+                    {% if not yt %}src="{{ rt }}"{% endif %}
+                    data-src="{{ rt }}"
                     frameborder="0"
                     allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
                     referrerpolicy="strict-origin-when-cross-origin"
@@ -71,7 +72,8 @@
             {% if vk %}
             <iframe id="iframe-player-vk"
                     class="w-full h-full {% if yt or rt %}hidden{% endif %}"
-                    {% if not yt and not rt %}src="{{ vk }}"{% else %}src="" data-src="{{ vk }}"{% endif %}
+                    {% if not yt and not rt %}src="{{ vk }}"{% endif %}
+                    data-src="{{ vk }}"
                     frameborder="0"
                     allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
                     referrerpolicy="strict-origin-when-cross-origin"
@@ -130,15 +132,15 @@
 
         if (source === 'youtube' && ytFrame) {
             ytFrame.classList.remove('hidden');
-            if (!ytFrame.src && ytFrame.dataset.src) ytFrame.src = ytFrame.dataset.src;
+            if (!ytFrame.getAttribute('src') && ytFrame.dataset.src) ytFrame.src = ytFrame.dataset.src;
             if (ytBtn) ytBtn.className = activeClass;
         } else if (source === 'rutube' && rtFrame) {
             rtFrame.classList.remove('hidden');
-            if (!rtFrame.src && rtFrame.dataset.src) rtFrame.src = rtFrame.dataset.src;
+            if (!rtFrame.getAttribute('src') && rtFrame.dataset.src) rtFrame.src = rtFrame.dataset.src;
             if (rtBtn) rtBtn.className = activeClass;
         } else if (source === 'vk' && vkFrame) {
             vkFrame.classList.remove('hidden');
-            if (!vkFrame.src && vkFrame.dataset.src) vkFrame.src = vkFrame.dataset.src;
+            if (!vkFrame.getAttribute('src') && vkFrame.dataset.src) vkFrame.src = vkFrame.dataset.src;
             if (vkBtn) vkBtn.className = activeClass;
         }
     }

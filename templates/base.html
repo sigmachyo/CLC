@@ -61,6 +61,16 @@
       }
     </script>
     <style>
+      /* Smooth fade-in transition for the whole page */
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      body {
+        animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+      /* Fast scroll behavior */
+      html { scroll-behavior: smooth; }
       /* Mobile drawer is hidden on desktop (desktop has its own top navigation) */
       @media (min-width: 901px) {
         #left-sidebar, #sidebar-backdrop, #burger-wrapper { 
@@ -85,7 +95,7 @@
       #left-sidebar {
         position: fixed;
         top: 0;
-        left: 0;
+        right: 0;
         bottom: 0;
         height: 100%;
         width: 86%;
@@ -93,10 +103,10 @@
         background: rgba(10, 15, 24, 0.96);
         backdrop-filter: blur(32px);
         -webkit-backdrop-filter: blur(32px);
-        border-right: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 20px 0 50px rgba(0, 0, 0, 0.6);
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: -20px 0 50px rgba(0, 0, 0, 0.6);
         z-index: 9999;
-        transform: translateX(-100%);
+        transform: translateX(100%);
         transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         display: flex;
         flex-direction: column;
@@ -220,10 +230,10 @@
                 <span class="material-symbols-outlined text-xl text-white/60">info</span>
                 <span>О церкви</span>
             </a>
-            <a href="{% url 'alpha' %}" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-white/80 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.04] transition-all text-sm font-medium">
+            <!--<a href="{% url 'alpha' %}" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-white/80 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.04] transition-all text-sm font-medium">
                 <span class="material-symbols-outlined text-xl text-white/60">lightbulb</span>
                 <span>Альфа-курс</span>
-            </a>
+            </a>-->
             <a href="{% url 'ministries' %}" class="flex items-center gap-3.5 px-4 py-3 rounded-2xl text-white/80 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.04] transition-all text-sm font-medium">
                 <span class="material-symbols-outlined text-xl text-white/60">diversity_3</span>
                 <span>Служения</span>

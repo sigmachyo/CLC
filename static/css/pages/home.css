@@ -44,7 +44,10 @@ main.main-snap {
 .snap-sec-inner {
   flex: 1 0 auto; height: auto; min-height: 100vh; min-height: 100dvh;
   width: 100%; display: flex; flex-direction: column;
-  padding-top: var(--hdr);
+  padding-top: 20px;
+}
+.snap-sec:first-child .snap-sec-inner {
+  padding-top: calc(var(--hdr) + 20px);
 }
 
 .section-content {
@@ -791,13 +794,20 @@ main.main-snap {
   .snap-sec { 
     height: auto !important; 
     min-height: auto !important; 
-    padding-bottom: 60px !important; 
+    padding-bottom: 24px !important; 
     scroll-snap-align: none !important; 
   }
   .snap-sec-inner { 
-    overflow: visible !important; 
+    min-height: auto !important; 
     height: auto !important; 
-    padding-top: calc(var(--hdr) + 20px) !important; 
+    padding-top: 10px !important; 
+  }
+  .snap-sec:first-child .snap-sec-inner {
+    padding-top: calc(var(--hdr) + 10px) !important;
+  }
+  .section-content {
+    padding-top: 16px !important;
+    padding-bottom: 16px !important;
   }
   
   /* Remove global padding bottom from main on home page since sections are auto-height now, we just pad the last footer */

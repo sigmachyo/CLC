@@ -456,32 +456,17 @@ body {
       </button>
     </div>
 
-    <!-- 2: Open home -->
-    <div class="hg-action-card">
+    <!-- 2: Open home or become a leader -->
+    <div class="hg-action-card md:col-span-1 sm:col-span-2">
       <div class="hg-action-icon">
         <span class="material-symbols-outlined">meeting_room</span>
       </div>
-      <h3 class="hg-action-title">Открыть группу у себя дома</h3>
+      <h3 class="hg-action-title">Стать лидером или открыть домашку</h3>
       <p class="hg-action-text">
-        Если вы хотите принять верующих у себя в гостях и предоставить дом для молитвы и слова — оставьте заявку.
+        Если вы хотите принять верующих у себя в гостях или чувствуете призвание служить людям, вести малую группу — оставьте заявку.
       </p>
-      <button type="button" class="hg-action-btn hg-action-btn-secondary" onclick="openHomeModal('open_home', 'Открыть группу у себя дома')">
-        <span>Стать принимающим домом</span>
-        <span class="material-symbols-outlined" style="font-size:16px;">arrow_forward</span>
-      </button>
-    </div>
-
-    <!-- 3: Become a leader -->
-    <div class="hg-action-card">
-      <div class="hg-action-icon">
-        <span class="material-symbols-outlined">psychology</span>
-      </div>
-      <h3 class="hg-action-title">Стать лидером группы</h3>
-      <p class="hg-action-text">
-        Чувствуете призвание служить людям, наставлять и вести малую группу? Пройдите обучение для лидеров.
-      </p>
-      <button type="button" class="hg-action-btn hg-action-btn-secondary" onclick="openHomeModal('become_leader', 'Стать лидером домашней группы')">
-        <span>Заявка в школу лидеров</span>
+      <button type="button" class="hg-action-btn hg-action-btn-secondary" onclick="openHomeModal('become_leader', 'Стать лидером или открыть домашку')">
+        <span>Оставить заявку</span>
         <span class="material-symbols-outlined" style="font-size:16px;">arrow_forward</span>
       </button>
     </div>
@@ -545,7 +530,7 @@ body {
             {% if group.leader_name %}
             <div class="hg-meta-row">
               <span class="material-symbols-outlined">person</span>
-              <span>Лидер: {{ group.leader_name }}</span>
+              <span>Лидер: {{ group.leader_name.split|first }}</span>
             </div>
             {% endif %}
             {% if group.description %}
