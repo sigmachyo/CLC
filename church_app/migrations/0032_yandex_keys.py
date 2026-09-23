@@ -28,7 +28,7 @@ def create_yandex_keys(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('church_app', '0031_customuser_vk_id'),
+        ('church_app', '0031_alter_video_options_video_published_at'),
         ('socialaccount', '0001_initial'),
     ]
 
