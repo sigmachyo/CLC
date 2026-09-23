@@ -436,6 +436,10 @@ WEEKDAY_NAMES_RU = {
 
 def _get_calendar_events_context():
     """Возвращает форматированный список событий и список активных месяцев для календаря"""
+    cached_cal = cache.get('kclc_calendar_ctx')
+    if cached_cal is not None:
+        return cached_cal
+
     now = timezone.now()
     raw_events = list(Event.objects.filter(
         is_active=True
@@ -519,57 +523,62 @@ def _get_calendar_events_context():
             'has_registration': hasattr(ev, 'is_registration_open') and ev.is_registration_open,
         })
 
-    return {
+    result = {
         'calendar_events': events_list,
         'calendar_months': list(months_seen.values()),
         'calendar_events_json': _json.dumps(events_list, default=str, ensure_ascii=False),
     }
+    cache.set('kclc_calendar_ctx', result, 180)
+    return result
 
 def home(request):
     """Главная страница с таймером воскресной трансляции и интерактивным календарем"""
     from .services_video_sync import trigger_background_auto_sync
     trigger_background_auto_sync()
 
-    current_announcement = Announcement.objects.filter(
-        is_active=True
-    ).filter(
-        models.Q(expires_at__isnull=True) | models.Q(expires_at__gt=timezone.now())
-    ).first()
+    cached_home = cache.get('kclc_home_static_ctx')
+    if cached_home is None:
+        current_announcement = Announcement.objects.filter(
+            is_active=True
+        ).filter(
+            models.Q(expires_at__isnull=True) | models.Q(expires_at__gt=timezone.now())
+        ).first()
+        now = timezone.now()
+        featured_events = list(Event.objects.filter(
+            is_active=True, 
+            is_featured=True
+        ).filter(
+            models.Q(end_date__gte=now) | (models.Q(end_date__isnull=True) & models.Q(start_date__gte=now))
+        ).order_by('start_date')[:10])
+        hero_backgrounds = list(HeroBackground.objects.filter(is_active=True).order_by('order', '-created_at')[:5])
+        news = list(News.objects.filter(is_active=True).order_by('-is_featured', '-created_at')[:6])
+        podcast_episodes = list(PodcastEpisode.objects.filter(is_active=True).order_by('order')[:25])
+        calendar_data = _get_calendar_events_context()
+
+        cached_home = {
+            'announcement': current_announcement,
+            'show_announcement': current_announcement is not None,
+            'featured_events': featured_events,
+            'hero_backgrounds': hero_backgrounds,
+            'news': news,
+            'podcast_episodes': podcast_episodes,
+            'calendar_events': calendar_data['calendar_events'],
+            'calendar_months': calendar_data['calendar_months'],
+            'calendar_events_json': calendar_data['calendar_events_json'],
+        }
+        cache.set('kclc_home_static_ctx', cached_home, 60)
+
     time_info = get_time_until_service()
-    now = timezone.now()
-    featured_events = Event.objects.filter(
-        is_active=True, 
-        is_featured=True
-    ).filter(
-        models.Q(end_date__gte=now) | (models.Q(end_date__isnull=True) & models.Q(start_date__gte=now))
-    ).order_by('start_date')[:10]
-    hero_backgrounds = HeroBackground.objects.filter(is_active=True).order_by('order', '-created_at')[:5]
-    
     server_now_ms = int(timezone.now().timestamp() * 1000)
 
-    news = News.objects.filter(
-        is_active=True
-    ).order_by('-is_featured', '-created_at')[:6]
-
-    podcast_episodes = PodcastEpisode.objects.filter(is_active=True).order_by('order')[:25]
-    calendar_data = _get_calendar_events_context()
-    
     context = {
-        'announcement': current_announcement,
-        'show_announcement': current_announcement is not None,
+        **cached_home,
         'user': request.user,
         'time_until_service': time_info,
         'is_live': time_info['is_live'],
         'service_schedule': SCHEDULE,
-        'featured_events': featured_events,
-        'hero_backgrounds': hero_backgrounds,
         'server_now_ms': server_now_ms,
         'server_now_kra': _kra_now().isoformat(),
-        'news': news,
-        'podcast_episodes': podcast_episodes,
-        'calendar_events': calendar_data['calendar_events'],
-        'calendar_months': calendar_data['calendar_months'],
-        'calendar_events_json': calendar_data['calendar_events_json'],
     }
     return render(request, 'home.html', context)
 

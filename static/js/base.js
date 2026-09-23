@@ -260,23 +260,15 @@ function initSmartHeader() {
     const header = document.querySelector('.kclc-header');
     if (!header) return;
 
-    function getScrollY() {
-        const snap = document.getElementById('snap-root');
-        if (snap && typeof snap.scrollTop === 'number' && snap.scrollTop > 0) {
-            return snap.scrollTop;
-        }
-        return window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-    }
-
-    let lastScrollY = getScrollY();
+    let lastScrollY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
     let ticking = false;
 
     function handleScroll() {
         if (!ticking) {
             window.requestAnimationFrame(() => {
-                const currentScrollY = getScrollY();
+                const currentScrollY = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
 
-                // Порог 80px — точно как на странице регистрации
+                // Проверенная логика со страницы регистрации (порог 80px):
                 if (currentScrollY > lastScrollY && currentScrollY > 80) {
                     header.classList.add('header-hidden');
                 } else if (currentScrollY < lastScrollY) {
@@ -293,11 +285,6 @@ function initSmartHeader() {
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-
-    const snapRoot = document.getElementById('snap-root');
-    if (snapRoot) {
-        snapRoot.addEventListener('scroll', handleScroll, { passive: true });
-    }
 }
 
 /**
